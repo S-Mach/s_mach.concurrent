@@ -23,7 +23,7 @@ import org.scalatest.{Matchers, FlatSpec}
 import util._
 import TestBuilder._
 
-class ProgressConfigTest extends FlatSpec with Matchers with ConcurrentTestCommon {
+class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
   "SimpleProgressReporter" must "report progress for each completed report" in {
     test repeat TEST_COUNT run {

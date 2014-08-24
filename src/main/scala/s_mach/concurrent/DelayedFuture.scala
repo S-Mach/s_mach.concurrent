@@ -16,20 +16,20 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent
 
-import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent._
+import scala.concurrent._
+import scala.concurrent.duration._
 
 /**
- * A trait for configuring pre and post loop side effects
+ * A trait for a future that will be started after a delay
  */
-trait LoopConfig {
-  def onLoopStart() : Unit = { }
-  def onLoopEnd() : Unit = { }
-
-  @inline final def loop[A](f: => Future[A])(implicit ec:ExecutionContext) : Future[A] = {
-    onLoopStart()
-    f sideEffect { onLoopEnd() }
-  }
+trait DelayedFuture[A] extends Future[A] {
+  /** @return the time stamp in nanoseconds when the future will be started */
+  def startTime_ns : Long
+  /** @return the delay before starting */
+  def delay : Duration
+  /** @return TRUE if the future has not started and has been cancelled FALSE otherwise */
+  def cancel() : Boolean
 }
+

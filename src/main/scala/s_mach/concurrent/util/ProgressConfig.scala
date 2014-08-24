@@ -18,9 +18,11 @@
 */
 package s_mach.concurrent.util
 
-import scala.concurrent.{Future, ExecutionContext}
+import scala.concurrent.{Promise, Future, ExecutionContext}
 import scala.concurrent.duration.Duration
 import s_mach.concurrent._
+
+import scala.util.{Success, Failure}
 
 /**
  * A trait for a builder of ProgressConfig. Callers may set the optional progress reporting function by calling one of
@@ -78,12 +80,12 @@ trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
 
   override def onLoopStart(): Unit = {
     super.onLoopStart()
-    optProgress.foreach(_.onStart())
+    optProgress.foreach(_.onStartProgress())
   }
 
   override def onLoopEnd(): Unit = {
     super.onLoopEnd()
-    optProgress.foreach(_.onEnd())
+    optProgress.foreach(_.onEndProgress())
   }
 
   /** @return if progress is set, a new function that reports progress after each returned Future completes. Otherwise,
@@ -93,15 +95,17 @@ trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
       optProgress match {
         case Some(progress) =>
           { a:A =>
-            f(a).flatMap { v =>
-              // Note: using flatMap here instead of onComplete ensures there is no race condition between the last
-              // reported progress and LoopConfig.onEnd
-              progress(1)
-              v.future
+            val promise = Promise[B]()
+            f(a) onComplete {
+              case f@Failure(_) =>
+                // Don't report progress on failure
+                promise.complete(f)
+              case s@Success(_) =>
+                // Note: need to ensure progress happens before next iteration
+                progress(1)
+                promise.complete(s)
             }
-//            val retv = f(a)
-//            retv onComplete { case _ => progress(1) }
-//            retv
+            promise.future
           }
         case None => f
       }
@@ -114,15 +118,18 @@ trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
     super.build3 {
       optProgress match {
         case Some(progress) =>
-
           { (a:A,b:B) =>
-            f(a,b).flatMap { v =>
-              progress(1)
-              v.future
+            val promise = Promise[C]()
+            f(a,b) onComplete {
+              case f@Failure(_) =>
+                // Don't report progress on failure
+                promise.complete(f)
+              case s@Success(_) =>
+                // Note: need to ensure progress happens before next iteration
+                progress(1)
+                promise.complete(s)
             }
-//            val retv = f(a,b)
-//            retv onComplete { case _ => progress(1) }
-//            retv
+            promise.future
           }
         case None => f
       }

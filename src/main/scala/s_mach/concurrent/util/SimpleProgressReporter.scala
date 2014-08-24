@@ -23,7 +23,7 @@ object SimpleProgressReporter {
     var totalSoFar = 0l
     var startTime_ns = 0l
 
-    override def onStart(): Unit = {
+    override def onStartProgress(): Unit = {
       lock.synchronized {
         totalSoFar = 0
         startTime_ns = System.nanoTime()
@@ -32,7 +32,7 @@ object SimpleProgressReporter {
     }
 
 
-    override def onEnd(): Unit = { }
+    override def onEndProgress(): Unit = { }
 
     /**
      * Accumulate completed and report progress

@@ -1,6 +1,5 @@
 package s_mach.concurrent.util
 
-import java.util.concurrent.{TimeUnit, ScheduledExecutorService, ScheduledFuture}
 import s_mach.concurrent.{PeriodicTask, ScheduledExecutionContext}
 
 import scala.concurrent.ExecutionContext
@@ -9,7 +8,9 @@ import scala.concurrent.duration._
 /**
  * A trait for a progress reporter that reports only at the specified report interval
  */
-trait PeriodicProgressReporter extends ProgressReporter
+trait PeriodicProgressReporter extends ProgressReporter {
+  def reportInterval: Duration
+}
 
 object PeriodicProgressReporter {
   def apply(
@@ -27,7 +28,7 @@ object PeriodicProgressReporter {
 
   class PeriodicProgressReporterImpl(
     optTotal: Option[Long],
-    reportInterval: Duration,
+    val reportInterval: Duration,
     report: Progress => Unit
   )(implicit
     executionContext: ExecutionContext,
@@ -40,7 +41,7 @@ object PeriodicProgressReporter {
     var lastReport_ns = 0l
     var reporter : Option[PeriodicTask] = None
 
-    override def onStart() = {
+    override def onStartProgress() = {
       lock.synchronized {
         reporter = Some(
           scheduledExecutionContext.scheduleAtFixedRate(
@@ -57,7 +58,7 @@ object PeriodicProgressReporter {
       }
     }
 
-    override def onEnd() = {
+    override def onEndProgress() = {
       lock.synchronized {
         require(reporter != None)
         require(optTotal.forall(_ == totalSoFar.get))
