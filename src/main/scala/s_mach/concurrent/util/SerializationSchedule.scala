@@ -52,6 +52,10 @@ case class SerializationSchedule[ID]() {
   private[this] val cacheValid = new java.util.concurrent.atomic.AtomicBoolean(true)
   private[this] var cachedEvents = Vector[Event[ID]]()
 
+  private[this] val _debug = new java.util.concurrent.atomic.AtomicReference({ id:ID => () })
+
+  def debug(__debug: ID => Unit) = _debug.getAndSet(__debug)
+
   /**
    * Register an instantaneous event
    * @param id id of event
@@ -65,6 +69,7 @@ case class SerializationSchedule[ID]() {
    * @return the elapsed duration since the schedule was created
    */
   def addStartEvent(id: ID) : FiniteDuration = {
+    _debug.get.apply(id)
     val elapsed_ns = System.nanoTime() - startTime_ns
     if(_startEvents.put(id, StartEvent(id, elapsed_ns)) != null)
       throw new IllegalArgumentException(s"Start event $id already exists!")
@@ -78,6 +83,7 @@ case class SerializationSchedule[ID]() {
    * @return the elapsed duration since the schedule was created
    */
   def addEndEvent(id: ID) : FiniteDuration = {
+    _debug.get.apply(id)
     val elapsed_ns = System.nanoTime() - startTime_ns
     val startEvent = Option(_startEvents.get(id)).getOrElse(throw new IllegalArgumentException(s"Event $id was never started!"))
     if(_endEvents.put(id, EndEvent(id, elapsed_ns, startEvent)) != null) {

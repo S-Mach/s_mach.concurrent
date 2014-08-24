@@ -31,9 +31,9 @@ import SeriallyOps._
  * A trait for the configuration of a TraversableOnce.serially workflow that can wrap a concurrent function with
  * progress reporting, retry and throttling functions
  *
- * Note: Inheritance order here matters - throttle should be inner wrapper on f (progress and retry are interchangable)
+ * Note: Inheritance order here matters - throttle should be inner wrapper on f (progress and retry are interchangeable)
  */
-trait SeriallyConfig extends ThrottleConfig with ProgressConfig with RetryConfig
+trait SeriallyConfig extends ProgressConfig with RetryConfig with ThrottleConfig
 
 object SeriallyConfig {
   case class SeriallyConfigImpl(

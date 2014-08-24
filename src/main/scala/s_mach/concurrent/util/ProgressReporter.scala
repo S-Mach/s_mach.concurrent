@@ -19,12 +19,22 @@
 package s_mach.concurrent.util
 
 /**
- * A trait for reporting completed iterations of a computation. The number of completed iterations is passed to the
- * apply method.
+ * A trait for reporting progress of a task that consists of one or more discrete steps. Each step is identified by an 
+ * ordinal step identifier. The step id is a generic concept and may be mapped by callers to any concrete concept. For 
+ * tasks with a known fixed input size, the step id is mapped directly to the index of the input (i.e. input with index 
+ * 0 = step 0, index 1 = step 1, etc). For tasks with an unknown input size, the step id is mapped to the Nth item 
+ * encountered minus one (i.e. 1st item = step 0, 2nd item = step 1). The step id must be incrementally assigned, 
+ * ensuring that that total steps always equals last step id - 1.
+ *
+ * Note: the progress reporter is assumed to be stateful. All derived implementations must be thread safe
  */
-trait ProgressReporter extends (Long => Unit) {
+trait ProgressReporter {
   /** Called at the beginning of the computation */
-  def onStartProgress() : Unit
+  def onStartTask() : Unit
   /** Called once the computation completes */
-  def onEndProgress() : Unit
+  def onCompleteTask() : Unit
+  /** Called at the beginning of execution of a step of the computation */
+  def onStartStep(stepId: Long)
+  /** Called at the beginning of execution of a step of the computation */
+  def onCompleteStep(stepId: Long)
 }

@@ -23,7 +23,7 @@ object SimpleProgressReporter {
     var totalSoFar = 0l
     var startTime_ns = 0l
 
-    override def onStartProgress(): Unit = {
+    override def onStartTask(): Unit = {
       lock.synchronized {
         totalSoFar = 0
         startTime_ns = System.nanoTime()
@@ -32,16 +32,14 @@ object SimpleProgressReporter {
     }
 
 
-    override def onEndProgress(): Unit = { }
+    override def onCompleteTask(): Unit = { }
 
-    /**
-     * Accumulate completed and report progress
-     * @param completed count of operations completed
-     */
-    def apply(completed: Long) : Unit = {
+    override def onStartStep(stepId: Long) = { }
+
+    def onCompleteStep(stepId: Long) : Unit = {
       // Note: lock is required here to ensure proper ordering of very fast reports
       lock.synchronized {
-        totalSoFar += completed
+        totalSoFar += 1
         report(Progress(totalSoFar, optTotal, startTime_ns))
       }
     }

@@ -41,7 +41,7 @@ object PeriodicProgressReporter {
     var lastReport_ns = 0l
     var reporter : Option[PeriodicTask] = None
 
-    override def onStartProgress() = {
+    override def onStartTask() = {
       lock.synchronized {
         reporter = Some(
           scheduledExecutionContext.scheduleAtFixedRate(
@@ -58,7 +58,7 @@ object PeriodicProgressReporter {
       }
     }
 
-    override def onEndProgress() = {
+    override def onCompleteTask() = {
       lock.synchronized {
         require(reporter != None)
         require(optTotal.forall(_ == totalSoFar.get))
@@ -68,6 +68,10 @@ object PeriodicProgressReporter {
         reporter = None
       }
     }
+
+    override def onStartStep(stepId: Long) = { }
+
+    override def onCompleteStep(stepId: Long) = totalSoFar.addAndGet(1)
 
     def doReport(localTotalSoFar: Long) {
       lock.synchronized {
@@ -80,8 +84,5 @@ object PeriodicProgressReporter {
       }
     }
 
-    def apply(completed: Long) = {
-      totalSoFar.addAndGet(completed)
-    }
   }
 }

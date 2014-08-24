@@ -80,12 +80,12 @@ trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
 
   override def onLoopStart(): Unit = {
     super.onLoopStart()
-    optProgress.foreach(_.onStartProgress())
+    optProgress.foreach(_.onStartTask())
   }
 
   override def onLoopEnd(): Unit = {
     super.onLoopEnd()
-    optProgress.foreach(_.onEndProgress())
+    optProgress.foreach(_.onCompleteTask())
   }
 
   /** @return if progress is set, a new function that reports progress after each returned Future completes. Otherwise,
@@ -94,7 +94,12 @@ trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
     super.build2 {
       optProgress match {
         case Some(progress) =>
+          // TODO: better way to do this?
+          val nextStepId = new java.util.concurrent.atomic.AtomicLong(0)
+
           { a:A =>
+            val stepId = nextStepId.getAndIncrement()
+            progress.onStartStep(stepId)
             val promise = Promise[B]()
             f(a) onComplete {
               case f@Failure(_) =>
@@ -102,7 +107,7 @@ trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
                 promise.complete(f)
               case s@Success(_) =>
                 // Note: need to ensure progress happens before next iteration
-                progress(1)
+                progress.onCompleteStep(stepId)
                 promise.complete(s)
             }
             promise.future
@@ -118,7 +123,12 @@ trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
     super.build3 {
       optProgress match {
         case Some(progress) =>
+          // TODO: better way to do this?
+          val nextStepId = new java.util.concurrent.atomic.AtomicLong(0)
+
           { (a:A,b:B) =>
+            val stepId = nextStepId.getAndIncrement()
+            progress.onStartStep(stepId)
             val promise = Promise[C]()
             f(a,b) onComplete {
               case f@Failure(_) =>
@@ -126,8 +136,7 @@ trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
                 promise.complete(f)
               case s@Success(_) =>
                 // Note: need to ensure progress happens before next iteration
-                progress(1)
-                promise.complete(s)
+                progress.onCompleteStep(stepId)
             }
             promise.future
           }

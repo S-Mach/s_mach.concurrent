@@ -18,12 +18,11 @@
 */
 package s_mach.concurrent
 
+import scala.concurrent.Future
+import scala.util.{Random, Failure, Success}
 import org.scalatest.{Matchers, FlatSpec}
-
 import s_mach.concurrent.util._
 import TestBuilder._
-
-import scala.util.{Random, Failure, Success}
 
 class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
@@ -182,6 +181,80 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
       result.getTry shouldBe a [Failure[_]]
       result.getTry.failed.get shouldBe a [ConcurrentThrowable]
     }
+  }
+
+  "WorkersConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+    val allPeriod_ns =
+      test repeat TEST_COUNT run {
+        implicit val ctc = mkConcurrentTestContext()
+        import ctc._
+
+        val allAttempts = Array.fill(items.size)(1)
+
+        val result =
+          items
+            .zipWithIndex
+            .workers
+            .throttle(DELAY)
+            .retry {
+              case List(r:RuntimeException) =>
+                sched.addEvent(s"retry-${r.getMessage}")
+                true.future
+              case List(r1:RuntimeException,r2:RuntimeException) =>
+                sched.addEvent(s"retry-${r1.getMessage}")
+                true.future
+              case _ => false.future
+            }
+            .progress(new ProgressReporter {
+              override def onStartTask() = sched.addEvent(s"progress-start")
+              override def onCompleteTask() = sched.addEvent(s"progress-end")
+              override def onStartStep(stepId: Long) = { }
+              override def onCompleteStep(stepId: Long) = sched.addEvent(s"progress-${stepId+1}")
+            })
+            .map { case (i,idx) =>
+              val attempts = allAttempts(idx)
+              Future {
+                if(attempts < 3) {
+                  allAttempts(idx) += 1
+                  sched.addEvent(s"map-$i+$attempts")
+                  throw new RuntimeException(s"$i+$attempts")
+                } else {
+                  sched.addEvent(s"map-$i+$attempts")
+                  i
+                }
+              }
+            }
+
+        result.get
+        // TODO: this doesn't work properly below 1 ms throttle?
+  //      waitForActiveExecutionCount(0)
+
+        items foreach { i =>
+          sched.happensBefore(s"progress-start",s"map-$i+1") should equal(true)
+          sched.happensBefore(s"map-$i+1",s"retry-$i+1") should equal(true)
+          sched.happensBefore(s"retry-$i+1",s"map-$i+2") should equal(true)
+          sched.happensBefore(s"map-$i+2",s"retry-$i+2") should equal(true)
+          sched.happensBefore(s"map-$i+3",s"progress-$i") should equal(true)
+          sched.happensBefore(s"progress-$i",s"progress-end") should equal(true)
+        }
+
+        val eventMap = sched.eventMap
+        (1 until items.size) flatMap { i =>
+          val e1 = eventMap(s"map-$i+1")
+          val e2 = eventMap(s"map-$i+2")
+          val e3 = eventMap(s"map-$i+3")
+          val e4 = eventMap(s"map-${i+1}+1")
+          Vector(
+            e2.when_ns - e1.when_ns,
+            e3.when_ns - e2.when_ns,
+            e4.when_ns - e3.when_ns
+          )
+        }
+      }
+
+    val filteredPeriod_ns = filterOutliersBy(allPeriod_ns.flatten.map(_.toDouble),{ v:Double => v})
+    val avgPeriod_ns = filteredPeriod_ns.sum / filteredPeriod_ns.size
+    avgPeriod_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.1)
   }
 
 }

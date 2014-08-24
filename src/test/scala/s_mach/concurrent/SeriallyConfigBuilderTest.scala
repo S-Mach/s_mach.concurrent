@@ -20,11 +20,10 @@ package s_mach.concurrent
 
 import scala.concurrent._
 import scala.concurrent.duration._
-
+import scala.util.{Failure, Success, Try}
 import org.scalatest.{Matchers, FlatSpec}
 import util._
 import TestBuilder._
-import scala.util.{Failure, Success, Try}
 
 class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
@@ -82,6 +81,89 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
       }
       isSerialSchedule(items.size, sched) should equal(true)
     }
+  }
+
+  "SeriallyConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+    val allPeriod_ns =
+      test repeat TEST_COUNT run {
+        implicit val ctc = mkConcurrentTestContext()
+        import ctc._
+
+        var even = true
+
+        val result =
+          items
+            .serially
+            .throttle(DELAY)
+            .retry {
+              case List(r:RuntimeException) =>
+                sched.addEvent(s"retry-${r.getMessage}")
+                true.future
+              case _ => false.future
+            }
+            .progress { progress =>
+              sched.addEvent(s"progress-${progress.completed}")
+            }
+            .map { i =>
+              sched.addEvent(s"map-$i-$even")
+              Future {
+                if(even) {
+                  even = false
+                  throw new RuntimeException(i.toString)
+                } else {
+                  even = true
+                  i
+                }
+              }
+            }
+
+        result.get
+        // TODO: this doesn't work properly below 1 ms throttle?
+  //      waitForActiveExecutionCount(0)
+
+        sched.orderedEvents.map(_.id) should equal(Vector(
+          "progress-0",
+          "map-1-true",
+          "retry-1",
+          "map-1-false",
+          "progress-1",
+          "map-2-true",
+          "retry-2",
+          "map-2-false",
+          "progress-2",
+          "map-3-true",
+          "retry-3",
+          "map-3-false",
+          "progress-3",
+          "map-4-true",
+          "retry-4",
+          "map-4-false",
+          "progress-4",
+          "map-5-true",
+          "retry-5",
+          "map-5-false",
+          "progress-5",
+          "map-6-true",
+          "retry-6",
+          "map-6-false",
+          "progress-6"
+        ))
+
+        val eventMap = sched.eventMap
+        (1 until items.size) flatMap { i =>
+          val e1 = eventMap(s"map-$i-true")
+          val e2 = eventMap(s"map-$i-false")
+          val e3 = eventMap(s"map-${i+1}-true")
+          Vector(
+            e2.when_ns - e1.when_ns,
+            e3.when_ns - e2.when_ns
+          )
+        }
+      }
+
+    val filteredPeriod_ns = filterOutliersBy(allPeriod_ns.flatten.map(_.toDouble),{ v:Double => v})
+    val avgPeriod_ns = filteredPeriod_ns.sum / filteredPeriod_ns.size
+    avgPeriod_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.1)
   }
 
 }
