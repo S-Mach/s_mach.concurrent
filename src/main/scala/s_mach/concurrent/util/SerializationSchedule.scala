@@ -24,15 +24,15 @@ import scala.collection.JavaConverters._
 object SerializationSchedule {
   sealed trait Event[ID] {
     def id: ID
-    def when_ns: Long
+    def elapsed_ns: Long
   }
   case class StartEvent[ID](
     id: ID,
-    when_ns: Long
+    elapsed_ns: Long
   ) extends Event[ID]
   case class EndEvent[ID](
     id: ID,
-    when_ns: Long,
+    elapsed_ns: Long,
     start: StartEvent[ID]
   ) extends Event[ID]
 }
@@ -44,7 +44,7 @@ object SerializationSchedule {
 case class SerializationSchedule[ID]() {
   import SerializationSchedule._
 
-  private[this] val startTime_ns = System.nanoTime()
+  val startTime_ns = System.nanoTime()
 
   private[this] val _startEvents = new java.util.concurrent.ConcurrentHashMap[ID, StartEvent[ID]]()
   private[this] val _endEvents = new java.util.concurrent.ConcurrentHashMap[ID, EndEvent[ID]]()
@@ -97,7 +97,7 @@ case class SerializationSchedule[ID]() {
   def orderedEvents : Vector[Event[ID]] = {
     cachedEvents.synchronized {
       if(cacheValid.get == false) {
-        cachedEvents = { _startEvents.values().asScala ++ _endEvents.values().asScala }.toList.sortBy(_.when_ns).toVector
+        cachedEvents = { _startEvents.values().asScala ++ _endEvents.values().asScala }.toList.sortBy(_.elapsed_ns).toVector
       }
       cachedEvents
     }
@@ -127,10 +127,10 @@ case class SerializationSchedule[ID]() {
     val id2_start = Option(_startEvents.get(id2)).getOrElse(throw new IllegalArgumentException(s"No such start event $id2!"))
     Option(_endEvents.get(id1)) match {
       case Some(id1_end) =>
-        id1_end.when_ns < id2_start.when_ns
+        id1_end.elapsed_ns < id2_start.elapsed_ns
       case None =>
         val id1_start = Option(_startEvents.get(id1)).getOrElse(throw new IllegalArgumentException(s"No such start event $id1!"))
-        id1_start.when_ns < id2_start.when_ns
+        id1_start.elapsed_ns < id2_start.elapsed_ns
     }
   }
 
@@ -141,17 +141,17 @@ case class SerializationSchedule[ID]() {
   def happensDuring(id1: ID, id2: ID) : Boolean = {
     val id2_end = Option(_endEvents.get(id2)).getOrElse(throw new IllegalArgumentException(s"No such end event $id2!"))
 
-    val id2_range = id2_end.start.when_ns to id2_end.when_ns
+    val id2_range = id2_end.start.elapsed_ns to id2_end.elapsed_ns
     Option(_endEvents.get(id1)) match {
       case Some(id1_end) =>
-        val id1_range = id1_end.start.when_ns to id1_end.when_ns
-        id2_range.contains(id1_end.when_ns) ||
-        id2_range.contains(id1_end.start.when_ns) ||
-        id1_range.contains(id2_end.when_ns) ||
-        id1_range.contains(id2_end.start.when_ns)
+        val id1_range = id1_end.start.elapsed_ns to id1_end.elapsed_ns
+        id2_range.contains(id1_end.elapsed_ns) ||
+        id2_range.contains(id1_end.start.elapsed_ns) ||
+        id1_range.contains(id2_end.elapsed_ns) ||
+        id1_range.contains(id2_end.start.elapsed_ns)
       case None =>
         val id1_start = Option(_startEvents.get(id1)).getOrElse(throw new IllegalArgumentException(s"No such start event $id1!"))
-        id2_range.contains(id1_start.when_ns)
+        id2_range.contains(id1_start.elapsed_ns)
     }
   }
 

@@ -33,9 +33,9 @@ package object concurrent extends TupleConcurrentlyOps {
   }
   // Note: can't put value class in trait so this code has to be repeated in object Implicits and in package future
   implicit class SMach_Concurrent_PimpMyFutureType(val self:Future.type) extends AnyVal {
-    @inline def after[A](delay: FiniteDuration)(f: => Future[A])(implicit
-      scheduledExecutorService:ScheduledExecutorService
-    ) : Future[A] = FutureOps.after(delay, f)
+    @inline def delayed[A](delay: FiniteDuration)(f: () => A)(implicit
+      scheduledExecutionContext:ScheduledExecutionContext
+    ) : DelayedFuture[A] = scheduledExecutionContext.schedule(delay)(f)
     @inline def unit : Future[Unit] = FutureOps.unit
   }
   implicit class SMach_Concurrent_PimpMyFuture[A](val self: Future[A]) extends AnyVal {
@@ -57,13 +57,17 @@ package object concurrent extends TupleConcurrentlyOps {
     )(implicit
       ec:ExecutionContext
     ) : Future[X] = FutureOps.flatFold(self, onSuccess, onFailure)
-    @inline def happensBefore[B](other: => Future[B])(implicit ec: ExecutionContext) : Future[B] = FutureOps.happensBefore(self, other)
-    @inline def sideEffect(sideEffect: => Unit)(implicit ec: ExecutionContext) : Future[A] = FutureOps.sideEffect(self, sideEffect)
+    @inline def happensBefore[B](other: => Future[B])(implicit ec: ExecutionContext) : Future[B]
+      = FutureOps.happensBefore(self, other)
+    @inline def sideEffect(sideEffect: => Unit)(implicit ec: ExecutionContext) : Future[A]
+      = FutureOps.sideEffect(self, sideEffect)
   }
   implicit class SMach_Concurrent_PimpMyFutureFuture[A](val self: Future[Future[A]]) extends AnyVal {
     @inline def flatten(implicit ec:ExecutionContext) : Future[A] = self.flatMap(v => v)
   }
-  implicit class SMach_Concurrent_PimpMyTraversableFuture[A,M[AA] <: Traversable[AA]](val self: M[Future[A]]) extends AnyVal {
+  implicit class SMach_Concurrent_PimpMyTraversableFuture[A,M[AA] <: Traversable[AA]](
+    val self: M[Future[A]]
+  ) extends AnyVal {
     @inline def merge(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[Nothing, A, M[A]]
@@ -80,14 +84,22 @@ package object concurrent extends TupleConcurrentlyOps {
     ) : Future[A] = FutureOps.firstSuccess(self)
   }
 
-  implicit class SMach_Concurrent_PimpMyTraversableFutureTraversable[A,M[AA] <: Traversable[AA], N[AA] <: TraversableOnce[AA]](val self: M[Future[N[A]]]) extends AnyVal {
+  implicit class SMach_Concurrent_PimpMyTraversableFutureTraversable[
+    A,
+    M[AA] <: Traversable[AA],
+    N[AA] <: TraversableOnce[AA]
+  ](
+    val self: M[Future[N[A]]]
+  ) extends AnyVal {
     @inline def flatMerge(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[Nothing, A, M[A]]
     ) : Future[M[A]] = MergeOps.flatMerge(self)
   }
 
-  implicit class SMach_Concurrent_PimpMyTraversableOnceFuture[A,M[AA] <: TraversableOnce[AA]](val self: M[Future[A]]) extends AnyVal {
+  implicit class SMach_Concurrent_PimpMyTraversableOnceFuture[A,M[AA] <: TraversableOnce[AA]](
+    val self: M[Future[A]]
+  ) extends AnyVal {
     @inline def mergeAllFailures(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[M[Future[A]], Throwable, M[Throwable]]

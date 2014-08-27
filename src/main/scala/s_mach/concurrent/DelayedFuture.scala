@@ -29,7 +29,5 @@ trait DelayedFuture[A] extends Future[A] {
   def startTime_ns : Long
   /** @return the delay before starting */
   def delay : Duration
-  /** @return TRUE if the future has not started and has been cancelled FALSE otherwise */
-  def cancel() : Boolean
 }
 

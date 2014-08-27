@@ -18,13 +18,13 @@
 */
 package s_mach.concurrent
 
-import java.util.concurrent._
-
+import java.util.concurrent.{ScheduledFuture, TimeUnit, ScheduledExecutorService, ThreadFactory, Executors}
+import s_mach.concurrent.impl.DelegatedFuture
 import s_mach.concurrent.util.Latch
-
-import scala.concurrent.{Promise, CanAwait, ExecutionContext}
+import scala.concurrent._
 import scala.concurrent.duration._
 import scala.util.Try
+import s_mach.concurrent.impl.FutureOps._
 
 trait ScheduledExecutionContext {
   /**
@@ -60,57 +60,80 @@ trait ScheduledExecutionContext {
 }
 
 object ScheduledExecutionContext {
-  def ensureDelay(nextEvent_ns: Long): Unit = {
-    val remaining_ms = (nextEvent_ns - System.nanoTime()).nanos.toMillis
-    // Scheduled executor service seems to consistently be early sometimes as many as 5-10 ms early though it dips as low as 71 us
-    if(remaining_ms > 3) {
-      Thread.sleep(remaining_ms)
-    }
-    while(System.nanoTime() < nextEvent_ns) { }
+//  val ACCEPTABLE_DELAY_ERROR_PERCENT = 0.1
+//  val lock = new Object
+//  val minScheduledDelay_ns = new java.util.concurrent.atomic.AtomicLong(0)
+//  val minScheduledDelayDecay_ns = new java.util.concurrent.atomic.AtomicLong(0)
+  // TODO: these values were tuned on my specific hardware config and should instead be calibrated at startup and adjusted at runtime
+  val MIN_SCHEDULED_DELAY_NS = 1000000
+  val MIN_SPIN_DELAY_NS = 300
+  val SPIN_DELAY_NS = 5000
+
+//  def reportSpinDelayError(targetDelay_ns: Long, startTime_ns: Long, eventTime_ns: Long) = ???
+//  def reportScheduledDelayError(targetDelay_ns: Long, startTime_ns: Long, eventTime_ns: Long) = {
+//    val actualDelay_ns = eventTime_ns - startTime_ns
+//    // If there was more than a 10% error then set then adjust minimum scheduled delay 50% closer to failure
+//    if (actualDelay_ns > targetDelay_ns * (1.0 + ACCEPTABLE_DELAY_ERROR_PERCENT)) {
+//      lock.synchronized {
+////        val error_ns = targetDelay_ns - minScheduledDelay_ns.get
+////        val localMinScheduledDelay_ns = minScheduledDelay_ns.get
+//        val newMinScheduledDelay_ns = minScheduledDelay_ns.addAndGet((targetDelay_ns * 1.25).toLong)
+//        minScheduledDelayDecay_ns.set(Math.min(-1,-(newMinScheduledDelay_ns * 0.001).toLong))
+//        println(s"ERRCORRECT ${minScheduledDelay_ns.get} ${minScheduledDelayDecay_ns.get}")
+//      }
+//    } else {
+//      if (minScheduledDelay_ns.get > 0) println("here")
+//      if(minScheduledDelayDecay_ns.get <0 ) println(s"before ${minScheduledDelay_ns.get}")
+//      // Success - decay minScheduledDelay_ns
+//      minScheduledDelay_ns.addAndGet(minScheduledDelayDecay_ns.get)
+//      if(minScheduledDelayDecay_ns.get <0 ) println(s"after ${minScheduledDelay_ns.get}")
+//    }
+//  }
+
+  def nanoDelayUntil(nextEvent_ns: Long): Unit = {
+    val done_ns = nextEvent_ns - MIN_SPIN_DELAY_NS
+    while(System.nanoTime() < done_ns) { }
   }
 
-  case class DelayedRunnable[A](
+  case class ScheduledDelayedFutureImpl[A](
     f: () => A,
-    delay: Duration
-  )(implicit executionContext: ExecutionContext) extends Runnable {
-    val nextEvent_ns = System.nanoTime() + delay.toNanos
-
+    delay: Duration,
+    scheduledExecutorService: ScheduledExecutorService
+  )(implicit ec:ExecutionContext) extends DelayedFuture[A] with DelegatedFuture[A] {
+    val delay_ns = delay.toNanos
+    val startTime_ns = System.nanoTime() + delay_ns
+    val scheduledDelay_ns = delay_ns - SPIN_DELAY_NS
     val promise = Promise[A]()
 
-    override def run() = {
-      try {
-        ensureDelay(nextEvent_ns)
-        promise.complete(Try(f()))
+    val javaScheduledFuture =
+      scheduledExecutorService.schedule(
+        new Runnable {
+          override def run() = {
+//            Future { reportScheduledDelayError(delay_ns, startTime_ns, System.nanoTime()) }.background
+            nanoDelayUntil(startTime_ns)
+            promise.complete(Try(f()))
+          }
+        },
+        scheduledDelay_ns,
+        TimeUnit.NANOSECONDS
+      )
 
-      } catch {
-        case ex:Exception =>
-          executionContext.reportFailure(ex)
-          throw ex
-      }
-    }
+    val delegate = promise.future
+
   }
 
-  case class DelayedFutureImpl[A](
-    runnable: DelayedRunnable[A],
-    javaScheduledFuture: java.util.concurrent.ScheduledFuture[Unit]
-  ) extends DelayedFuture[A] {
-    val delegate = runnable.promise.future
+  case class SpinDelayedFutureImpl[A](
+    f: () => A,
+    delay: Duration
+  )(implicit ec:ExecutionContext) extends DelayedFuture[A] with DelegatedFuture[A] {
+    val promise = Promise[A]()
+    val delegate = promise.future
 
-    override def startTime_ns = runnable.nextEvent_ns
-    override def delay = runnable.delay
-    override def cancel() = javaScheduledFuture.cancel(false)
+    val startTime_ns = System.nanoTime() + delay.toNanos
 
-    override def onComplete[U](f: (Try[A]) => U)(implicit executor: ExecutionContext): Unit = delegate.onComplete(f)
-    override def isCompleted: Boolean = delegate.isCompleted
-    override def value: Option[Try[A]] = delegate.value
-    @scala.throws[Exception](classOf[Exception])
-    override def result(atMost: Duration)(implicit permit: CanAwait): A = delegate.result(atMost)
-    @scala.throws[InterruptedException](classOf[InterruptedException])
-    @scala.throws[TimeoutException](classOf[TimeoutException])
-    override def ready(atMost: Duration)(implicit permit: CanAwait): this.type = {
-      delegate.ready(atMost)
-      this
-    }
+    // Spin in this thread - tried this in a background future but random cpu scheduler delays are highly unpredictable
+    nanoSpinDelay(delay.toNanos - MIN_SPIN_DELAY_NS)
+    promise.complete(Try(f()))
   }
 
   case class PeriodicTaskRunnable[U](
@@ -126,7 +149,7 @@ object ScheduledExecutionContext {
 
     override def run() = {
       try {
-        ensureDelay(nextEvent_ns)
+        nanoDelayUntil(nextEvent_ns)
         task()
         _nextEvent_ns.getAndSet(System.nanoTime() + period_ns)
       } catch {
@@ -153,21 +176,18 @@ object ScheduledExecutionContext {
 
   }
   
+
   case class ScheduledExecutionContextImpl(delegate: ScheduledExecutorService)(implicit executionContext: ExecutionContext) extends ScheduledExecutionContext {
     def schedule[A](delay: Duration)(f: () => A) : DelayedFuture[A] = {
-      val runnable = DelayedRunnable(
-        f,
-        delay
-      )
-
-      val javaScheduledFuture =
-        delegate.schedule(
-          runnable,
-          delay.toNanos,
-          TimeUnit.NANOSECONDS
-        )
-
-      DelayedFutureImpl(runnable, javaScheduledFuture.asInstanceOf[ScheduledFuture[Unit]])
+      val delay_ns = delay.toNanos
+      // Below a certain threshold, the scheduled executor is no longer capable of producing accurate delays
+      if (delay_ns > MIN_SCHEDULED_DELAY_NS) {
+        // Schedule delay early for more precise delays (any remaining delay will be accomplished through spin delay)
+        ScheduledDelayedFutureImpl(f, delay, delegate)
+      } else {
+        // Note: this trades cpu time for more precise delay
+        SpinDelayedFutureImpl(f, delay)
+      }
     }
 
     def scheduleAtFixedRate[U](initialDelay: Duration, period: Duration)(task: () => U) : PeriodicTask = {

@@ -146,7 +146,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
         (0 until size) map { i =>
           val e1 = eventMap(s"report-$i-$size")
           val e2 = eventMap(s"report-${i+1}-$size")
-          e2.when_ns - e1.when_ns
+          e2.elapsed_ns - e1.elapsed_ns
         }
       }
     

@@ -155,8 +155,8 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
           val e2 = eventMap(s"map-$i-false")
           val e3 = eventMap(s"map-${i+1}-true")
           Vector(
-            e2.when_ns - e1.when_ns,
-            e3.when_ns - e2.when_ns
+            e2.elapsed_ns - e1.elapsed_ns,
+            e3.elapsed_ns - e2.elapsed_ns
           )
         }
       }

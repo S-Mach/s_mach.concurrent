@@ -20,7 +20,7 @@ package s_mach.concurrent.impl
 
 import java.util.concurrent.{ScheduledExecutorService, TimeUnit}
 
-import s_mach.concurrent.ConcurrentThrowable
+import s_mach.concurrent.{ScheduledExecutionContext, ConcurrentThrowable}
 
 import scala.concurrent._
 import scala.concurrent.duration._
@@ -113,27 +113,6 @@ trait FutureOps {
       case Failure(t) => p.completeWith(onFailure(t))
     }
     p.future
-  }
-
-  /** @return a Future that evaluates the supplied Future after waiting for the specified delay. Optimized to
-    *         immediately evaluate Future if a delay of 0 is passed. */
-  def after[A](
-    delay: FiniteDuration,
-    f: => Future[A]
-  )(implicit
-    scheduledExecutorService:ScheduledExecutorService
-  ) : Future[A] = {
-    if(delay.length > 0) {
-      val promise = Promise[A]()
-      val delay_ns = delay.toNanos
-      val runnable = new Runnable {
-        def run() = promise.completeWith(f)
-      }
-      scheduledExecutorService.schedule(runnable,delay_ns,TimeUnit.NANOSECONDS)
-      promise.future
-    } else {
-      f
-    }
   }
 
   /**

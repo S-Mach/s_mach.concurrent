@@ -245,9 +245,9 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
           val e3 = eventMap(s"map-$i+3")
           val e4 = eventMap(s"map-${i+1}+1")
           Vector(
-            e2.when_ns - e1.when_ns,
-            e3.when_ns - e2.when_ns,
-            e4.when_ns - e3.when_ns
+            e2.elapsed_ns - e1.elapsed_ns,
+            e3.elapsed_ns - e2.elapsed_ns,
+            e4.elapsed_ns - e3.elapsed_ns
           )
         }
       }
