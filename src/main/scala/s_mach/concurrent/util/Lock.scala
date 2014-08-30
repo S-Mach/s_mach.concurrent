@@ -30,7 +30,7 @@ import s_mach.concurrent._
  * release or forget to release the lock.
  * Note2: Lock is NOT reentrant
  * Note3: Lock should never be used when other locking options make more sense. Lock is designed for synchronizing many
- * tasks (100+) and/or long running tasks (100us+). Unlike other locking options, Lock does not block and consume
+ * tasks (100+) and/or long running tasks (10ms+). Unlike other locking options, Lock does not block and consume
  * a thread while waiting for the lock to become available. However, Lock is not the most performant option.
  */
 trait Lock {

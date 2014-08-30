@@ -34,7 +34,7 @@ import s_mach.concurrent._
  * release or forget to release the lock.
  * Note2: Semaphore is NOT reentrant
  * Note3: Semaphore should never be used when other options make more sense. Semaphore is designed for synchronizing
- * many tasks (100+) and/or long running tasks (100us+). Unlike other options, Semaphore does not block and consume a
+ * many tasks (100+) and/or long running tasks (10ms+). Unlike other options, Semaphore does not block and consume a
  * thread while waiting for permits to become available. However, Semaphore is not the most performant option.
  */
 trait Semaphore {

@@ -19,8 +19,7 @@
 package s_mach.concurrent
 
 import java.util.concurrent.{ScheduledFuture, TimeUnit, ScheduledExecutorService, ThreadFactory, Executors}
-import s_mach.concurrent.impl.DelegatedFuture
-import s_mach.concurrent.util.Latch
+import s_mach.concurrent.util.{DelegatedFuture, Latch}
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.util.Try
@@ -60,35 +59,27 @@ trait ScheduledExecutionContext {
 }
 
 object ScheduledExecutionContext {
-//  val ACCEPTABLE_DELAY_ERROR_PERCENT = 0.1
-//  val lock = new Object
-//  val minScheduledDelay_ns = new java.util.concurrent.atomic.AtomicLong(0)
-//  val minScheduledDelayDecay_ns = new java.util.concurrent.atomic.AtomicLong(0)
-  // TODO: these values were tuned on my specific hardware config and should instead be calibrated at startup and adjusted at runtime
-  val MIN_SCHEDULED_DELAY_NS = 1000000
-  val MIN_SPIN_DELAY_NS = 300
-  val SPIN_DELAY_NS = 5000
+  // TODO: tune these constants at runtime - they were tuned using a specific hardware environment
+  // Note: these parameters ultimately trade cpu time for better precision in delays. In long delays (10ms+), trading
+  // cpu time for precision rarely matters, but for shorter delays (micros) this can be the only way to get any kind of
+  // reasonable precision. The scheduled percent formula takes this into account, giving a much higher scheduled delay
+  // percent for longer delays and lower delays for
+  val MIN_SPIN_DELAY_NS = 200
+  // TODO: this can be computed at startup by running a scheduled delay for 1 ns and computing mean late error
+  val ALWAYS_SPIN_DELAY_NS = 12.micros.toNanos//10.micros.toNanos
+  val MAX_SCHEDULED_NS = 2.millis.toNanos
+  val MIN_SCHEDULED_NS = 12.micros.toNanos//16.micros.toNanos//8.micros.toNanos
+  val SCHEDULED_DELAY_LOG_CONSTANT = Math.log10(MIN_SCHEDULED_NS)
+  val SCHEDULED_DELAY_LOG_COEFF = 1.0 / (Math.log10(MAX_SCHEDULED_NS) - SCHEDULED_DELAY_LOG_CONSTANT)
+  def calcScheduledPercent(delay_ns: Long) : Double = {
+    Math.max(0.0, Math.min(1.0, (Math.log10(delay_ns.toDouble) - SCHEDULED_DELAY_LOG_CONSTANT) * SCHEDULED_DELAY_LOG_COEFF))
+  }
+  def calcScheduledDelay_ns(delay_ns: Long) : Long = {
+    Math.max(0, (delay_ns * calcScheduledPercent(delay_ns)).toLong - ALWAYS_SPIN_DELAY_NS)
+  }
 
-//  def reportSpinDelayError(targetDelay_ns: Long, startTime_ns: Long, eventTime_ns: Long) = ???
-//  def reportScheduledDelayError(targetDelay_ns: Long, startTime_ns: Long, eventTime_ns: Long) = {
-//    val actualDelay_ns = eventTime_ns - startTime_ns
-//    // If there was more than a 10% error then set then adjust minimum scheduled delay 50% closer to failure
-//    if (actualDelay_ns > targetDelay_ns * (1.0 + ACCEPTABLE_DELAY_ERROR_PERCENT)) {
-//      lock.synchronized {
-////        val error_ns = targetDelay_ns - minScheduledDelay_ns.get
-////        val localMinScheduledDelay_ns = minScheduledDelay_ns.get
-//        val newMinScheduledDelay_ns = minScheduledDelay_ns.addAndGet((targetDelay_ns * 1.25).toLong)
-//        minScheduledDelayDecay_ns.set(Math.min(-1,-(newMinScheduledDelay_ns * 0.001).toLong))
-//        println(s"ERRCORRECT ${minScheduledDelay_ns.get} ${minScheduledDelayDecay_ns.get}")
-//      }
-//    } else {
-//      if (minScheduledDelay_ns.get > 0) println("here")
-//      if(minScheduledDelayDecay_ns.get <0 ) println(s"before ${minScheduledDelay_ns.get}")
-//      // Success - decay minScheduledDelay_ns
-//      minScheduledDelay_ns.addAndGet(minScheduledDelayDecay_ns.get)
-//      if(minScheduledDelayDecay_ns.get <0 ) println(s"after ${minScheduledDelay_ns.get}")
-//    }
-//  }
+//  val lateDelayError_ns = new java.util.concurrent.atomic.AtomicLong(0)
+//  val earlyDelayError_ns = new java.util.concurrent.atomic.AtomicLong(0)
 
   def nanoDelayUntil(nextEvent_ns: Long): Unit = {
     val done_ns = nextEvent_ns - MIN_SPIN_DELAY_NS
@@ -98,18 +89,24 @@ object ScheduledExecutionContext {
   case class ScheduledDelayedFutureImpl[A](
     f: () => A,
     delay: Duration,
+    scheduledDelay_ns: Long,
     scheduledExecutorService: ScheduledExecutorService
   )(implicit ec:ExecutionContext) extends DelayedFuture[A] with DelegatedFuture[A] {
     val delay_ns = delay.toNanos
-    val startTime_ns = System.nanoTime() + delay_ns
-    val scheduledDelay_ns = delay_ns - SPIN_DELAY_NS
+    val expectedTime_ns = System.nanoTime + scheduledDelay_ns
+    val startTime_ns = System.nanoTime + delay_ns
     val promise = Promise[A]()
 
     val javaScheduledFuture =
       scheduledExecutorService.schedule(
         new Runnable {
           override def run() = {
-//            Future { reportScheduledDelayError(delay_ns, startTime_ns, System.nanoTime()) }.background
+//            val now = System.nanoTime
+//            if(now < expectedTime_ns) {
+//              earlyDelayError_ns.addAndGet(expectedTime_ns - now)
+//            } else if(now > expectedTime_ns) {
+//              lateDelayError_ns.addAndGet(now - expectedTime_ns)
+//            }
             nanoDelayUntil(startTime_ns)
             promise.complete(Try(f()))
           }
@@ -180,10 +177,11 @@ object ScheduledExecutionContext {
   case class ScheduledExecutionContextImpl(delegate: ScheduledExecutorService)(implicit executionContext: ExecutionContext) extends ScheduledExecutionContext {
     def schedule[A](delay: Duration)(f: () => A) : DelayedFuture[A] = {
       val delay_ns = delay.toNanos
-      // Below a certain threshold, the scheduled executor is no longer capable of producing accurate delays
-      if (delay_ns > MIN_SCHEDULED_DELAY_NS) {
-        // Schedule delay early for more precise delays (any remaining delay will be accomplished through spin delay)
-        ScheduledDelayedFutureImpl(f, delay, delegate)
+      // Below a certain threshold, only a computed percentage of the requested delay is scheduled the reset is
+      // performed in a spin wait loop. This trades cpu time for precision especially for short (micros) delays
+      val scheduledDelay_ns = calcScheduledDelay_ns(delay_ns)
+      if (scheduledDelay_ns > 0) {
+        ScheduledDelayedFutureImpl(f, delay, scheduledDelay_ns, delegate)
       } else {
         // Note: this trades cpu time for more precise delay
         SpinDelayedFutureImpl(f, delay)

@@ -1,10 +1,14 @@
-package s_mach.concurrent.impl
+package s_mach.concurrent.util
 
 import scala.concurrent.duration.Duration
-import scala.concurrent.{TimeoutException, CanAwait, ExecutionContext, Future}
+import scala.concurrent.{CanAwait, ExecutionContext, Future, TimeoutException}
 import scala.util.Try
 
+/**
+ * A trait for a future that delegates to its implementation to another future
+ */
 trait DelegatedFuture[A] extends Future[A] {
+  /** @return the future to delegate to */
   def delegate : Future[A]
 
   override final def onComplete[U](f: (Try[A]) => U)(implicit executor: ExecutionContext): Unit = delegate.onComplete(f)
