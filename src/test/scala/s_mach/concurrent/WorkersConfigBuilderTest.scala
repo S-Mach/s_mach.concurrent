@@ -84,7 +84,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
     val concurrentWorkerPercent = result.count { case (workerCount, maxActiveCount) =>
       maxActiveCount == workerCount || maxActiveCount == workerCount - 1
     } / result.size.toDouble
-    concurrentWorkerPercent should be >= 0.90
+    concurrentWorkerPercent should be >= 0.85
   }
 
   "WorkerConfigBuilder.flatMap-t2" must "execute futures concurrently" in {
