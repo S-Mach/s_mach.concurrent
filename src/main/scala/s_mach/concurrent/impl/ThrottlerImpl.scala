@@ -18,11 +18,11 @@
 */
 package s_mach.concurrent.impl
 
-import scala.concurrent.{Promise, Future, ExecutionContext}
-import scala.util.Try
+import scala.concurrent.{Future, ExecutionContext}
 import scala.concurrent.duration._
 import s_mach.concurrent.ScheduledExecutionContext
 import s_mach.concurrent.util.{DeferredFuture, Latch, Barrier, Throttler}
+import s_mach.concurrent._
 
 class ThrottlerImpl(
   __throttle_ns: Long
@@ -40,49 +40,19 @@ class ThrottlerImpl(
 
   private[this] val lock = new Object
   private[this] var lastEvent = Barrier.set
-  private[this] var lastEvent_ns = System.nanoTime() - throttle_ns
-  private[this] var busyWaitTune_ns = 200000
 
   def run[X](f: () => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
     lock.synchronized {
-      val outer = Promise[Future[X]]()
       val latch = Latch()
-      lastEvent onSet { () =>
-        val inner = Promise[X]()
-        outer.success(inner.future)
-        // Note: this will always run serially
-        val expected_ns = lastEvent_ns + throttle_ns
-
-        def fireEvent() {
-          var i = 0
-          while (expected_ns > System.nanoTime()) {
-            i = i + 1
+      val retv = DeferredFuture {
+        lastEvent happensBefore {
+          scheduledExecutionContext.schedule(throttle_ns.nanos) { () =>
+            f() sideEffect latch.set()
           }
-          // Note: tuned these constants using ThrottlerTest. Want a small amount of busy wait but not too much.
-          // Also, when tuning don't want to over-correct or under-correct.
-          if (i == 0) {
-            busyWaitTune_ns += 10000
-          } else if (i > 500) {
-            busyWaitTune_ns -= Math.min(busyWaitTune_ns, (i / 100) * 2000)
-          }
-          // TODO: measure actual elapsed time and correct for consistent overages to allow for more accuracy in the lower throttle ranges
-          inner.completeWith(f())
-          lastEvent_ns = System.nanoTime()
-          latch.set()
-        }
-
-        // Note: busy wait a certain amount of the delay for better accuracy. Don't want to busy wait all the delay
-        // since it consumes a thread to do so
-        val delay_ns = (expected_ns - System.nanoTime()) - busyWaitTune_ns
-        // Scheduled executor service is inaccurate beyond a certain minimum delay value
-        if (delay_ns > 0) {
-          scheduledExecutionContext.schedule(delay_ns.nanos) { () => fireEvent() }
-        } else {
-          fireEvent()
         }
       }
       lastEvent = latch
-      DeferredFuture(outer.future)
+      retv
     }
   }
 }

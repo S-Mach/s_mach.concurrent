@@ -20,11 +20,6 @@ package s_mach.concurrent.util
 
 import s_mach.concurrent.impl.LatchImpl
 
-import scala.concurrent.{Promise, Future, ExecutionContext}
-import s_mach.concurrent._
-
-import scala.util.Try
-
 /**
  * A trait for a latch that can be set once to synchronize events that are waiting on the barrier.
  */

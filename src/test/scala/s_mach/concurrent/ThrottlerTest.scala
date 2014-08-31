@@ -30,71 +30,53 @@ import TestBuilder._
 
 class ThrottlerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
-  def doTest(testCount: Int, expectedDelay_ns: Long, expectedErr_ns: Long) {
-    implicit val ctc = mkConcurrentTestContext()
-    import ctc._
+  Vector(
+    (1.second, 10, .21),
+    (100.millis, 100, .18),
+    (10.millis, 1000, .07),
+    (1.millis, 10000, .26),
+    (750.micros, 10000, .23),
+    (500.micros, 10000, .27),
+    (250.micros, 10000, .45),
+    (100.micros, 20000, .97),
+    (50.micros, 20000, 2.78),
+    (10.micros, 30000, 5.89),
+    (5.micros, 40000, 5.70),
+    (2.micros, 50000, 10.92)
+  ).foreach { case (delay, testCount, errorPercent) =>
+    s"throttle-lock-$delay" must s"execute operations no faster than the throttle setting" in {
+      val delay_ns = delay.toNanos
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
 
-    val t = Throttler(expectedDelay_ns)
+      val t = Throttler(delay_ns)
 
-    val startTime_ns = System.nanoTime()
-    val results =
       (1 to testCount)
         .map { i =>
           t.run { () =>
-            val now_ns = System.nanoTime()
-//              println(i)
-            (i, now_ns).future
+            sched.addEvent(s"trigger-$i")
+            ().future
           }
         }
         .merge
         .get
 
 
-    waitForActiveExecutionCount(0)
+      waitForActiveExecutionCount(0)
 
-    val idToWhen = { results :+ (0, startTime_ns) }.toMap
+      val eventMap = sched.eventMap
+      val allDelay_ns =
+        for(i <- 1 to testCount - 1) yield {
+          val e1 = eventMap(s"trigger-$i")
+          val e2 = eventMap(s"trigger-${i+1}")
+          val actualDelay_ns = e2.elapsed_ns - e1.elapsed_ns
+          actualDelay_ns should be >= delay_ns
+          actualDelay_ns
+        }
 
-//      for(i <- 0 to testCount - 1) {
-//        val current = idToWhen(i)
-//        val next = idToWhen(i+1)
-//        println(s"$i -> ${i+1} ${next - current} $expectedDelay_ns ${(next - current) - expectedDelay_ns}")
-//      }
-    val allDelay_ns =
-      for(i <- 1 to testCount - 1) yield {
-        val current = idToWhen(i)
-        val next = idToWhen(i+1)
-        val delay_ns = next - current
-        (delay_ns >= expectedDelay_ns) should equal(true)
-        delay_ns
-      }
-    val avgDelay_ns = allDelay_ns.sum.toDouble / testCount
-//    println(avgDelay_ns.nanos)
-    avgDelay_ns should equal(expectedDelay_ns.toDouble +- expectedErr_ns.toDouble)
-  }
-  val d = 100.micros.toNanos
-  // 100ms => 99.96 0.04% error
-  // 10ms => 10.04 0.4% error
-  // 1ms => 1.039ms 3% error
-  // 200us => 218.7us 9% error
-  // 100us => 114us 13% error
-  // TODO: this is broken for this specific timing - I believe it has to do with the minimum delay scheduled executor service can reliably handle
-  // 50 us => 83.27 40% error
-  // 10us => 10.45us 4% error
-  // 5us => 5.529us 10% error
-  // 3us => 3.463us 14% error
-  // 1us => 1.826us 45% error
-  val tests = Vector(
-    (100.millis, 100, 0.01),
-    (10.millis, 1000, 0.01),
-    (1.millis, 10000, 0.06),
-    (100.micros, 10000, 0.20),
-    (10.micros, 10000, 0.15),
-    (5.micros, 10000, 0.25)
-  )
-  tests.foreach { case (delay, testCount, errPercent) =>
-    s"throttle-lock-$delay" must s"execute operations no faster than the throttle setting" in {
-      val delay_ns = delay.toNanos
-      doTest(1000, delay_ns, (delay_ns * errPercent).toLong)
+      val filteredDelay_ns = filterOutliersBy(allDelay_ns.map(_.toDouble), { d:Double => d })
+      val avgDelay_ns = filteredDelay_ns.sum / testCount
+      avgDelay_ns should equal(delay_ns.toDouble +- (delay_ns * errorPercent))
     }
   }
 }
