@@ -46,7 +46,7 @@ class SequencerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       s.next should equal(7)
 
-      Future.sequence(result).get.sorted should equal(items)
+      result.merge.get.sorted should equal(items)
 
       (1 to ITEM_COUNT - 1).foreach { item =>
         sched.happensBefore(s"success-${item}",s"success-${item+1}")

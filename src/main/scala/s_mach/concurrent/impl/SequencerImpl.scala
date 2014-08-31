@@ -20,7 +20,7 @@ package s_mach.concurrent.impl
 
 import scala.collection.mutable
 import scala.concurrent.{Promise, Future, ExecutionContext}
-import s_mach.concurrent.util.Sequencer
+import s_mach.concurrent.util.{DeferredFuture, Sequencer}
 
 class SequencerImpl(__next: Int) extends Sequencer {
   type Task = () => Unit
@@ -50,16 +50,16 @@ class SequencerImpl(__next: Int) extends Sequencer {
     retv
   }
 
-  override def when[X](i: Int)(task: () => Future[X])(implicit ec: ExecutionContext): Future[X] = {
+  override def when[X](i: Int)(task: () => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
     lock.synchronized {
       require(i >= _next)
 
       if(_next == i) {
-        run(task)
+        DeferredFuture.successful(run(task))
       } else {
-        val promise = Promise[X]()
-        polling.enqueue((i, { () => promise.completeWith(run(task)) }))
-        promise.future
+        val promise = Promise[Future[X]]()
+        polling.enqueue((i, { () => promise.success(run(task)) }))
+        DeferredFuture(promise.future)
       }
     }
   }

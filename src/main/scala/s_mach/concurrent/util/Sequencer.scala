@@ -40,9 +40,7 @@ trait Sequencer {
    * @throws IllegalArgumentException if sequenceNumber is less than next
    * @return a Future that completes once the sequence number has been reached and the task has completed
    * */
-  def when[X](sequenceNumber: Int)(task: () => Future[X])(implicit ec:ExecutionContext) : Future[X]
-  @inline final def apply[X](sequenceNumber: Int)(task: () => Future[X])(implicit ec:ExecutionContext) : Future[X] =
-    when(sequenceNumber)(task)
+  def when[X](sequenceNumber: Int)(task: () => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
 }
 
 object Sequencer {
