@@ -32,7 +32,10 @@ trait ConcurrentThrowable extends Throwable {
 }
 
 object ConcurrentThrowable {
-  def apply(firstFailure: Throwable, futAllFailure: => Future[Vector[Throwable]] = Future.successful(Vector.empty)) : ConcurrentThrowable = {
+  def apply(
+    firstFailure: Throwable,
+    futAllFailure: => Future[Vector[Throwable]] = Future.successful(Vector.empty)
+  ) : ConcurrentThrowable = {
     val _firstFailure = firstFailure
     lazy val _futAllFailure = futAllFailure
     new ConcurrentThrowable {

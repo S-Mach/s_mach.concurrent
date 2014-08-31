@@ -39,7 +39,9 @@ trait Listener[ID,E, MDT] {
  * @tparam ID identifier type
  * @tparam E event type
  */
-case class NotifiableListener[ID,E](listeners: List[(ID , (ID,E) => Unit)] = Nil) extends Listener[ID,E,NotifiableListener[ID,E]] { self =>
+case class NotifiableListener[ID,E](
+  listeners: List[(ID , (ID,E) => Unit)] = Nil
+) extends Listener[ID,E,NotifiableListener[ID,E]] { self =>
   
   /** Notify all listeners of an event */
   def notifyListeners(event: E) : Unit = listeners.foreach { case (a,f) => f(a,event) }

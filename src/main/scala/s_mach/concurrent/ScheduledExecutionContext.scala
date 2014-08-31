@@ -72,7 +72,13 @@ object ScheduledExecutionContext {
   val SCHEDULED_DELAY_LOG_CONSTANT = Math.log10(MIN_SCHEDULED_NS)
   val SCHEDULED_DELAY_LOG_COEFF = 1.0 / (Math.log10(MAX_SCHEDULED_NS) - SCHEDULED_DELAY_LOG_CONSTANT)
   def calcScheduledPercent(delay_ns: Long) : Double = {
-    Math.max(0.0, Math.min(1.0, (Math.log10(delay_ns.toDouble) - SCHEDULED_DELAY_LOG_CONSTANT) * SCHEDULED_DELAY_LOG_COEFF))
+    Math.max(
+      0.0,
+      Math.min(
+        1.0,
+        (Math.log10(delay_ns.toDouble) - SCHEDULED_DELAY_LOG_CONSTANT) * SCHEDULED_DELAY_LOG_COEFF
+      )
+    )
   }
   def calcScheduledDelay_ns(delay_ns: Long) : Long = {
     Math.max(0, (delay_ns * calcScheduledPercent(delay_ns)).toLong - ALWAYS_SPIN_DELAY_NS)
@@ -174,7 +180,11 @@ object ScheduledExecutionContext {
   }
   
 
-  case class ScheduledExecutionContextImpl(delegate: ScheduledExecutorService)(implicit executionContext: ExecutionContext) extends ScheduledExecutionContext {
+  case class ScheduledExecutionContextImpl(
+    delegate: ScheduledExecutorService
+  )(implicit
+    executionContext: ExecutionContext
+  ) extends ScheduledExecutionContext {
     def schedule[A](delay: Duration)(f: () => A) : DelayedFuture[A] = {
       val delay_ns = delay.toNanos
       // Below a certain threshold, only a computed percentage of the requested delay is scheduled the reset is
@@ -210,10 +220,21 @@ object ScheduledExecutionContext {
     override def reportFailure(cause: Throwable) = executionContext.reportFailure(cause)
   }
 
-  def fromExecutor(scheduledExecutorService: ScheduledExecutorService)(implicit executionContext: ExecutionContext) : ScheduledExecutionContext =
+  def fromExecutor(
+    scheduledExecutorService: ScheduledExecutorService
+  )(implicit
+    executionContext: ExecutionContext
+  ) : ScheduledExecutionContext =
     ScheduledExecutionContextImpl(scheduledExecutorService)
-  def apply(corePoolSize: Int, threadFactory: ThreadFactory)(implicit executionContext: ExecutionContext) : ScheduledExecutionContext =
+
+  def apply(
+    corePoolSize: Int,
+    threadFactory: ThreadFactory
+  )(implicit
+    executionContext: ExecutionContext
+  ) : ScheduledExecutionContext =
     ScheduledExecutionContextImpl(Executors.newScheduledThreadPool(corePoolSize, threadFactory))
+
   def apply(corePoolSize: Int)(implicit executionContext: ExecutionContext) : ScheduledExecutionContext =
     ScheduledExecutionContextImpl(Executors.newScheduledThreadPool(corePoolSize))
 }

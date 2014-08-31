@@ -132,8 +132,8 @@ object WorkersOps {
             s.acquireEx(1) { () =>
               // Run worker in the background
               f(a).toTry
-                // Worker returns Future[Try[]] to ensure that exceptions from f are not carried in the future but in the result
-                // There should be no exceptions in Future here (unless there is a bug here in WorkerOps)
+                // Worker returns Future[Try[]] to ensure that exceptions from f are not carried in the future but in
+                // the result. There should be no exceptions in Future here (unless there is a bug here in WorkerOps)
                 .flatMap {
                   // Worker completed successfully
                   case Success(b) =>

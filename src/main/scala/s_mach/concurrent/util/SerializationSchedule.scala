@@ -85,7 +85,9 @@ case class SerializationSchedule[ID]() {
   def addEndEvent(id: ID) : FiniteDuration = {
     _debug.get.apply(id)
     val elapsed_ns = System.nanoTime() - startTime_ns
-    val startEvent = Option(_startEvents.get(id)).getOrElse(throw new IllegalArgumentException(s"Event $id was never started!"))
+    val startEvent = Option(_startEvents.get(id)).getOrElse {
+      throw new IllegalArgumentException(s"Event $id was never started!")
+    }
     if(_endEvents.put(id, EndEvent(id, elapsed_ns, startEvent)) != null) {
       throw new IllegalArgumentException(s"End event $id already exists!")
     }
@@ -97,7 +99,10 @@ case class SerializationSchedule[ID]() {
   def orderedEvents : Vector[Event[ID]] = {
     cachedEvents.synchronized {
       if(cacheValid.get == false) {
-        cachedEvents = { _startEvents.values().asScala ++ _endEvents.values().asScala }.toList.sortBy(_.elapsed_ns).toVector
+        cachedEvents =
+          {
+            _startEvents.values().asScala ++ _endEvents.values().asScala
+          }.toList.sortBy(_.elapsed_ns).toVector
       }
       cachedEvents
     }
@@ -124,12 +129,16 @@ case class SerializationSchedule[ID]() {
    * @return TRUE if the event id1 happened before event id2
    * */
   def happensBefore(id1: ID, id2: ID) : Boolean = {
-    val id2_start = Option(_startEvents.get(id2)).getOrElse(throw new IllegalArgumentException(s"No such start event $id2!"))
+    val id2_start = Option(_startEvents.get(id2)).getOrElse {
+      throw new IllegalArgumentException(s"No such start event $id2!")
+    }
     Option(_endEvents.get(id1)) match {
       case Some(id1_end) =>
         id1_end.elapsed_ns < id2_start.elapsed_ns
       case None =>
-        val id1_start = Option(_startEvents.get(id1)).getOrElse(throw new IllegalArgumentException(s"No such start event $id1!"))
+        val id1_start = Option(_startEvents.get(id1)).getOrElse {
+          throw new IllegalArgumentException(s"No such start event $id1!")
+        }
         id1_start.elapsed_ns < id2_start.elapsed_ns
     }
   }
@@ -139,7 +148,9 @@ case class SerializationSchedule[ID]() {
    * @return TRUE if the event id1 happened during time-spanning event id2
    * */
   def happensDuring(id1: ID, id2: ID) : Boolean = {
-    val id2_end = Option(_endEvents.get(id2)).getOrElse(throw new IllegalArgumentException(s"No such end event $id2!"))
+    val id2_end = Option(_endEvents.get(id2)).getOrElse {
+      throw new IllegalArgumentException(s"No such end event $id2!")
+    }
 
     val id2_range = id2_end.start.elapsed_ns to id2_end.elapsed_ns
     Option(_endEvents.get(id1)) match {
@@ -150,7 +161,9 @@ case class SerializationSchedule[ID]() {
         id1_range.contains(id2_end.elapsed_ns) ||
         id1_range.contains(id2_end.start.elapsed_ns)
       case None =>
-        val id1_start = Option(_startEvents.get(id1)).getOrElse(throw new IllegalArgumentException(s"No such start event $id1!"))
+        val id1_start = Option(_startEvents.get(id1)).getOrElse {
+          throw new IllegalArgumentException(s"No such start event $id1!")
+        }
         id2_range.contains(id1_start.elapsed_ns)
     }
   }

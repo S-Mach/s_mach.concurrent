@@ -129,7 +129,8 @@ case class WorkersConfigBuilder[A,M[AA] <: TraversableOnce[AA]](
    * Set the optional throttle setting in nanoseconds
    * @return a copy of the builder with the new setting
    * */
-  override def throttle_ns(_throttle_ns: Long)(implicit sec:ScheduledExecutionContext) = copy(optThrottle = Some((_throttle_ns, sec)))
+  override def throttle_ns(_throttle_ns: Long)(implicit sec:ScheduledExecutionContext) =
+    copy(optThrottle = Some((_throttle_ns, sec)))
 
   /** @return a WorkersConfig with the current settings */
   override def build = WorkersConfig(this)

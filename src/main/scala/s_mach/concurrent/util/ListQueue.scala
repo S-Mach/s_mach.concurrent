@@ -23,7 +23,8 @@ import scala.concurrent.{ExecutionContext, Future, Promise}
 
 /**
  * An implementation of ConcurrentQueue using a ListBuffer backend
- * TODO: explore using a true "concurrent" back end collection that avoids locking (http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html)
+ * TODO: explore using a true "concurrent" back end collection that avoids locking
+ * TODO: (http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html)
  * @tparam A
  */
 class ListQueue[A](elems: A*) extends Queue[A] {

@@ -23,7 +23,8 @@ import scala.concurrent.duration.Duration
 import s_mach.concurrent.{PeriodicTask, DelayedFuture, ScheduledExecutionContext}
 
 /**
- * An immutable ScheduleAtFixedRatedExecutorService wrapper that allows listening to the ScheduleAtFixedRatedExecutorService events of the delegate.
+ * An immutable ScheduleAtFixedRatedExecutorService wrapper that allows listening to the
+ * ScheduleAtFixedRatedExecutorService events of the delegate.
  */
 class ScheduledExecutionContextListener(
   delegate: ScheduledExecutionContext,
@@ -84,5 +85,6 @@ class ScheduledExecutionContextListener(
 }
 
 object ScheduledExecutionContextListener {
-  def apply(delegate: ScheduledExecutionContext)(implicit ec:ExecutionContext) : ScheduledExecutionContextListener = new ScheduledExecutionContextListener(delegate)
+  def apply(delegate: ScheduledExecutionContext)(implicit ec:ExecutionContext) : ScheduledExecutionContextListener =
+    new ScheduledExecutionContextListener(delegate)
 }

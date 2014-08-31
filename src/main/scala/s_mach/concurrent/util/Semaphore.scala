@@ -102,7 +102,8 @@ object Semaphore {
     }
 
     protected def replenish(permitCount: Long)(implicit ec:ExecutionContext) : Unit = {
-      // Note: locking here isn't the fastest however not much is done here - tho I'm sure a better concurrent impl exists
+      // Note: locking here isn't the fastest however not much is done here - tho I'm sure a better concurrent impl
+      // exists
       lock.synchronized {
         // Steal offering to local to avoid conflicts b/c locks are released between loops here
         val localOffering = permitCount + offering
@@ -122,10 +123,15 @@ object Semaphore {
       }
     }
 
-    override def acquireEx[X](permitCount: Long)(task: () => Future[X])(implicit ec:ExecutionContext): Future[Future[X]] = {
+    override def acquireEx[X](
+      permitCount: Long
+    )(
+      task: () => Future[X]
+    )(implicit ec:ExecutionContext): Future[Future[X]] = {
       require(permitCount <= maxAvailablePermits)
 
-      // Note: locking here isn't the fastest however not much is done here - tho I'm sure a better concurrent impl exists
+      // Note: locking here isn't the fastest however not much is done here - tho I'm sure a better concurrent impl
+      // exists
       lock.synchronized {
         if(offering >= permitCount) {
           offering -= permitCount

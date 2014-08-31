@@ -65,7 +65,8 @@ trait MergeOps {
     } map (_.result())
   }
 
-  /** Wait on any failure from zomFuture. Immediately after the first failure, fail the promise with ConcurrentThrowable. */
+  /** Wait on any failure from zomFuture. Immediately after the first failure, fail the promise with
+    * ConcurrentThrowable. */
   def mergeFailImmediately[A](p: Promise[A], zomFuture: Traversable[Future[Any]])(implicit ec:ExecutionContext) : Unit = {
     val doFail : PartialFunction[Throwable, Unit] = { case t =>
       lazy val futAllFailure = {
@@ -159,7 +160,9 @@ trait MergeOps {
               val (_nowSuccess, _nowFailures) = _completedNow.map(_.value.get).partition(_.isSuccess)
               val nowSuccess = _nowSuccess.map(_.get)
               val nowFailures = _nowFailures.map(_.failed.get)
-              lazy val _futAllFailure = Future.sequence(zomFuture.map(_.toTry)).map(_.collect { case Failure(t) => t }.toVector)
+              lazy val _futAllFailure =
+                Future.sequence(zomFuture.map(_.toTry))
+                  .map(_.collect { case Failure(t) => t }.toVector)
               if(nowFailures.isEmpty) {
                 val builder = cbf1()
                 builder ++= nowSuccess
