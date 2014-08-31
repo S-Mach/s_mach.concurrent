@@ -22,7 +22,7 @@ import scala.concurrent.{Promise, Future, ExecutionContext}
 import scala.util.Try
 import scala.concurrent.duration._
 import s_mach.concurrent.ScheduledExecutionContext
-import s_mach.concurrent.util.{Latch, Barrier, Throttler}
+import s_mach.concurrent.util.{DeferredFuture, Latch, Barrier, Throttler}
 
 class ThrottlerImpl(
   __throttle_ns: Long
@@ -43,11 +43,13 @@ class ThrottlerImpl(
   private[this] var lastEvent_ns = System.nanoTime() - throttle_ns
   private[this] var busyWaitTune_ns = 200000
 
-  def run[X](f: () => X)(implicit ec: ExecutionContext): Future[X] = {
+  def run[X](f: () => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
     lock.synchronized {
-      val promise = Promise[X]()
+      val outer = Promise[Future[X]]()
       val latch = Latch()
       lastEvent onSet { () =>
+        val inner = Promise[X]()
+        outer.success(inner.future)
         // Note: this will always run serially
         val expected_ns = lastEvent_ns + throttle_ns
 
@@ -64,7 +66,7 @@ class ThrottlerImpl(
             busyWaitTune_ns -= Math.min(busyWaitTune_ns, (i / 100) * 2000)
           }
           // TODO: measure actual elapsed time and correct for consistent overages to allow for more accuracy in the lower throttle ranges
-          promise.complete(Try(f()))
+          inner.completeWith(f())
           lastEvent_ns = System.nanoTime()
           latch.set()
         }
@@ -80,7 +82,7 @@ class ThrottlerImpl(
         }
       }
       lastEvent = latch
-      promise.future
+      DeferredFuture(outer.future)
     }
   }
 }

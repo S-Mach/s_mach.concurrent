@@ -18,11 +18,8 @@
 */
 package s_mach.concurrent.util
 
+import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent.impl.SemaphoreImpl
-
-import scala.collection.mutable
-import scala.concurrent.{ExecutionContext, Future, Promise}
-import s_mach.concurrent._
 
 /**
  * A trait for a non-blocking semaphore that ensures limiting concurrent execution to tasks that have been granted
@@ -47,20 +44,7 @@ trait Semaphore {
    *         permitCount permits are available. The permits are removed from the pool while task is running and after
    *         task completes the permits are returned to the pool.
    * */
-  @inline final def acquire[X](permitCount: Long)(task: () => Future[X])(implicit ec:ExecutionContext) : Future[X] =
-    acquireEx(permitCount)(task).flatten
-  @inline final def apply[X](permitCount: Long)(task: () => Future[X])(implicit ec:ExecutionContext) : Future[X] =
-    acquireEx(permitCount)(task).flatten
-
-  // TODO: better name for this method
-  /**
-   * @param task the task to run once permits are available
-   * @throws IllegalArgumentException if the number of requested permits exceeds maxAvailablePermits
-   * @return a future that completes once permitCount permits are available. task is started once permitCount permits
-   *         are available. The permits are removed from the pool while task is running and after task completes the
-   *         permits are returned to the pool. The inner future is the task and completes once task completes.
-   * */
-  def acquireEx[X](perimitCount: Long)(task: () => Future[X])(implicit ec:ExecutionContext) : Future[Future[X]]
+  def acquire[X](permitCount: Long)(task: () => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
 
   /** @return the maximum number of permits in the pool */
   def maxAvailablePermits : Long
@@ -81,6 +65,4 @@ object Semaphore {
       override def maxAvailablePermits = permitCount
     }
   }
-
-
 }

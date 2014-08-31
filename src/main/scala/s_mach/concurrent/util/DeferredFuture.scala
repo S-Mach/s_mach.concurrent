@@ -16,19 +16,28 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.impl
-
-import s_mach.concurrent.util.{Semaphore, Lock}
+package s_mach.concurrent.util
 
 import scala.concurrent.{ExecutionContext, Future}
+import s_mach.concurrent._
 
-/**
- * The default implementation of Lock using a Semaphore backend
- */
-class LockImpl extends Lock {
-  private[this] val semaphore = Semaphore(1)
+trait DeferredFuture[A] extends Future[A] {
+  def deferred : Future[Future[A]]
+}
 
-  override def lock[X](task: () => Future[X])(implicit ec: ExecutionContext)= semaphore.acquire(1)(task)
-  override def isUnlocked = semaphore.availablePermits > 0
-  override def waitQueueLength = semaphore.waitQueueLength
+object DeferredFuture {
+  case class DeferredFutureImpl[A](
+    deferred: Future[Future[A]]
+  )(implicit ec:ExecutionContext) extends DeferredFuture[A] with DelegatedFuture[A] {
+    def delegate = deferred.flatten
+  }
+
+  def successful[A](future: Future[A]) : DeferredFuture[A] = new DeferredFuture[A] with DelegatedFuture[A] {
+    override def deferred: Future[Future[A]] = Future.successful(future)
+    override def delegate: Future[A] = future
+  }
+
+  def apply[A](
+    deferred: Future[Future[A]]
+  )(implicit ec: ExecutionContext) : DeferredFuture[A] = DeferredFutureImpl(deferred)
 }

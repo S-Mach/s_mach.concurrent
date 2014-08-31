@@ -26,10 +26,10 @@ import TestBuilder._
 
 class ScheduledExecutionContextTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   Vector(
-    (1.second, 10, .0002),
-    (100.millis, 100, .002),
-    (10.millis, 1000, .02),
-    (1.millis, 10000, .16),
+    (1.second, 10, .0003),
+    (100.millis, 100, .003),
+    (10.millis, 1000, .03),
+    (1.millis, 10000, .19),
     (750.micros, 10000, .19),
     (500.micros, 10000, .21),
     (250.micros, 10000, .35),

@@ -59,15 +59,15 @@ object Implicits {
     )(implicit
       ec:ExecutionContext
     ) : Future[X] = FutureOps.flatFold(self, onSuccess, onFailure)
-    @inline def happensBefore[B](other: => Future[B])(implicit ec: ExecutionContext) : Future[B] 
+    @inline def happensBefore[B](other: => Future[B])(implicit ec: ExecutionContext) : Future[B]
       = FutureOps.happensBefore(self, other)
-    @inline def sideEffect(sideEffect: => Unit)(implicit ec: ExecutionContext) : Future[A] 
+    @inline def sideEffect(sideEffect: => Unit)(implicit ec: ExecutionContext) : Future[A]
       = FutureOps.sideEffect(self, sideEffect)
   }
   implicit class SMach_Concurrent_PimpMyFutureFuture[A](val self: Future[Future[A]]) extends AnyVal {
     @inline def flatten(implicit ec:ExecutionContext) : Future[A] = self.flatMap(v => v)
   }
-  implicit class SMach_Concurrent_PimpMyTraversableFuture[A,M[AA] <: Traversable[AA]](
+  implicit class SMach_Concurrent_PimpMyTraversableFuture[A, M[+AA] <: Traversable[AA]](
     val self: M[Future[A]]
   ) extends AnyVal {
     @inline def merge(implicit
@@ -88,8 +88,8 @@ object Implicits {
 
   implicit class SMach_Concurrent_PimpMyTraversableFutureTraversable[
     A,
-    M[AA] <: Traversable[AA], 
-    N[AA] <: TraversableOnce[AA]
+    M[+AA] <: Traversable[AA],
+    N[+AA] <: TraversableOnce[AA]
   ](
     val self: M[Future[N[A]]]
   ) extends AnyVal {
@@ -113,14 +113,14 @@ object Implicits {
     ) : Future[M[A]] = Future.sequence(self)
   }
 
-  implicit class SMach_Concurrent_PimpMyTraversableOnce[A,M[AA] <: TraversableOnce[AA]](val self: M[A]) extends AnyVal {
+  implicit class SMach_Concurrent_PimpMyTraversableOnce[A,M[+AA] <: TraversableOnce[AA]](val self: M[A]) extends AnyVal {
     @inline def serially(implicit ec:ExecutionContext) = new SeriallyConfigBuilder(self)
 
     @inline def workers(implicit ec:ExecutionContext) = WorkersConfigBuilder(self)
     @inline def workers(workerCount: Int)(implicit ec:ExecutionContext) = WorkersConfigBuilder(self, workerCount)
   }
 
-  implicit class SMach_Concurrent_PimpMyTraversable[A,M[AA] <: Traversable[AA]](val self: M[A]) extends AnyVal {
+  implicit class SMach_Concurrent_PimpMyTraversable[A,M[+AA] <: Traversable[AA]](val self: M[A]) extends AnyVal {
     @inline def concurrently(implicit ec:ExecutionContext) = new ConcurrentlyConfigBuilder(self)
   }
 

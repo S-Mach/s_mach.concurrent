@@ -83,7 +83,7 @@ object WorkersConfig {
  * @tparam A type of collection
  * @tparam M collection type
  */
-case class WorkersConfigBuilder[A,M[AA] <: TraversableOnce[AA]](
+case class WorkersConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   ma: M[A],
   workerCount: Int = WorkersConfig.DEFAULT_WORKER_COUNT,
   optProgress: Option[ProgressReporter] = None,

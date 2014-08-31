@@ -63,7 +63,7 @@ object ConcurrentlyConfig {
  * @tparam A type of collection
  * @tparam M collection type
  */
-case class ConcurrentlyConfigBuilder[A,M[AA] <: Traversable[AA]](
+case class ConcurrentlyConfigBuilder[A,M[+AA] <: Traversable[AA]](
   ma: M[A],
   optProgress: Option[ProgressReporter] = None,
   optRetry: Option[(List[Throwable]) => Future[Boolean]] = None

@@ -32,7 +32,7 @@ object WorkersOps {
    * Transform Futures concurrently, limiting concurrency to at most WorkerConfig.workerCount workers
    * @return a Future of M[B] that completes once all Futures have been transformed
    */
-  def mapWorkers[A,B,M[AA] <: TraversableOnce[AA]](
+  def mapWorkers[A,B,M[+AA] <: TraversableOnce[AA]](
     self: M[A],
     f: A => Future[B],
     workersConfig: WorkersConfig
@@ -56,7 +56,7 @@ object WorkersOps {
    * Transform and flatten Futures concurrently, limiting concurrency to at most WorkerConfig.workerCount workers
    * @return a Future of M[B] that completes once all Futures have been transformed
    */
-  def flatMapWorkers[A,B,M[AA] <: TraversableOnce[AA]](
+  def flatMapWorkers[A,B,M[+AA] <: TraversableOnce[AA]](
     self: M[A],
     f: A => Future[TraversableOnce[B]],
     workersConfig: WorkersConfig
@@ -80,7 +80,7 @@ object WorkersOps {
    * Traverse Futures concurrently, limiting concurrency to at most WorkerConfig.workerCount workers
    * @return a Future of M[B] that completes once all Futures have been transformed
    */
-  def foreachWorkers[A,U,M[AA] <: TraversableOnce[AA]](
+  def foreachWorkers[A,U,M[+AA] <: TraversableOnce[AA]](
     self: M[A],
     f: A => Future[U],
     workersConfig: WorkersConfig
@@ -129,7 +129,7 @@ object WorkersOps {
       i <- {
         xa.serially.foldLeft(0) { (i,a) =>
           if(workerFailures.offerQueueSize == 0) {
-            s.acquireEx(1) { () =>
+            s.acquire(1) { () =>
               // Run worker in the background
               f(a).toTry
                 // Worker returns Future[Try[]] to ensure that exceptions from f are not carried in the future but in
@@ -145,7 +145,7 @@ object WorkersOps {
                     // Still need to ensure sequence can progress to allow later workers to finish
                     o.when(i)(() => Future.unit)
                 }
-            }.map { inner =>
+            }.deferred.map { inner =>
               // Throwaway result of worker but make sure to at least report exceptions to ExecutionContext
               inner.background
               i + 1

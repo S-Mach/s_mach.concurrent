@@ -39,17 +39,7 @@ trait Lock {
   /** @return a future that completes once the lock is available AND task completes. The lock is locked while task is
     *         running and after task completes it is unlocked.
    */
-  final def lock[X](task: () => Future[X])(implicit ec:ExecutionContext) : Future[X] =
-    lockEx(task).flatten
-
-  @inline final def apply[X](task: () => Future[X])(implicit ec:ExecutionContext) : Future[X] = lock(task)
-
-  // TODO: better method name
-  /** @return a future that completes once the lock is available. task is started once the lock is available. The lock
-    *         is locked while task is running and after task completes it is unlocked. The inner future is the task and
-    *         completes once task completes.
-   */
-  def lockEx[X](task: () => Future[X])(implicit ec:ExecutionContext) : Future[Future[X]]
+  def lock[X](task: () => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
 
   /** @return TRUE if the lock is available */
   def isUnlocked : Boolean

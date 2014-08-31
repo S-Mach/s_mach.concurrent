@@ -73,7 +73,7 @@ object SeriallyConfig {
  * @tparam A type of collection
  * @tparam M collection type
  */
-case class SeriallyConfigBuilder[A,M[AA] <: TraversableOnce[AA]](
+case class SeriallyConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   ma: M[A],
   optProgress: Option[ProgressReporter] = None,
   optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,

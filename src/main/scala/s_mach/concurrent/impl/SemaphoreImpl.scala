@@ -18,7 +18,7 @@
 */
 package s_mach.concurrent.impl
 
-import s_mach.concurrent.util.Semaphore
+import s_mach.concurrent.util.{DeferredFuture, Semaphore}
 
 import scala.collection.mutable
 import scala.concurrent.{Promise, ExecutionContext, Future}
@@ -67,11 +67,11 @@ abstract class SemaphoreImpl(
     }
   }
 
-  override def acquireEx[X](
+  override def acquire[X](
     permitCount: Long
   )(
     task: () => Future[X]
-  )(implicit ec:ExecutionContext): Future[Future[X]] = {
+  )(implicit ec:ExecutionContext): DeferredFuture[X] = {
     require(permitCount <= maxAvailablePermits)
 
     // Note: locking here isn't the fastest however not much is done here - tho I'm sure a better concurrent impl
@@ -79,7 +79,7 @@ abstract class SemaphoreImpl(
     lock.synchronized {
       if(offering >= permitCount) {
         offering -= permitCount
-        Future.successful(run(task, permitCount))
+        DeferredFuture.successful(run(task, permitCount))
       } else {
         // Take as many permits as possible now, wait for the rest
         val missingPermitCount = permitCount - offering
@@ -91,7 +91,7 @@ abstract class SemaphoreImpl(
             missingPermitCount
           )
         )
-        p.future
+        DeferredFuture(p.future)
       }
     }
   }

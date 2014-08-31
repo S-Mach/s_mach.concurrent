@@ -65,7 +65,7 @@ package object concurrent extends TupleConcurrentlyOps {
   implicit class SMach_Concurrent_PimpMyFutureFuture[A](val self: Future[Future[A]]) extends AnyVal {
     @inline def flatten(implicit ec:ExecutionContext) : Future[A] = self.flatMap(v => v)
   }
-  implicit class SMach_Concurrent_PimpMyTraversableFuture[A,M[AA] <: Traversable[AA]](
+  implicit class SMach_Concurrent_PimpMyTraversableFuture[A, M[+AA] <: Traversable[AA]](
     val self: M[Future[A]]
   ) extends AnyVal {
     @inline def merge(implicit
@@ -86,8 +86,8 @@ package object concurrent extends TupleConcurrentlyOps {
 
   implicit class SMach_Concurrent_PimpMyTraversableFutureTraversable[
     A,
-    M[AA] <: Traversable[AA],
-    N[AA] <: TraversableOnce[AA]
+    M[+AA] <: Traversable[AA],
+    N[+AA] <: TraversableOnce[AA]
   ](
     val self: M[Future[N[A]]]
   ) extends AnyVal {
@@ -111,14 +111,14 @@ package object concurrent extends TupleConcurrentlyOps {
     ) : Future[M[A]] = Future.sequence(self)
   }
 
-  implicit class SMach_Concurrent_PimpMyTraversableOnce[A,M[AA] <: TraversableOnce[AA]](val self: M[A]) extends AnyVal {
+  implicit class SMach_Concurrent_PimpMyTraversableOnce[A,M[+AA] <: TraversableOnce[AA]](val self: M[A]) extends AnyVal {
     @inline def serially(implicit ec:ExecutionContext) = new SeriallyConfigBuilder(self)
 
     @inline def workers(implicit ec:ExecutionContext) = WorkersConfigBuilder(self)
     @inline def workers(workerCount: Int)(implicit ec:ExecutionContext) = WorkersConfigBuilder(self, workerCount)
   }
 
-  implicit class SMach_Concurrent_PimpMyTraversable[A,M[AA] <: Traversable[AA]](val self: M[A]) extends AnyVal {
+  implicit class SMach_Concurrent_PimpMyTraversable[A,M[+AA] <: Traversable[AA]](val self: M[A]) extends AnyVal {
     @inline def concurrently(implicit ec:ExecutionContext) = new ConcurrentlyConfigBuilder(self)
   }
 

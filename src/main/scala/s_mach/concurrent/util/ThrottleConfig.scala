@@ -64,7 +64,7 @@ trait ThrottleConfig extends ConcurrentFunctionBuilder {
           implicit def sec = scheduledExecutionContext
           val throttler = Throttler(throttle_ns)
 
-          { a:A => throttler.run({ () => f(a) }).flatten }
+          { a:A => throttler.run({ () => f(a) }) }
         case None => f
       }
     }
@@ -79,7 +79,7 @@ trait ThrottleConfig extends ConcurrentFunctionBuilder {
           implicit def sec = scheduledExecutionContext
           val throttler = Throttler(throttle_ns)
 
-          { (a:A,b:B) => throttler.run({ () => f(a,b) }).flatten }
+          { (a:A,b:B) => throttler.run({ () => f(a,b) }) }
         case None => f
       }
     }

@@ -28,7 +28,7 @@ trait ConcurrentlyOps {
    * Transform Futures concurrently
    * @return a Future of M[B] that completes once all Futures have been transformed concurrently
    */
-  @inline def mapConcurrently[A, B, M[AA] <: Traversable[AA]](
+  @inline def mapConcurrently[A, B, M[+AA] <: Traversable[AA]](
     self: M[A],
     f: A => Future[B]
   )(implicit
@@ -44,7 +44,7 @@ trait ConcurrentlyOps {
    * Transform and flatten Futures concurrently
    * @return a Future of M[B] that completes once all Futures have been transformed concurrently
    */
-  @inline def flatMapConcurrently[A, B, M[AA] <: Traversable[AA]](
+  @inline def flatMapConcurrently[A, B, M[+AA] <: Traversable[AA]](
     self: M[A],
     f: A => Future[TraversableOnce[B]]
   )(implicit
@@ -60,7 +60,7 @@ trait ConcurrentlyOps {
    * Traverse Futures concurrently
    * @return a Future of M[B] that completes once all Futures have been traversed concurrently
    */
-  @inline def foreachConcurrently[A, U, M[AA] <: Traversable[AA]](
+  @inline def foreachConcurrently[A, U, M[+AA] <: Traversable[AA]](
     self: M[A],
     f: A => Future[U]
   )(implicit

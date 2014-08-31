@@ -31,20 +31,12 @@ import scala.concurrent.{ExecutionContext, Future}
  * will have at least throttle nanoseconds separating their completion. However, it can not guarantee that the elapsed
  * time between tasks will not be greater than the throttle setting.
  *
- * Mean timing error for throttle setting in default Throttler implementation:
- * 100ms 0.04% error
- * 10ms 0.4% error
- * 1ms 3% error
- * 100us 13% error
- * 10us 15% error
- * 5us 15% error
- *
  * Note: throttle settings below 5us produce unstable results
 */
 trait Throttler extends ThrottleControl {
   /** @return a Future that completes once at least throttle_ns nanoseconds have expired since the last task AND task
     * completes */
-  def run[X](task: () => X)(implicit ec:ExecutionContext) : Future[X]
+  def run[X](task: () => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
 }
 
 object Throttler {

@@ -94,7 +94,7 @@ trait MergeOps {
    *         completed, even if one of the futures fails immediately. The first failure encountered immediately throws
    *         ConcurrentThrowable which has a method to return a Future of all failures.
    **/
-  def merge[A, M[AA] <: Traversable[AA]](
+  def merge[A, M[+AA] <: Traversable[AA]](
     zomFuture: M[Future[A]]
   )(implicit
     ec: ExecutionContext,
@@ -115,7 +115,7 @@ trait MergeOps {
    *         completed, even if one of the futures fails immediately. The first failure encountered immediately throws
    *         ConcurrentThrowable which has a method to return a Future of all failures.
    **/
-  def flatMerge[A, M[AA] <: Traversable[AA], N[AA] <: TraversableOnce[AA]](
+  def flatMerge[A, M[+AA] <: Traversable[AA], N[AA] <: TraversableOnce[AA]](
     zomFuture: M[Future[N[A]]]
   )(implicit
     ec: ExecutionContext,
@@ -141,7 +141,7 @@ trait MergeOps {
    *         after any failure OR completes after the specified timeout. If the timeout is reached all pending futures
    *         are discarded. Exceptions that occur after timeout are reported to ExecutionContext.
    **/
-  def mergeTimeout[A, M[AA] <: Traversable[AA]](
+  def mergeTimeout[A, M[+AA] <: Traversable[AA]](
     atMost: Duration,
     zomFuture: M[Future[A]]
   )(implicit

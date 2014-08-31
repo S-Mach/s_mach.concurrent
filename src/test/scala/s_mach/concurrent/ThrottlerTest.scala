@@ -43,7 +43,7 @@ class ThrottlerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
           t.run { () =>
             val now_ns = System.nanoTime()
 //              println(i)
-            (i, now_ns)
+            (i, now_ns).future
           }
         }
         .merge
