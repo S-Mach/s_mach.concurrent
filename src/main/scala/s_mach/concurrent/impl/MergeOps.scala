@@ -67,7 +67,12 @@ trait MergeOps {
 
   /** Wait on any failure from zomFuture. Immediately after the first failure, fail the promise with
     * ConcurrentThrowable. */
-  def mergeFailImmediately[A](p: Promise[A], zomFuture: Traversable[Future[Any]])(implicit ec:ExecutionContext) : Unit = {
+  def mergeFailImmediately[A](
+    p: Promise[A],
+    zomFuture: Traversable[Future[Any]]
+  )(implicit
+    ec:ExecutionContext
+  ) : Unit = {
     val doFail : PartialFunction[Throwable, Unit] = { case t =>
       lazy val futAllFailure = {
         // Note: important to use the failure execution context here since this value is lazy and ec may have been
