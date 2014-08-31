@@ -42,8 +42,8 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
     (2.micros, 50000, .02)
   ) foreach { case (_delay, testCount, errorPercent) =>
     val delay_ns = _delay.toNanos
-    val scheduledPercent = ScheduledExecutionContext.calcScheduledPercent(delay_ns)
-    val scheduledDelay_ns = ScheduledExecutionContext.calcScheduledDelay_ns(delay_ns)
+//    val scheduledPercent = ScheduledExecutionContext.calcScheduledPercent(delay_ns)
+//    val scheduledDelay_ns = ScheduledExecutionContext.calcScheduledDelay_ns(delay_ns)
     s"ScheduledExecutionContext.schedule(${_delay})" must "return a DelayedFuture that executes the task after the supplied delay" in {
 //      ScheduledExecutionContext.lateDelayError_ns.set(0)
 //      ScheduledExecutionContext.earlyDelayError_ns.set(0)
