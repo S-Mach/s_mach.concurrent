@@ -20,11 +20,9 @@ package s_mach.concurrent
 
 import scala.concurrent._
 import scala.concurrent.duration._
-
 import org.scalatest.{Matchers, FlatSpec}
 import util._
 import TestBuilder._
-import scala.util.{Failure, Success, Try}
 
 class ScheduledExecutionContextTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   Vector(
@@ -32,14 +30,14 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
     (100.millis, 100, .004),
     (10.millis, 1000, .04),
     (1.millis, 10000, .05),
-    (750.micros, 10000, .01),
+    (750.micros, 10000, .02),
     (500.micros, 10000, .01),
     (250.micros, 10000, .01),
-    (100.micros, 20000, .01),
-    (50.micros, 20000, .01),
+    (100.micros, 20000, .015),
+    (50.micros, 20000, .015),
     (10.micros, 30000, .06), // TODO: not sure why this particular period fails more often
     (5.micros, 40000, .01),
-    (2.micros, 50000, .02)
+    (2.micros, 50000, .03)
   ) foreach { case (_delay, testCount, errorPercent) =>
     val delay_ns = _delay.toNanos
 //    val scheduledPercent = ScheduledExecutionContext.calcScheduledPercent(delay_ns)
@@ -72,6 +70,58 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       avgDelay_ns should equal(delay_ns.toDouble +- delay_ns.toDouble * errorPercent)
 //      if(scheduledPercent < 1.0)
 //        (ScheduledExecutionContext.lateDelayError_ns.get + scheduledDelay_ns) shouldBe <=(delay_ns)
+    }
+  }
+
+  Vector(
+    (1.second, 10, .0002),
+    (100.millis, 100, .001),
+    (10.millis, 1000, .01),
+    (1.millis, 10000, .01),
+    (750.micros, 10000, .01),
+    (500.micros, 10000, .01),
+    (250.micros, 10000, .01),
+    (100.micros, 20000, .01),
+    (50.micros, 20000, .02),
+    (10.micros, 30000, .03),
+    (5.micros, 40000, .15), // TODO: fix these
+    (2.micros, 50000, .75)
+  ) foreach { case (_delay, testCount, errorPercent) =>
+    val delay_ns = _delay.toNanos
+    s"ScheduledExecutionContext.scheduleAtFixedRate(${_delay})" must "return a PeriodicTask that continuously executes the task at the specified period" in {
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
+      val counter = new java.util.concurrent.atomic.AtomicLong(0)
+      val latch = Latch()
+      // TODO: test specifically for initial delay
+      val periodicTask = scheduledExecutionContext.scheduleAtFixedRate(_delay,_delay) { () =>
+        // Note: if task happens fast enough there may be several extra iterations after the latch is set
+        counter.incrementAndGet() match {
+          case i if i <= testCount =>
+            sched.addEvent(s"trigger-$i")
+          case _ => latch.trySet()
+        }
+      }
+
+      latch.future.get
+
+      periodicTask.cancel()
+
+      waitForActiveExecutionCount(0)
+
+      sched.startEvents.size should equal(testCount)
+
+      val events = sched.orderedEvents
+      val allDelay_ns =
+        (0 until testCount - 1) map { i =>
+          val e1 = events(i)
+          val e2 = events(i+1)
+          e2.elapsed_ns - e1.elapsed_ns
+        }
+
+      val filteredDelay_ns = filterOutliersBy(allDelay_ns.map(_.toDouble), { v:Double => v})
+      val avgDelay_ns = filteredDelay_ns.sum / filteredDelay_ns.size
+      avgDelay_ns should equal(delay_ns.toDouble +- delay_ns.toDouble * errorPercent)
     }
   }
 }

@@ -102,7 +102,7 @@ object ScheduledExecutionContextImpl {
     val startTime_ns = System.nanoTime() + delay.toNanos
 
     // Spin in this thread - tried this in a background future but random cpu scheduler delays are highly unpredictable
-    FutureOps.nanoSpinDelay(delay.toNanos - MIN_SPIN_DELAY_NS)
+    nanoDelayUntil(startTime_ns)
     promise.complete(Try(f()))
   }
 
