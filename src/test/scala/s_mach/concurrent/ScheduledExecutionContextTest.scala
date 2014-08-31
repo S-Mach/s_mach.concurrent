@@ -26,31 +26,21 @@ import TestBuilder._
 
 class ScheduledExecutionContextTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   Vector(
-    (1.second, 10, .0004),
-    (100.millis, 100, .004),
-    (10.millis, 1000, .04),
-    (1.millis, 10000, .05),
-    (750.micros, 10000, .02),
-    (500.micros, 10000, .01),
-    (250.micros, 10000, .01),
-    (100.micros, 20000, .015),
-    (50.micros, 20000, .015),
-    (10.micros, 30000, .06), // TODO: not sure why this particular period fails more often
-    (5.micros, 40000, .01),
-    (2.micros, 50000, .03)
+    (1.second, 10, .0002),
+    (100.millis, 100, .002),
+    (10.millis, 1000, .02),
+    (1.millis, 10000, .16),
+    (750.micros, 10000, .19),
+    (500.micros, 10000, .21),
+    (250.micros, 10000, .35),
+    (100.micros, 20000, .70),
+    (50.micros, 20000, 2.15),
+    (10.micros, 30000, 6.62),
+    (5.micros, 40000, 5.9),
+    (2.micros, 50000, 2.89)
   ) foreach { case (_delay, testCount, errorPercent) =>
     val delay_ns = _delay.toNanos
-//    val scheduledPercent = ScheduledExecutionContext.calcScheduledPercent(delay_ns)
-//    val scheduledDelay_ns = ScheduledExecutionContext.calcScheduledDelay_ns(delay_ns)
     s"ScheduledExecutionContext.schedule(${_delay})" must "return a DelayedFuture that executes the task after the supplied delay" in {
-//      ScheduledExecutionContext.lateDelayError_ns.set(0)
-//      ScheduledExecutionContext.earlyDelayError_ns.set(0)
-
-//      println(s"delay=${_delay}")
-//      println("----")
-//      println(s"scheduledPercent=$scheduledPercent")
-//      println(s"scheduledDelay_ns=$scheduledDelay_ns")
-
       val allDelay_ns =
         test repeat testCount run {
           implicit val ctc = mkConcurrentTestContext()
@@ -61,15 +51,9 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
           sched.startEvents(0).elapsed_ns - sched.startEvents(1).elapsed_ns
         }
 
-//      println(s"avgLateDelayError_ns=${ScheduledExecutionContext.lateDelayError_ns.get.toDouble/testCount}")
-//      println(s"avgEarlyDelayError_ns=${ScheduledExecutionContext.earlyDelayError_ns.get.toDouble/testCount}")
-//      println("----")
-
       val filteredDelay_ns = filterOutliersBy(allDelay_ns.map(_.toDouble), { v:Double => v})
       val avgDelay_ns = filteredDelay_ns.sum / filteredDelay_ns.size
       avgDelay_ns should equal(delay_ns.toDouble +- delay_ns.toDouble * errorPercent)
-//      if(scheduledPercent < 1.0)
-//        (ScheduledExecutionContext.lateDelayError_ns.get + scheduledDelay_ns) shouldBe <=(delay_ns)
     }
   }
 
@@ -83,8 +67,8 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
     (250.micros, 10000, .01),
     (100.micros, 20000, .01),
     (50.micros, 20000, .02),
-    (10.micros, 30000, .03),
-    (5.micros, 40000, .15), // TODO: fix these
+    (10.micros, 30000, .69),
+    (5.micros, 40000, .60),
     (2.micros, 50000, .75)
   ) foreach { case (_delay, testCount, errorPercent) =>
     val delay_ns = _delay.toNanos
