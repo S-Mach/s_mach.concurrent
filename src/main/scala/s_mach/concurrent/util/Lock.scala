@@ -21,7 +21,6 @@ package s_mach.concurrent.util
 import s_mach.concurrent.impl.LockImpl
 
 import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent._
 
 /**
  * A trait for a non-blocking lock that ensures a synchronous execution schedule for all callers. A caller calls the

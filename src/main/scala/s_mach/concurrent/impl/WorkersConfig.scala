@@ -18,14 +18,11 @@
 */
 package s_mach.concurrent.impl
 
-import java.util.concurrent.ScheduledExecutorService
-
-import s_mach.concurrent.ScheduledExecutionContext
-
 import scala.collection.generic.CanBuildFrom
 import scala.concurrent.{ExecutionContext, Future}
 import scala.language.higherKinds
 import s_mach.concurrent.util._
+import s_mach.concurrent.ScheduledExecutionContext
 import WorkersOps._
 
 /**
@@ -43,7 +40,7 @@ object WorkersConfig {
 
   case class WorkersConfigImpl(
     workerCount: Int = DEFAULT_WORKER_COUNT,
-    optProgress: Option[ProgressReporter] = None,
+    optProgress: Option[ProgressReporter] = None,1
     optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
     optThrottle: Option[(Long, ScheduledExecutionContext)] = None
   )(implicit
