@@ -19,11 +19,9 @@
 package s_mach.concurrent.util
 
 import s_mach.concurrent.ScheduledExecutionContext
+import s_mach.concurrent.impl.ThrottlerImpl
 
-import scala.util.Try
-import java.util.concurrent.{TimeUnit, ScheduledExecutorService}
-import scala.concurrent.{Promise, ExecutionContext, Future}
-import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * A trait that ensures a series of tasks run no faster than the throttle setting. Callers schedule tasks by calling the
@@ -50,63 +48,9 @@ trait Throttler extends ThrottleControl {
 }
 
 object Throttler {
-
-  class ThrottleImpl(__throttle_ns: Long)(implicit ec: ExecutionContext, scheduledExecutionContext: ScheduledExecutionContext) extends Throttler {
-
-    private[this] val _throttle_ns = new java.util.concurrent.atomic.AtomicLong(__throttle_ns)
-
-    override def throttle_ns = _throttle_ns.get
-
-    override def throttle_ns(throttle_ns: Long) = _throttle_ns.getAndSet(throttle_ns)
-
-    override def adjustThrottle_ns(adjust_ns: Long) = _throttle_ns.getAndAdd(adjust_ns)
-
-    private[this] val lock = new Object
-    private[this] var lastEvent = Barrier.set
-    private[this] var lastEvent_ns = System.nanoTime() - throttle_ns
-    private[this] var busyWaitTune_ns = 200000
-
-    def run[X](f: () => X)(implicit ec: ExecutionContext): Future[X] = {
-      lock.synchronized {
-        val promise = Promise[X]()
-        val latch = Latch()
-        lastEvent onSet { () =>
-          // Note: this will always run serially
-          val expected_ns = lastEvent_ns + throttle_ns
-
-          def fireEvent() {
-            var i = 0
-            while (expected_ns > System.nanoTime()) {
-              i = i + 1
-            }
-            // Note: tuned these constants using ThrottlerTest. Want a small amount of busy wait but not too much.
-            // Also, when tuning don't want to over-correct or under-correct.
-            if (i == 0) {
-              busyWaitTune_ns += 10000
-            } else if (i > 500) {
-              busyWaitTune_ns -= Math.min(busyWaitTune_ns, (i / 100) * 2000)
-            }
-            // TODO: measure actual elapsed time and correct for consistent overages to allow for more accuracy in the lower throttle ranges
-            promise.complete(Try(f()))
-            lastEvent_ns = System.nanoTime()
-            latch.set()
-          }
-
-          // Note: busy wait a certain amount of the delay for better accuracy. Don't want to busy wait all the delay
-          // since it consumes a thread to do so
-          val delay_ns = (expected_ns - System.nanoTime()) - busyWaitTune_ns
-          // Scheduled executor service is inaccurate beyond a certain minimum delay value
-          if (delay_ns > 0) {
-            scheduledExecutionContext.schedule(delay_ns.nanos) { () => fireEvent() }
-          } else {
-            fireEvent()
-          }
-        }
-        lastEvent = latch
-        promise.future
-      }
-    }
-  }
-
-  def apply(throttle_ns: Long)(implicit ec: ExecutionContext, scheduledExecutionContext: ScheduledExecutionContext) : Throttler = new ThrottleImpl(throttle_ns)
+  def apply(
+    throttle_ns: Long
+  )(implicit
+    scheduledExecutionContext: ScheduledExecutionContext
+  ) : Throttler = new ThrottlerImpl(throttle_ns)
 }

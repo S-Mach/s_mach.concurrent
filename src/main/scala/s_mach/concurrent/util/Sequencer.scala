@@ -18,9 +18,9 @@
 */
 package s_mach.concurrent.util
 
-import scala.collection.mutable
-import scala.concurrent.{Promise, Future, ExecutionContext}
-import s_mach.concurrent._
+import s_mach.concurrent.impl.SequencerImpl
+
+import scala.concurrent.{Future, ExecutionContext}
 
 /**
  * A trait used to guarantee a series of unordered tasks occur sequentially, by associating a sequential number with
@@ -46,49 +46,5 @@ trait Sequencer {
 }
 
 object Sequencer {
-  class SequencerImpl(__next: Int) extends Sequencer {
-    type Task = () => Unit
-    private[this] val lock = new Object
-
-    private[this] var _next = __next
-    override def next = lock.synchronized { _next }
-
-    private[this] val polling = mutable.PriorityQueue[(Int, Task)]()(new Ordering[(Int, Task)] {
-      override def compare(x: (Int, Task), y: (Int, Task)) =
-        // Note: inverted x and y compare here to make lowest index = highest priority
-        implicitly[Ordering[Int]].compare(y._1,x._1)
-    })
-    
-    private[this] def doNext()(implicit ec:ExecutionContext) {
-      lock.synchronized {
-        _next = _next + 1
-        if(polling.nonEmpty && _next == polling.head._1) {
-          polling.dequeue()._2.apply()
-        }
-      }
-    }
-
-    private[this] def run[X](task: () => Future[X])(implicit ec:ExecutionContext) : Future[X] = {
-      val retv = task()
-      retv onComplete { case _ => doNext() }
-      retv
-    }
-
-    override def when[X](i: Int)(task: () => Future[X])(implicit ec: ExecutionContext): Future[X] = {
-      lock.synchronized {
-        require(i >= _next)
-
-        if(_next == i) {
-          run(task)
-        } else {
-          val promise = Promise[X]()
-          polling.enqueue((i, { () => promise.completeWith(run(task)) }))
-          promise.future
-        }
-      }
-    }
-
-  }
-
   def apply(next: Int = 0) : Sequencer = new SequencerImpl(next)
 }

@@ -106,16 +106,16 @@ case class ConcurrentlyConfigBuilder[A,M[AA] <: Traversable[AA]](
   @inline def map[B](f: A => Future[B])(implicit
     cbf1: CanBuildFrom[Nothing, Future[B], M[Future[B]]],
     cbf2: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[M[B]] = loop(mapConcurrently(ma, build2(f)))
+  ) : Future[M[B]] = runLoop(mapConcurrently(ma, build2(f)))
 
   @inline def flatMap[B](f: A => Future[TraversableOnce[B]])(implicit
     cbf1: CanBuildFrom[Nothing, Future[TraversableOnce[B]], M[Future[TraversableOnce[B]]]],
     cbf2: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[M[B]] = loop(flatMapConcurrently(ma, build2(f)))
+  ) : Future[M[B]] = runLoop(flatMapConcurrently(ma, build2(f)))
 
   @inline def foreach[U](f: A => Future[U])(implicit
     cbf1: CanBuildFrom[Nothing, Future[U], M[Future[U]]],
     cbf2: CanBuildFrom[Nothing, U, M[U]]
-  ) : Future[Unit] = loop(foreachConcurrently(ma, build2(f)))
+  ) : Future[Unit] = runLoop(foreachConcurrently(ma, build2(f)))
 }
 

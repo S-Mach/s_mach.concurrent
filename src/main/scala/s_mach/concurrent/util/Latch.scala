@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent.util
 
+import s_mach.concurrent.impl.LatchImpl
+
 import scala.concurrent.{Promise, Future, ExecutionContext}
 import s_mach.concurrent._
 
@@ -42,32 +44,5 @@ trait Latch extends Barrier {
 
 object Latch {
   val defaultFailMessage = "Latch is already set!"
-  class LatchImpl(val failMessage: String) extends Latch {
-    private[this] val promise = Promise[Unit]()
-    val future = promise.future
-
-    override def set() {
-      if(promise.trySuccess(()) == false) {
-        throw new IllegalStateException(failMessage)
-      }
-    }
-
-    override def trySet() = promise.trySuccess(())
-
-    override def isSet = promise.isCompleted
-
-    override def onSet[A](f: () => A)(implicit ec: ExecutionContext) = {
-      if(isSet) {
-        Future.fromTry(Try(f()))
-      } else {
-        val promiseA = Promise[A]()
-        future onSuccess { case _ => promiseA.complete(Try(f())) }
-        promiseA.future
-      }
-    }
-    override def happensBefore[A](next: => Future[A])(implicit ec:ExecutionContext) = future happensBefore next
-
-  }
-
   def apply(failMessage: String = defaultFailMessage) : Latch = new LatchImpl(failMessage)
 }

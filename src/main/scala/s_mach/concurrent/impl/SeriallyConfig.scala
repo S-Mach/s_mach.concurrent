@@ -126,16 +126,16 @@ case class SeriallyConfigBuilder[A,M[AA] <: TraversableOnce[AA]](
 
   @inline def map[B](f: A => Future[B])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[M[B]] = loop(mapSerially(ma, build2(f)))
+  ) : Future[M[B]] = runLoop(mapSerially(ma, build2(f)))
 
   @inline def flatMap[B](f: A => Future[TraversableOnce[B]])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[M[B]] = loop(flatMapSerially(ma, build2(f)))
+  ) : Future[M[B]] = runLoop(flatMapSerially(ma, build2(f)))
 
-  @inline def foreach[U](f: A => Future[U]) : Future[Unit] = loop(foreachSerially(ma, build2(f)))
+  @inline def foreach[U](f: A => Future[U]) : Future[Unit] = runLoop(foreachSerially(ma, build2(f)))
 
   @inline def foldLeft[B](z:B)(f: (B,A) => Future[B])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[B] = loop(foldLeftSerially(ma, z, build3(f)))
+  ) : Future[B] = runLoop(foldLeftSerially(ma, z, build3(f)))
 }
 

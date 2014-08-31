@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent.util
 
+import s_mach.concurrent.impl.LockImpl
+
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent._
 
@@ -57,15 +59,4 @@ trait Lock {
 
 object Lock {
   def apply() : Lock = new LockImpl()
-
-  /**
-   * The default implementation of Lock using a Semaphore backend
-   */
-  class LockImpl extends Lock {
-    private[this] val semaphore = Semaphore(1)
-
-    override def lockEx[X](task: () => Future[X])(implicit ec: ExecutionContext)= semaphore.acquireEx(1)(task)
-    override def isUnlocked = semaphore.availablePermits > 0
-    override def waitQueueLength = semaphore.waitQueueLength
-  }
 }

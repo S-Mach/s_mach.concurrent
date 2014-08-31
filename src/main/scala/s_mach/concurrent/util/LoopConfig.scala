@@ -28,7 +28,7 @@ trait LoopConfig {
   def onLoopStart() : Unit = { }
   def onLoopEnd() : Unit = { }
 
-  @inline final def loop[A](f: => Future[A])(implicit ec:ExecutionContext) : Future[A] = {
+  @inline final def runLoop[A](f: => Future[A])(implicit ec:ExecutionContext) : Future[A] = {
     onLoopStart()
     f sideEffect { onLoopEnd() }
   }

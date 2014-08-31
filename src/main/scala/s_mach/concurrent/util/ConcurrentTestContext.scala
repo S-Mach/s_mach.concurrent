@@ -20,10 +20,8 @@ package s_mach.concurrent.util
 
 import java.util.concurrent.ExecutorService
 import scala.concurrent.ExecutionContext
-import s_mach.concurrent.impl.FutureOps
-import s_mach.concurrent.{PeriodicTask, DelayedFuture, ScheduledExecutionContext}
-
-import scala.concurrent.duration.Duration
+import s_mach.concurrent.impl.ConcurrentTestContextImpl
+import s_mach.concurrent.ScheduledExecutionContext
 
 /**
  * A context for testing concurrent code that provides:
@@ -64,67 +62,6 @@ object ConcurrentTestContext {
   def apply()(implicit
     ec: ExecutionContext,
     sec: ScheduledExecutionContext
-  ) : ConcurrentTestContext = new ConcurrentTestContext {
-    val _activeExecutionCount = new java.util.concurrent.atomic.AtomicInteger(0)
-    override def activeExecutionCount = _activeExecutionCount.get
-
-//    val _completedRunnableCount = new java.util.concurrent.atomic.AtomicInteger(0)
-//    override def completedRunnableCount = _completedRunnableCount.get
-
-//    val _maxRunnableCount = new java.util.concurrent.atomic.AtomicInteger(0)
-//    override def maxRunnableCount = _maxRunnableCount.get
-
-    val scheduledExecutionContext = {
-        ScheduledExecutionContextListener(sec)
-          .onStart.add(1) { (_,_) =>
-            _activeExecutionCount.incrementAndGet()
-          }
-          .onComplete.add(1) { (_,_) =>
-            _activeExecutionCount.decrementAndGet()
-          }
-    }
-
-    // Use a wrapper here to gather all futures to ensure we wait for their completion before shutting down
-    // executor
-    val executionContext = {
-      ExecutionContextListener(ec)
-        .onExec.add(1) { (_,_) =>
-        _activeExecutionCount.incrementAndGet()
-//          val newActiveRunnableCount = _activeRunnableCount.incrementAndGet()
-//          _maxRunnableCount.synchronized {
-//            if(_maxRunnableCount.get < newActiveRunnableCount) {
-//              _maxRunnableCount.getAndSet(newActiveRunnableCount)
-//            }
-//          }
-        }
-        .onComplete.add(1) { (_,_) =>
-          _activeExecutionCount.decrementAndGet()
-//          _completedRunnableCount.incrementAndGet()
-        }
-    }
-
-
-
-    override def scheduleAtFixedRate[U](initialDelay: Duration, period: Duration)(task: () => U) =
-      scheduledExecutionContext.scheduleAtFixedRate(initialDelay, period)(task)
-    override def schedule[A](delay: Duration)(f: () => A) =
-      scheduledExecutionContext.schedule(delay)(f)
-
-    override def reportFailure(cause: Throwable) = executionContext.reportFailure(cause)
-    override def execute(runnable: Runnable) = executionContext.execute(runnable)
-
-    override implicit val timer = Timer()
-    // Run first tests with no delay to compute avg base line
-    override implicit val sched = SerializationSchedule[String]()
-
-    val _delayError_ns = new java.util.concurrent.atomic.AtomicLong(0)
-
-    override def delayError_ns = _delayError_ns.get
-
-    override def delay(delay_ns: Long) = {
-      val err_ns = FutureOps.nanoSpinDelay(delay_ns)
-      _delayError_ns.addAndGet(err_ns)
-    }
-  }
+  ) : ConcurrentTestContext = new ConcurrentTestContextImpl()
 }
 

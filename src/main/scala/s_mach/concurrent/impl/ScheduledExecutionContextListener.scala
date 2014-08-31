@@ -16,11 +16,12 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent.impl
+
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.Duration
-import s_mach.concurrent.{PeriodicTask, DelayedFuture, ScheduledExecutionContext}
+import s_mach.concurrent.{DelayedFuture, PeriodicTask, ScheduledExecutionContext}
 
 /**
  * An immutable ScheduleAtFixedRatedExecutorService wrapper that allows listening to the

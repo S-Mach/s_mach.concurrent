@@ -16,29 +16,19 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent.impl
+
+import s_mach.concurrent.util.{Semaphore, Lock}
 
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
- * A trait for a non-blocking queue
+ * The default implementation of Lock using a Semaphore backend
  */
-trait Queue[A] {
-  /** @return a future that completes once input is available */
-  def poll()(implicit ec:ExecutionContext) : Future[A]
+class LockImpl extends Lock {
+  private[this] val semaphore = Semaphore(1)
 
-  /** @return a future that completes once input is available */
-  def poll(n: Int)(implicit ec:ExecutionContext) : Future[Vector[A]]
-
-  /** Offer a value for waiting futures */
-  def offer(a: A) : Unit
-
-  /** Offer values for waiting futures */
-  def offer(xa: TraversableOnce[A]) : Unit
-
-  /** @return size of offer queue */
-  def offerQueueSize: Int
-
-  /** @return size of polling queue */
-  def pollQueueSize: Int
+  override def lockEx[X](task: () => Future[X])(implicit ec: ExecutionContext)= semaphore.acquireEx(1)(task)
+  override def isUnlocked = semaphore.availablePermits > 0
+  override def waitQueueLength = semaphore.waitQueueLength
 }

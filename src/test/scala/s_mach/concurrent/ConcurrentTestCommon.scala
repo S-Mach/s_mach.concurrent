@@ -40,7 +40,8 @@ trait ConcurrentTestCommon extends Matchers {
 
   // Not going to worry about shutdown since only one is ever created here
   val cpus = Runtime.getRuntime.availableProcessors
-  val executionContext = scala.concurrent.ExecutionContext.fromExecutor(Executors.newFixedThreadPool(cpus))
+  // Note: using more worker threads than cpus to increase inter-leavings and possible serialization schedules
+  val executionContext = scala.concurrent.ExecutionContext.fromExecutor(Executors.newFixedThreadPool(cpus * 2))
   val scheduledExecutionContext = ScheduledExecutionContext(cpus / 2)(executionContext)
 
   def mkConcurrentTestContext() = ConcurrentTestContext()(executionContext, scheduledExecutionContext)

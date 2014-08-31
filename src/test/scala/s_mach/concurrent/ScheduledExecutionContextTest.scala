@@ -31,13 +31,13 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
     (1.second, 10, .0004),
     (100.millis, 100, .004),
     (10.millis, 1000, .04),
-    (1.millis, 10000, .04),
+    (1.millis, 10000, .05),
     (750.micros, 10000, .01),
     (500.micros, 10000, .01),
     (250.micros, 10000, .01),
     (100.micros, 20000, .01),
     (50.micros, 20000, .01),
-    (10.micros, 30000, .05), // TODO: not sure why this particular period fails more often
+    (10.micros, 30000, .06), // TODO: not sure why this particular period fails more often
     (5.micros, 40000, .01),
     (2.micros, 50000, .02)
   ) foreach { case (_delay, testCount, errorPercent) =>

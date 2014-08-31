@@ -137,12 +137,12 @@ case class WorkersConfigBuilder[A,M[AA] <: TraversableOnce[AA]](
 
   @inline def map[B](f: A => Future[B])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[M[B]] = loop(mapWorkers(ma, build2(f), this))
+  ) : Future[M[B]] = runLoop(mapWorkers(ma, build2(f), this))
 
   @inline def flatMap[B](f: A => Future[TraversableOnce[B]])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[M[B]] = loop(flatMapWorkers(ma, build2(f), this))
+  ) : Future[M[B]] = runLoop(flatMapWorkers(ma, build2(f), this))
 
-  @inline def foreach[U](f: A => Future[U]) : Future[Unit] = loop(foreachWorkers(ma, build2(f), this))
+  @inline def foreach[U](f: A => Future[U]) : Future[Unit] = runLoop(foreachWorkers(ma, build2(f), this))
 }
 
