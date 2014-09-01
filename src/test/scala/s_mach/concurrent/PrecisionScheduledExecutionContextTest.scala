@@ -56,7 +56,7 @@
 //          implicit val ctc = mkConcurrentTestContext()
 //          import ctc._
 //          sched.addEvent("start")
-//          val result = scheduledExecutionContext.schedule(_delay) { () => sched.addEvent("trigger");1 }
+//          val result = scheduledExecutionContext.schedule(_delay) { sched.addEvent("trigger");1 }
 //          result.get should equal(1)
 //          sched.startEvents(0).elapsed_ns - sched.startEvents(1).elapsed_ns
 //        }

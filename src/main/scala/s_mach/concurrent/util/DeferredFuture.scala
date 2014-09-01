@@ -22,10 +22,12 @@ import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent._
 
 /**
- * A trait for a future whose start of execution has been deferred until another future completes.
+ * A trait for a future whose execution does not begin until some condition occurs. DeferredFuture completes once the
+ * start condition occurs and the deferred future completes.
  */
 trait DeferredFuture[A] extends Future[A] {
-  /** @return a future that completes with the deferred future once the deferred future has started executing. */
+  /** @return a future that completes once the start condition occurs. The future contains the deferred future (which
+    *         is now running) */
   def deferred : Future[Future[A]]
 }
 

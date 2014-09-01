@@ -23,7 +23,7 @@ import scala.concurrent.{CanAwait, ExecutionContext, Future, TimeoutException}
 import scala.util.Try
 
 /**
- * A trait for a future that delegates to its implementation to another future
+ * A base trait for a future that delegates its implementation to another delegate future
  */
 trait DelegatedFuture[A] extends Future[A] {
   /** @return the future to delegate to */

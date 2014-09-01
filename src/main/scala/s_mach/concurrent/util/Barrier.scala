@@ -19,9 +19,8 @@
 package s_mach.concurrent.util
 
 import scala.concurrent._
-import s_mach.concurrent._
-
 import scala.util.Try
+import s_mach.concurrent._
 
 /**
  * A trait for a barrier that can be used by callers to synchronize events by waiting on the barrier to be set.

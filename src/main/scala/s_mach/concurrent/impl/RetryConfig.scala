@@ -18,9 +18,8 @@
 */
 package s_mach.concurrent.impl
 
-import s_mach.concurrent._
-
 import scala.concurrent.{ExecutionContext, Future}
+import s_mach.concurrent._
 
 /**
  * A trait for a builder of RetryConfig. Callers may set the optional retry function by calling the retry method. If the
@@ -50,9 +49,9 @@ trait RetryConfig extends ConcurrentFunctionBuilder {
   /** @return the optional retry function */
   def optRetry : Option[List[Throwable] => Future[Boolean]]
 
-  private[this] def doRetry[B](retry: List[Throwable] => Future[Boolean], f: () => Future[B]) : Future[B] = {
+  private[this] def doRetry[B](retry: List[Throwable] => Future[Boolean], f: => Future[B]) : Future[B] = {
     def loop(failures: List[Throwable]): Future[B] = {
-      f().flatFold(
+      f.flatFold(
         onSuccess = { b: B => Future.successful(b)},
         onFailure = { t: Throwable =>
           val updatedFailures = t :: failures
@@ -74,7 +73,7 @@ trait RetryConfig extends ConcurrentFunctionBuilder {
     override def build2[A,B](f: A => Future[B]) : A => Future[B] = {
     super.build2 {
       optRetry match {
-        case Some(retry) => { a:A => doRetry(retry, { () => f(a) })}
+        case Some(retry) => { a:A => doRetry(retry, f(a))}
         case None => f
       }
     }
@@ -85,7 +84,7 @@ trait RetryConfig extends ConcurrentFunctionBuilder {
   override def build3[A,B,C](f: (A,B) => Future[C]) : (A,B) => Future[C] = {
     super.build3 {
       optRetry match {
-        case Some(retry) => { (a:A,b:B) => doRetry(retry, { () => f(a,b) })}
+        case Some(retry) => { (a:A,b:B) => doRetry(retry, f(a,b))}
         case None => f
       }
     }
