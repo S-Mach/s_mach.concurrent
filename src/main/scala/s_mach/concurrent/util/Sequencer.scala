@@ -23,11 +23,10 @@ import s_mach.concurrent.impl.SequencerImpl
 import scala.concurrent.{Future, ExecutionContext}
 
 /**
- * A trait used to guarantee a series of unordered tasks occur sequentially, by associating a sequential number with
- * each task i.e. task N completes before task N + 1 is started. The sequencer uses a sequence number to determine
- * whether to immediately run a task or queue the task for later. When a task has been queued and the sequence number
- * for that task has been reached, the task is removed from the queue and executed. The sequence number is only advanced
- * after the task completes.
+ * A trait used to guarantee a series of unordered tasks occur sequentially. By associating a sequence number with
+ * each task, the sequencer can determine whether to immediately run a task or queue the task for later. When a task has
+ * been queued and the sequence number for that task has been reached, the task is removed from the queue and executed.
+ * The sequence number is only advanced after the task completes.
  * 
  * Note: it is assumed each task has a unique sequence number. A request to execute a task with a sequence number that
  * is less than the current sequence number causes an IllegalArgumentException to be thrown.

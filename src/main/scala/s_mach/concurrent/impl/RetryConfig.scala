@@ -16,10 +16,11 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent.impl
+
+import s_mach.concurrent._
 
 import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent._
 
 /**
  * A trait for a builder of RetryConfig. Callers may set the optional retry function by calling the retry method. If the

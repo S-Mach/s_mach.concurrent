@@ -25,7 +25,7 @@ import s_mach.concurrent._
  * A trait for a future whose start of execution has been deferred until another future completes.
  */
 trait DeferredFuture[A] extends Future[A] {
-  /** @return a future that completes once the inner future begins with the deferred future. */
+  /** @return a future that completes with the deferred future once the deferred future has started executing. */
   def deferred : Future[Future[A]]
 }
 

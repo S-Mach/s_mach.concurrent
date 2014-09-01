@@ -16,10 +16,11 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent.impl
+
+import s_mach.concurrent._
 
 import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent._
 
 /**
  * A trait for configuring pre and post loop side effects

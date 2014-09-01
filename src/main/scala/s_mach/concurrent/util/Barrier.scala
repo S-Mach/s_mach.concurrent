@@ -33,11 +33,10 @@ trait Barrier {
   /** @return register a callback that is triggered after the barrier is set. If the barrier is already set then f is
     *         executed immediately */
   def onSet[A](f: () => A)(implicit ec: ExecutionContext): Future[A]
-  /** Sugar for onSet. See above. */
-  @inline final def apply[A](f: () => A)(implicit ec: ExecutionContext): Future[A] = onSet(f)
 
   /** @return a Future that completes once the barrier is set */
   def future : Future[Unit]
+
   /** @return a Future of next that only evaluates after the barrier is set */
   def happensBefore[A](next: => Future[A])(implicit ec:ExecutionContext) : Future[A]
 }

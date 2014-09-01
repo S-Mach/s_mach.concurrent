@@ -23,6 +23,9 @@ import scala.concurrent._
 import scala.concurrent.duration.Duration
 import s_mach.concurrent.impl.ScheduledExecutionContextImpl
 
+/**
+ * A trait for scheduling delayed or periodic tasks
+ */
 trait ScheduledExecutionContext {
   /**
    * Create a DelayedFuture that executes the supplied function after the given delay

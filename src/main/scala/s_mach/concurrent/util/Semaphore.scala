@@ -30,7 +30,7 @@ import s_mach.concurrent.impl.SemaphoreImpl
  * dynamic sized pools that expend permits instead of releasing them, replenishing permits through some other mechanism.
  *
  * Note1: Because Semaphore accepts a function to the task to run, it is not possible for callers to double lock, double 
- * release or forget to release the lock.
+ * release or forget to release permits.
  * Note2: Semaphore is NOT reentrant
  * Note3: Semaphore should never be used when other options make more sense. Semaphore is designed for synchronizing
  * many tasks (100+) and/or long running tasks (10ms+). Unlike other options, Semaphore does not block and consume a

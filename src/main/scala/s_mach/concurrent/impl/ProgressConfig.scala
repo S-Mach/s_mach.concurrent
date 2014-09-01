@@ -16,13 +16,14 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent.impl
 
-import scala.concurrent.{Promise, Future, ExecutionContext}
-import scala.concurrent.duration.Duration
 import s_mach.concurrent._
+import s_mach.concurrent.util.ProgressReporter
 
-import scala.util.{Success, Failure}
+import scala.concurrent.duration.Duration
+import scala.concurrent.{ExecutionContext, Future, Promise}
+import scala.util.{Failure, Success}
 
 /**
  * A trait for a builder of ProgressConfig. Callers may set the optional progress reporting function by calling one of

@@ -20,7 +20,11 @@ package s_mach.concurrent.util
 
 import s_mach.concurrent.impl.ListQueueImpl
 
-trait ListQueue[A]extends Queue[A]
+/**
+ * A trait for queue that uses an unlimited size linked list as the backend for the queue.
+ */
+trait ListQueue[A] extends Queue[A]
+
 object ListQueue {
   def apply[A](elems: A*) : ListQueue[A] = new ListQueueImpl[A](elems:_*)
 }

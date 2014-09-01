@@ -16,13 +16,13 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent.impl
 
-import java.util.concurrent.ScheduledExecutorService
+import s_mach.concurrent._
+import s_mach.concurrent.util.Throttler
 
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent._
 
 /**
  * A trait for a builder of ThrottleConfig. Callers may set the optional throttle period by calling the throttle_ns
