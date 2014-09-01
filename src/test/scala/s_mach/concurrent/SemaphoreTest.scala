@@ -43,7 +43,7 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
       import ctc._
 
       val s = Semaphore(10)
-      val f1 = s.acquire(10) { () => ().future }
+      val f1 = s.acquire(10) { ().future }
       f1.get should equal(())
 
       waitForActiveExecutionCount(0)
@@ -61,8 +61,8 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
 
       val s = Semaphore(10)
       val latch = Latch()
-      val f1 = s.acquire(1) { () => latch happensBefore 1.future }
-      val f2 = s.acquire(10) { () => 2.future }
+      val f1 = s.acquire(1) { latch happensBefore 1.future }
+      val f2 = s.acquire(10) { 2.future }
       s.availablePermits should equal(0)
       s.waitQueueLength should equal(1)
 
@@ -78,9 +78,9 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
 
       val s = Semaphore(10)
       val latch = Latch()
-      val f1 = s.acquire(1) { () => sched.addStartEvent("1");latch happensBefore 1.future }
-      val f2 = s.acquire(10) { () => sched.addStartEvent("2");2.future }
-      val f3 = s.acquire(10) { () => sched.addStartEvent("3");3.future }
+      val f1 = s.acquire(1) { sched.addStartEvent("1");latch happensBefore 1.future }
+      val f2 = s.acquire(10) { sched.addStartEvent("2");2.future }
+      val f3 = s.acquire(10) { sched.addStartEvent("3");3.future }
       s.availablePermits should equal(0)
       s.waitQueueLength should equal(2)
 
@@ -101,7 +101,7 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
       val s = Semaphore(10)
-      Try(s.acquire(20) { () => ().future }).failed.get shouldBe a[IllegalArgumentException]
+      Try(s.acquire(20) { ().future }).failed.get shouldBe a[IllegalArgumentException]
     }
   }
 
@@ -111,7 +111,7 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
       import ctc._
       val s = Semaphore(10)
       var temp = 0l
-      s.acquire(5) { () =>
+      s.acquire(5) {
         temp = s.availablePermits
         ().future
       }.get
@@ -140,10 +140,10 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
       val s = Semaphore(10)
       val latch = Latch()
 
-      val f1 = s.acquire(10) { () => sched.addStartEvent("1");latch.future }
-      val f2 = s.acquire(8) { () => sched.addStartEvent("2"); 2.future }
-      val f3 = s.acquire(2) { () => sched.addStartEvent("3"); 3.future }
-      val f4 = s.acquire(1) { () => sched.addStartEvent("4");4.future }
+      val f1 = s.acquire(10) { sched.addStartEvent("1");latch.future }
+      val f2 = s.acquire(8) { sched.addStartEvent("2"); 2.future }
+      val f3 = s.acquire(2) { sched.addStartEvent("3"); 3.future }
+      val f4 = s.acquire(1) { sched.addStartEvent("4");4.future }
 
       latch.set()
 

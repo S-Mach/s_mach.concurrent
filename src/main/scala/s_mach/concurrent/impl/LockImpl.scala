@@ -28,7 +28,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class LockImpl extends Lock {
   private[this] val semaphore = Semaphore(1)
 
-  override def lock[X](task: () => Future[X])(implicit ec: ExecutionContext)= semaphore.acquire(1)(task)
+  override def lock[X](task: => Future[X])(implicit ec: ExecutionContext)= semaphore.acquire(1)(task)
   override def isUnlocked = semaphore.availablePermits > 0
   override def waitQueueLength = semaphore.waitQueueLength
 }

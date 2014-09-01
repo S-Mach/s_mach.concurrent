@@ -27,7 +27,6 @@ import scala.concurrent.duration._
 import scala.util.Try
 import scala.collection.generic.CanBuildFrom
 import s_mach.concurrent.impl._
-import s_mach.concurrent.{DelayedFuture, ScheduledExecutionContext}
 
 object Implicits {
   implicit class SMach_Concurrent_PimpEverything[A](val self: A) extends AnyVal {
@@ -35,7 +34,7 @@ object Implicits {
   }
   // Note: can't put value class in trait so this code has to be repeated in object Implicits and in package future
   implicit class SMach_Concurrent_PimpMyFutureType(val self:Future.type) extends AnyVal {
-    @inline def delayed[A](delay: FiniteDuration)(f: () => A)(implicit
+    @inline def delayed[A](delay: FiniteDuration)(f: => A)(implicit
       scheduledExecutionContext:ScheduledExecutionContext
     ) : DelayedFuture[A] = scheduledExecutionContext.schedule(delay)(f)
     @inline def unit : Future[Unit] = FutureOps.unit

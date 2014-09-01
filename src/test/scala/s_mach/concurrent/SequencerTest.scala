@@ -39,7 +39,7 @@ class SequencerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       // Feed futures to Sequencer in a random order
       val result = Random.shuffle(items).map { item =>
-        s.when(item)(() => success(item))
+        s.when(item)(success(item))
       }
 
       waitForActiveExecutionCount(0)

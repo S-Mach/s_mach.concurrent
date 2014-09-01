@@ -56,7 +56,7 @@ class ConcurrentTestContextImpl()(implicit
 
   override def scheduleAtFixedRate[U](initialDelay: Duration, period: Duration)(task: () => U) =
     scheduledExecutionContext.scheduleAtFixedRate(initialDelay, period)(task)
-  override def schedule[A](delay: Duration)(f: () => A) =
+  override def schedule[A](delay: Duration)(f: => A) =
     scheduledExecutionContext.schedule(delay)(f)
 
   override def reportFailure(cause: Throwable) = executionContext.reportFailure(cause)

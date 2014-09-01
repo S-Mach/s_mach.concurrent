@@ -47,7 +47,7 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       import ctc._
 
       val l = Lock()
-      val f1 = l.lock { () => ().future }
+      val f1 = l.lock { ().future }
       f1.get should equal(())
 
       waitForActiveExecutionCount(0)
@@ -64,8 +64,8 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       val l = Lock()
       val latch = Latch()
-      val f1 = l.lock { () => latch happensBefore 1.future }
-      val f2 = l.lock { () => 2.future }
+      val f1 = l.lock { latch happensBefore 1.future }
+      val f2 = l.lock { 2.future }
       l.isUnlocked should equal(false)
       l.waitQueueLength should equal(1)
 
@@ -81,9 +81,9 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       val l = Lock()
       val latch = Latch()
-      val f1 = l.lock { () => sched.addStartEvent("1");latch happensBefore 1.future }
-      val f2 = l.lock { () => sched.addStartEvent("2");2.future }
-      val f3 = l.lock { () => sched.addStartEvent("3");3.future }
+      val f1 = l.lock { sched.addStartEvent("1");latch happensBefore 1.future }
+      val f2 = l.lock { sched.addStartEvent("2");2.future }
+      val f3 = l.lock { sched.addStartEvent("3");3.future }
       l.isUnlocked should equal(false)
       l.waitQueueLength should equal(2)
 
@@ -106,7 +106,7 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       val l = Lock()
       var temp : Any = 0
-      l.lock { () =>
+      l.lock {
         temp = l.isUnlocked
         ().future
       }.get

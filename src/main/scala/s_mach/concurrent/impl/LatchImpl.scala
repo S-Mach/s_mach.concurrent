@@ -38,12 +38,12 @@ class LatchImpl(val failMessage: String) extends Latch {
 
   override def isSet = promise.isCompleted
 
-  override def onSet[A](f: () => A)(implicit ec: ExecutionContext) = {
+  override def onSet[A](f:  => A)(implicit ec: ExecutionContext) = {
     if(isSet) {
-      Future.fromTry(Try(f()))
+      Future.fromTry(Try(f))
     } else {
       val promiseA = Promise[A]()
-      future onSuccess { case _ => promiseA.complete(Try(f())) }
+      future onSuccess { case _ => promiseA.complete(Try(f)) }
       promiseA.future
     }
   }

@@ -18,10 +18,9 @@
 */
 package s_mach.concurrent.util
 
+import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent.ScheduledExecutionContext
 import s_mach.concurrent.impl.ThrottlerImpl
-
-import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * A trait that ensures a series of tasks run no faster than the throttle setting. Callers schedule tasks by calling the
@@ -36,7 +35,7 @@ import scala.concurrent.{ExecutionContext, Future}
 trait Throttler extends ThrottleControl {
   /** @return a Future that completes once at least throttle_ns nanoseconds have expired since the last task AND task
     * completes */
-  def run[X](task: () => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
+  def run[X](task: => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
 }
 
 object Throttler {

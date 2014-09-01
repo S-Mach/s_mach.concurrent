@@ -44,7 +44,7 @@ trait Semaphore {
    *         permitCount permits are available. The permits are removed from the pool while task is running and after
    *         task completes the permits are returned to the pool.
    * */
-  def acquire[X](permitCount: Long)(task: () => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
+  def acquire[X](permitCount: Long)(task: => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
 
   /** @return the maximum number of permits in the pool */
   def maxAvailablePermits : Long

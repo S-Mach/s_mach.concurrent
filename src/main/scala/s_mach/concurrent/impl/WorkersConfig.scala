@@ -40,7 +40,7 @@ object WorkersConfig {
 
   case class WorkersConfigImpl(
     workerCount: Int = DEFAULT_WORKER_COUNT,
-    optProgress: Option[ProgressReporter] = None,1
+    optProgress: Option[ProgressReporter] = None,
     optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
     optThrottle: Option[(Long, ScheduledExecutionContext)] = None
   )(implicit

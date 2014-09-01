@@ -35,7 +35,7 @@ trait ScheduledExecutionContext {
    * @return a DelayedFuture that can be used to extract result or cancel (only before it has been started)
    * @throws RejectedExecutionException if the task cannot be scheduled for execution
    */
-  def schedule[A](delay: Duration)(f: () => A) : DelayedFuture[A]
+  def schedule[A](delay: Duration)(f: => A) : DelayedFuture[A]
 
   /**
    * Creates a PeriodicTask that executes first after the given initial delay, and subsequently with the given period.

@@ -33,7 +33,7 @@ package object concurrent extends TupleConcurrentlyOps {
   }
   // Note: can't put value class in trait so this code has to be repeated in object Implicits and in package future
   implicit class SMach_Concurrent_PimpMyFutureType(val self:Future.type) extends AnyVal {
-    @inline def delayed[A](delay: FiniteDuration)(f: () => A)(implicit
+    @inline def delayed[A](delay: FiniteDuration)(f: => A)(implicit
       scheduledExecutionContext:ScheduledExecutionContext
     ) : DelayedFuture[A] = scheduledExecutionContext.schedule(delay)(f)
     @inline def unit : Future[Unit] = FutureOps.unit

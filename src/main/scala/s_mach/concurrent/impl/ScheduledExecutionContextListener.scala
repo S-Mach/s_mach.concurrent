@@ -36,9 +36,10 @@ class ScheduledExecutionContextListener(
   _onFail: NotifiableListener[Any, Throwable] = NotifiableListener()
 )(implicit ec:ExecutionContext) extends ScheduledExecutionContext {
 
-  override def schedule[A](delay: Duration)(f: () => A): DelayedFuture[A] = {
+  override def schedule[A](delay: Duration)(_f: => A): DelayedFuture[A] = {
+    val f = { () => _f }
     _onSchedule.notifyListeners((delay, f))
-    delegate.schedule(delay) { () =>
+    delegate.schedule(delay) {
       _onStart.notifyListeners(f)
       val retv = f()
       _onComplete.notifyListeners(f)
@@ -50,7 +51,7 @@ class ScheduledExecutionContextListener(
     _onScheduleAtFixedRate.notifyListeners((initialDelay, period, task))
     _onStart.notifyListeners(task)
     val periodicTask = delegate.scheduleAtFixedRate(initialDelay, period)(task)
-    periodicTask.onCancel.onSet { () =>
+    periodicTask.onCancel.onSet {
       _onComplete.notifyListeners(task)
     }
     periodicTask

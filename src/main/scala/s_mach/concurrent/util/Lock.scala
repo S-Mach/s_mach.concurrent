@@ -37,7 +37,7 @@ trait Lock {
   /** @return a future that completes once the lock is available AND task completes. The lock is locked while task is
     *         running and after task completes it is unlocked.
    */
-  def lock[X](task: () => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
+  def lock[X](task: => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
 
   /** @return TRUE if the lock is available */
   def isUnlocked : Boolean

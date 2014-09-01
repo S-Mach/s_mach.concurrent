@@ -18,13 +18,12 @@
 */
 package s_mach.concurrent.impl
 
-import java.util.concurrent.ScheduledExecutorService
-import s_mach.concurrent.ScheduledExecutionContext
 
 import scala.language.higherKinds
 import scala.collection.generic.CanBuildFrom
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent.util._
+import s_mach.concurrent.ScheduledExecutionContext
 import SeriallyOps._
 
 /**

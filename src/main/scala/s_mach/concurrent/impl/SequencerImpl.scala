@@ -44,13 +44,13 @@ class SequencerImpl(__next: Int) extends Sequencer {
     }
   }
 
-  private[this] def run[X](task: () => Future[X])(implicit ec:ExecutionContext) : Future[X] = {
-    val retv = task()
+  private[this] def run[X](task: => Future[X])(implicit ec:ExecutionContext) : Future[X] = {
+    val retv = task
     retv onComplete { case _ => doNext() }
     retv
   }
 
-  override def when[X](i: Int)(task: () => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
+  override def when[X](i: Int)(task: => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
     lock.synchronized {
       require(i >= _next)
 

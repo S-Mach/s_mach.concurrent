@@ -44,7 +44,7 @@ object WorkersOps {
     val builder = cbf()
     val lock = Lock()
     val output = { b:B =>
-      lock.lock { () =>
+      lock.lock {
         builder += b
         Future.unit
       }
@@ -68,7 +68,7 @@ object WorkersOps {
     val builder = cbf()
     val lock = Lock()
     val output = { b:TraversableOnce[B] =>
-      lock.lock { () =>
+      lock.lock {
         builder ++= b
         Future.unit
       }
@@ -129,7 +129,7 @@ object WorkersOps {
       i <- {
         xa.serially.foldLeft(0) { (i,a) =>
           if(workerFailures.offerQueueSize == 0) {
-            s.acquire(1) { () =>
+            s.acquire(1) {
               // Run worker in the background
               f(a).toTry
                 // Worker returns Future[Try[]] to ensure that exceptions from f are not carried in the future but in
@@ -138,12 +138,12 @@ object WorkersOps {
                   // Worker completed successfully
                   case Success(b) =>
                     // Ensuring proper sequence of results
-                    o.when(i)(() => g(b))
+                    o.when(i)(g(b))
                   case Failure(t) =>
                     // Worker failed - start process of early exit
                     workerFailures.offer(t)
                     // Still need to ensure sequence can progress to allow later workers to finish
-                    o.when(i)(() => Future.unit)
+                    o.when(i)(Future.unit)
                 }
             }.deferred.map { inner =>
               // Throwaway result of worker but make sure to at least report exceptions to ExecutionContext
@@ -152,12 +152,12 @@ object WorkersOps {
             }
           } else {
             // Detected a failure. Wait for workers to complete then end loop early with failures
-            s.acquire(workerCount) { () => mkWorkerFailureException() }
+            s.acquire(workerCount) { mkWorkerFailureException() }
           }
         }
       }
       // Wait for completion
-      _ <- s.acquire(workerCount)(() => Future.unit)
+      _ <- s.acquire(workerCount)(Future.unit)
       // If an exception occurs during the last worker it won't be detected during the main loop
       _ <- if(workerFailures.offerQueueSize == 0) {
         Future.unit

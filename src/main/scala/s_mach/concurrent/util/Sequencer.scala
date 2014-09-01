@@ -18,9 +18,8 @@
 */
 package s_mach.concurrent.util
 
-import s_mach.concurrent.impl.SequencerImpl
-
 import scala.concurrent.{Future, ExecutionContext}
+import s_mach.concurrent.impl.SequencerImpl
 
 /**
  * A trait used to guarantee a series of unordered tasks occur sequentially. By associating a sequence number with
@@ -39,7 +38,7 @@ trait Sequencer {
    * @throws IllegalArgumentException if sequenceNumber is less than next
    * @return a Future that completes once the sequence number has been reached and the task has completed
    * */
-  def when[X](sequenceNumber: Int)(task: () => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
+  def when[X](sequenceNumber: Int)(task: => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
 }
 
 object Sequencer {

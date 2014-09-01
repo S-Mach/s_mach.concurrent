@@ -100,9 +100,9 @@ case class ScheduledExecutionContextImpl(
 ) extends ScheduledExecutionContext {
   import ScheduledExecutionContextImpl._
 
-  def schedule[A](delay: Duration)(task: () => A) : DelayedFuture[A] = {
+  def schedule[A](delay: Duration)(task: => A) : DelayedFuture[A] = {
     ScheduledDelayedFutureImpl(
-      task = task,
+      task = { () => task },
       delay = delay,
       scheduledExecutorService = delegate
     )

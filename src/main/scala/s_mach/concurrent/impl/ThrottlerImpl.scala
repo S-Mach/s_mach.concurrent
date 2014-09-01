@@ -41,13 +41,13 @@ class ThrottlerImpl(
   private[this] val lock = new Object
   private[this] var lastEvent = Barrier.set
 
-  def run[X](f: () => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
+  def run[X](f: => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
     lock.synchronized {
       val latch = Latch()
       val retv = DeferredFuture {
         lastEvent happensBefore {
-          scheduledExecutionContext.schedule(throttle_ns.nanos) { () =>
-            f() sideEffect latch.set()
+          scheduledExecutionContext.schedule(throttle_ns.nanos) {
+            f sideEffect latch.set()
           }
         }
       }

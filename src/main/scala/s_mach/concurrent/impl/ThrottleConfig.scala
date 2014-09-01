@@ -18,11 +18,10 @@
 */
 package s_mach.concurrent.impl
 
-import s_mach.concurrent._
-import s_mach.concurrent.util.Throttler
-
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
+import s_mach.concurrent._
+import s_mach.concurrent.util.Throttler
 
 /**
  * A trait for a builder of ThrottleConfig. Callers may set the optional throttle period by calling the throttle_ns
@@ -64,7 +63,7 @@ trait ThrottleConfig extends ConcurrentFunctionBuilder {
           implicit def sec = scheduledExecutionContext
           val throttler = Throttler(throttle_ns)
 
-          { a:A => throttler.run({ () => f(a) }) }
+          { a:A => throttler.run(f(a)) }
         case None => f
       }
     }
@@ -79,7 +78,7 @@ trait ThrottleConfig extends ConcurrentFunctionBuilder {
           implicit def sec = scheduledExecutionContext
           val throttler = Throttler(throttle_ns)
 
-          { (a:A,b:B) => throttler.run({ () => f(a,b) }) }
+          { (a:A,b:B) => throttler.run(f(a,b)) }
         case None => f
       }
     }

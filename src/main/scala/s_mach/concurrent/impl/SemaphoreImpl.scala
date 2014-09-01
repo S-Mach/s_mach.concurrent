@@ -39,8 +39,8 @@ abstract class SemaphoreImpl(
   override def availablePermits = lock.synchronized { offering }
   protected def availablePermits(_availablePermits: Long) = lock.synchronized { offering = _availablePermits }
 
-  protected def run[X](task: () => Future[X], permitCount: Long)(implicit ec: ExecutionContext) : Future[X] = {
-    val retv = task()
+  protected def run[X](task: => Future[X], permitCount: Long)(implicit ec: ExecutionContext) : Future[X] = {
+    val retv = task
     retv onComplete { case _ => replenish(permitCount) }
     retv
   }
@@ -70,7 +70,7 @@ abstract class SemaphoreImpl(
   override def acquire[X](
     permitCount: Long
   )(
-    task: () => Future[X]
+    task: => Future[X]
   )(implicit ec:ExecutionContext): DeferredFuture[X] = {
     require(permitCount <= maxAvailablePermits)
 

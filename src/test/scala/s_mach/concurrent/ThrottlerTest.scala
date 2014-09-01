@@ -35,9 +35,9 @@ class ThrottlerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     (100.millis, 100, .18),
     (10.millis, 1000, .07),
     (1.millis, 10000, .26),
-    (750.micros, 10000, .23),
-    (500.micros, 10000, .27),
-    (250.micros, 10000, .45),
+    (750.micros, 10000, .25),
+    (500.micros, 10000, .29),
+    (250.micros, 10000, .47),
     (100.micros, 20000, .97),
     (50.micros, 20000, 2.78),
     (10.micros, 30000, 5.89),
@@ -53,7 +53,7 @@ class ThrottlerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       (1 to testCount)
         .map { i =>
-          t.run { () =>
+          t.run {
             sched.addEvent(s"trigger-$i")
             ().future
           }
