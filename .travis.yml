@@ -1,9 +1,15 @@
 language: scala
 scala:
 - 2.11.1
+- 2.10.4
 jdk:
 - oraclejdk8
 - oraclejdk7
+- openjdk6s
+notifications:
+  email:
+    recipients:
+    - lance.gatlin@s-mach.net
 services: mongodb
 script:
 - sbt scoverage:test
@@ -17,5 +23,6 @@ env:
 after_success:
   - >
       test "${TRAVIS_PULL_REQUEST}" = 'false' &&
+      test "${TRAVIS_BRANCH}" == 'master' &&
       test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' &&
       sbt 'set credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASS"))' publish
