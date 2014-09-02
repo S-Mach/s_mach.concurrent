@@ -3,7 +3,7 @@ import org.scoverage.coveralls.CoverallsPlugin.coverallsSettings
 
 scalaVersion := "2.11.1"
 
-organization := "s_mach"
+organization := "net.s_mach"
 
 name := "concurrent"
 
