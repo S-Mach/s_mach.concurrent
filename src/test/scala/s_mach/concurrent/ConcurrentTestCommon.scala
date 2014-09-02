@@ -66,7 +66,7 @@ trait ConcurrentTestCommon extends Matchers {
     builder.result().distinct
   }
 
-  val TEST_COUNT = 1000
+  val TEST_COUNT = 10000
 
   // Fuzz delays to generate more random serialization schedules
   def calcDelay_ns() =  DELAY_NS + (RANDOM_NS * Random.nextGaussian()).toLong
@@ -76,7 +76,7 @@ trait ConcurrentTestCommon extends Matchers {
 
     sched.addStartEvent(s"success-$i")
     Future {
-      delay(calcDelay_ns())//DELAY_NS)
+      delay(calcDelay_ns())
       sched.addEndEvent(s"success-$i")
       i
     }
@@ -87,7 +87,7 @@ trait ConcurrentTestCommon extends Matchers {
 
     sched.addStartEvent(s"success-$i")
     Future {
-      delay(calcDelay_ns())//DELAY_NS)
+      delay(calcDelay_ns())
       sched.addEndEvent(s"success-$i")
       Vector(i,i,i)
     }
