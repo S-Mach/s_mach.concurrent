@@ -27,30 +27,31 @@ import util._
 class TupleConcurrentlyTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
   "concurrently-t0" must "wait on all Futures to complete concurrently" in {
-    test repeat(TEST_COUNT,
-      // Very occasionally a serial schedule occurs at random
-      allowedFailurePercent = 0.02
-    ) run {
-      implicit val ctc = mkConcurrentTestContext()
-      import ctc._
+    val results =
+      test repeat TEST_COUNT run {
+        implicit val ctc = mkConcurrentTestContext()
+        import ctc._
 
-      sched.addEvent("start")
+        sched.addEvent("start")
 
-      val f1 = success(1)
-      val f2 = success(2)
-      val f3 = success(3)
-      val f4 = success(4)
-      val f5 = success(5)
-      val f6 = success(6)
+        val f1 = success(1)
+        val f2 = success(2)
+        val f3 = success(3)
+        val f4 = success(4)
+        val f5 = success(5)
+        val f6 = success(6)
 
-      val result = concurrently(f1,f2,f3,f4,f5,f6)
+        val result = concurrently(f1,f2,f3,f4,f5,f6)
 
-      waitForActiveExecutionCount(0)
-      sched.addEvent("end")
+        waitForActiveExecutionCount(0)
+        sched.addEvent("end")
 
-      result.getTry should be(Success((1,2,3,4,5,6)))
-      isConcurrentSchedule(6, sched) should be(true)
-    }
+        result.getTry should be(Success((1,2,3,4,5,6)))
+        isConcurrentSchedule(6, sched)
+      }
+
+    val concurrentPercent = results.count(_ == true) / results.size.toDouble
+    concurrentPercent should be >= 0.98
   }
 
   "concurrently-t1" must "complete immediately after any Future fails" in {

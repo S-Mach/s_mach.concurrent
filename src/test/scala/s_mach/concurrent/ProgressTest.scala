@@ -116,7 +116,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     }
   }
 
-  "PeriodicProgressReporter" must "on average report progress at the specified interval " in {
+  "PeriodicProgressReporter" must "on average report progress at the specified interval " taggedAs(DelayAccuracyTest) in {
     val allReportIntervals = 
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -153,6 +153,6 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     val reportIntervals = allReportIntervals.flatten.map(_.toDouble)
     val filteredReportIntervals = filterOutliersBy(reportIntervals, { v:Double => v })
     val avgReportInterval_ns = filteredReportIntervals.sum / filteredReportIntervals.size
-    avgReportInterval_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.1)
+    avgReportInterval_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.25)
   }
 }

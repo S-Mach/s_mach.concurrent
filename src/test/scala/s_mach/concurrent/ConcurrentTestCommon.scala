@@ -20,7 +20,7 @@ package s_mach.concurrent
 
 import java.util.concurrent.Executors
 
-import org.scalatest.Matchers
+import org.scalatest.{Tag, Matchers}
 import s_mach.concurrent.util.{ConcurrentTestContext, SerializationSchedule}
 import scala.collection.TraversableLike
 import scala.collection.generic.CanBuildFrom
@@ -37,6 +37,8 @@ object ConcurrentTestCommon {
 trait ConcurrentTestCommon extends Matchers {
   // Note: these tests will fail unless there is at least two cores
   assert(Runtime.getRuntime.availableProcessors() > 1)
+
+  object DelayAccuracyTest extends Tag("s_mach.concurrent.DelayAccuracyTest")
 
   // Not going to worry about shutdown since only one is ever created here
   val cpus = Runtime.getRuntime.availableProcessors

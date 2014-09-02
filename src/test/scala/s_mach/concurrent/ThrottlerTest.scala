@@ -30,6 +30,35 @@ import TestBuilder._
 
 class ThrottlerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
+  s"throttle" must s"execute operations no faster than the throttle setting" in {
+    implicit val ctc = mkConcurrentTestContext()
+    import ctc._
+
+    val t = Throttler(DELAY_NS)
+
+    (1 to TEST_COUNT)
+      .map { i =>
+        t.run {
+          sched.addEvent(s"trigger-$i")
+          ().future
+        }
+      }
+      .merge
+      .get
+
+
+    waitForActiveExecutionCount(0)
+
+    val eventMap = sched.eventMap
+    (1 to TEST_COUNT - 1) foreach { i =>
+      val e1 = eventMap(s"trigger-$i")
+      val e2 = eventMap(s"trigger-${i+1}")
+      val actualDelay_ns = e2.elapsed_ns - e1.elapsed_ns
+      actualDelay_ns should be >= DELAY_NS
+      actualDelay_ns
+    }
+  }
+
   Vector(
     (1.second, 10, .21),
     (100.millis, 100, .18),
@@ -44,7 +73,7 @@ class ThrottlerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     (5.micros, 40000, 5.70),
     (2.micros, 50000, 10.92)
   ).foreach { case (delay, testCount, errorPercent) =>
-    s"throttle-lock-$delay" must s"execute operations no faster than the throttle setting" in {
+    s"throttle-$delay" must s"execute operations on average at the specified rate" taggedAs(DelayAccuracyTest) in {
       val delay_ns = delay.toNanos
       implicit val ctc = mkConcurrentTestContext()
       import ctc._

@@ -78,8 +78,8 @@ object ScheduledExecutionContextImpl {
     val javaScheduledFuture =
       scheduledExecutorService.scheduleAtFixedRate(
         runnable,
-        initialDelay.toNanos,
-        period.toNanos,
+        initialDelay_ns,
+        period_ns,
         TimeUnit.NANOSECONDS
       )
 
