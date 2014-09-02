@@ -9,6 +9,7 @@ v1,13-Jul-2014
 *UNDER CONSTRUCTION*
 
 image::https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]
+image::https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"]
 
 == Versions
 1. Scala 2.11.0
