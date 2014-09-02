@@ -18,7 +18,7 @@
 */
 package s_mach.concurrent.impl
 
-/* WARNING: Generated code. To modify see s_mach.concurrent.codegen.TupleConcurrentlyOpsCodeGen */
+/* WARNING: Generated code. To modify see TupleConcurrentlyOpsCodeGen */
 
 import s_mach.concurrent.impl.MergeOps.mergeFailImmediately
 

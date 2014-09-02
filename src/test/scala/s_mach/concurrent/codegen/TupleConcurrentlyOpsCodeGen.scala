@@ -54,7 +54,7 @@ s"""
     val contents =
 s"""package s_mach.concurrent
 
-/* WARNING: Generated code. To modify see s_mach.concurrent.codegen.TupleConcurrentlyOpsCodeGen */
+/* WARNING: Generated code. To modify see TupleConcurrentlyOpsCodeGen */
 
 import scala.concurrent.{ Future, ExecutionContext, Promise }
 import MergeOps.mergeFailImmediately
