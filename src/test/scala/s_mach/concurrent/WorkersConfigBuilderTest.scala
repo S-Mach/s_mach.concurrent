@@ -32,15 +32,13 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
         implicit val ctc = mkConcurrentTestContext()
         import ctc._
 
-        sched.addEvent("start")
-
-        val result = items.workers(3).map(success)
+        val items = mkItems
+        val result = items.workers.map(success)
 
         waitForActiveExecutionCount(0)
-        sched.addEvent("end")
 
         result.getTry should equal (Success(items))
-        isConcurrentSchedule(items.size, sched)
+        isConcurrentSchedule(items, sched)
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
@@ -61,6 +59,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
         val lock = new Object
         var maxActiveCount = 0
         var activeCount = 0
+        val items = mkItems
         val result = items.workers(workerCount).map { item =>
           lock.synchronized {
             activeCount = activeCount + 1
@@ -93,15 +92,13 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
         implicit val ctc = mkConcurrentTestContext()
         import ctc._
 
-        sched.addEvent("start")
-
-        val result = items.workers(2).flatMap(successN)
+        val items = mkItems
+        val result = items.workers.flatMap(successN)
 
         waitForActiveExecutionCount(0)
-        sched.addEvent("end")
 
         result.getTry should equal(Success(items.flatMap(i => Vector(i,i,i))))
-        isConcurrentSchedule(items.size, sched)
+        isConcurrentSchedule(items, sched)
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
@@ -114,19 +111,17 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
         implicit val ctc = mkConcurrentTestContext()
         import ctc._
 
-        sched.addEvent("start")
-
-        val result = items.workers(2).foreach(success)
+        val items = mkItems
+        val result = items.workers.foreach(success)
 
         waitForActiveExecutionCount(0)
-        sched.addEvent("end")
 
         result.getTry should equal(Success(()))
         val eventMap = sched.eventMap
-        (1 to items.size) foreach { i =>
+        items foreach { i =>
           eventMap.contains(s"success-$i") should equal(true)
         }
-        isConcurrentSchedule(items.size, sched)
+        isConcurrentSchedule(items, sched)
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
@@ -141,6 +136,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
       sched.addEvent("start")
 
       val latch = Latch()
+      val items = mkItems
       val result = items.zipWithIndex.workers(2).map { case (item, i) =>
         i match {
           case 1 => fail(item) //sideEffect latch.set()
@@ -154,12 +150,12 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
 
       result.getTry shouldBe a [Failure[_]]
       result.getTry.failed.get shouldBe a [ConcurrentThrowable]
-      sched.happensBefore("start","fail-2") should equal(true)
-      sched.happensBefore("fail-2","end") should equal(true)
+      sched.happensBefore("start",s"fail-${items(1)}") should equal(true)
+      sched.happensBefore(s"fail-${items(1)}","end") should equal(true)
 
       // Note: there is a race condition between whether fail causes workers to exit before workers starts up success-3
-      (4 to 6).foreach { i =>
-        sched.orderedEvents.exists(_.id == s"success-$i") should equal (false)
+      (4 to items.size - 1).foreach { i =>
+        sched.orderedEvents.exists(_.id == s"success-${items(i)}") should equal (false)
       }
     }
   }
@@ -169,6 +165,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
 
+      val items = mkItems
       val lastIdx = items.size - 1
       val result = items.zipWithIndex.workers(2).map { case (item, i) =>
         if(lastIdx == i) {
@@ -183,12 +180,13 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
     }
   }
 
-  "WorkersConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+  "WorkersConfigBuilder.modifiers-t6" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
     val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
         import ctc._
 
+        val items = mkItems
         val allAttempts = Array.fill(items.size)(1)
 
         val result =
@@ -209,7 +207,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
               override def onStartTask() = sched.addEvent(s"progress-start")
               override def onCompleteTask() = sched.addEvent(s"progress-end")
               override def onStartStep(stepId: Long) = { }
-              override def onCompleteStep(stepId: Long) = sched.addEvent(s"progress-${stepId+1}")
+              override def onCompleteStep(stepId: Long) = sched.addEvent(s"progress-$stepId")
             })
             .map { case (i,idx) =>
               val attempts = allAttempts(idx)
@@ -229,21 +227,21 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
         // TODO: this doesn't work properly below 1 ms throttle?
   //      waitForActiveExecutionCount(0)
 
-        items foreach { i =>
+        items.zipWithIndex foreach { case (i,idx) =>
           sched.happensBefore(s"progress-start",s"map-$i+1") should equal(true)
           sched.happensBefore(s"map-$i+1",s"retry-$i+1") should equal(true)
           sched.happensBefore(s"retry-$i+1",s"map-$i+2") should equal(true)
           sched.happensBefore(s"map-$i+2",s"retry-$i+2") should equal(true)
-          sched.happensBefore(s"map-$i+3",s"progress-$i") should equal(true)
-          sched.happensBefore(s"progress-$i",s"progress-end") should equal(true)
+          sched.happensBefore(s"map-$i+3",s"progress-$idx") should equal(true)
+          sched.happensBefore(s"progress-$idx",s"progress-end") should equal(true)
         }
 
         val eventMap = sched.eventMap
-        (1 until items.size) flatMap { i =>
+        items.take(items.size - 1).zipWithIndex flatMap { case (i,idx) =>
           val e1 = eventMap(s"map-$i+1")
           val e2 = eventMap(s"map-$i+2")
           val e3 = eventMap(s"map-$i+3")
-          val e4 = eventMap(s"map-${i+1}+1")
+          val e4 = eventMap(s"map-${items(idx+1)}+1")
           Vector(
             e2.elapsed_ns - e1.elapsed_ns,
             e3.elapsed_ns - e2.elapsed_ns,

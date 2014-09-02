@@ -47,7 +47,7 @@ class TupleConcurrentlyTest extends FlatSpec with Matchers with ConcurrentTestCo
         sched.addEvent("end")
 
         result.getTry should be(Success((1,2,3,4,5,6)))
-        isConcurrentSchedule(6, sched)
+        isConcurrentSchedule(Vector(1,2,3,4,5,6), sched)
       }
 
     val concurrentPercent = results.count(_ == true) / results.size.toDouble

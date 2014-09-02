@@ -32,12 +32,12 @@ import TestBuilder._
 object ConcurrentTestCommon {
   // Not going to worry about shutdown since only one is ever created here
   implicit val scheduledExecutorService = Executors.newScheduledThreadPool(Runtime.getRuntime.availableProcessors())
+  println(s"Found ${Runtime.getRuntime.availableProcessors()} CPUs")
 }
 
 trait ConcurrentTestCommon extends Matchers {
   // Note: these tests will fail unless there is at least two cores
   assert(Runtime.getRuntime.availableProcessors() > 1)
-  println(s"Found ${Runtime.getRuntime.availableProcessors()} CPUs")
 
   object DelayAccuracyTest extends Tag("s_mach.concurrent.DelayAccuracyTest")
 
@@ -53,10 +53,20 @@ trait ConcurrentTestCommon extends Matchers {
   val DELAY_NS = DELAY.toNanos
   val RANDOM_NS = (DELAY_NS * 0.1).toLong
 
-  val ITEM_COUNT = 6
-  val items = (1 to ITEM_COUNT).toVector
+//  val ITEM_COUNT = 6
+//  val items = (1 to ITEM_COUNT).toVector
+  def mkItems = {
+    val g = Random.nextGaussian()
+    val n = Math.min(100, Math.max(10, (50 + (50 * g)).toInt))
 
-  val TEST_COUNT = 10000
+    val builder = Vector.newBuilder[Int]
+    for(i <- 1 to n) {
+      builder += Random.nextInt()
+    }
+    builder.result().distinct
+  }
+
+  val TEST_COUNT = 1000
 
   // Fuzz delays to generate more random serialization schedules
   def calcDelay_ns() =  DELAY_NS + (RANDOM_NS * Random.nextGaussian()).toLong
@@ -66,7 +76,7 @@ trait ConcurrentTestCommon extends Matchers {
 
     sched.addStartEvent(s"success-$i")
     Future {
-      delay(DELAY_NS)
+      delay(calcDelay_ns())//DELAY_NS)
       sched.addEndEvent(s"success-$i")
       i
     }
@@ -77,7 +87,7 @@ trait ConcurrentTestCommon extends Matchers {
 
     sched.addStartEvent(s"success-$i")
     Future {
-      delay(DELAY_NS)
+      delay(calcDelay_ns())//DELAY_NS)
       sched.addEndEvent(s"success-$i")
       Vector(i,i,i)
     }
@@ -92,51 +102,33 @@ trait ConcurrentTestCommon extends Matchers {
     }
   }
 
-  def isConcurrentSchedule(itemCount: Int, sched: SerializationSchedule[String]) : Boolean = {
-
-    val test1 =
-      (1 to itemCount).forall { i =>
-        sched.happensBefore("start",s"success-$i") &&
-        sched.happensBefore(s"success-$i","end")
+  def isConcurrentSchedule(items: Vector[Int], sched: SerializationSchedule[String]) : Boolean = {
+    var found = false
+    var done = false
+    var i = 0
+    var j = 0
+    while(found == false && done == false) {
+      if(i != j) {
+        found = sched.happensDuring(s"success-${items(i)}",s"success-${items(j)}")
       }
-
-    // Ensure some degree of concurrency
-    val test2 =
-      (1 to itemCount)
-        .combinations(2)
-        .map(v => (v(0),v(1)))
-        .filter { case (i,j) => i != j }
-        .exists { case (i,j) =>
-          sched.happensDuring(s"success-$i",s"success-$j")
-        }
-
-    test1 && test2
+      j = j + 1
+      if(j == items.size) {
+        i = i + 1
+        if(i == items.size) done = true
+        j = 0
+      }
+    }
+    found
   }
 
-  def isSerialSchedule(itemCount: Int, sched: SerializationSchedule[String]) : Boolean = {
-    val test1 =
+  def isSerialSchedule(items: Vector[Int], sched: SerializationSchedule[String]) : Boolean = {
       // Ensure serial execution
-      sched.happensBefore("start","success-1")
-
-    val test2 =
-      (2 to (itemCount - 1)).forall { i =>
-        sched.happensBefore(s"success-$i",s"success-${i+1}")
-      }
-
-    val test3 =
-      sched.happensBefore(s"success-$itemCount","end")
-
-    val test4 =
-      // Ensure no concurrent execution
-      (1 to itemCount)
-        .combinations(2)
-        .map(v => (v(0),v(1)))
-        .filter { case (i,j) => i != j }
-        .exists { case (i,j) =>
-          sched.happensDuring(s"success-$i",s"success-$j")
-        }
-
-    test1 && test2 && test3 && !test4
+      sched.happensBefore("start",s"success-${items.head}") &&
+      (0 until items.size - 1).forall { i =>
+        sched.happensBefore(s"success-${items(i)}",s"success-${items(i+1)}")
+      } &&
+      sched.happensBefore(s"success-${items.last}","end") &&
+      isConcurrentSchedule(items, sched) == false
   }
 
   def mean(values: TraversableOnce[Double]) = values.sum / values.size

@@ -43,7 +43,7 @@ class FlatMergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
         result.getTry should be(Success(Vector(1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,6,6,6)))
 
-        isConcurrentSchedule(6, sched)
+        isConcurrentSchedule(Vector(1,2,3,4,5,6), sched)
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble

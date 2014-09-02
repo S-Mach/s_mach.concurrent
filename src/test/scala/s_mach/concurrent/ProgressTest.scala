@@ -30,6 +30,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
 
+      val items = mkItems
       val latches = (0 to items.size).map(_ => Latch())
 
       items
@@ -58,6 +59,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
 
+      val items = mkItems
       val latches = (0 to items.size).map(_ => Latch())
 
       items
@@ -90,6 +92,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
 
+      val items = mkItems
       val latches = (0 to items.size).map(_ => Latch())
 
       items.iterator
@@ -122,6 +125,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 //        implicit val ctc = mkConcurrentTestContext()
 //        import ctc._
 //
+//        val items = mkItems
 //        val latches = (0 to items.size).map(_ => Latch())
 //
 //       items

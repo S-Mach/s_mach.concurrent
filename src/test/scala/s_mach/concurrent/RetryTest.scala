@@ -34,6 +34,7 @@ class RetryTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       var attempts = 0
 
+      val items = mkItems
       val result =
         items
           .serially
@@ -80,6 +81,7 @@ class RetryTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       var attempts = 0
 
+      val items = mkItems
       val result =
         items
           .serially

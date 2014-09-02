@@ -26,7 +26,6 @@ import util._
 import TestBuilder._
 
 class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
-
   "SeriallyConfigBuilder.map-t1" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
@@ -34,13 +33,14 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
 
       sched.addEvent("start")
 
+      val items = mkItems
       val result = items.serially.map(success)
 
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
 
       result.getTry should equal (Success(items))
-      isSerialSchedule(items.size, sched) should equal(true)
+      isSerialSchedule(items, sched) should equal(true)
     }
   }
 
@@ -51,13 +51,14 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
 
       sched.addEvent("start")
 
+      val items = mkItems
       val result = items.serially.flatMap(successN)
 
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
 
       result.getTry should equal(Success(items.flatMap(i => Vector(i,i,i))))
-      isSerialSchedule(items.size, sched) should equal(true)
+      isSerialSchedule(items, sched) should equal(true)
     }
   }
 
@@ -69,6 +70,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
 
       sched.addEvent("start")
 
+      val items = mkItems
       val result = items.serially.foreach(success)
 
       waitForActiveExecutionCount(0)
@@ -76,10 +78,10 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
 
       result.getTry should equal(Success(()))
       val eventMap = sched.eventMap
-      (1 to items.size) foreach { i =>
+      items foreach { i =>
         eventMap.contains(s"success-$i") should equal(true)
       }
-      isSerialSchedule(items.size, sched) should equal(true)
+      isSerialSchedule(items, sched) should equal(true)
     }
   }
 
@@ -91,6 +93,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
 
         var even = true
 
+        val items = Vector(1,2,3)//mkItems
         val result =
           items
             .serially
@@ -121,39 +124,23 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
         // TODO: this doesn't work properly below 1 ms throttle?
   //      waitForActiveExecutionCount(0)
 
-        sched.orderedEvents.map(_.id) should equal(Vector(
-          "progress-0",
-          "map-1-true",
-          "retry-1",
-          "map-1-false",
-          "progress-1",
-          "map-2-true",
-          "retry-2",
-          "map-2-false",
-          "progress-2",
-          "map-3-true",
-          "retry-3",
-          "map-3-false",
-          "progress-3",
-          "map-4-true",
-          "retry-4",
-          "map-4-false",
-          "progress-4",
-          "map-5-true",
-          "retry-5",
-          "map-5-false",
-          "progress-5",
-          "map-6-true",
-          "retry-6",
-          "map-6-false",
-          "progress-6"
-        ))
+        sched.orderedEvents.map(_.id) should equal(
+          Vector("progress-0") ++
+          items.zipWithIndex.flatMap { case (item,idx) =>
+            Vector(
+              s"map-$item-true",
+              s"retry-$item",
+              s"map-$item-false",
+              s"progress-${idx+1}"
+            )
+          }
+        )
 
         val eventMap = sched.eventMap
-        (1 until items.size) flatMap { i =>
-          val e1 = eventMap(s"map-$i-true")
-          val e2 = eventMap(s"map-$i-false")
-          val e3 = eventMap(s"map-${i+1}-true")
+        items.inits.zipWithIndex flatMap { case(item, idx) =>
+          val e1 = eventMap(s"map-$item-true")
+          val e2 = eventMap(s"map-$item-false")
+          val e3 = eventMap(s"map-${items(idx+1)}-true")
           Vector(
             e2.elapsed_ns - e1.elapsed_ns,
             e3.elapsed_ns - e2.elapsed_ns

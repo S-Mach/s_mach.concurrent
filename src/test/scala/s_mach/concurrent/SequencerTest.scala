@@ -34,22 +34,27 @@ class SequencerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
 
-      val s = Sequencer(1)
-      s.next should equal(1)
+      val s = Sequencer(0)
+      s.next should equal(0)
 
+      val items = mkItems
+      val builder = Vector.newBuilder[Int]
       // Feed futures to Sequencer in a random order
-      val result = Random.shuffle(items).map { item =>
-        s.when(item)(success(item))
+      val result = Random.shuffle(items.zipWithIndex).map { case (item,idx) =>
+        s.when(idx) {
+          builder += item
+          success(item)
+        }
       }
 
       waitForActiveExecutionCount(0)
 
-      s.next should equal(7)
+      s.next should equal(items.size)
 
-      result.merge.get.sorted should equal(items)
+      builder.result() should equal(items)
 
-      (1 to ITEM_COUNT - 1).foreach { item =>
-        sched.happensBefore(s"success-${item}",s"success-${item+1}")
+      (0 until items.size - 1).foreach { i =>
+        sched.happensBefore(s"success-${items(i)}",s"success-${items(i+1)}")
       }
     }
   }

@@ -33,15 +33,13 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
         implicit val ctc = mkConcurrentTestContext()
         import ctc._
 
-        sched.addEvent("start")
-
+        val items = mkItems
         val result = items.concurrently.map(success)
 
         waitForActiveExecutionCount(0)
-        sched.addEvent("end")
 
         result.getTry should equal (Success(items))
-        isConcurrentSchedule(items.size, sched)
+        isConcurrentSchedule(items, sched)
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
@@ -56,13 +54,14 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
 
         sched.addEvent("start")
 
+        val items = mkItems
         val result = items.concurrently.flatMap(successN)
 
         waitForActiveExecutionCount(0)
         sched.addEvent("end")
 
         result.getTry should equal(Success(items.flatMap(i => Vector(i,i,i))))
-        isConcurrentSchedule(items.size, sched)
+        isConcurrentSchedule(items, sched)
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
@@ -77,6 +76,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
 
         sched.addEvent("start")
 
+        val items = mkItems
         val result = items.concurrently.foreach(success)
 
         waitForActiveExecutionCount(0)
@@ -84,10 +84,10 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
 
         result.getTry should equal(Success(()))
         val eventMap = sched.eventMap
-        (1 to items.size) foreach { i =>
+        items foreach { i =>
           eventMap.contains(s"success-$i") should equal(true)
         }
-        isConcurrentSchedule(items.size, sched)
+        isConcurrentSchedule(items, sched)
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
@@ -99,6 +99,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
 
+      val items = mkItems
       val allAttempts = Array.fill(items.size)(1)
 
       val result =
@@ -118,7 +119,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
             override def onStartTask() = sched.addEvent(s"progress-start")
             override def onCompleteTask() = sched.addEvent(s"progress-end")
             override def onStartStep(stepId: Long) = { }
-            override def onCompleteStep(stepId: Long) = sched.addEvent(s"progress-${stepId+1}")
+            override def onCompleteStep(stepId: Long) = sched.addEvent(s"progress-$stepId")
           })
           .map { case (i,idx) =>
             val attempts = allAttempts(idx)
@@ -138,13 +139,13 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
       // TODO: this doesn't work properly below 1 ms throttle?
 //      waitForActiveExecutionCount(0)
 
-      items foreach { i =>
+      items.zipWithIndex foreach { case (i,idx) =>
         sched.happensBefore(s"progress-start",s"map-$i+1") should equal(true)
         sched.happensBefore(s"map-$i+1",s"retry-$i+1") should equal(true)
         sched.happensBefore(s"retry-$i+1",s"map-$i+2") should equal(true)
         sched.happensBefore(s"map-$i+2",s"retry-$i+2") should equal(true)
-        sched.happensBefore(s"map-$i+3",s"progress-$i") should equal(true)
-        sched.happensBefore(s"progress-$i",s"progress-end") should equal(true)
+        sched.happensBefore(s"map-$i+3",s"progress-$idx") should equal(true)
+        sched.happensBefore(s"progress-$idx",s"progress-end") should equal(true)
       }
     }
   }
