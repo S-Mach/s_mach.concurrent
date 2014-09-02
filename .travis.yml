@@ -19,5 +19,5 @@ after_success:
   - >
       test "${TRAVIS_PULL_REQUEST}" = 'false' &&
       test "${TRAVIS_BRANCH}" == 'master' &&
-      test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' &&
+      test "${TRAVIS_JDK_VERSION}" = 'openjdk6' &&
       sbt 'set credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASS"))' publish
