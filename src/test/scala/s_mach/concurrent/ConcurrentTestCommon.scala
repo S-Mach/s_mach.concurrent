@@ -37,6 +37,7 @@ object ConcurrentTestCommon {
 trait ConcurrentTestCommon extends Matchers {
   // Note: these tests will fail unless there is at least two cores
   assert(Runtime.getRuntime.availableProcessors() > 1)
+  println(s"Found ${Runtime.getRuntime.availableProcessors()} CPUs")
 
   object DelayAccuracyTest extends Tag("s_mach.concurrent.DelayAccuracyTest")
 

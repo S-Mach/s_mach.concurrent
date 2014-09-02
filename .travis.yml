@@ -8,8 +8,8 @@ notifications:
     recipients:
     - lance.gatlin@s-mach.net
 script:
-- sbt "scoverage:test -- -l s_mach.concurrent.DelayAccuracyTest"
-- sbt "coveralls -- -l s_mach.concurrent.DelayAccuracyTest"
+- sbt scoverage:test
+- sbt coveralls
 env:
   global:
   - secure: C+EY+X0B5fFH25LWscULBniDcbcvXdTFBEsEzuWNhHXnref+At23tC71cO5TGFYfAKKudF8ah2QWmSw3SSvdggnOLKnAmHXdzJHgMUsGxeja2ivB4NtCSLc172LTGiHBLnYKWamWSfcuPoRJp1zfpy+S+vrLE4vGwXnUpqUF83M=
