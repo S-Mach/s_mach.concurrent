@@ -8,6 +8,8 @@ v1,13-Jul-2014
 
 *UNDER CONSTRUCTION*
 
+[![Build Status](https://travis-ci.org/S-Mach/s_mach.concurrent.svg)](https://travis-ci.org/S-Mach/s_mach.concurrent)
+
 == Versions
 1. Scala 2.11.0
 2. s_mach.concurrent 0.1
