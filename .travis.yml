@@ -1,6 +1,6 @@
 language: scala
 scala:
-- 2.11.1
+- 2.10.4
 jdk:
 - oraclejdk8
 - oraclejdk7
@@ -15,6 +15,7 @@ env:
   - secure: jeLwg5fID5dolKe1sNXY3J9dbYOeHD9avf9dS41vzbXOR76iyl0KYQEdeZ/8ILuKDbTlYySAeEj2+5JCgzd0q2P+xXtuVArxBlrBtnoQCdpNXCiKu8+jxP+/IlZp0baS2y3lviap8mdDBuJyJtEIub93jTklF01KDlmd9dC0Y/Y=
   - secure: h23RYLu03ARMkFzNih+R80p7s8NLFjo8ei/52MCclUN2OU5Pz4TAPlL3DxgCdlbNCmfgGzUZqf2wksCZ1sy7K0yPUOfhw6d54DXHaznrR4b2xPNxT3RfKE952OcxF127d+/AlZ0ufWevn1PQHXLIrFJsUjTe797HuIHjEmjuWlc=
 after_success:
-- ! 'test "${TRAVIS_PULL_REQUEST}" = ''false'' && test "${TRAVIS_JDK_VERSION}" = ''oraclejdk7''
-  && sbt ''set credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org",
-  System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASS"))'' publish
+  - >
+      test "${TRAVIS_PULL_REQUEST}" = 'false' &&
+      test "${TRAVIS_JDK_VERSION}" = 'oraclejdk7' &&
+      sbt 'set credentials += Credentials("Sonatype Nexus Repository Manager", "oss.sonatype.org", System.getenv("SONATYPE_USER"), System.getenv("SONATYPE_PASS"))' publish
