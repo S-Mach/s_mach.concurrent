@@ -51,7 +51,7 @@ class TupleConcurrentlyTest extends FlatSpec with Matchers with ConcurrentTestCo
       }
 
     val concurrentPercent = results.count(_ == true) / results.size.toDouble
-    concurrentPercent should be >= 0.98
+    concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
   "concurrently-t1" must "complete immediately after any Future fails" in {

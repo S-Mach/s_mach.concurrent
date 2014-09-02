@@ -68,6 +68,8 @@ trait ConcurrentTestCommon extends Matchers {
 
   val TEST_COUNT = 10000
 
+  val MIN_CONCURRENCY_PERCENT = 0.66
+  
   // Fuzz delays to generate more random serialization schedules
   def calcDelay_ns() =  DELAY_NS + (RANDOM_NS * Random.nextGaussian()).toLong
 

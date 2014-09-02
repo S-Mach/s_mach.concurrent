@@ -47,7 +47,7 @@ class FlatMergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
-    concurrentPercent should be >= 0.98
+    concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
   "flatMerge-t1" must "complete immediately after any Future fails" in {

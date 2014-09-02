@@ -43,7 +43,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
-    concurrentPercent should be >= 0.98
+    concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
   "ConcurrentlyConfigBuilder.flatMap-t1" must "execute each future at the same time" in {
@@ -65,7 +65,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
-    concurrentPercent should be >= 0.98
+    concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
   "ConcurrentlyConfigBuilder.foreach-t2" must "execute each future at the same time" in {
@@ -91,7 +91,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
-    concurrentPercent should be >= 0.98
+    concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
   "ConcurrentlyConfigBuilder.modifiers-t3" must "execute each future one at a time and apply retry and progress correctly" in {

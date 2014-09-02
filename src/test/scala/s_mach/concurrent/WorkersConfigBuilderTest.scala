@@ -42,7 +42,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
-    concurrentPercent should be >= 0.98
+    concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
   "WorkerConfigBuilder.map-t1" must "should invoke at most workerCount futures concurrently" in {
@@ -103,7 +103,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
-    concurrentPercent should be >= 0.98
+    concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
   "WorkerConfigBuilder.foreach-t3" must "execute futures concurrently" in {
