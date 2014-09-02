@@ -126,7 +126,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
       }
 
     val concurrentPercent = result.count(_ == true) / result.size.toDouble
-    concurrentPercent should be >= 0.97
+    concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
   "WorkerConfigBuilder.map-t4" must "complete immediately after any Future fails" in {
