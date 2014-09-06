@@ -243,11 +243,11 @@ val future = { // necessary for pasting into repl
     oomItem <- {
       println("Reading...")
       oomItemIdBatch
-        .workers(2)
+        .serially
         .throttle(6.seconds)
         .flatMap { batch =>
           batch.
-            .concurrently
+            .workers
             .retry {
               case _: TimeoutException :: tail if tail.size < 3 => true
               case _: SocketTimeoutException :: _ if tail.size < 3 => true
