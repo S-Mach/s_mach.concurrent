@@ -9,7 +9,6 @@ v1,13-Jul-2014
 
 image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"]
 
-== Summary
 +s_mach.concurrent+ is an open-source Scala library that provides concurrent execution flow control primitives for
 working with the scala.concurrent standard library.
 
@@ -20,18 +19,17 @@ working with the scala.concurrent standard library.
 * Overcomes some design limitations of the scala.concurrent library
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
-== Pre-requisites
-1. Scala 2.9.3, 2.10.4 or 2.11.1
-
-== Inclusion in build.sbt
-[source,sbt,numbered]
-libraryDependencies += "net.s_mach" % "concurrent" %% "0.1.0"
-
-== Links
 * Code: https://github.com/S-Mach/s_mach.concurrent
 * Scaladoc: http://S-Mach.github.io/s_mach.concurrent
 
-== Imports
+== Pre-requisites & adding to build.sbt
+1. +s_mach.concurrent+ works with Scala 2.9.3, 2.10.4 or 2.11.1
+
+[source,sbt,numbered]
+libraryDependencies += "net.s_mach" % "concurrent" %% "0.1.0"
+
+
+== Imports for Examples
 All code examples assume the following imports:
 [source,scala,numbered]
 ----
@@ -143,7 +141,7 @@ val future = { // necessary for pasting into repl
 +s_mach.concurrent+ allows modifying collection concurrent operations to report operation progress, retry failures and
 limit iteration speed to a specific time period.
 
-.Example 8: Adding progress reporting, retry and throttle control to collection concurrent operations
+.Example 4: Adding progress reporting, retry and throttle control to collection concurrent operations
 [source,scala,numbered]
 ----
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
@@ -181,7 +179,7 @@ val future = { // necessary for pasting into repl
 When first using +Future+ with a for-comprehension, it is natural to assume the following will produce concurrent
 operation:
 
-.Example 1: Incorrect +Future+ concurrency
+.Example 5: Incorrect +Future+ concurrency
 [source,scala,numbered]
 ----
 for {
@@ -194,7 +192,7 @@ for {
 Sadly, this code will compile and run just fine, but it will not execute concurrently. To correctly implement concurrent
 operation, the following standard pattern is used:
 
-.Example 4: Correct +Future+ concurrency:
+.Example 6: Correct +Future+ concurrency:
 [source,scala,numbered]
 ----
 val f1 = read("1")
@@ -215,7 +213,7 @@ is necessary because Scala lacks an applicative workflow which captures commands
 +s_mach.concurrent+ adds an applicative workflow method for futures: +concurrently+. This method can more concisely
 express the pattern above:
 
-.Example 5: New +concurrently+ method
+.Example 7: New +concurrently+ method
 [source,scala,numbered]
 ----
 for {
@@ -241,7 +239,7 @@ first exception encountered. In +Future.sequence+, all further exceptions past t
 +flatMerge+ methods fixes these problems by throwing +ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to
 access both the first exception thrown and a future of all exceptions thrown during the computation.
 
-.Example 6: +Future.sequence+ gets stuck waiting on longRead to complete and only returns the first exception:
+.Example 8: +Future.sequence+ gets stuck waiting on longRead to complete and only returns the first exception:
 [source,scala,numbered]
 ----
 scala> val t = Future.sequence(Vector(longRead("1"),readFail("2"),readFail("3"),read("4"))).getTry
@@ -254,7 +252,7 @@ t: scala.util.Try[scala.collection.immutable.Vector[Item]] = Failure(java.lang.R
 scala>
 ----
 
-.Example 7: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+, which can retrieve all exceptions:
+.Example 9: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+, which can retrieve all exceptions:
 [source,scala,numbered]
 ----
 scala> val t = Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.getTry
