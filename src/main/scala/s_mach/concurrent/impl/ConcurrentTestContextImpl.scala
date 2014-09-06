@@ -20,8 +20,8 @@ package s_mach.concurrent.impl
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.Duration
-import s_mach.concurrent.ScheduledExecutionContext
-import s_mach.concurrent.util.{Timer, SerializationSchedule, ConcurrentTestContext}
+import s_mach.concurrent._
+import s_mach.concurrent.util.{SerializationSchedule, ConcurrentTestContext}
 
 class ConcurrentTestContextImpl()(implicit
     ec: ExecutionContext,
@@ -30,39 +30,33 @@ class ConcurrentTestContextImpl()(implicit
   val _activeExecutionCount = new java.util.concurrent.atomic.AtomicInteger(0)
   override def activeExecutionCount = _activeExecutionCount.get
 
-  val scheduledExecutionContext = {
-      ScheduledExecutionContextListener(sec)
-        .onStart.add(1) { (_,_) =>
-          _activeExecutionCount.incrementAndGet()
-        }
-        .onComplete.add(1) { (_,_) =>
-          _activeExecutionCount.decrementAndGet()
-        }
-  }
-
-  // Use a wrapper here to gather all futures to ensure we wait for their completion before shutting down
-  // executor
-  val executionContext = {
-    ExecutionContextListener(ec)
-      .onExec.add(1) { (_,_) =>
-      _activeExecutionCount.incrementAndGet()
-      }
-      .onComplete.add(1) { (_,_) =>
+  override def reportFailure(cause: Throwable) = ec.reportFailure(cause)
+  override def execute(runnable: Runnable) = {
+    _activeExecutionCount.incrementAndGet()
+    ec.execute(new Runnable {
+      override def run() = {
+        runnable.run()
         _activeExecutionCount.decrementAndGet()
       }
+    })
+  }
+
+  override def scheduleAtFixedRate[U](initialDelay: Duration, period: Duration)(task: () => U) = {
+    _activeExecutionCount.incrementAndGet()
+    val retv = sec.scheduleAtFixedRate(initialDelay, period)(task)
+    retv.onCancel.onSet {
+      _activeExecutionCount.decrementAndGet()
+    }
+    retv
+  }
+  override def schedule[A](delay: Duration)(f: => A) = {
+    _activeExecutionCount.incrementAndGet()
+    val retv = sec.schedule(delay)(f)
+    retv.sideEffect(_activeExecutionCount.decrementAndGet()).background
+    retv
   }
 
 
-
-  override def scheduleAtFixedRate[U](initialDelay: Duration, period: Duration)(task: () => U) =
-    scheduledExecutionContext.scheduleAtFixedRate(initialDelay, period)(task)
-  override def schedule[A](delay: Duration)(f: => A) =
-    scheduledExecutionContext.schedule(delay)(f)
-
-  override def reportFailure(cause: Throwable) = executionContext.reportFailure(cause)
-  override def execute(runnable: Runnable) = executionContext.execute(runnable)
-
-  override implicit val timer = Timer()
   // Run first tests with no delay to compute avg base line
   override implicit val sched = SerializationSchedule[String]()
 

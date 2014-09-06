@@ -34,8 +34,6 @@ trait ConcurrentTestContext extends ExecutionContext with ScheduledExecutionCont
   /** @return the current number of active Runnables and scheduled tasks being processed */
   def activeExecutionCount: Int
 
-  /** @return a Timer that is started on construction of the test context */
-  implicit def timer: Timer
   /** @return the SerializationSchedule for the context */
   implicit def sched: SerializationSchedule[String]
 
