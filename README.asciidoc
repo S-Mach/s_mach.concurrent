@@ -16,7 +16,7 @@ working with the scala.concurrent standard library.
 * Adds new flow control primitives +concurrently+, +serially+ and +workers+ for control of collection concurrent operations
 * Adds progress reporting, retry and throttle control for collection concurrent operations
 * Adds +ScheduledExecutionContext+, a wrapper for +java.util.concurrent.ScheduledExecutorService+ that provides a functional style interface for scheduling delayed and periodic tasks
-* Adds common concurrent control mechanisms such as concurrent versions of +Latch+, +Lock+, +Semaphore+ and +Queue+
+* Adds common non-blocking concurrent control primitives such as concurrent versions of +Barrier+, +Latch+, +Lock+, +Semaphore+ and +Queue+
 * Overcomes some design limitations of the scala.concurrent library
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
