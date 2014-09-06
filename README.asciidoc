@@ -13,7 +13,8 @@ image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="htt
 +s_mach.concurrent+ is an open-source Scala library that provides concurrent execution flow control primitives for
 working with the scala.concurrent standard library.
 
-* Adds new flow control primitives +concurrently+, +serially+ and +workers+ for control of concurrent collection operations
+* Adds new flow control primitives +concurrently+, +serially+ and +workers+ for control of collection concurrent operations
+* Adds retry and throttle control for collection concurrent operations
 * Adds +ScheduledExecutionContext+, a wrapper for +java.util.concurrent.ScheduledExecutorService+ that provides a functional style interface for scheduling delayed and periodic tasks
 * Adds common concurrent control mechanisms such as concurrent versions of +Latch+, +Lock+, +Semaphore+ and +Queue+
 * Overcomes some design limitations of the scala.concurrent library
@@ -92,7 +93,7 @@ val future = { // necessary for pasting into repl
 
 The same code, rewritten using +s_mach.concurrent+:
 
-.Example 5: Using +s_mach.concurrent+ to serially or concurrently transform and traverse collections:
+.Example 2: Using +s_mach.concurrent+ to serially or concurrently transform and traverse collections:
 [source,scala,numbered]
 ----
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
@@ -117,7 +118,7 @@ val future = { // necessary for pasting into repl
 +s_mach.concurrent+ provides the +workers+ method for controlling the amount of concurrency. The number of concurrent
 workers is specified as the first parameter.
 
-.Example 6: Using +s_mach.concurrent+ workers to transform and traverse collections:
+.Example 3: Using +s_mach.concurrent+ workers to transform and traverse collections:
 [source,scala,numbered]
 ----
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
@@ -154,7 +155,7 @@ for {
 Sadly, this code will compile and run just fine, but it will not execute concurrently. To correctly implement concurrent
 operation, the following standard pattern is used:
 
-.Example 2: Correct +Future+ concurrency:
+.Example 4: Correct +Future+ concurrency:
 [source,scala,numbered]
 ----
 val f1 = read("1")
@@ -175,7 +176,7 @@ is necessary because Scala lacks an applicative workflow which captures commands
 +s_mach.concurrent+ adds an applicative workflow method for futures: +concurrently+. This method can more concisely
 express the pattern above:
 
-.Example 3: New +concurrently+ method
+.Example 5: New +concurrently+ method
 [source,scala,numbered]
 ----
 for {
@@ -201,7 +202,7 @@ first exception encountered. In +Future.sequence+, all further exceptions past t
 +flatMerge+ methods fixes these problems by throwing +ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to
 access both the first exception thrown and a future of all exceptions thrown during the computation.
 
-.Example 7: +Future.sequence+ gets stuck waiting on longRead to complete and only returns the first exception:
+.Example 6: +Future.sequence+ gets stuck waiting on longRead to complete and only returns the first exception:
 [source,scala,numbered]
 ----
 scala> val t = Future.sequence(Vector(longRead("1"),readFail("2"),readFail("3"),read("4"))).getTry
@@ -214,7 +215,7 @@ t: scala.util.Try[scala.collection.immutable.Vector[Item]] = Failure(java.lang.R
 scala>
 ----
 
-.Example 8: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+, which can retrieve all exceptions:
+.Example 7: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+, which can retrieve all exceptions:
 [source,scala,numbered]
 ----
 scala> val t = Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.getTry
@@ -227,4 +228,41 @@ scala> 4
 
 scala> val allFailures = t.failed.get.asInstanceOf[ConcurrentThrowable].allFailure.get
 allFailures: Vector[Throwable] = Vector(java.lang.RuntimeException: 2, java.lang.RuntimeException: 3)
+----
+
+== Retry and Throttle Control
++s_mach.concurrent+ allows modifying collection concurrent operations to retry failures and limit iteration speed to a
+specific time setting.
+
+.Example 8: Adding retry and throttle Control to collection concurrent operations
+[source,scala,numbered]
+----
+val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
+val future = { // necessary for pasting into repl
+  for {
+    oomItem <- {
+      println("Reading...")
+      oomItemIdBatch
+        .workers(2)
+        .throttle(100.millis) // limit to 1 batch per 100 milliseconds
+        .flatMap { batch =>
+          batch.
+            .concurrently
+            .retry { // retry certain exceptions
+              case _: TimeoutException :: tail if tail.size < 3 => true
+              case _: SocketTimeoutException :: _ if tail.size < 3 => true
+              case _ => false
+            }
+            .throttle(1.millis) // limit to 1 id per 1 millisecond
+            .map(read)
+        }
+    }
+    _ = println("Computing...")
+    oomNewItemBatch = oomItem.map(item => item.copy(value = item.value + 1)).grouped(10).toVector
+    oomResult <- {
+      println("Writing...")
+      oomNewItemBatch.workers(2).flatMap(_.workers(4).map(item => write(item.id, item)))
+    }
+  } yield oomResult.forall(_ == true)
+}
 ----
