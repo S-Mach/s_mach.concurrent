@@ -34,13 +34,13 @@ trait ConcurrentThrowable extends Throwable {
 object ConcurrentThrowable {
   def apply(
     firstFailure: Throwable,
-    futAllFailure: => Future[Vector[Throwable]] = Future.successful(Vector.empty)
+    allFailure: => Future[Vector[Throwable]] = Future.successful(Vector.empty)
   ) : ConcurrentThrowable = {
     val _firstFailure = firstFailure
-    lazy val _futAllFailure = futAllFailure
+    lazy val _allFailure = allFailure
     new ConcurrentThrowable {
       override def firstFailure = _firstFailure
-      override def allFailure = _futAllFailure
+      override def allFailure = _allFailure
       
       override def getMessage: String = firstFailure.getMessage
       override def getLocalizedMessage: String = firstFailure.getLocalizedMessage

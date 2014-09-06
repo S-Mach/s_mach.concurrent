@@ -5,28 +5,29 @@ v1,13-Jul-2014
 :blogpost-status: unpublished
 :blogpost-categories: s_mach, scala
 
-
 *UNDER CONSTRUCTION*
 
 image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"]
 
-== Versions
-1. Scala 2.11.0
-2. s_mach.concurrent 0.1
+== Summary
++s_mach.concurrent+ is an open-source Scala library that provides concurrent execution flow control primitives for
+working with the scala.concurrent standard library.
 
-== Code
-* https://github.com/S-Mach/s_mach.concurrent
-
-== Overview
-+s_mach.concurrent+ is an open-source Scala library that provides concurrent 
-execution flow control primitives for working with the scala.concurrent standard
-library. 
-
-* Adds missing common concurrent control mechanisms such as concurrent versions of +Latch+, +Lock+, +Semaphore+ and +Queue+
 * Adds new flow control primitives +concurrently+, +serially+ and +workers+ for control of concurrent collection operations
+* Adds +ScheduledExecutionContext+, a wrapper for +java.util.concurrent.ScheduledExecutorService+ that provides a functional style interface for scheduling delayed and periodic tasks
+* Adds common concurrent control mechanisms such as concurrent versions of +Latch+, +Lock+, +Semaphore+ and +Queue+
 * Overcomes some design limitations of the scala.concurrent library
-* Adds concurrency testing tools for writing stable concurrent tests such as +SerializationSchedule+ and +ExecutionContextListener+
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
+
+== Pre-requisites
+1. Scala 2.9.3, 2.10.4 or 2.11.1
+
+== Inclusion in build.sbt
+[source,sbt,numbered]
+libraryDependencies += "net.s_mach" % "concurrent" %% "0.1.0"
+
+== Links
+* https://github.com/S-Mach/s_mach.concurrent
 
 == Imports
 All code examples assume the following imports:
@@ -47,63 +48,12 @@ def write(id: String, item: Item) : Future[Boolean] = Future { Thread.sleep(1000
 def writeFail(id: String, item: Item) : Future[Boolean] = Future { Thread.sleep(1000); println(id); throw new RuntimeException(id.toString) }
 ----
 
-== Concurrently
-When first using +Future+ with a for-comprehension, it is natural to assume the following will produce concurrent
-operation:
-
-.Example 1: Incorrect +Future+ concurrency
-[source,scala,numbered]
-----
-for {
-  i1 <- read("1")
-  i2 <- read("2")
-  i3 <- read("3")
-} yield (i1,i2,i3)
-----
-
-Sadly, this code will compile and run just fine, but it will not execute concurrently. To correctly implement concurrent
-operation, the following standard pattern is used:
-
-.Example 2: Correct +Future+ concurrency:
-[source,scala,numbered]
-----
-val f1 = read("1")
-val f2 = read("2")
-val f3 = read("3")
-val future = { // necessary for pasting into repl
-  for {
-    i1 <- f1
-    i2 <- f2
-    i3 <- f3
-  } yield (i1,i2,i3)
-}
-----
-
-To get concurrent operation, all of the futures must be started before the for-comprehension. The for-comprehension is a
-monadic workflow. It captures commands that must take place in a specific sequential order. The pattern in example 2 is
-necessary because Scala lacks an applicative workflow: a workflow that captures commands that may be run in any order.
-+s_mach.concurrent+ adds an applicative workflow method for futures: +concurrently+. This method can more concisely express
-the pattern above:
-
-.Example 3: New +concurrently+ method
-[source,scala,numbered]
-----
-for {
-  (i1,i2,i3) <- concurrently(read("1"), read("2"), read("3"))
-} yield (i1,i2,i3)
-----
-
-In the example above, all futures are started at the same time and fed to the +concurrently+ method. The method returns
-a +Future[(Int,Int,Int)]+ which completes once all supplied futures complete. After this returned Future completes, the
-tuple value results can be extracted using normal Scala idioms. The +concurrently+ method also fixes problems with
-+scala.concurrent+ exception handling (see the 'Under the hood: Merge' section below).
-
 == Transforming and traversing collections serially and concurrently
 A common task when working with futures is either transforming or traversing a collection that will call a method that
 returns a future. The standard idiom for performing this task only provides methods for concurrent operation and, with
 enough nesting, leads to difficult to read code:
 
-.Example 4: Transform and traverse collections, standard method
+.Example 1: Transform and traverse collections, standard method
 [source,scala,numbered]
 ----
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
@@ -163,6 +113,9 @@ val future = { // necessary for pasting into repl
 
 == Transforming and traversing collections using workers
 
++s_mach.concurrent+ provides the +workers+ method for controlling the amount of concurrency. The number of concurrent
+workers is specified as the first parameter.
+
 .Example 6: Using +s_mach.concurrent+ workers to transform and traverse collections:
 [source,scala,numbered]
 ----
@@ -183,10 +136,60 @@ val future = { // necessary for pasting into repl
 }
 ----
 
+== Tuple Concurrently
+When first using +Future+ with a for-comprehension, it is natural to assume the following will produce concurrent
+operation:
+
+.Example 1: Incorrect +Future+ concurrency
+[source,scala,numbered]
+----
+for {
+  i1 <- read("1")
+  i2 <- read("2")
+  i3 <- read("3")
+} yield (i1,i2,i3)
+----
+
+Sadly, this code will compile and run just fine, but it will not execute concurrently. To correctly implement concurrent
+operation, the following standard pattern is used:
+
+.Example 2: Correct +Future+ concurrency:
+[source,scala,numbered]
+----
+val f1 = read("1")
+val f2 = read("2")
+val f3 = read("3")
+val future = { // necessary for pasting into repl
+  for {
+    i1 <- f1
+    i2 <- f2
+    i3 <- f3
+  } yield (i1,i2,i3)
+}
+----
+
+To get concurrent operation, all of the futures must be started before the for-comprehension. The for-comprehension is a
+monadic workflow which captures commands that must take place in a specific sequential order. The pattern in example 2
+is necessary because Scala lacks an applicative workflow which captures commands that may be run in any order.
++s_mach.concurrent+ adds an applicative workflow method for futures: +concurrently+. This method can more concisely
+express the pattern above:
+
+.Example 3: New +concurrently+ method
+[source,scala,numbered]
+----
+for {
+  (i1,i2,i3) <- concurrently(read("1"), read("2"), read("3"))
+} yield (i1,i2,i3)
+----
+
+In the example above, all futures are started at the same time and fed to the +concurrently+ method. The method returns
+a +Future[(Int,Int,Int)]+ which completes once all supplied futures complete. After this returned Future completes, the
+tuple value results can be extracted using normal Scala idioms. The +concurrently+ method also fixes problems with
++scala.concurrent+ exception handling (see the 'Under the hood: Merge' section below).
 
 == Under the hood: +Merge+ method
-Powering both the general +concurrently+ method and the collection +.concurrently.map+, +.concurrently.flatMap+ and
-+.concurrently.foreach+ methods are the +merge+ and +flatMerge+ methods. The +merge+ method performs the same
+Powering both the tuple +concurrently+ method and the collection +.concurrently.map+, +.concurrently.flatMap+ and
++.concurrently.foreach+ methods is the +merge+ and +flatMerge+ methods. The +merge+ method performs the same
 function as +Future.sequence+ (it calls +Future.sequence+ internally) but it ensures that the returned future completes
 immediately after an exception occurs in any of the futures. Because +Future.sequence+ waits on all futures in left
 to right order before completing, an exception thrown at the beginning of the computation by a future at the
@@ -194,9 +197,8 @@ far right will not be detected until after all other futures have completed. For
 mean a significant amount of wasted time waiting on futures to complete whose results will be discarded. Also, while
 the scala parallel collections correctly handle multiple concurrent exceptions, +Future.sequence+ only returns the
 first exception encountered. In +Future.sequence+, all further exceptions past the first are discarded. The +merge+ and
-+flatMerge+ methods fixes these problems by throwing +ConcurrentThrowable+. +ConcurrentThrowable+ has
-a member method to access both the first exception thrown and a future of all exceptions thrown during the
-computation.
++flatMerge+ methods fixes these problems by throwing +ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to
+access both the first exception thrown and a future of all exceptions thrown during the computation.
 
 .Example 7: +Future.sequence+ gets stuck waiting on longRead to complete and only returns the first exception:
 [source,scala,numbered]
@@ -222,147 +224,6 @@ t: scala.util.Try[scala.collection.immutable.Vector[Item]] = Failure(ConcurrentT
 scala> 4
 1
 
-scala> val allFailures = t.failed.get.asInstanceOf[ConcurrentThrowable].futAllFailure.get
+scala> val allFailures = t.failed.get.asInstanceOf[ConcurrentThrowable].allFailure.get
 allFailures: Vector[Throwable] = Vector(java.lang.RuntimeException: 2, java.lang.RuntimeException: 3)
-----
-== Concurrent Semaphore
-TODO
-
-.Example 9: Semaphore
-[source,scala,numbered]
-----
-val s = Semaphore(10)
-
-val promise = Promise[Int]()
-
-val f1 = s.acquire(10) { () => println(1);promise.future }
-val f2 = s.acquire(8) { () => println(2);Thread.sleep(1000);2.future }
-val f3 = s.acquire(2) { () => println(3);Thread.sleep(1000);3.future }
-val f4 = s.acquire(1) { () => println(4);4.future }
-
-promise.success(1)
-----
-
-== Concurrent Lock
-TODO
-
-.Example 9: Lock
-[source,scala,numbered]
-----
-val lock = Lock()
-
-val promise = Promise[Int]()
-val f1 = lock { () => println("1");promise.future }
-val f2 = lock { () => println("2");2.future }
-val f3 = lock { () => println("3");3.future }
-
-promise.success(1)
-----
-[source,scala,numbered]
-----
-scala> :paste
-// Entering paste mode (ctrl-D to finish)
-
-val lock = Lock()
-
-val promise = Promise[Int]()
-val f1 = lock { () => println(1);promise.future }
-val f2 = lock { () => println(2);2.future }
-val f3 = lock { () => println(3);3.future }
-
-
-// Exiting paste mode, now interpreting.
-
-1
-lock: s_mach.concurrent.util.Lock = s_mach.concurrent.util.Lock$LockImpl@2578c32a
-promise: scala.concurrent.Promise[Int] = scala.concurrent.impl.Promise$DefaultPromise@1b550d9e
-f1: scala.concurrent.Future[Int] = scala.concurrent.impl.Promise$DefaultPromise@1b550d9e
-f2: scala.concurrent.Future[Int] = scala.concurrent.impl.Promise$DefaultPromise@6cf10e16
-f3: scala.concurrent.Future[Int] = scala.concurrent.impl.Promise$DefaultPromise@45d3fe3a
-
-scala> promise.success(1)
-2
-res2: promise.type = scala.concurrent.impl.Promise$DefaultPromise@37af4505
-3
-----
-
-
-== ConcurrentQueue
-+s_mach.concurrent+ provides a basic concurrent queue trait +ConcurrentQueue+ that allows for asynchronous buffering
-operations, including operations on collections of items. Currently only one implementation, +ConcurrentListQueue+ is
-provided.
-
-.Example 11: ConcurrentListQue
-[source,scala,numbered]
-----
-val q = new ConcurrentListQueue[String]()
-
-// Completes when input is available
-val f1 = q.poll()
-f1 foreach println
-
-// Completes the future above
-q.offer("some input")
-
-// Complete when all input is available
-val f2 = q.poll(3)
-f2 foreach println
-
-// Completes the future above
-q.offer("input1")
-q.offer(List("input2","input3","input4"))
-
-// If input is available now, future completes immediately:
-q.poll() foreach println
-
-----
-
-== Utility methods
-+s_mach.concurrent+ provides a few utility methods for writing more concise and DRY code when working with +Future+:
-
-.Example 12: Utility methods
-[source,scala,numbered]
-----
-val fr : Future[Item] = read("1")
-
-// Convert a Future[A] to Future[Try[A]] that always succeeds
-val tt : Future[Try[Item]] = fr.toTry
-
-// Convert a Future[A] to a Future[X] that always succeeds
-val f : Future[String] = fr.fold({ i:Item => i.id.toString }, { t:Throwable => t.toString})
-
-// Convert a Future[A] to a Future[Future[X]] that is flattened to Future[X] and that always succeeds
-val f : Future[String] = fr.flatFold(
-  { i:Item => Future.successful(i.id.toString) },
-  { t:Throwable => Future.successful(t.toString) }
-)
-
-// Throw away the result, but ensure exceptions are reported to ExecutionContext.reportFailure
-fr.discard
-----
-
-== Sugar methods
-+s_mach.concurrent+ also provides a number of syntatic-sugar methods for writing more concise and DRY code when working with
-+Future+:
-
-.Example 13: Sugar methods
-[source,scala,numbered]
-----
-val vf = Vector(read("1"), read("2"), read("3"))
-val fr = read("4")
-
-// Future.sequence(vf)
-val fv : Future[Vector[Item] = vf.sequence
-
-// Await.result(fr, Duration.Inf)
-val g : Item = fr.get
-
-// Await.result(fr, 5.seconds)
-val g : Int = fr.get(5.seconds)
-
-// Await.ready(fr, Duration.Inf).value.get
-val gt : Future[Try[Int]] = fr.getTry
-
-// Await.ready(fr, Duration.Inf).value.get
-val gt : Future[Try[Int]] = fr.getTry(5.seconds)
 ----
