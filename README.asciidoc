@@ -113,8 +113,8 @@ val future = { // necessary for pasting into repl
 
 == Transforming and traversing collections using workers
 
-+s_mach.concurrent+ provides the +workers+ method for controlling the amount of concurrency. The number of concurrent
-workers is specified as the first parameter.
++s_mach.concurrent+ also provides the +workers+ method for controlling the amount of concurrency. The number of
+concurrent workers is specified as the first parameter.
 
 .Example 6: Using +s_mach.concurrent+ workers to transform and traverse collections:
 [source,scala,numbered]
