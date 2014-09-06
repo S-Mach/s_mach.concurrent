@@ -234,7 +234,7 @@ allFailures: Vector[Throwable] = Vector(java.lang.RuntimeException: 2, java.lang
 +s_mach.concurrent+ allows modifying collection concurrent operations to retry failures and limit iteration speed to a
 specific time setting.
 
-.Example 8: Adding retry and throttle Control to collection concurrent operations
+.Example 8: Adding retry and throttle control to collection concurrent operations
 [source,scala,numbered]
 ----
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
