@@ -110,8 +110,7 @@ val future = { // necessary for pasting into repl
 
 == Transforming and traversing collections using workers
 
-+s_mach.concurrent+ provides the +workers+ method for controlling the maximum allowed number of concurrent operations,
-specified as the first parameter to the +workers+ method.
++s_mach.concurrent+ provides the +workers+ method allows specifying the maximum number of concurrent operations.
 
 .Example 3: Using +s_mach.concurrent+ workers to transform and traverse collections:
 [source,scala,numbered]
@@ -134,9 +133,9 @@ val future = { // necessary for pasting into repl
 ----
 
 
-== Adding progress reporting, retry and Throttle control to concurrent collection operations
-+s_mach.concurrent+ allows modifying collection concurrent operations to report operation progress, retry failures and
-limit iteration speed to a specific time period.
+== Adding progress reporting, retry and throttle control to collection concurrent operations
++s_mach.concurrent+ allows modifying collection concurrent operations to report progress, retry failures and limit
+iteration speed to a specific time period.
 
 .Example 4: Adding progress reporting, retry and throttle control to collection concurrent operations
 [source,scala,numbered]
