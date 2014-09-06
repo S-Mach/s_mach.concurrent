@@ -244,7 +244,7 @@ val future = { // necessary for pasting into repl
       println("Reading...")
       oomItemIdBatch
         .workers(2)
-        .throttle(100.millis) // limit to 1 batch per 100 milliseconds
+        .throttle(4.seconds) // limit to 1 batch per 4 seconds
         .flatMap { batch =>
           batch.
             .concurrently
@@ -253,7 +253,7 @@ val future = { // necessary for pasting into repl
               case _: SocketTimeoutException :: _ if tail.size < 3 => true
               case _ => false
             }
-            .throttle(1.millis) // limit to 1 id per 1 millisecond
+            .throttle(2.seconds) // limit to 1 id per 2 seconds
             .map(read)
         }
     }
