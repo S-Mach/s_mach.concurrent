@@ -27,7 +27,8 @@ working with the scala.concurrent standard library.
 libraryDependencies += "net.s_mach" % "concurrent" %% "0.1.0"
 
 == Links
-* https://github.com/S-Mach/s_mach.concurrent
+* Code: https://github.com/S-Mach/s_mach.concurrent
+* Scaladoc: http://S-Mach.github.io/s_mach.concurrent
 
 == Imports
 All code examples assume the following imports:
