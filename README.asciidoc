@@ -9,6 +9,8 @@ v1,13-Jul-2014
 
 image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"] https://github.com/S-Mach/s_mach.concurrent[Code] http://S-Mach.github.io/s_mach.concurrent[Scaladoc]
 
+image:http://a4.mzstatic.com/us/r30/Purple6/v4/20/fc/20/20fc20d9-0581-a8a5-a706-43ca1c4efcf7/icon_340.png[Scaladoc, 18, link="http://S-Mach.github.io/s_mach.concurrent"]
+
 +s_mach.concurrent+ is an open-source Scala library that provides concurrent execution flow control primitives for
 working with the scala.concurrent standard library.
 
