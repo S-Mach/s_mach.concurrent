@@ -232,7 +232,7 @@ allFailures: Vector[Throwable] = Vector(java.lang.RuntimeException: 2, java.lang
 
 == Retry and Throttle Control
 +s_mach.concurrent+ allows modifying collection concurrent operations to retry failures and limit iteration speed to a
-specific time setting.
+specific time period.
 
 .Example 8: Adding retry and throttle control to collection concurrent operations
 [source,scala,numbered]
