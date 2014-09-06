@@ -7,7 +7,7 @@ v1,13-Jul-2014
 
 *UNDER CONSTRUCTION*
 
-image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"]
+image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"] https://github.com/S-Mach/s_mach.concurrent[Code] http://S-Mach.github.io/s_mach.concurrent[Scaladoc]
 
 +s_mach.concurrent+ is an open-source Scala library that provides concurrent execution flow control primitives for
 working with the scala.concurrent standard library.
@@ -18,9 +18,6 @@ working with the scala.concurrent standard library.
 * Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+, +Lock+, +Semaphore+ and +Queue+
 * Overcomes some design limitations of the scala.concurrent library
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
-
-* Code: https://github.com/S-Mach/s_mach.concurrent
-* Scaladoc: http://S-Mach.github.io/s_mach.concurrent
 
 == Pre-requisites & adding to build.sbt
 1. +s_mach.concurrent+ works with Scala 2.9.3, 2.10.4 or 2.11.1
