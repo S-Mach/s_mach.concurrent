@@ -85,7 +85,7 @@ case class SeriallyConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   ThrottleConfigBuilder[SeriallyConfigBuilder[A,M]] with
   SeriallyConfig {
 
-  override protected def optTotal = if(ma.hasDefiniteSize) {
+  override def optTotal = if(ma.hasDefiniteSize) {
     Some(ma.size)
   } else {
     None

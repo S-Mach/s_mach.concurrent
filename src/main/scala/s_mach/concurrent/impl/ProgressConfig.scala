@@ -33,7 +33,7 @@ import s_mach.concurrent.util.{SimpleProgressReporter, Progress, PeriodicProgres
 trait ProgressConfigBuilder[MDT <: ProgressConfigBuilder[MDT]] {
 
   /** The optional total number of operations as set by derived type */
-  protected def optTotal : Option[Long]
+  def optTotal : Option[Long]
 
   /**
    * Set the optional progress reporting function.

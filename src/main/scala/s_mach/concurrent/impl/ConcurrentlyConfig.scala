@@ -73,7 +73,7 @@ case class ConcurrentlyConfigBuilder[A,M[+AA] <: Traversable[AA]](
   ConcurrentlyConfig
 {
 
-  override protected def optTotal = if(ma.hasDefiniteSize) {
+  override def optTotal = if(ma.hasDefiniteSize) {
     Some(ma.size)
   } else {
     None

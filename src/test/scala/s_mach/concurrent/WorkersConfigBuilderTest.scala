@@ -18,7 +18,10 @@
 */
 package s_mach.concurrent
 
+import s_mach.concurrent.impl.WorkersConfig
+
 import scala.concurrent.Future
+import scala.concurrent.duration._
 import scala.util.{Random, Failure, Success}
 import org.scalatest.{Matchers, FlatSpec}
 import s_mach.concurrent.util._
@@ -26,7 +29,59 @@ import TestBuilder._
 
 class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
-  "WorkerConfigBuilder.map-t0" must "should invoke futures concurrently" in {
+  "WorkersConfigBuilder-t0" must "build and copy config correctly" in {
+    implicit val ctc = mkConcurrentTestContext()
+
+    val items = mkItems
+
+    val progressReporter = new ProgressReporter {
+      override def onStartTask(): Unit = ???
+      override def onCompleteStep(stepId: Long): Unit = ???
+      override def onStartStep(stepId: Long): Unit = ???
+      override def onCompleteTask(): Unit = ???
+    }
+
+    val retryFn = { _:List[Throwable] => false.future }
+
+    val config1Builder =
+      items
+        .workers(3)
+        .throttle(DELAY)
+        .retry(retryFn)
+        .progress(progressReporter)
+
+
+    config1Builder.ma should equal(items)
+    config1Builder.optTotal should equal(Some(items.size))
+    config1Builder.workerCount should equal(3)
+    config1Builder.optThrottle should equal(Some((DELAY_NS, ctc)))
+    config1Builder.optRetry should equal(Some(retryFn))
+    config1Builder.optProgress should equal(Some(progressReporter))
+
+    val config2Builder =
+      items
+        .iterator
+        .workers(3)
+
+    config2Builder.optTotal should equal(None)
+
+    val config1 = config1Builder.build()
+    val config2 = items.workers.using(config1).build()
+
+    config1 should equal(config2)
+
+    val config3 = WorkersConfig(
+      workerCount = config2.workerCount,
+      optProgress = config2.optProgress,
+      optRetry = config2.optRetry,
+      optThrottle = config2.optThrottle
+    )
+
+    config3 should equal(config1)
+    config3 should equal(config2)
+  }
+
+  "WorkerConfigBuilder.map-t1" must "should invoke futures concurrently" in {
     val result =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -45,7 +100,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
     concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
-  "WorkerConfigBuilder.map-t1" must "should invoke at most workerCount futures concurrently" in {
+  "WorkerConfigBuilder.map-t2" must "should invoke at most workerCount futures concurrently" in {
     val cpuCount = Runtime.getRuntime.availableProcessors()
     require(cpuCount >= 3, s"Only $cpuCount CPUs detected. At least 3 are required to run this test.")
 
@@ -76,18 +131,10 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
 
       result.getTry should equal (Success(items))
       maxActiveCount should be <= workerCount
-//        (workerCount, maxActiveCount)
     }
-
-    // Not possible to guarantee workers will execute concurrently, but in general should be true
-//    val concurrentWorkerPercent = result.count { case (workerCount, maxActiveCount) =>
-//      2 <= maxActiveCount && maxActiveCount <= workerCount
-////      maxActiveCount == workerCount || maxActiveCount == workerCount - 1
-//    } / result.size.toDouble
-//    concurrentWorkerPercent should be >= 0.85
   }
 
-  "WorkerConfigBuilder.flatMap-t2" must "execute futures concurrently" in {
+  "WorkerConfigBuilder.flatMap-t3" must "execute futures concurrently" in {
     val result =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -106,7 +153,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
     concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
-  "WorkerConfigBuilder.foreach-t3" must "execute futures concurrently" in {
+  "WorkerConfigBuilder.foreach-t4" must "execute futures concurrently" in {
     val result =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -129,7 +176,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
     concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
-  "WorkerConfigBuilder.map-t4" must "complete immediately after any Future fails" in {
+  "WorkerConfigBuilder.map-t5" must "complete immediately after any Future fails" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -161,7 +208,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
     }
   }
 
-  "WorkerConfigBuilder.map-t5" must "complete with an exception if the last worker fails" in {
+  "WorkerConfigBuilder.map-t6" must "complete with an exception if the last worker fails" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -181,7 +228,7 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
     }
   }
 
-  "WorkersConfigBuilder.modifiers-t6" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+  "WorkersConfigBuilder.modifiers-t7" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
     val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -256,5 +303,4 @@ class WorkersConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTes
 //    val avgPeriod_ns = filteredPeriod_ns.sum / filteredPeriod_ns.size
 //    avgPeriod_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.1)
   }
-
 }

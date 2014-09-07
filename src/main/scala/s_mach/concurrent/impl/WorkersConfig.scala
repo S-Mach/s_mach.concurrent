@@ -46,6 +46,7 @@ object WorkersConfig {
   )(implicit
     val executionContext:ExecutionContext
   ) extends WorkersConfig
+
   def apply(
     workerCount: Int = DEFAULT_WORKER_COUNT,
     optProgress: Option[ProgressReporter] = None,
@@ -57,12 +58,13 @@ object WorkersConfig {
     optThrottle = optThrottle,
     workerCount = workerCount
   )
+
   def apply(cfg: WorkersConfig) : WorkersConfig = {
     import cfg._
-    
+
     WorkersConfigImpl(
-      optProgress = optProgress, 
-      optRetry = optRetry, 
+      optProgress = optProgress,
+      optRetry = optRetry,
       optThrottle = optThrottle,
       workerCount = workerCount
     )
@@ -94,7 +96,7 @@ case class WorkersConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   ThrottleConfigBuilder[WorkersConfigBuilder[A,M]] with
   WorkersConfig {
 
-  override protected def optTotal = if(ma.hasDefiniteSize) {
+  override def optTotal = if(ma.hasDefiniteSize) {
     Some(ma.size)
   } else {
     None
@@ -104,7 +106,8 @@ case class WorkersConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
    * Copy an existing configuration
    * @param cfg configuration to use
    * @return a copy of the builder with all settings copied from cfg */
-  def using(cfg: SeriallyConfig) = copy(
+  def using(cfg: WorkersConfig) = copy(
+    workerCount = cfg.workerCount,
     optProgress = cfg.optProgress,
     optRetry = cfg.optRetry,
     optThrottle = cfg.optThrottle
@@ -130,7 +133,7 @@ case class WorkersConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
     copy(optThrottle = Some((_throttle_ns, sec)))
 
   /** @return a WorkersConfig with the current settings */
-  override def build = WorkersConfig(this)
+  override def build() = WorkersConfig(this)
 
   @inline def map[B](f: A => Future[B])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
