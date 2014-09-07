@@ -52,11 +52,6 @@ trait ConcurrentTestContext extends ExecutionContext with ScheduledExecutionCont
 }
 
 object ConcurrentTestContext {
-  def apply(ex: ExecutorService) : ConcurrentTestContext = {
-    implicit val ec = ExecutionContext.fromExecutor(ex)
-    implicit val sec = ScheduledExecutionContext(3)
-    apply()
-  }
   def apply()(implicit
     ec: ExecutionContext,
     sec: ScheduledExecutionContext
