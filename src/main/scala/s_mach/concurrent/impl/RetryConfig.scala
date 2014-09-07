@@ -37,7 +37,7 @@ trait RetryConfigBuilder[MDT <: RetryConfigBuilder[MDT]] {
   def retry(f: List[Throwable] => Future[Boolean]) : MDT
 
   /** @return a RetryConfig with the optional retry function */
-  def build : RetryConfig
+  def build() : RetryConfig
 }
 
 /**

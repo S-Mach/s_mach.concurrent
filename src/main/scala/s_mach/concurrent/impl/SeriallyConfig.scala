@@ -121,7 +121,7 @@ case class SeriallyConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
     copy(optThrottle = Some((_throttle_ns, sec)))
 
   /** @return a SeriallyConfig with the current settings */
-  override def build = SeriallyConfig(this)
+  override def build() = SeriallyConfig(this)
 
   @inline def map[B](f: A => Future[B])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]

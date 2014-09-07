@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent
 
+import s_mach.concurrent.impl.SeriallyConfig
+
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
@@ -26,6 +28,57 @@ import util._
 import TestBuilder._
 
 class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
+
+  "SeriallyConfigBuilder-t0" must "build and copy config correctly" in {
+    implicit val ctc = mkConcurrentTestContext()
+
+    val items = mkItems
+
+    val progressReporter = new ProgressReporter {
+      override def onStartTask(): Unit = ???
+      override def onCompleteStep(stepId: Long): Unit = ???
+      override def onStartStep(stepId: Long): Unit = ???
+      override def onCompleteTask(): Unit = ???
+    }
+
+    val retryFn = { _:List[Throwable] => false.future }
+
+    val config1Builder =
+      items
+        .serially
+        .throttle(DELAY)
+        .retry(retryFn)
+        .progress(progressReporter)
+
+
+    config1Builder.ma should equal(items)
+    config1Builder.optTotal should equal(Some(items.size))
+    config1Builder.optThrottle should equal(Some((DELAY_NS, ctc)))
+    config1Builder.optRetry should equal(Some(retryFn))
+    config1Builder.optProgress should equal(Some(progressReporter))
+
+    val config2Builder =
+      items
+        .iterator
+        .serially
+
+    config2Builder.optTotal should equal(None)
+
+    val config1 = config1Builder.build()
+    val config2 = items.serially.using(config1).build()
+
+    config1 should equal(config2)
+
+    val config3 = SeriallyConfig(
+      optProgress = config2.optProgress,
+      optRetry = config2.optRetry,
+      optThrottle = config2.optThrottle
+    )
+
+    config3 should equal(config1)
+    config3 should equal(config2)
+  }
+
   "SeriallyConfigBuilder.map-t1" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()

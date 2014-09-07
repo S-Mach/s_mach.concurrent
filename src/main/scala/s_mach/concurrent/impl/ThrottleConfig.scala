@@ -45,7 +45,7 @@ trait ThrottleConfigBuilder[MDT <: ThrottleConfigBuilder[MDT]] {
     throttle_ns(_throttle.toNanos)
 
   /** @return a ThrottleConfig with the optional throttle setting */
-  def build : ThrottleConfig
+  def build() : ThrottleConfig
 }
 
 trait ThrottleConfig extends ConcurrentFunctionBuilder {

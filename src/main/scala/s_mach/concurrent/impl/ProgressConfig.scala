@@ -65,7 +65,7 @@ trait ProgressConfigBuilder[MDT <: ProgressConfigBuilder[MDT]] {
   }
 
   /** @return a ProgressConfig with the optional progress function */
-  def build : ProgressConfig
+  def build() : ProgressConfig
 }
 
 /**
