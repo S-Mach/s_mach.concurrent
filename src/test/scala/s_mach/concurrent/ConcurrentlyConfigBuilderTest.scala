@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent
 
+import s_mach.concurrent.impl.ConcurrentlyConfig
+
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
@@ -27,7 +29,55 @@ import TestBuilder._
 
 class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
-  "ConcurrentlyConfigBuilder.map-t0" must "execute each future at the same time" in {
+  "SeriallyConfigBuilder-t0" must "build and copy config correctly" in {
+    implicit val ctc = mkConcurrentTestContext()
+
+    val items = mkItems
+
+    val progressReporter = new ProgressReporter {
+      override def onStartTask(): Unit = ???
+      override def onCompleteStep(stepId: Long): Unit = ???
+      override def onStartStep(stepId: Long): Unit = ???
+      override def onCompleteTask(): Unit = ???
+    }
+
+    val retryFn = { _:List[Throwable] => false.future }
+
+    val config1Builder =
+      items
+        .concurrently
+        .retry(retryFn)
+        .progress(progressReporter)
+
+
+    config1Builder.ma should equal(items)
+    config1Builder.optTotal should equal(Some(items.size))
+    config1Builder.optRetry should equal(Some(retryFn))
+    config1Builder.optProgress should equal(Some(progressReporter))
+
+    val config2Builder =
+      new Traversable[Int] {
+        override def hasDefiniteSize: Boolean = false
+        override def foreach[U](f: Int => U): Unit = ???
+      }.concurrently
+
+    config2Builder.optTotal should equal(None)
+
+    val config1 = config1Builder.build()
+    val config2 = items.concurrently.using(config1).build()
+
+    config1 should equal(config2)
+
+    val config3 = ConcurrentlyConfig(
+      optProgress = config2.optProgress,
+      optRetry = config2.optRetry
+    )
+
+    config3 should equal(config1)
+    config3 should equal(config2)
+  }
+
+  "ConcurrentlyConfigBuilder.map-t1" must "execute each future at the same time" in {
     val result =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -46,7 +96,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
     concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
-  "ConcurrentlyConfigBuilder.flatMap-t1" must "execute each future at the same time" in {
+  "ConcurrentlyConfigBuilder.flatMap-t2" must "execute each future at the same time" in {
     val result =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -68,7 +118,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
     concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
-  "ConcurrentlyConfigBuilder.foreach-t2" must "execute each future at the same time" in {
+  "ConcurrentlyConfigBuilder.foreach-t3" must "execute each future at the same time" in {
     val result =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -94,7 +144,7 @@ class ConcurrentlyConfigBuilderTest extends FlatSpec with Matchers with Concurre
     concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
-  "ConcurrentlyConfigBuilder.modifiers-t3" must "execute each future one at a time and apply retry and progress correctly" in {
+  "ConcurrentlyConfigBuilder.modifiers-t4" must "execute each future one at a time and apply retry and progress correctly" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
