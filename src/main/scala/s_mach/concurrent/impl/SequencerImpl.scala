@@ -18,9 +18,11 @@
 */
 package s_mach.concurrent.impl
 
+import s_mach.concurrent.DeferredFuture
+
 import scala.collection.mutable
 import scala.concurrent.{Promise, Future, ExecutionContext}
-import s_mach.concurrent.util.{DeferredFuture, Sequencer}
+import s_mach.concurrent.util.Sequencer
 
 class SequencerImpl(__next: Int) extends Sequencer {
   type Task = () => Unit

@@ -18,7 +18,7 @@
 */
 package s_mach.concurrent.impl
 
-import s_mach.concurrent.util.{DeferredFuture, Semaphore}
+import s_mach.concurrent.util.Semaphore
 
 import scala.collection.mutable
 import scala.concurrent.{Promise, ExecutionContext, Future}

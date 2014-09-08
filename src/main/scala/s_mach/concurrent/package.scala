@@ -57,7 +57,7 @@ package object concurrent extends TupleConcurrentlyOps {
     )(implicit
       ec:ExecutionContext
     ) : Future[X] = FutureOps.flatFold(self, onSuccess, onFailure)
-    @inline def happensBefore[B](other: => Future[B])(implicit ec: ExecutionContext) : Future[B]
+    @inline def happensBefore[B](other: => Future[B])(implicit ec: ExecutionContext) : DeferredFuture[B]
       = FutureOps.happensBefore(self, other)
     @inline def sideEffect(sideEffect: => Unit)(implicit ec: ExecutionContext) : Future[A]
       = FutureOps.sideEffect(self, sideEffect)

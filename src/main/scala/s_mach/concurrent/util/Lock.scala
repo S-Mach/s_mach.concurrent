@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent.util
 
+import s_mach.concurrent.DeferredFuture
+
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent.impl.LockImpl
 

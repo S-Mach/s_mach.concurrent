@@ -20,7 +20,7 @@ package s_mach.concurrent.impl
 
 import java.util.concurrent.{ScheduledExecutorService, TimeUnit}
 
-import s_mach.concurrent.{ScheduledExecutionContext, ConcurrentThrowable}
+import s_mach.concurrent.{DeferredFuture, ScheduledExecutionContext, ConcurrentThrowable}
 
 import scala.concurrent._
 import scala.concurrent.duration._
@@ -150,10 +150,10 @@ trait FutureOps {
 
 
   /** @return a future of A that is guaranteed to happen before lhs */
-  def happensBefore[A](lhs: Future[Any], rhs: => Future[A])(implicit ec: ExecutionContext) : Future[A] = {
-    val promise = Promise[A]()
-    lhs onComplete { case _ => promise.completeWith(rhs) }
-    promise.future
+  def happensBefore[A](lhs: Future[Any], rhs: => Future[A])(implicit ec: ExecutionContext) : DeferredFuture[A] = {
+    val promise = Promise[Future[A]]()
+    lhs onComplete { case _ => promise.completeWith(Future.successful(rhs)) }
+    DeferredFuture(promise.future)
   }
 
   /** @return execute a side effect after a future completes (even if it fails) */

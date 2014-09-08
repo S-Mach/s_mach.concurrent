@@ -19,7 +19,7 @@
 package s_mach.concurrent.util
 
 import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent.ScheduledExecutionContext
+import s_mach.concurrent.{DeferredFuture, ScheduledExecutionContext}
 import s_mach.concurrent.impl.ThrottlerImpl
 
 /**

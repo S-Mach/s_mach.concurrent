@@ -21,7 +21,7 @@ package s_mach.concurrent.impl
 import scala.concurrent.{Future, ExecutionContext}
 import scala.concurrent.duration._
 import s_mach.concurrent.ScheduledExecutionContext
-import s_mach.concurrent.util.{DeferredFuture, Latch, Barrier, Throttler}
+import s_mach.concurrent.util.{Latch, Barrier, Throttler}
 import s_mach.concurrent._
 
 class ThrottlerImpl(
