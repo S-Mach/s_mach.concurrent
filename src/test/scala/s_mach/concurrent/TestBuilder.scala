@@ -101,11 +101,6 @@ object TestBuilder {
     override def run[R](f: (Unit) => R) = IndexedSeq(f(()))
   }
 
-  def concurrentTestContext(workers: Int) : ConcurrentTestContext = {
-    val executor = Executors.newFixedThreadPool(workers)
-    ConcurrentTestContext(executor)
-  }
-
   implicit class PimpMyIndexedSeq[R](val result: IndexedSeq[R]) {
     def validate(f: IndexedSeq[R] => Unit) = f(result)
   }
