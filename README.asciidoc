@@ -19,11 +19,18 @@ working with the scala.concurrent standard library.
 * Overcomes some design limitations of the scala.concurrent library
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
-== Pre-requisites & adding to build.sbt
-1. +s_mach.concurrent+ works with Scala 2.9.3, 2.10.4 or 2.11.1
-
+== Add to build.sbt
+1. +s_mach.concurrent+ is currently compatible only with Scala 2.11
+2. Add to project/build.sbt OR ~/.sbt/{verison}/plugins/plugins.sbt
 [source,sbt,numbered]
-libraryDependencies += "net.s_mach" % "concurrent" %% "0.1.0"
+----
+resolvers += Resolver.sonatypeRepo("snapshots")
+----
+3. Add to build.sbt
+[source,sbt,numbered]
+----
+libraryDependencies += "net.s_mach" %% "concurrent" % "0.1-SNAPSHOT"
+----
 
 
 == Imports for Examples
