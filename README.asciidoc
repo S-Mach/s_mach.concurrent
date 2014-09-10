@@ -19,7 +19,7 @@ working with the scala.concurrent standard library.
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
 == Include in SBT
-1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (2.10.4 support will be added if there is interest)
+1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (2.10.4 support can be added if there is interest)
 2. Add to +build.sbt+ OR +~/.sbt/{verison}/build.sbt+
 +
 [source,sbt,numbered]
@@ -150,6 +150,7 @@ report progress, retry failures and/or limit iteration speed to a specific time 
 .Example 4: Adding progress reporting, retry and throttle control to collection concurrent operations
 [source,scala,numbered]
 ----
+implicit val sec : ScheduledExecutionContext = ???
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
 val future = { // necessary for pasting into repl
   for {
@@ -157,17 +158,19 @@ val future = { // necessary for pasting into repl
       println("Reading...")
       oomItemIdBatch
         .serially
-        .throttle(6.seconds)
+        .progress(1.second)(progress => println(progress))
+        .throttle(3.seconds)
         .flatMap { batch =>
-          batch.
+          batch
             .workers
-            .progress(500.millis)(progress => println(progress))
+            // Retry at most first 3 timeout and socket exceptions after delaying 100 milliseconds
             .retry {
-              case _: TimeoutException :: tail if tail.size < 3 => true
-              case _: SocketTimeoutException :: _ if tail.size < 3 => true
-              case _ => false
+              case (_: TimeoutException) :: tail if tail.size < 3 =>
+                Future.delayed(100.millis)(true)
+              case (_: SocketTimeoutException) :: tail if tail.size < 3 =>
+                Future.delayed(100.millis)(true)
+              case _ => false.future
             }
-            .throttle(3.seconds)
             .map(read)
         }
     }
