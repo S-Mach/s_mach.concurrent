@@ -6,7 +6,6 @@ package s_mach.concurrent.example
   * Example code in readme -- not used in testing but placed here for compile checks
   */
 object ExampleCode {
-  import java.net.SocketTimeoutException
   import scala.util._
   import scala.concurrent._
   import scala.concurrent.ExecutionContext.Implicits.global
@@ -110,7 +109,7 @@ object ExampleCode {
                 .retry {
                   case (_: TimeoutException) :: tail if tail.size < 3 =>
                     Future.delayed(100.millis)(true)
-                  case (_: SocketTimeoutException) :: tail if tail.size < 3 =>
+                  case (_: java.net.SocketTimeoutException) :: tail if tail.size < 3 =>
                     Future.delayed(100.millis)(true)
                   case _ => false.future
                 }
