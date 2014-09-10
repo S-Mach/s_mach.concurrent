@@ -6,12 +6,12 @@ v1,13-Jul-2014
 
 *UNDER CONSTRUCTION*
 
-image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"] https://github.com/S-Mach/s_mach.concurrent[Code] http://S-Mach.github.io/s_mach.concurrent[Scaladoc]
+image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"] https://github.com/S-Mach/s_mach.concurrent[Code] http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
 +s_mach.concurrent+ is an open-source Scala library that provides concurrent execution flow control primitives for
 working with the scala.concurrent standard library.
 
-* Adds new flow control primitives +concurrently+, +serially+ and +workers+ for control of collection concurrent operations
+* Adds new concurrent flow control primitives +concurrently+, +serially+ and +workers+ for operations such as +map+, +flatMap+, +foreach+ that accept a function that returns a Future
 * Adds progress reporting, retry and throttle control for collection concurrent operations
 * Adds +ScheduledExecutionContext+, a wrapper for +java.util.concurrent.ScheduledExecutorService+ that provides a functional style interface for scheduling delayed and periodic tasks
 * Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+, +Lock+, +Semaphore+ and +Queue+
@@ -19,7 +19,7 @@ working with the scala.concurrent standard library.
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
 == Include in SBT
-1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (but there are plans to add 2.10.4 support)
+1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (2.10.4 support will be added if there is interest)
 2. Add to +build.sbt+ OR +~/.sbt/{verison}/build.sbt+
 +
 [source,sbt,numbered]
@@ -119,7 +119,8 @@ val future = { // necessary for pasting into repl
 
 == Transforming and traversing collections using workers
 
-+s_mach.concurrent+ provides the +workers+ method which allows specifying the maximum number of concurrent operations.
++s_mach.concurrent+ provides the +workers+ method which operates similarly to +concurrently+ but allows specifying the
+maximum number of concurrent operations.
 
 .Example 3: Using +s_mach.concurrent+ workers to transform and traverse collections:
 [source,scala,numbered]
@@ -143,8 +144,8 @@ val future = { // necessary for pasting into repl
 
 
 == Adding progress reporting, retry and throttle control to collection concurrent operations
-+s_mach.concurrent+ allows modifying collection concurrent operations (+serially+, +concurrently+ or +workers+) to
-report progress, retry failures and limit iteration speed to a specific time period.
++s_mach.concurrent+ allows modifying the collection concurrent operations +serially+, +concurrently+ or +workers+ to
+report progress, retry failures and/or limit iteration speed to a specific time period.
 
 .Example 4: Adding progress reporting, retry and throttle control to collection concurrent operations
 [source,scala,numbered]
@@ -180,7 +181,7 @@ val future = { // necessary for pasting into repl
 }
 ----
 
-== Tuple Concurrently
+== Concurrently workflow
 When first using +Future+ with a for-comprehension, it is natural to assume the following will produce concurrent
 operation:
 
