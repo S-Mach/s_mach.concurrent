@@ -1,5 +1,4 @@
-s_mach.concurrent: Futures utility library
-==========================================
+= s_mach.concurrent: Futures utility library
 Lance Gatlin <lance.gatlin@gmail.com>
 v1,13-Jul-2014
 :blogpost-status: unpublished
@@ -19,8 +18,7 @@ working with the scala.concurrent standard library.
 * Overcomes some design limitations of the scala.concurrent library
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
-== Temp
-=== Include in SBT
+== Include in SBT
 1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (but there are plans to add 2.10.4 support)
 2. Add to +build.sbt+ OR +~/.sbt/{verison}/build.sbt+
 +
@@ -37,7 +35,7 @@ libraryDependencies += "net.s_mach" %% "concurrent" % "0.1-SNAPSHOT"
 ----
 
 
-=== Imports for Examples
+== Imports for Examples
 All code examples assume the following imports:
 [source,scala,numbered]
 ----
@@ -56,7 +54,7 @@ def write(id: String, item: Item) : Future[Boolean] = Future { Thread.sleep(1000
 def writeFail(id: String, item: Item) : Future[Boolean] = Future { Thread.sleep(1000); println(id); throw new RuntimeException(id.toString) }
 ----
 
-=== Transforming and traversing collections serially and concurrently
+== Transforming and traversing collections serially and concurrently
 A common task when working with futures is either transforming or traversing a collection that will call a method that
 returns a future. The standard idiom for performing this task only provides methods for concurrent operation and, with
 enough nesting, leads to difficult to read code:
@@ -93,7 +91,7 @@ val future = { // necessary for pasting into repl
           } yield acc ::: oomResult
         }
     }
-  } yield oomResult.forall(_ === true)
+  } yield oomResult.forall(_ == true)
 }
 ----
 
@@ -115,11 +113,11 @@ val future = { // necessary for pasting into repl
       println("Writing...")
       oomNewItemBatch.serially.flatMap(_.concurrently.map(item => write(item.id, item)))
     }
-  } yield oomResult.forall(_ === true)
+  } yield oomResult.forall(_ == true)
 }
 ----
 
-=== Transforming and traversing collections using workers
+== Transforming and traversing collections using workers
 
 +s_mach.concurrent+ provides the +workers+ method which allows specifying the maximum number of concurrent operations.
 
@@ -139,12 +137,12 @@ val future = { // necessary for pasting into repl
       println("Writing...")
       oomNewItemBatch.workers(2).flatMap(_.workers(4).map(item => write(item.id, item)))
     }
-  } yield oomResult.forall(_ === true)
+  } yield oomResult.forall(_ == true)
 }
 ----
 
 
-=== Adding progress reporting, retry and throttle control to collection concurrent operations
+== Adding progress reporting, retry and throttle control to collection concurrent operations
 +s_mach.concurrent+ allows modifying collection concurrent operations (+serially+, +concurrently+ or +workers+) to
 report progress, retry failures and limit iteration speed to a specific time period.
 
@@ -178,11 +176,11 @@ val future = { // necessary for pasting into repl
       println("Writing...")
       oomNewItemBatch.workers(2).flatMap(_.workers(4).map(item => write(item.id, item)))
     }
-  } yield oomResult.forall(_ === true)
+  } yield oomResult.forall(_ == true)
 }
 ----
 
-=== Tuple Concurrently
+== Tuple Concurrently
 When first using +Future+ with a for-comprehension, it is natural to assume the following will produce concurrent
 operation:
 
@@ -233,7 +231,7 @@ a +Future[(Int,Int,Int)]+ which completes once all supplied futures complete. Af
 tuple value results can be extracted using normal Scala idioms. The +concurrently+ method also fixes problems with
 +scala.concurrent+ exception handling (see the 'Under the hood: Merge' section below).
 
-=== Under the hood: +Merge+ method
+== Under the hood: +Merge+ method
 Powering both the tuple +concurrently+ method and the collection +.concurrently.map+, +.concurrently.flatMap+ and
 +.concurrently.foreach+ methods is the +merge+ and +flatMerge+ methods. The +merge+ method performs the same
 function as +Future.sequence+ (it calls +Future.sequence+ internally) but it ensures that the returned future completes
