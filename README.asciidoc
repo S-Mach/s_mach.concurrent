@@ -1,5 +1,5 @@
 s_mach.concurrent: Futures utility library
-===============================================================
+==========================================
 Lance Gatlin <lance.gatlin@gmail.com>
 v1,13-Jul-2014
 :blogpost-status: unpublished
@@ -19,6 +19,7 @@ working with the scala.concurrent standard library.
 * Overcomes some design limitations of the scala.concurrent library
 * Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
+== Temp
 === Include in SBT
 1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (but there are plans to add 2.10.4 support)
 2. Add to +build.sbt+ OR +~/.sbt/{verison}/build.sbt+
