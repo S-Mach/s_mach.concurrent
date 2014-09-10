@@ -120,7 +120,7 @@ val future = { // necessary for pasting into repl
 
 == Transforming and traversing collections using workers
 
-+s_mach.concurrent+ provides the +workers+ method allows specifying the maximum number of concurrent operations.
++s_mach.concurrent+ provides the +workers+ method which allows specifying the maximum number of concurrent operations.
 
 .Example 3: Using +s_mach.concurrent+ workers to transform and traverse collections:
 [source,scala,numbered]
@@ -144,8 +144,8 @@ val future = { // necessary for pasting into repl
 
 
 == Adding progress reporting, retry and throttle control to collection concurrent operations
-+s_mach.concurrent+ allows modifying collection concurrent operations to report progress, retry failures and limit
-iteration speed to a specific time period.
++s_mach.concurrent+ allows modifying collection concurrent operations (+serially+, +concurrently+ or +workers+) to
+report progress, retry failures and limit iteration speed to a specific time period.
 
 .Example 4: Adding progress reporting, retry and throttle control to collection concurrent operations
 [source,scala,numbered]
@@ -213,11 +213,11 @@ val future = { // necessary for pasting into repl
 }
 ----
 
-To get concurrent operation, all of the futures must be started before the for-comprehension. The for-comprehension is a
+For concurrent operation, all of the futures must be started before the for-comprehension. The for-comprehension is a
 monadic workflow which captures commands that must take place in a specific sequential order. The pattern in example 2
 is necessary because Scala lacks an applicative workflow which captures commands that may be run in any order.
-+s_mach.concurrent+ adds an applicative workflow method for futures: +concurrently+. This method can more concisely
-express the pattern above:
++s_mach.concurrent+ adds the method +concurrently+ which is an applicative workflow specifically for futures. This
+method can more concisely express the pattern above:
 
 .Example 7: New +concurrently+ method
 [source,scala,numbered]
@@ -242,7 +242,7 @@ far right will not be detected until after all other futures have completed. For
 mean a significant amount of wasted time waiting on futures to complete whose results will be discarded. Also, while
 the scala parallel collections correctly handle multiple concurrent exceptions, +Future.sequence+ only returns the
 first exception encountered. In +Future.sequence+, all further exceptions past the first are discarded. The +merge+ and
-+flatMerge+ methods fixes these problems by throwing +ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to
++flatMerge+ methods fix these problems by throwing +ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to
 access both the first exception thrown and a future of all exceptions thrown during the computation.
 
 .Example 8: +Future.sequence+ gets stuck waiting on longRead to complete and only returns the first exception:
