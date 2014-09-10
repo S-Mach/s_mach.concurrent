@@ -11,7 +11,7 @@ image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="htt
 +s_mach.concurrent+ is an open-source Scala library that provides concurrent execution flow control primitives for
 working with the scala.concurrent standard library.
 
-* Adds new concurrent flow control primitives +concurrently+, +serially+ and +workers+ for performing collection operations such as +map+, +flatMap+ and +foreach+ when the called function returns a Future of the result (i.e. A => Future[B]) instead of the result (i.e. A => B)
+* Adds new concurrent flow control primitives +concurrently+, +serially+ and +workers+ for performing collection operations such as +map+, +flatMap+ and +foreach+ when the called function returns a Future of the result (A => Future[B]) instead of the result (A => B)
 * Allows enabling optional progress reporting, failure retry and/or throttle control for all collection concurrent operations
 * Adds +ScheduledExecutionContext+, a wrapper for +java.util.concurrent.ScheduledExecutorService+ that provides a Scala interface for scheduling delayed and periodic tasks
 * Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+, +Lock+, +Semaphore+ and +Queue+
