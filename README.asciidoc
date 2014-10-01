@@ -32,7 +32,7 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 +
 [source,sbt,numbered]
 ----
-libraryDependencies += "net.s_mach" %% "concurrent" % "0.1-SNAPSHOT"
+libraryDependencies += "net.s_mach" %% "concurrent" % "0.2-SNAPSHOT"
 ----
 
 
