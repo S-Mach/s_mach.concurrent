@@ -12,6 +12,7 @@ image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="htt
 primitives for working with the scala.concurrent standard library.
 
 * Adds new concurrent flow control primitives +async+ and +async.par+ for performing collection operations such as +map+, +flatMap+ and +foreach+ when the called function returns a Future of the result (A => Future[B]) instead of the result (A => B)
+* Each primitive ensures proper sequencing of future results to return a future of the new collection (e.g. List(1,2,3).async.map(f) returns a Future[List[Int]])
 * Allows enabling optional progress reporting, failure retry and/or throttle control for all collection concurrent operations
 * Adds +ScheduledExecutionContext+, a Scala interface wrapper for +java.util.concurrent.ScheduledExecutorService+ that provides for scheduling delayed and periodic tasks
 * Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+, +Lock+, +Semaphore+ and +Queue+
