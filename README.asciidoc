@@ -55,8 +55,9 @@ def writeFail(id: String, item: Item) : Future[Boolean] = Future { Thread.sleep(
 ----
 
 == Concurrently transform or traverse collections
-A common task when working with futures is transforming or traversing a collection that will call a method that
-returns a future. The standard methods provided can, with enough nesting, leads to difficult to read code:
+A common task when working with futures is transforming or traversing a collection in serial or parallel that will call
+a method that returns a future. With only a few levels of nesting, the standard methods for accomplishing this lead to
+difficult to read code:
 
 .Example 1: Transform and traverse collections, standard method
 [source,scala,numbered]
@@ -96,7 +97,7 @@ val future = { // necessary for pasting into repl
 
 The same code, rewritten using +s_mach.concurrent+:
 
-.Example 2: Using +s_mach.concurrent+ to serially or concurrently transform and traverse collections:
+.Example 2: Using +s_mach.concurrent+ to transform and traverse collections:
 [source,scala,numbered]
 ----
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
@@ -116,9 +117,10 @@ val future = { // necessary for pasting into repl
 }
 ----
 
-== Limiting concurrent parallel Transforming and traversing collections using workers
+== Limiting the maximum number of simultaneous workers used during concurrent parallel operations
 
-+s_mach.concurrent+ allows specifying the maximum number of simultaneous workers.
++s_mach.concurrent+ allows specifying the maximum number of simultaneous workers used during concurrent parallel
+operations
 
 .Example 3: Using +s_mach.concurrent+ workers to transform and traverse collections:
 [source,scala,numbered]
