@@ -26,43 +26,43 @@ import s_mach.concurrent.ScheduledExecutionContext
 import WorkersOps._
 
 /**
- * A trait for the configuration of a TraversableOnce.serially workflow that can wrap a concurrent function with
+ * A trait for the configuration of a parallel TraversableOnce workflow that can wrap a concurrent function with
  * progress reporting, retry and throttling functions
  *
  * Note: Inheritance order here matters - throttle should be inner wrapper on f (progress and retry are interchangeable)
  */
-trait WorkersConfig extends ProgressConfig with RetryConfig with ThrottleConfig {
+trait AsyncParConfig extends ProgressConfig with RetryConfig with ThrottleConfig {
   def workerCount : Int
 }
 
-object WorkersConfig {
-  val DEFAULT_WORKER_COUNT = Runtime.getRuntime.availableProcessors()
+object AsyncParConfig {
+  val DEFAULT_WORKER_COUNT = Runtime.getRuntime.availableProcessors() * 2
 
-  case class WorkersConfigImpl(
+  case class AsyncParConfigImpl(
     workerCount: Int = DEFAULT_WORKER_COUNT,
     optProgress: Option[ProgressReporter] = None,
     optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
     optThrottle: Option[(Long, ScheduledExecutionContext)] = None
   )(implicit
     val executionContext:ExecutionContext
-  ) extends WorkersConfig
+  ) extends AsyncParConfig
 
   def apply(
     workerCount: Int = DEFAULT_WORKER_COUNT,
     optProgress: Option[ProgressReporter] = None,
     optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
     optThrottle: Option[(Long, ScheduledExecutionContext)] = None
-  )(implicit executionContext: ExecutionContext) : WorkersConfig = WorkersConfigImpl(
+  )(implicit executionContext: ExecutionContext) : AsyncParConfig = AsyncParConfigImpl(
     optProgress = optProgress, 
     optRetry = optRetry, 
     optThrottle = optThrottle,
     workerCount = workerCount
   )
 
-  def apply(cfg: WorkersConfig) : WorkersConfig = {
+  def apply(cfg: AsyncParConfig) : AsyncParConfig = {
     import cfg._
 
-    WorkersConfigImpl(
+    AsyncParConfigImpl(
       optProgress = optProgress,
       optRetry = optRetry,
       optThrottle = optThrottle,
@@ -72,7 +72,7 @@ object WorkersConfig {
 }
 
 /**
- * A builder for a configuration of a TraversableOnce.workers workflow
+ * A builder for a configuration of an asynchronous parallel TraversableOnce workflow
  * @param ma the collection
  * @param workerCount count of workers
  * @param optProgress optional progress report function
@@ -82,19 +82,19 @@ object WorkersConfig {
  * @tparam A type of collection
  * @tparam M collection type
  */
-case class WorkersConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
+case class AsyncParConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   ma: M[A],
-  workerCount: Int = WorkersConfig.DEFAULT_WORKER_COUNT,
+  workerCount: Int = AsyncParConfig.DEFAULT_WORKER_COUNT,
   optProgress: Option[ProgressReporter] = None,
   optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
   optThrottle: Option[(Long, ScheduledExecutionContext)] = None
 )(implicit
   val executionContext: ExecutionContext
 ) extends
-  ProgressConfigBuilder[WorkersConfigBuilder[A,M]] with
-  RetryConfigBuilder[WorkersConfigBuilder[A,M]] with
-  ThrottleConfigBuilder[WorkersConfigBuilder[A,M]] with
-  WorkersConfig {
+  ProgressConfigBuilder[AsyncParConfigBuilder[A,M]] with
+  RetryConfigBuilder[AsyncParConfigBuilder[A,M]] with
+  ThrottleConfigBuilder[AsyncParConfigBuilder[A,M]] with
+  AsyncParConfig {
 
   override def optTotal = if(ma.hasDefiniteSize) {
     Some(ma.size)
@@ -106,7 +106,7 @@ case class WorkersConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
    * Copy an existing configuration
    * @param cfg configuration to use
    * @return a copy of the builder with all settings copied from cfg */
-  def using(cfg: WorkersConfig) = copy(
+  def using(cfg: AsyncParConfig) = copy(
     workerCount = cfg.workerCount,
     optProgress = cfg.optProgress,
     optRetry = cfg.optRetry,
@@ -133,7 +133,7 @@ case class WorkersConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
     copy(optThrottle = Some((_throttle_ns, sec)))
 
   /** @return a WorkersConfig with the current settings */
-  override def build() = WorkersConfig(this)
+  override def build() = AsyncParConfig(this)
 
   @inline def map[B](f: A => Future[B])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]

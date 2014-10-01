@@ -35,7 +35,7 @@ object WorkersOps {
   def mapWorkers[A,B,M[+AA] <: TraversableOnce[AA]](
     self: M[A],
     f: A => Future[B],
-    workersConfig: WorkersConfig
+    workersConfig: AsyncParConfig
   )(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
   ) : Future[M[B]] = {
@@ -59,7 +59,7 @@ object WorkersOps {
   def flatMapWorkers[A,B,M[+AA] <: TraversableOnce[AA]](
     self: M[A],
     f: A => Future[TraversableOnce[B]],
-    workersConfig: WorkersConfig
+    workersConfig: AsyncParConfig
   )(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
   ) : Future[M[B]] = {
@@ -83,7 +83,7 @@ object WorkersOps {
   def foreachWorkers[A,U,M[+AA] <: TraversableOnce[AA]](
     self: M[A],
     f: A => Future[U],
-    workersConfig: WorkersConfig
+    workersConfig: AsyncParConfig
   ) : Future[Unit] = {
     import workersConfig._
 
@@ -109,7 +109,7 @@ object WorkersOps {
     xa: TraversableOnce[A],
     f: A => Future[B],
     g: B => Future[Unit],
-    workersConfig: WorkersConfig
+    workersConfig: AsyncParConfig
   ) : Future[Unit] = {
     import workersConfig._
 
@@ -127,7 +127,7 @@ object WorkersOps {
 
     for {
       i <- {
-        xa.serially.foldLeft(0) { (i,a) =>
+        xa.async.foldLeft(0) { (i,a) =>
           if(workerFailures.offerQueueSize == 0) {
             s.acquire(1) {
               // Run worker in the background

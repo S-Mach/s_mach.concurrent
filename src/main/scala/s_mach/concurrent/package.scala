@@ -112,14 +112,7 @@ package object concurrent extends TupleConcurrentlyOps {
   }
 
   implicit class SMach_Concurrent_PimpMyTraversableOnce[A,M[+AA] <: TraversableOnce[AA]](val self: M[A]) extends AnyVal {
-    @inline def serially(implicit ec:ExecutionContext) = new SeriallyConfigBuilder(self)
-
-    @inline def workers(implicit ec:ExecutionContext) = WorkersConfigBuilder(self)
-    @inline def workers(workerCount: Int)(implicit ec:ExecutionContext) = WorkersConfigBuilder(self, workerCount)
-  }
-
-  implicit class SMach_Concurrent_PimpMyTraversable[A,M[+AA] <: Traversable[AA]](val self: M[A]) extends AnyVal {
-    @inline def concurrently(implicit ec:ExecutionContext) = new ConcurrentlyConfigBuilder(self)
+    @inline def async(implicit ec:ExecutionContext) = new AsyncConfigBuilder(self)
   }
 
 }

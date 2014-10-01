@@ -61,13 +61,13 @@ object ExampleCode {
       for {
         oomItem <- {
           println("Reading...")
-          oomItemIdBatch.serially.flatMap(_.concurrently.map(read))
+          oomItemIdBatch.async.flatMap(_.async.par.map(read))
         }
         _ = println("Computing...")
         oomNewItemBatch = oomItem.map(item => item.copy(value = item.value + 1)).grouped(10).toVector
         oomResult <- {
           println("Writing...")
-          oomNewItemBatch.serially.flatMap(_.concurrently.map(item => write(item.id, item)))
+          oomNewItemBatch.async.flatMap(_.async.par.map(item => write(item.id, item)))
         }
       } yield oomResult.forall(_ == true)
     }
@@ -79,13 +79,13 @@ object ExampleCode {
       for {
         oomItem <- {
           println("Reading...")
-          oomItemIdBatch.workers(2).flatMap(_.workers(4).map(read))
+          oomItemIdBatch.async.par(2).flatMap(_.async.par(4).map(read))
         }
         _ = println("Computing...")
         oomNewItemBatch = oomItem.map(item => item.copy(value = item.value + 1)).grouped(10).toVector
         oomResult <- {
           println("Writing...")
-          oomNewItemBatch.workers(2).flatMap(_.workers(4).map(item => write(item.id, item)))
+          oomNewItemBatch.async.par(2).flatMap(_.async.par(4).map(item => write(item.id, item)))
         }
       } yield oomResult.forall(_ == true)
     }
@@ -99,12 +99,12 @@ object ExampleCode {
         oomItem <- {
           println("Reading...")
           oomItemIdBatch
-            .serially
+            .async
             .progress(1.second)(progress => println(progress))
             .throttle(3.seconds)
             .flatMap { batch =>
               batch
-                .workers
+                .async.par
                 // Retry at most first 3 timeout and socket exceptions after delaying 100 milliseconds
                 .retry {
                   case (_: TimeoutException) :: tail if tail.size < 3 =>
@@ -120,7 +120,7 @@ object ExampleCode {
         oomNewItemBatch = oomItem.map(item => item.copy(value = item.value + 1)).grouped(10).toVector
         oomResult <- {
           println("Writing...")
-          oomNewItemBatch.workers(2).flatMap(_.workers(4).map(item => write(item.id, item)))
+          oomNewItemBatch.async.par(2).flatMap(_.async.par(4).map(item => write(item.id, item)))
         }
       } yield oomResult.forall(_ == true)
     }

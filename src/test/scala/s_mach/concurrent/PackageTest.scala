@@ -22,7 +22,7 @@ import org.scalatest.{Matchers, FlatSpec}
 import scala.concurrent._
 import scala.concurrent.duration._
 import s_mach.concurrent.util.{Latch, Barrier}
-import s_mach.concurrent.impl.{WorkersConfigBuilder, ConcurrentlyConfigBuilder, SeriallyConfigBuilder}
+import s_mach.concurrent.impl.{AsyncParConfigBuilder, AsyncConfigBuilder}
 
 import scala.util.{Failure, Success}
 
@@ -72,9 +72,9 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     Future.failed(ex).flatten.getTry should equal(Failure(ex))
 
     val items = Vector(1,2,3)
-    items.serially should equal(SeriallyConfigBuilder(items))
-    items.concurrently should equal(ConcurrentlyConfigBuilder(items))
-    items.workers should equal(WorkersConfigBuilder(items))
+    items.async should equal(AsyncConfigBuilder(items))
+    items.async.par should equal(AsyncParConfigBuilder(items))
+    items.async.par(1) should equal(AsyncParConfigBuilder(items,1))
   }
 
   "Future.sideEffect" must "execute the side effect after the future completes" in {

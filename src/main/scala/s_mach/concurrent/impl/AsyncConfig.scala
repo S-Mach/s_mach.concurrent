@@ -27,34 +27,34 @@ import s_mach.concurrent.ScheduledExecutionContext
 import SeriallyOps._
 
 /**
- * A trait for the configuration of a TraversableOnce.serially workflow that can wrap a concurrent function with
- * progress reporting, retry and throttling functions
+ * A trait for the configuration of a concurrent serial TraversableOnce.async workflow that can wrap a concurrent
+ * function with progress reporting, retry and throttling functions
  *
  * Note: Inheritance order here matters - throttle should be inner wrapper on f (progress and retry are interchangeable)
  */
-trait SeriallyConfig extends ProgressConfig with RetryConfig with ThrottleConfig
+trait AsyncConfig extends ProgressConfig with RetryConfig with ThrottleConfig
 
-object SeriallyConfig {
-  case class SeriallyConfigImpl(
+object AsyncConfig {
+  case class AsyncConfigImpl(
     optProgress: Option[ProgressReporter] = None,
     optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
     optThrottle: Option[(Long, ScheduledExecutionContext)] = None
   )(implicit
     val executionContext:ExecutionContext
-  ) extends SeriallyConfig
+  ) extends AsyncConfig
   def apply(
     optProgress: Option[ProgressReporter] = None,
     optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
     optThrottle: Option[(Long, ScheduledExecutionContext)] = None
-  )(implicit executionContext: ExecutionContext) : SeriallyConfig = SeriallyConfigImpl(
+  )(implicit executionContext: ExecutionContext) : AsyncConfig = AsyncConfigImpl(
     optProgress = optProgress,
     optRetry = optRetry,
     optThrottle = optThrottle
   )
-  def apply(cfg: SeriallyConfig) : SeriallyConfig = {
+  def apply(cfg: AsyncConfig) : AsyncConfig = {
     import cfg._
 
-    SeriallyConfigImpl(
+    AsyncConfigImpl(
       optProgress = optProgress,
       optRetry = optRetry,
       optThrottle = optThrottle
@@ -63,7 +63,7 @@ object SeriallyConfig {
 }
 
 /**
- * A builder for a configuration of a TraversableOnce.serially workflow
+ * A builder for a configuration of a concurrent serial TraversableOnce workflow
  * @param ma the collection
  * @param optProgress optional progress report function
  * @param optRetry optional retry function
@@ -72,7 +72,7 @@ object SeriallyConfig {
  * @tparam A type of collection
  * @tparam M collection type
  */
-case class SeriallyConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
+case class AsyncConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   ma: M[A],
   optProgress: Option[ProgressReporter] = None,
   optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
@@ -80,10 +80,10 @@ case class SeriallyConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
 )(implicit
   val executionContext: ExecutionContext
 ) extends
-  ProgressConfigBuilder[SeriallyConfigBuilder[A,M]] with
-  RetryConfigBuilder[SeriallyConfigBuilder[A,M]] with
-  ThrottleConfigBuilder[SeriallyConfigBuilder[A,M]] with
-  SeriallyConfig {
+  ProgressConfigBuilder[AsyncConfigBuilder[A,M]] with
+  RetryConfigBuilder[AsyncConfigBuilder[A,M]] with
+  ThrottleConfigBuilder[AsyncConfigBuilder[A,M]] with
+  AsyncConfig {
 
   override def optTotal = if(ma.hasDefiniteSize) {
     Some(ma.size)
@@ -95,7 +95,7 @@ case class SeriallyConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
    * Copy an existing configuration
    * @param cfg configuration to use 
    * @return a copy of the builder with all settings copied from cfg */
-  def using(cfg: SeriallyConfig) = copy(
+  def using(cfg: AsyncConfig) = copy(
     optProgress = cfg.optProgress,
     optRetry = cfg.optRetry,
     optThrottle = cfg.optThrottle
@@ -120,8 +120,25 @@ case class SeriallyConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   override def throttle_ns(_throttle_ns: Long)(implicit sec:ScheduledExecutionContext) =
     copy(optThrottle = Some((_throttle_ns, sec)))
 
-  /** @return a SeriallyConfig with the current settings */
-  override def build() = SeriallyConfig(this)
+  /** @return a config instance with the current settings */
+  override def build() = AsyncConfig(this)
+
+  /** @return a copy of this config for a parallel workflow */
+  def par = AsyncParConfigBuilder(
+    ma = ma,
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+
+  /** @return a copy of this config for a parallel workflow */
+  def par(workerCount: Int) = AsyncParConfigBuilder(
+    ma = ma,
+    workerCount = workerCount,
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
 
   @inline def map[B](f: A => Future[B])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
@@ -136,5 +153,7 @@ case class SeriallyConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   @inline def foldLeft[B](z:B)(f: (B,A) => Future[B])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]]
   ) : Future[B] = runLoop(foldLeftSerially(ma, z, build3(f)))
+
+
 }
 

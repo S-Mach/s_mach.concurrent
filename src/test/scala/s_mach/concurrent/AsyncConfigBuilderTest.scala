@@ -18,7 +18,7 @@
 */
 package s_mach.concurrent
 
-import s_mach.concurrent.impl.SeriallyConfig
+import s_mach.concurrent.impl.AsyncConfig
 
 import scala.concurrent._
 import scala.concurrent.duration._
@@ -27,9 +27,9 @@ import org.scalatest.{Matchers, FlatSpec}
 import util._
 import TestBuilder._
 
-class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
+class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
-  "SeriallyConfigBuilder-t0" must "build and copy config correctly" in {
+  "AsyncConfigBuilder-t0" must "build and copy config correctly" in {
     implicit val ctc = mkConcurrentTestContext()
 
     val items = mkItems
@@ -45,7 +45,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
 
     val config1Builder =
       items
-        .serially
+        .async
         .throttle(DELAY)
         .retry(retryFn)
         .progress(progressReporter)
@@ -60,16 +60,16 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
     val config2Builder =
       items
         .iterator
-        .serially
+        .async
 
     config2Builder.optTotal should equal(None)
 
     val config1 = config1Builder.build()
-    val config2 = items.serially.using(config1).build()
+    val config2 = items.async.using(config1).build()
 
     config1 should equal(config2)
 
-    val config3 = SeriallyConfig(
+    val config3 = AsyncConfig(
       optProgress = config2.optProgress,
       optRetry = config2.optRetry,
       optThrottle = config2.optThrottle
@@ -79,7 +79,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
     config3 should equal(config2)
   }
 
-  "SeriallyConfigBuilder.map-t1" must "execute each future one at a time" in {
+  "AsyncConfigBuilder.map-t1" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -87,7 +87,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
       sched.addEvent("start")
 
       val items = mkItems
-      val result = items.serially.map(success)
+      val result = items.async.map(success)
 
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
@@ -97,7 +97,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
     }
   }
 
-  "SeriallyConfigBuilder.flatMap-t2" must "execute each future one at a time" in {
+  "AsyncConfigBuilder.flatMap-t2" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -105,7 +105,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
       sched.addEvent("start")
 
       val items = mkItems
-      val result = items.serially.flatMap(successN)
+      val result = items.async.flatMap(successN)
 
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
@@ -116,7 +116,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
   }
 
 
-  "SeriallyConfigBuilder.foreach-t3" must "execute each future one at a time" in {
+  "AsyncConfigBuilder.foreach-t3" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -124,7 +124,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
       sched.addEvent("start")
 
       val items = mkItems
-      val result = items.serially.foreach(success)
+      val result = items.async.foreach(success)
 
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
@@ -138,7 +138,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
     }
   }
 
-  "SeriallyConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+  "AsyncConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
     val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -149,7 +149,7 @@ class SeriallyConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTe
         val items = Vector(1,2,3)//mkItems
         val result =
           items
-            .serially
+            .async
             .throttle(DELAY)
             .retry {
               case List(r:RuntimeException) =>

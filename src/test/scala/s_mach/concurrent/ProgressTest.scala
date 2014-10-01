@@ -35,7 +35,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       items
         .zipWithIndex
-        .concurrently
+        .async.par
         .progress { progress =>
           val eventId = s"report-${progress.completed}-${progress.optTotal.getOrElse(0)}"
           sched.addEvent(eventId)
@@ -64,7 +64,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       items
         .zipWithIndex
-        .workers
+        .async.par
         .progress(DELAY) { progress =>
           val eventId = s"report-${progress.completed}-${progress.optTotal.getOrElse(0)}"
           // Note: same progress may be reported twice
@@ -97,7 +97,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       items.iterator
         .zipWithIndex
-        .serially
+        .async
         .progress(DELAY) { progress =>
           val eventId = s"report-${progress.completed}-${progress.optTotal.getOrElse(0)}"
           // Note: same progress may be reported twice
@@ -130,7 +130,7 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 //
 //       items
 //          .zipWithIndex
-//          .workers
+//          .async.par
 //          .progress(DELAY) { progress =>
 //            val eventId = s"report-${progress.completed}-${progress.optTotal.getOrElse(0)}"
 //            // Note: same progress may be reported twice

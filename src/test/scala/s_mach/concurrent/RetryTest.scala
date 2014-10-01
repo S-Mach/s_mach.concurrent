@@ -37,7 +37,7 @@ class RetryTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       val items = mkItems
       val result =
         items
-          .serially
+          .async
           .retry {
             case List(r1:RuntimeException) =>
               sched.addEvent(s"$r1")
@@ -84,7 +84,7 @@ class RetryTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       val items = mkItems
       val result =
         items
-          .serially
+          .async
           .retry {
             case List(r1:RuntimeException) =>
               sched.addEvent(s"$r1")

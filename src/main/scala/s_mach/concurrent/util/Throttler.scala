@@ -29,8 +29,6 @@ import s_mach.concurrent.impl.ThrottlerImpl
  * scheduled at the same time for later execution will be executed in a FIFO manner. Throttler guarantees that all tasks
  * will have at least throttle nanoseconds separating their completion. However, it can not guarantee that the elapsed
  * time between tasks will not be greater than the throttle setting.
- *
- * Note: throttle settings below 5us produce unstable results
 */
 trait Throttler extends ThrottleControl {
   /** @return a Future that completes once at least throttle_ns nanoseconds have expired since the last task AND task
