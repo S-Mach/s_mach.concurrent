@@ -41,7 +41,7 @@ class SimpleProgressReporterImpl(
 
   override def onStartStep(stepId: Long) = { }
 
-  def onCompleteStep(stepId: Long) : Unit = {
+  override def onCompleteStep(stepId: Long) : Unit = {
     // Note: lock is required here to ensure proper ordering of very fast reports
     lock.synchronized {
       totalSoFar += 1

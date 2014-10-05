@@ -28,7 +28,7 @@ import s_mach.concurrent.ScheduledExecutionContext
 /**
  * A trait for a progress reporter that reports progress only at the specified report interval
  */
-trait PeriodicProgressReporter extends ProgressReporter {
+trait PeriodicProgressReporter extends TaskEventListener {
   def reportInterval: Duration
 }
 

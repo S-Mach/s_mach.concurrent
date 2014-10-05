@@ -21,7 +21,7 @@ package s_mach.concurrent.impl
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent._
-import s_mach.concurrent.util.Throttler
+import s_mach.concurrent.util.{TaskStepHook, TaskHook, Throttler}
 
 /**
  * A trait for a builder of ThrottleConfig. Callers may set the optional throttle period by calling the throttle_ns
@@ -45,42 +45,55 @@ trait ThrottleConfigBuilder[MDT <: ThrottleConfigBuilder[MDT]] {
     throttle_ns(_throttle.toNanos)
 
   /** @return a ThrottleConfig with the optional throttle setting */
-  def build() : ThrottleConfig
+  def build() : OptThrottleConfig
 }
 
-trait ThrottleConfig extends ConcurrentFunctionBuilder {
-  implicit def executionContext: ExecutionContext
+trait OptThrottleConfig {
+  def optThrottle: Option[ThrottleConfig]
+}
 
-  /** @return the optional throttle setting */
-  def optThrottle : Option[(Long, ScheduledExecutionContext)]
+trait ThrottleConfig {
+  def scheduledExecutionContext: ScheduledExecutionContext
+  def throttle_ns: Long
+}
 
-  /** @return if throttle is set, a new function that throttles the execution of the underlying function f. Otherwise,
-    *         the function unmodified */
-  override def build2[A,B](f: A => Future[B]) : A => Future[B] = {
-    super.build2 {
-      optThrottle match {
-        case Some((throttle_ns, scheduledExecutionContext)) =>
-          implicit def sec = scheduledExecutionContext
-          val throttler = Throttler(throttle_ns)
+object ThrottleConfig {
+  case class ThrottleConfigImpl(
+    throttle_ns: Long
+  )(implicit
+    val scheduledExecutionContext: ScheduledExecutionContext
+  ) extends ThrottleConfig
 
-          { a:A => throttler.run(f(a)) }
-        case None => f
-      }
-    }
+  def apply(
+    throttle_ns: Long
+  )(implicit
+    scheduledExecutionContext: ScheduledExecutionContext
+  ) : ThrottleConfig = ThrottleConfigImpl(throttle_ns)
+}
+
+
+case class ThrottleState(
+  throttle_ns: Long
+)(implicit
+  scheduledExecutionContext: ScheduledExecutionContext
+) extends TaskStepHook {
+  import TaskHook._
+
+  val throttler = Throttler(throttle_ns)
+
+  override def hookStep0[R](f: StepId => Future[R])(implicit ec:ExecutionContext) : StepId => Future[R] = {
+    { stepId:StepId => throttler.run(f(stepId)) }
   }
 
-  /** @return if throttle is set, a new function that throttles the execution of the underlying function f. Otherwise,
-    *         the function unmodified */
-  override def build3[A,B,C](f: (A,B) => Future[C]) : (A,B) => Future[C] = {
-    super.build3 {
-      optThrottle match {
-        case Some((throttle_ns, scheduledExecutionContext)) =>
-          implicit def sec = scheduledExecutionContext
-          val throttler = Throttler(throttle_ns)
-
-          { (a:A,b:B) => throttler.run(f(a,b)) }
-        case None => f
-      }
-    }
+  override def hookStep1[A,R](f: (StepId,A) => Future[R])(implicit ec:ExecutionContext) : (StepId,A) => Future[R] = {
+    { (stepId:StepId,a:A) => throttler.run(f(stepId,a)) }
   }
+
+  override def hookStep2[A,B,R](f: (StepId,A,B) => Future[R])(implicit ec:ExecutionContext) : (StepId,A,B) => Future[R] = {
+    { (stepId:StepId,a:A,b:B) => throttler.run(f(stepId,a,b)) }
+  }
+}
+
+object ThrottleState {
+  def apply(cfg: ThrottleConfig) : ThrottleState = ThrottleState(cfg.throttle_ns)(cfg.scheduledExecutionContext)
 }

@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent.impl
 
+import s_mach.concurrent.util.{TaskStepHook, TaskHook}
+
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent._
 
@@ -28,66 +30,119 @@ import s_mach.concurrent._
  */
 trait RetryConfigBuilder[MDT <: RetryConfigBuilder[MDT]] {
 
+  def retryer(i: Retryer)(implicit ec:ExecutionContext) : MDT
+
   /**
    * Set the optional retry function
    * @param f a function that accepts a list of failures so far for an operation. The function returns TRUE if the
    *          operation should be retried.
    * @return a copy of the builder with the new setting
    */
-  def retry(f: List[Throwable] => Future[Boolean]) : MDT
+  def retry(f: List[Throwable] => Future[Boolean])(implicit ec:ExecutionContext) : MDT = {
+    retryer(new Retryer {
+      val failures = new java.util.concurrent.ConcurrentHashMap[Long, List[Throwable]]
+      override def shouldRetry(stepId: Long, failure: Throwable): Future[Boolean] = {
+        // Note: this test/execute is not atomic but this is ok since access to a particular step will always be synchronous
+        val newFailList = failure :: Option(failures.get(stepId)).getOrElse(Nil)
+        failures.put(stepId, newFailList)
+        f(newFailList)
+      }
+    })
+  }
 
   /** @return a RetryConfig with the optional retry function */
-  def build() : RetryConfig
+  def build() : OptRetryConfig
 }
 
 /**
  * A trait for a function builder that can wrap a function to retry failures
  */
-trait RetryConfig extends ConcurrentFunctionBuilder {
+trait OptRetryConfig {
+  def optRetry: Option[RetryConfig]
+}
+trait RetryConfig {
   implicit def executionContext: ExecutionContext
 
-  /** @return the optional retry function */
-  def optRetry : Option[List[Throwable] => Future[Boolean]]
+  def retryer: Retryer
+}
 
-  private[this] def doRetry[B](retry: List[Throwable] => Future[Boolean], f: => Future[B]) : Future[B] = {
-    def loop(failures: List[Throwable]): Future[B] = {
-      f.flatFold(
-        onSuccess = { b: B => Future.successful(b)},
+object RetryConfig {
+  case class RetryConfigImpl(
+    retryer: Retryer
+  )(implicit
+    val executionContext: ExecutionContext
+  ) extends RetryConfig
+
+  def apply(
+    retryer: Retryer
+  )(implicit
+    executionContext: ExecutionContext
+  ) : RetryConfig = RetryConfigImpl(retryer)
+}
+
+
+trait Retryer {
+  def shouldRetry(stepId: Long, failure: Throwable) : Future[Boolean]
+}
+
+case class RetryState(retryer: Retryer) extends TaskStepHook {
+  import TaskHook._
+
+  override def hookStep0[R](step: StepId => Future[R])(implicit ec:ExecutionContext): StepId => Future[R] = {
+    def loop(stepId: StepId): Future[R] = {
+      step(stepId).flatFold(
+        onSuccess = { r:R => Future.successful(r)},
         onFailure = { t: Throwable =>
-          val updatedFailures = t :: failures
-          retry(updatedFailures) flatMap { shouldRetry =>
-            if (shouldRetry) {
-              loop(updatedFailures)
+          retryer.shouldRetry(stepId, t).flatMap { shouldRetry =>
+            if(shouldRetry) {
+              loop(stepId)
             } else {
               Future.failed(t)
             }
-          }
-        }
+          }}
       )
     }
-    loop(Nil)
+
+    loop
   }
 
-    /** @return if the optional retry function is set, a new function that retries f after failures. Otherwise, the
-      *         function unmodified */
-    override def build2[A,B](f: A => Future[B]) : A => Future[B] = {
-    super.build2 {
-      optRetry match {
-        case Some(retry) => { a:A => doRetry(retry, f(a))}
-        case None => f
-      }
+  override def hookStep1[A,R](step: (StepId,A) => Future[R])(implicit ec:ExecutionContext): (StepId,A) => Future[R] = {
+    def loop(stepId: StepId, a: A): Future[R] = {
+      step(stepId, a).flatFold(
+        onSuccess = { r:R => Future.successful(r)},
+        onFailure = { t: Throwable =>
+          retryer.shouldRetry(stepId, t).flatMap { shouldRetry =>
+            if(shouldRetry) {
+              loop(stepId, a)
+            } else {
+              Future.failed(t)
+            }
+          }}
+      )
     }
-  }
-  
-    /** @return if the optional retry function is set, a new function that retries f after failures. Otherwise, the
-      *         function unmodified */
-  override def build3[A,B,C](f: (A,B) => Future[C]) : (A,B) => Future[C] = {
-    super.build3 {
-      optRetry match {
-        case Some(retry) => { (a:A,b:B) => doRetry(retry, f(a,b))}
-        case None => f
-      }
-    }
+
+    loop
   }
 
+  override def hookStep2[A,B,R](step: (StepId,A,B) => Future[R])(implicit ec:ExecutionContext): (StepId,A,B) => Future[R] = {
+    def loop(stepId: StepId, a: A, b: B): Future[R] = {
+      step(stepId, a, b).flatFold(
+        onSuccess = { r:R => Future.successful(r)},
+        onFailure = { t: Throwable =>
+          retryer.shouldRetry(stepId, t).flatMap { shouldRetry =>
+            if(shouldRetry) {
+              loop(stepId, a, b)
+            } else {
+              Future.failed(t)
+            }
+          }}
+      )
+    }
+
+   loop
+  }
+}
+
+object RetryState {
+  def apply(cfg: RetryConfig) : RetryState = RetryState(cfg.retryer)
 }

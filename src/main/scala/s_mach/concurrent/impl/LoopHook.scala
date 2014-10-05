@@ -25,11 +25,11 @@ import scala.concurrent.{ExecutionContext, Future}
 /**
  * A trait for configuring pre and post loop side effects
  */
-trait LoopConfig {
+trait LoopHook {
   def onLoopStart() : Unit = { }
   def onLoopEnd() : Unit = { }
 
-  @inline final def runLoop[A](f: => Future[A])(implicit ec:ExecutionContext) : Future[A] = {
+  final def runLoop[A](f: => Future[A])(implicit ec:ExecutionContext) : Future[A] = {
     onLoopStart()
     f sideEffect { onLoopEnd() }
   }

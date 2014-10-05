@@ -18,7 +18,7 @@
 */
 package s_mach.concurrent
 
-import s_mach.concurrent.impl.AsyncConfig
+import s_mach.concurrent.impl.{Retryer, ThrottleConfig, AsyncConfig}
 
 import scala.concurrent._
 import scala.concurrent.duration._
@@ -34,28 +34,36 @@ class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestC
 
     val items = mkItems
 
-    val progressReporter = new ProgressReporter {
+    val progressReporter = new TaskEventListener {
       override def onStartTask(): Unit = ???
       override def onCompleteStep(stepId: Long): Unit = ???
       override def onStartStep(stepId: Long): Unit = ???
       override def onCompleteTask(): Unit = ???
     }
 
-    val retryFn = { _:List[Throwable] => false.future }
+    val retryer = new Retryer {
+      override def shouldRetry(stepId: Long, failure: Throwable): Future[Boolean] = ???
+    }
 
     val config1Builder =
       items
         .async
         .throttle(DELAY)
-        .retry(retryFn)
+        .retryer(retryer)
         .progress(progressReporter)
 
 
     config1Builder.ma should equal(items)
     config1Builder.optTotal should equal(Some(items.size))
-    config1Builder.optThrottle should equal(Some((DELAY_NS, ctc)))
-    config1Builder.optRetry should equal(Some(retryFn))
-    config1Builder.optProgress should equal(Some(progressReporter))
+    config1Builder.optThrottle.nonEmpty should equal(true)
+    config1Builder.optThrottle.get.throttle_ns should equal(DELAY.toNanos)
+    config1Builder.optThrottle.get.scheduledExecutionContext should equal(ctc)
+    config1Builder.optRetry.nonEmpty should equal(true)
+    config1Builder.optRetry.get.retryer should equal(retryer)
+    config1Builder.optRetry.get.executionContext should equal(ctc)
+    config1Builder.optProgress.nonEmpty should equal(true)
+    config1Builder.optProgress.get.reporter should equal(progressReporter)
+    config1Builder.optProgress.get.executionContext should equal(ctc)
 
     val config2Builder =
       items

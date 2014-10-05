@@ -96,10 +96,10 @@ trait SeriallyOps {
    * Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/
    * @return a Future of M[B] that completes once all Futures have been fold left
    */
-  def foldLeftSerially[A, B, M[AA] <: TraversableOnce[AA]](
+  def foldLeftSerially[A, B, M[AA] <: TraversableOnce[AA]](z: B)(
     self: M[A],
-    z: B,
-    f: (B, A) => Future[B]
+    f: (A, B) => Future[B]
+//    f: (B, A) => Future[B]
   )(implicit
     ec: ExecutionContext,
     cbf: CanBuildFrom[Nothing, B, M[B]]
@@ -111,7 +111,8 @@ trait SeriallyOps {
     self.foldLeft(Future.successful(z)) { (fB, a:A) =>
       for {
         b <- fB
-        nextB <- f(b,a)
+        nextB <- f(a,b)
+//        nextB <- f(b,a)
       } yield nextB
     }
   }

@@ -31,7 +31,7 @@ import WorkersOps._
  *
  * Note: Inheritance order here matters - throttle should be inner wrapper on f (progress and retry are interchangeable)
  */
-trait AsyncParConfig extends ProgressConfig with RetryConfig with ThrottleConfig {
+trait AsyncParConfig extends AsyncConfig {
   def workerCount : Int
 }
 
@@ -40,19 +40,19 @@ object AsyncParConfig {
 
   case class AsyncParConfigImpl(
     workerCount: Int = DEFAULT_WORKER_COUNT,
-    optProgress: Option[ProgressReporter] = None,
-    optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
-    optThrottle: Option[(Long, ScheduledExecutionContext)] = None
-  )(implicit
-    val executionContext:ExecutionContext
-  ) extends AsyncParConfig
+    optProgress: Option[ProgressConfig] = None,
+    optRetry: Option[RetryConfig] = None,
+    optThrottle: Option[ThrottleConfig] = None
+  ) extends AsyncParConfig {
+    override def optTotal = None
+  }
 
   def apply(
     workerCount: Int = DEFAULT_WORKER_COUNT,
-    optProgress: Option[ProgressReporter] = None,
-    optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
-    optThrottle: Option[(Long, ScheduledExecutionContext)] = None
-  )(implicit executionContext: ExecutionContext) : AsyncParConfig = AsyncParConfigImpl(
+    optProgress: Option[ProgressConfig] = None,
+    optRetry: Option[RetryConfig] = None,
+    optThrottle: Option[ThrottleConfig] = None
+  ) : AsyncParConfig = AsyncParConfigImpl(
     optProgress = optProgress, 
     optRetry = optRetry, 
     optThrottle = optThrottle,
@@ -63,10 +63,10 @@ object AsyncParConfig {
     import cfg._
 
     AsyncParConfigImpl(
+      workerCount = workerCount,
       optProgress = optProgress,
       optRetry = optRetry,
-      optThrottle = optThrottle,
-      workerCount = workerCount
+      optThrottle = optThrottle
     )
   }
 }
@@ -78,23 +78,19 @@ object AsyncParConfig {
  * @param optProgress optional progress report function
  * @param optRetry optional retry function
  * @param optThrottle optional throttle settings
- * @param executionContext execution context
  * @tparam A type of collection
  * @tparam M collection type
  */
 case class AsyncParConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   ma: M[A],
   workerCount: Int = AsyncParConfig.DEFAULT_WORKER_COUNT,
-  optProgress: Option[ProgressReporter] = None,
-  optRetry: Option[(List[Throwable]) => Future[Boolean]] = None,
-  optThrottle: Option[(Long, ScheduledExecutionContext)] = None
-)(implicit
-  val executionContext: ExecutionContext
+  optProgress: Option[ProgressConfig] = None,
+  optRetry: Option[RetryConfig] = None,
+  optThrottle: Option[ThrottleConfig] = None
 ) extends
-  ProgressConfigBuilder[AsyncParConfigBuilder[A,M]] with
-  RetryConfigBuilder[AsyncParConfigBuilder[A,M]] with
-  ThrottleConfigBuilder[AsyncParConfigBuilder[A,M]] with
-  AsyncParConfig {
+  AbstractAsyncConfigBuilder[AsyncParConfigBuilder[A,M]] with
+  AsyncParConfig with
+  AbstractAsyncConfigTaskRunner {
 
   override def optTotal = if(ma.hasDefiniteSize) {
     Some(ma.size)
@@ -106,43 +102,46 @@ case class AsyncParConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
    * Copy an existing configuration
    * @param cfg configuration to use
    * @return a copy of the builder with all settings copied from cfg */
-  def using(cfg: AsyncParConfig) = copy(
-    workerCount = cfg.workerCount,
-    optProgress = cfg.optProgress,
-    optRetry = cfg.optRetry,
-    optThrottle = cfg.optThrottle
+  def using(cfg: AsyncParConfig) = {
+    copy(
+      workerCount = cfg.workerCount,
+      optProgress = cfg.optProgress,
+      optRetry = cfg.optRetry,
+      optThrottle = cfg.optThrottle
+    )
+  }
+
+  def using(
+    optProgress: Option[ProgressConfig] = optProgress,
+    optRetry: Option[RetryConfig] = optRetry,
+    optThrottle: Option[ThrottleConfig] = optThrottle
+  ) = copy(
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
   )
 
-  /**
-   * Set the optional progress reporting function
-   * @return a copy of the builder with the new setting
-   * */
-  override def progress(r: ProgressReporter) = copy(optProgress = Some(r))
-
-  /**
-   * Set the optional retry function
-   * @return a copy of the builder with the new setting
-   * */
-  override def retry(f: (List[Throwable]) => Future[Boolean]) = copy(optRetry = Some(f))
-
-  /**
-   * Set the optional throttle setting in nanoseconds
-   * @return a copy of the builder with the new setting
-   * */
-  override def throttle_ns(_throttle_ns: Long)(implicit sec:ScheduledExecutionContext) =
-    copy(optThrottle = Some((_throttle_ns, sec)))
-
-  /** @return a WorkersConfig with the current settings */
+  /** @return a config instance with the current settings */
   override def build() = AsyncParConfig(this)
 
   @inline def map[B](f: A => Future[B])(implicit
-    cbf: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[M[B]] = runLoop(mapWorkers(ma, build2(f), this))
+    cbf: CanBuildFrom[Nothing, B, M[B]],
+    ec: ExecutionContext
+  ) : Future[M[B]] = {
+    runTask1(ma, mapWorkers[A,B,M](workerCount), f)
+  }
 
   @inline def flatMap[B](f: A => Future[TraversableOnce[B]])(implicit
-    cbf: CanBuildFrom[Nothing, B, M[B]]
-  ) : Future[M[B]] = runLoop(flatMapWorkers(ma, build2(f), this))
+    cbf: CanBuildFrom[Nothing, B, M[B]],
+    ec: ExecutionContext
+  ) : Future[M[B]] = {
+    runTask1(ma, flatMapWorkers[A,B,M](workerCount), f)
+  }
 
-  @inline def foreach[U](f: A => Future[U]) : Future[Unit] = runLoop(foreachWorkers(ma, build2(f), this))
+  @inline def foreach[U](f: A => Future[U])(implicit
+    ec: ExecutionContext
+  ) : Future[Unit] = {
+    runTask1(ma, foreachWorkers[A,U,M](workerCount), f)
+  }
 }
 

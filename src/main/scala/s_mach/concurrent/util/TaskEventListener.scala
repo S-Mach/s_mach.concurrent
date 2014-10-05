@@ -18,6 +18,9 @@
 */
 package s_mach.concurrent.util
 
+import scala.concurrent.{ExecutionContext, Future}
+import s_mach.concurrent._
+
 /**
  * A trait for reporting progress of a task that consists of one or more discrete steps. Each step is identified by an 
  * ordinal step identifier. The step id is a generic concept and may be mapped by callers to any concrete concept. For 
@@ -28,13 +31,44 @@ package s_mach.concurrent.util
  *
  * Note: the progress reporter is assumed to be stateful. All derived implementations must be thread safe
  */
-trait ProgressReporter {
+trait TaskEventListener extends TaskHook {
   /** Called at the beginning of the computation */
   def onStartTask() : Unit
   /** Called once the computation completes */
   def onCompleteTask() : Unit
   /** Called at the beginning of execution of a step of the computation */
-  def onStartStep(stepId: Long)
+  def onStartStep(stepId: Long) : Unit
   /** Called at the beginning of execution of a step of the computation */
-  def onCompleteStep(stepId: Long)
+  def onCompleteStep(stepId: Long) : Unit
+}
+
+trait TaskEventListenerHook extends TaskEventListener with TaskHook with TaskStepHook {
+  import TaskHook._
+
+  override def hookTask[A](task: () => Future[A])(implicit ec:ExecutionContext) : () => Future[A] = {
+    { () =>
+      onStartTask()
+      task() sideEffect onCompleteTask()
+    }
+  }
+  override def hookStep0[R](step: StepId => Future[R])(implicit ec:ExecutionContext) : StepId => Future[R] = {
+    { stepId =>
+      onStartStep(stepId)
+      step(stepId) sideEffect onCompleteStep(stepId)
+    }
+  }
+
+  override def hookStep1[A,R](step: (StepId,A) => Future[R])(implicit ec:ExecutionContext) : (StepId,A) => Future[R] = {
+    { (stepId,a) =>
+      onStartStep(stepId)
+      step(stepId,a) sideEffect onCompleteStep(stepId)
+    }
+  }
+
+  override def hookStep2[A,B,R](step: (StepId,A,B) => Future[R])(implicit ec:ExecutionContext) : (StepId,A,B) => Future[R] = {
+    { (stepId,a,b) =>
+      onStartStep(stepId)
+      step(stepId,a,b) sideEffect onCompleteStep(stepId)
+    }
+  }
 }

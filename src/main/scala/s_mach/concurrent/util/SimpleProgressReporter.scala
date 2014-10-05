@@ -24,7 +24,7 @@ import s_mach.concurrent.impl.SimpleProgressReporterImpl
  * A trait for a simple progress reporter that accumulates total progress from completed reports and makes a report
  * for each completed report
  */
-trait SimpleProgressReporter extends ProgressReporter
+trait SimpleProgressReporter extends TaskEventListener
 
 object SimpleProgressReporter {
   def apply(

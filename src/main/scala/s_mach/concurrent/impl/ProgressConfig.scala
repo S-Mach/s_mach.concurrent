@@ -18,11 +18,13 @@
 */
 package s_mach.concurrent.impl
 
+import s_mach.concurrent.util.TaskHook.StepId
+
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future, Promise}
 import scala.util.{Failure, Success}
 import s_mach.concurrent._
-import s_mach.concurrent.util.{SimpleProgressReporter, Progress, PeriodicProgressReporter, ProgressReporter}
+import s_mach.concurrent.util._
 
 /**
  * A trait for a builder of ProgressConfig. Callers may set the optional progress reporting function by calling one of
@@ -40,7 +42,7 @@ trait ProgressConfigBuilder[MDT <: ProgressConfigBuilder[MDT]] {
    * @param reporter a function that accepts the number of completed operations (typically this is 1) as they occur
    * @return a copy of the builder with the new setting
    */
-  def progress(reporter: ProgressReporter) : MDT
+  def progress(reporter: TaskEventListener)(implicit ec:ExecutionContext) : MDT
 
   /**
    * Set the progress reporting function
@@ -48,7 +50,8 @@ trait ProgressConfigBuilder[MDT <: ProgressConfigBuilder[MDT]] {
    *               if the total is unknown)
    * @return a copy of the builder with the new setting
    */
-  def progress(report: Progress => Unit) : MDT = progress(SimpleProgressReporter(optTotal, report))
+  def progress(report: Progress => Unit)(implicit ec:ExecutionContext) : MDT =
+    progress(SimpleProgressReporter(optTotal, report))
 
   /**
    * Set the progress reporting function to periodically report progress
@@ -65,84 +68,50 @@ trait ProgressConfigBuilder[MDT <: ProgressConfigBuilder[MDT]] {
   }
 
   /** @return a ProgressConfig with the optional progress function */
-  def build() : ProgressConfig
+  def build() : OptProgressConfig
 }
 
 /**
  * A trait for a concurrent function builder that can add progress reporting to a concurrent function
  */
-trait ProgressConfig extends ConcurrentFunctionBuilder with LoopConfig {
+trait OptProgressConfig {
+  def optTotal: Option[Long]
+
+  def optProgress: Option[ProgressConfig]
+}
+
+trait ProgressConfig {
   implicit def executionContext: ExecutionContext
+  def reporter: TaskEventListener
+}
 
-  /** @return the optional progress reporting function */
-  def optProgress : Option[ProgressReporter]
+object ProgressConfig {
+  case class ProgressConfigImpl(
+    optTotal: Option[Long],
+    reporter: TaskEventListener
+  )(implicit
+    val executionContext: ExecutionContext
+  ) extends ProgressConfig
 
+  def apply(
+    optTotal: Option[Long],
+    reporter: TaskEventListener
+  )(implicit
+    executionContext: ExecutionContext
+  ) : ProgressConfig = ProgressConfigImpl(optTotal, reporter)
+}
 
-  override def onLoopStart(): Unit = {
-    super.onLoopStart()
-    optProgress.foreach(_.onStartTask())
-  }
+case class ProgressState(
+  reporter: TaskEventListener
+)(implicit
+  executionContext: ExecutionContext
+) extends TaskEventListenerHook {
+  override def onStartTask() = reporter.onStartTask()
+  override def onCompleteTask() = reporter.onCompleteTask()
+  override def onStartStep(stepId: Long) = reporter.onStartStep(stepId)
+  override def onCompleteStep(stepId: Long) = reporter.onCompleteStep(stepId)
+}
 
-  override def onLoopEnd(): Unit = {
-    super.onLoopEnd()
-    optProgress.foreach(_.onCompleteTask())
-  }
-
-  /** @return if progress is set, a new function that reports progress after each returned Future completes. Otherwise,
-    *         the function unmodified */
-  override def build2[A,B](f: A => Future[B]) : A => Future[B] = {
-    super.build2 {
-      optProgress match {
-        case Some(progress) =>
-          // TODO: better way to do this?
-          val nextStepId = new java.util.concurrent.atomic.AtomicLong(0)
-
-          { a:A =>
-            val stepId = nextStepId.getAndIncrement()
-            progress.onStartStep(stepId)
-            val promise = Promise[B]()
-            f(a) onComplete {
-              case f@Failure(_) =>
-                // Don't report progress on failure
-                promise.complete(f)
-              case s@Success(_) =>
-                // Note: need to ensure progress happens before next iteration
-                progress.onCompleteStep(stepId)
-                promise.complete(s)
-            }
-            promise.future
-          }
-        case None => f
-      }
-    }
-  }
-
-  /** @return if progress is set, a new function that reports progress after each returned Future completes. Otherwise,
-    *         the function unmodified */
-  override def build3[A,B,C](f: (A,B) => Future[C]) : (A,B) => Future[C] = {
-    super.build3 {
-      optProgress match {
-        case Some(progress) =>
-          // TODO: better way to do this?
-          val nextStepId = new java.util.concurrent.atomic.AtomicLong(0)
-
-          { (a:A,b:B) =>
-            val stepId = nextStepId.getAndIncrement()
-            progress.onStartStep(stepId)
-            val promise = Promise[C]()
-            f(a,b) onComplete {
-              case f@Failure(_) =>
-                // Don't report progress on failure
-                promise.complete(f)
-              case s@Success(_) =>
-                // Note: need to ensure progress happens before next iteration
-                progress.onCompleteStep(stepId)
-            }
-            promise.future
-          }
-        case None => f
-      }
-    }
-  }
-
+object ProgressState {
+  def apply(cfg: ProgressConfig) : ProgressState = ProgressState(cfg.reporter)(cfg.executionContext)
 }
