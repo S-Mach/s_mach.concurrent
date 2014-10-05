@@ -18,7 +18,7 @@
 */
 package s_mach.concurrent
 
-import s_mach.concurrent.impl.{Retryer, ThrottleConfig, AsyncConfig}
+import s_mach.concurrent.impl.{RetryDecider, ThrottleConfig, AsyncConfig}
 
 import scala.concurrent._
 import scala.concurrent.duration._
@@ -41,7 +41,7 @@ class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestC
       override def onCompleteTask(): Unit = ???
     }
 
-    val retryer = new Retryer {
+    val retryer = new RetryDecider {
       override def shouldRetry(stepId: Long, failure: Throwable): Future[Boolean] = ???
     }
 
@@ -49,11 +49,11 @@ class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestC
       items
         .async
         .throttle(DELAY)
-        .retryer(retryer)
+        .retryDecider(retryer)
         .progress(progressReporter)
 
 
-    config1Builder.ma should equal(items)
+    config1Builder.enumerator should equal(items)
     config1Builder.optTotal should equal(Some(items.size))
     config1Builder.optThrottle.nonEmpty should equal(true)
     config1Builder.optThrottle.get.throttle_ns should equal(DELAY.toNanos)

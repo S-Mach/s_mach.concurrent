@@ -39,6 +39,8 @@ trait ConcurrentTestCommon extends Matchers {
   // Note: these tests will fail unless there is at least two cores
   assert(Runtime.getRuntime.availableProcessors() > 1)
 
+  val TEST_COUNT = 10000
+
   object DelayAccuracyTest extends Tag("s_mach.concurrent.DelayAccuracyTest")
 
   // Not going to worry about shutdown since only one is ever created here
@@ -65,8 +67,6 @@ trait ConcurrentTestCommon extends Matchers {
     }
     builder.result().distinct
   }
-
-  val TEST_COUNT = 10000
 
   val MIN_CONCURRENCY_PERCENT = 0.66
   

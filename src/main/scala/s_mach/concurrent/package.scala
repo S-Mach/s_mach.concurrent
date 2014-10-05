@@ -112,7 +112,7 @@ package object concurrent extends TupleConcurrentlyOps {
   }
 
   implicit class SMach_Concurrent_PimpMyTraversableOnce[A,M[+AA] <: TraversableOnce[AA]](val self: M[A]) extends AnyVal {
-    @inline def async(implicit ec:ExecutionContext) = new AsyncConfigBuilder(self)
+    @inline def async(implicit ec:ExecutionContext) = TraverseableOnceAsyncExecutionPlanBuilder(self)
   }
 
 }

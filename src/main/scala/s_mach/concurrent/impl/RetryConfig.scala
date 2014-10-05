@@ -23,6 +23,16 @@ import s_mach.concurrent.util.{TaskStepHook, TaskHook}
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent._
 
+case class SimpleRetryDecider(f: List[Throwable] => Future[Boolean])(implicit ec:ExecutionContext) extends RetryDecider {
+  val failures = new java.util.concurrent.ConcurrentHashMap[Long, List[Throwable]]
+  override def shouldRetry(stepId: Long, failure: Throwable): Future[Boolean] = {
+    // Note: this test/execute is not atomic but this is ok since access to a particular step will always be synchronous
+    val newFailList = failure :: Option(failures.get(stepId)).getOrElse(Nil)
+    failures.put(stepId, newFailList)
+    f(newFailList)
+  }
+}
+
 /**
  * A trait for a builder of RetryConfig. Callers may set the optional retry function by calling the retry method. If the
  * retry function is never called then the optional retry function is left unset.
@@ -30,7 +40,7 @@ import s_mach.concurrent._
  */
 trait RetryConfigBuilder[MDT <: RetryConfigBuilder[MDT]] {
 
-  def retryer(i: Retryer)(implicit ec:ExecutionContext) : MDT
+  def retryDecider(i: RetryDecider)(implicit ec:ExecutionContext) : MDT
 
   /**
    * Set the optional retry function
@@ -39,15 +49,7 @@ trait RetryConfigBuilder[MDT <: RetryConfigBuilder[MDT]] {
    * @return a copy of the builder with the new setting
    */
   def retry(f: List[Throwable] => Future[Boolean])(implicit ec:ExecutionContext) : MDT = {
-    retryer(new Retryer {
-      val failures = new java.util.concurrent.ConcurrentHashMap[Long, List[Throwable]]
-      override def shouldRetry(stepId: Long, failure: Throwable): Future[Boolean] = {
-        // Note: this test/execute is not atomic but this is ok since access to a particular step will always be synchronous
-        val newFailList = failure :: Option(failures.get(stepId)).getOrElse(Nil)
-        failures.put(stepId, newFailList)
-        f(newFailList)
-      }
-    })
+    retryDecider(SimpleRetryDecider(f))
   }
 
   /** @return a RetryConfig with the optional retry function */
@@ -63,29 +65,29 @@ trait OptRetryConfig {
 trait RetryConfig {
   implicit def executionContext: ExecutionContext
 
-  def retryer: Retryer
+  def retryer: RetryDecider
 }
 
 object RetryConfig {
   case class RetryConfigImpl(
-    retryer: Retryer
+    retryer: RetryDecider
   )(implicit
     val executionContext: ExecutionContext
   ) extends RetryConfig
 
   def apply(
-    retryer: Retryer
+    retryer: RetryDecider
   )(implicit
     executionContext: ExecutionContext
   ) : RetryConfig = RetryConfigImpl(retryer)
 }
 
 
-trait Retryer {
+trait RetryDecider {
   def shouldRetry(stepId: Long, failure: Throwable) : Future[Boolean]
 }
 
-case class RetryState(retryer: Retryer) extends TaskStepHook {
+case class RetryState(retryer: RetryDecider) extends TaskStepHook {
   import TaskHook._
 
   override def hookStep0[R](step: StepId => Future[R])(implicit ec:ExecutionContext): StepId => Future[R] = {
