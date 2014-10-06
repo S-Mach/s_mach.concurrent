@@ -28,7 +28,7 @@ trait SimpleProgressReporter extends TaskEventListener
 
 object SimpleProgressReporter {
   def apply(
-    optTotal: Option[Long],
+    optTotal: Option[Int],
     report: Progress => Unit
   ) : SimpleProgressReporter = new SimpleProgressReporterImpl(
     optTotal = optTotal,

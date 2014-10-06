@@ -21,11 +21,11 @@ package s_mach.concurrent.impl
 import s_mach.concurrent.util.{SimpleProgressReporter, Progress}
 
 class SimpleProgressReporterImpl(
-  optTotal: Option[Long],
+  optTotal: Option[Int],
   report: Progress => Unit
 ) extends SimpleProgressReporter {
   val lock = new Object
-  var totalSoFar = 0l
+  var totalSoFar = 0
   var startTime_ns = 0l
 
   override def onStartTask(): Unit = {
@@ -39,9 +39,9 @@ class SimpleProgressReporterImpl(
 
   override def onCompleteTask(): Unit = { }
 
-  override def onStartStep(stepId: Long) = { }
+  override def onStartStep(stepId: Int) = { }
 
-  override def onCompleteStep(stepId: Long) : Unit = {
+  override def onCompleteStep(stepId: Int) : Unit = {
     // Note: lock is required here to ensure proper ordering of very fast reports
     lock.synchronized {
       totalSoFar += 1

@@ -25,7 +25,7 @@ package s_mach.concurrent.util
  * @param startTime_ns the time in nanoseconds returned by System.nanoTime when the computation was started
  */
 case class Progress(
-  completed: Long,
-  optTotal: Option[Long],
+  completed: Int,
+  optTotal: Option[Int],
   startTime_ns: Long
 )

@@ -35,7 +35,7 @@ import s_mach.concurrent.util._
 trait ProgressConfigBuilder[MDT <: ProgressConfigBuilder[MDT]] {
 
   /** The optional total number of operations as set by derived type */
-  def optTotal : Option[Long]
+  def optTotal : Option[Int]
 
   /**
    * Set the optional progress reporting function.
@@ -75,7 +75,7 @@ trait ProgressConfigBuilder[MDT <: ProgressConfigBuilder[MDT]] {
  * A trait for a concurrent function builder that can add progress reporting to a concurrent function
  */
 trait OptProgressConfig {
-  def optTotal: Option[Long]
+  def optTotal: Option[Int]
 
   def optProgress: Option[ProgressConfig]
 }
@@ -87,14 +87,14 @@ trait ProgressConfig {
 
 object ProgressConfig {
   case class ProgressConfigImpl(
-    optTotal: Option[Long],
+    optTotal: Option[Int],
     reporter: TaskEventListener
   )(implicit
     val executionContext: ExecutionContext
   ) extends ProgressConfig
 
   def apply(
-    optTotal: Option[Long],
+    optTotal: Option[Int],
     reporter: TaskEventListener
   )(implicit
     executionContext: ExecutionContext
@@ -108,8 +108,8 @@ case class ProgressState(
 ) extends TaskEventListenerHook {
   override def onStartTask() = reporter.onStartTask()
   override def onCompleteTask() = reporter.onCompleteTask()
-  override def onStartStep(stepId: Long) = reporter.onStartStep(stepId)
-  override def onCompleteStep(stepId: Long) = reporter.onCompleteStep(stepId)
+  override def onStartStep(stepId: Int) = reporter.onStartStep(stepId)
+  override def onCompleteStep(stepId: Int) = reporter.onCompleteStep(stepId)
 }
 
 object ProgressState {

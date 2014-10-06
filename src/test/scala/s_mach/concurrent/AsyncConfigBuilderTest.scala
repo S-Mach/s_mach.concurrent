@@ -36,8 +36,8 @@ class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestC
 
     val progressReporter = new TaskEventListener {
       override def onStartTask(): Unit = ???
-      override def onCompleteStep(stepId: Long): Unit = ???
-      override def onStartStep(stepId: Long): Unit = ???
+      override def onCompleteStep(stepId: Int): Unit = ???
+      override def onStartStep(stepId: Int): Unit = ???
       override def onCompleteTask(): Unit = ???
     }
 

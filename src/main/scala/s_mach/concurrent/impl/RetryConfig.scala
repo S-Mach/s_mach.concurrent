@@ -40,7 +40,7 @@ case class SimpleRetryDecider(f: List[Throwable] => Future[Boolean])(implicit ec
  */
 trait RetryConfigBuilder[MDT <: RetryConfigBuilder[MDT]] {
 
-  def retryDecider(i: RetryDecider)(implicit ec:ExecutionContext) : MDT
+  def retryDecider(r: RetryDecider)(implicit ec:ExecutionContext) : MDT
 
   /**
    * Set the optional retry function

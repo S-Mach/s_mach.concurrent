@@ -50,7 +50,7 @@ object AsyncConfig {
     optProgress: Option[ProgressConfig] = None,
     optRetry: Option[RetryConfig] = None,
     optThrottle: Option[ThrottleConfig] = None
-  )(implicit executionContext: ExecutionContext) : AsyncConfig = AsyncConfigImpl(
+  ) : AsyncConfig = AsyncConfigImpl(
     workerCount,
     optProgress = optProgress,
     optRetry = optRetry,
@@ -72,8 +72,7 @@ trait AbstractAsyncConfigBuilder[MDT <: AbstractAsyncConfigBuilder[MDT]] extends
   ProgressConfigBuilder[MDT] with
   RetryConfigBuilder[MDT] with
   ThrottleConfigBuilder[MDT] with
-  AsyncConfig with
-  DelegatingTaskRunner
+  AsyncConfig
 {
 
   def using(
@@ -128,7 +127,56 @@ trait AbstractAsyncConfigBuilder[MDT <: AbstractAsyncConfigBuilder[MDT]] extends
   override def build() = AsyncConfig(this)
 }
 
-trait AbstractAsyncConfigTaskRunner extends AsyncConfig with TaskRunner {
+case class AsyncConfigBuilder(
+  optProgress: Option[ProgressConfig] = None,
+  optRetry: Option[RetryConfig] = None,
+  optThrottle: Option[ThrottleConfig] = None
+) extends AbstractAsyncConfigBuilder[AsyncConfigBuilder] {
+  override def using(
+    optProgress: Option[ProgressConfig],
+    optRetry: Option[RetryConfig],
+    optThrottle: Option[ThrottleConfig]
+  )  = copy(
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+  override val workerCount = 1
+  override val optTotal = None
+
+  def par = ParAsyncConfigBuilder(
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+
+  def par(workerCount: Int) = ParAsyncConfigBuilder(
+    workerCount = workerCount,
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+}
+
+case class ParAsyncConfigBuilder(
+  workerCount: Int = AsyncConfig.DEFAULT_PAR_WORKER_COUNT,
+  optProgress: Option[ProgressConfig] = None,
+  optRetry: Option[RetryConfig] = None,
+  optThrottle: Option[ThrottleConfig] = None
+) extends AbstractAsyncConfigBuilder[ParAsyncConfigBuilder] {
+  override def using(
+    optProgress: Option[ProgressConfig],
+    optRetry: Option[RetryConfig],
+    optThrottle: Option[ThrottleConfig]
+  )  = copy(
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+  override val optTotal = None
+}
+
+trait AbstractAsyncConfigTaskRunner extends AsyncConfig with DelegatingTaskRunner {
   lazy val taskHooks : Seq[TaskHook] = Seq(
     optProgress.map(ProgressState.apply)
   ).flatten
@@ -143,7 +191,7 @@ trait AbstractAsyncConfigTaskRunner extends AsyncConfig with TaskRunner {
 trait AbstractAsyncExecutionPlanBuilder[T, MDT <: AbstractAsyncExecutionPlanBuilder[T, MDT]] extends
   AbstractAsyncConfigBuilder[MDT] with
   AbstractAsyncConfigTaskRunner {
-  def enumerator: T 
+//  def enumerator: T
 }
 
 trait AbstractTraverseableOnceAsyncExecutionPlanBuilder[
@@ -151,7 +199,7 @@ trait AbstractTraverseableOnceAsyncExecutionPlanBuilder[
   M[+AA] <: TraversableOnce[AA],
   MDT <: AbstractTraverseableOnceAsyncExecutionPlanBuilder[A,M,MDT]
 ] extends AbstractAsyncExecutionPlanBuilder[M[A],MDT] {
-  override def enumerator: M[A]
+  def enumerator: M[A]
 
   def optTotal = if(enumerator.hasDefiniteSize) {
     Some(enumerator.size)
@@ -275,4 +323,153 @@ case class ParTraverseableOnceAsyncExecutionPlanBuilder[A,M[+AA] <: TraversableO
   }
 }
 
+//trait AbstractTupleAsyncExecutionPlanBuilder[
+//  T <: Product,
+//  MDT <: AbstractTupleAsyncExecutionPlanBuilder[T, MDT]
+//] extends
+//  AbstractAsyncExecutionPlanBuilder[T, MDT] {
+//  def optTotal = Some(enumerator.productArity)
+//}
+
+case class Tuple2AsyncExecutionPlanBuilder[A,B](
+  fa: () => Future[A],
+  fb: () => Future[B],
+  optProgress: Option[ProgressConfig] = None,
+  optRetry: Option[RetryConfig] = None,
+  optThrottle: Option[ThrottleConfig] = None
+)(implicit ec:ExecutionContext) extends AbstractAsyncExecutionPlanBuilder[
+    (() => Future[A],() => Future[B]),
+    Tuple2AsyncExecutionPlanBuilder[A,B]
+  ] {
+
+  val workerCount = 1
+  val optTotal = Some(2)
+
+  def using(
+    optProgress: Option[ProgressConfig] = optProgress,
+    optRetry: Option[RetryConfig] = optRetry,
+    optThrottle: Option[ThrottleConfig] = optThrottle
+  )  = copy(
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+
+  /** @return a copy of this config for a parallel workflow */
+  def par = ParTuple2AsyncExecutionPlanBuilder(
+    fa = fa,
+    fb = fb,
+    workerCount = AsyncConfig.DEFAULT_PAR_WORKER_COUNT,
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+
+  /** @return a copy of this config for a parallel workflow */
+  def par(workerCount: Int) = ParTuple2AsyncExecutionPlanBuilder(
+    fa = fa,
+    fb = fb,
+    workerCount = workerCount,
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+
+  def runner = { (fa: () => Future[A],fb: () => Future[B]) =>
+    for {
+      a <- fa()
+      b <- fb()
+    } yield (a,b)
+  }
+
+//  def run() = runTupleTask2(fa, fb, runner)
+  def filter(p: ((A,B)) => Boolean) : Tuple2AsyncExecutionPlanBuilder[A,B] = this
+  def withFilter(p: ((A,B)) => Boolean) : Tuple2AsyncExecutionPlanBuilder[A,B] = this
+  def map[ZZ](f: ((A,B)) => ZZ) : Future[ZZ] = runTupleTask2(fa,fb,runner).map(f)
+  def flatMap[ZZ](f: ((A,B)) => Future[ZZ]) : Future[ZZ] = runTupleTask2(fa,fb,runner).flatMap(f)
+}
+
+case class ParTuple2AsyncExecutionPlanBuilder[A,B](
+  fa: () => Future[A],
+  fb: () => Future[B],
+  workerCount: Int,
+  optProgress: Option[ProgressConfig] = None,
+  optRetry: Option[RetryConfig] = None,
+  optThrottle: Option[ThrottleConfig] = None
+)(implicit ec:ExecutionContext) extends AbstractAsyncExecutionPlanBuilder[
+    (() => Future[A],() => Future[B]),
+    ParTuple2AsyncExecutionPlanBuilder[A,B]
+  ] {
+
+  val optTotal = Some(2)
+
+  def using(
+    optProgress: Option[ProgressConfig] = optProgress,
+    optRetry: Option[RetryConfig] = optRetry,
+    optThrottle: Option[ThrottleConfig] = optThrottle
+  )  = copy(
+    optProgress = optProgress,
+    optRetry = optRetry,
+    optThrottle = optThrottle
+  )
+
+  def runner = { (fa: () => Future[A],fb: () => Future[B]) =>
+    val _fa = fa()
+    val _fb = fb()
+    for {
+      a <- _fa
+      b <- _fb
+    } yield (a,b)
+  }
+
+//  def run() = runTupleTask2(fa, fb, runner)
+  def filter(p: ((A,B)) => Boolean) : ParTuple2AsyncExecutionPlanBuilder[A,B] = this
+  def withFilter(p: ((A,B)) => Boolean) : ParTuple2AsyncExecutionPlanBuilder[A,B] = this
+  def map[ZZ](f: ((A,B)) => ZZ) : Future[ZZ] = runTupleTask2(fa,fb,runner).map(f)
+  def flatMap[ZZ](f: ((A,B)) => Future[ZZ]) : Future[ZZ] = runTupleTask2(fa,fb,runner).flatMap(f)
+}
+
+//case class ParTraverseableOnceAsyncExecutionPlanBuilder[A,M[+AA] <: TraversableOnce[AA]](
+//  enumerator: M[A],
+//  workerCount: Int = AsyncConfig.DEFAULT_PAR_WORKER_COUNT,
+//  optProgress: Option[ProgressConfig] = None,
+//  optRetry: Option[RetryConfig] = None,
+//  optThrottle: Option[ThrottleConfig] = None
+//) extends AbstractTraverseableOnceAsyncExecutionPlanBuilder[
+//    A,
+//    M,
+//    ParTraverseableOnceAsyncExecutionPlanBuilder[A,M]
+//  ] {
+//
+//  def using(
+//    optProgress: Option[ProgressConfig] = optProgress,
+//    optRetry: Option[RetryConfig] = optRetry,
+//    optThrottle: Option[ThrottleConfig] = optThrottle
+//  )  = copy(
+//    optProgress = optProgress,
+//    optRetry = optRetry,
+//    optThrottle = optThrottle
+//  )
+//
+//  import WorkersOps._
+//  @inline def map[B](f: A => Future[B])(implicit
+//    cbf: CanBuildFrom[Nothing, B, M[B]],
+//    ec: ExecutionContext
+//  ) : Future[M[B]] = {
+//    runTask1(enumerator, mapWorkers[A,B,M](workerCount), f)
+//  }
+//
+//  @inline def flatMap[B](f: A => Future[TraversableOnce[B]])(implicit
+//    cbf: CanBuildFrom[Nothing, B, M[B]],
+//    ec: ExecutionContext
+//  ) : Future[M[B]] = {
+//    runTask1(enumerator, flatMapWorkers[A,B,M](workerCount), f)
+//  }
+//
+//  @inline def foreach[U](f: A => Future[U])(implicit
+//    ec: ExecutionContext
+//  ) : Future[Unit] = {
+//    runTask1(enumerator, foreachWorkers[A,U,M](workerCount), f)
+//  }
+//}
 

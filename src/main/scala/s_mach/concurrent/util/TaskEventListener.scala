@@ -37,9 +37,9 @@ trait TaskEventListener extends TaskHook {
   /** Called once the computation completes */
   def onCompleteTask() : Unit
   /** Called at the beginning of execution of a step of the computation */
-  def onStartStep(stepId: Long) : Unit
+  def onStartStep(stepId: Int) : Unit
   /** Called at the beginning of execution of a step of the computation */
-  def onCompleteStep(stepId: Long) : Unit
+  def onCompleteStep(stepId: Int) : Unit
 }
 
 trait TaskEventListenerHook extends TaskEventListener with TaskHook with TaskStepHook {

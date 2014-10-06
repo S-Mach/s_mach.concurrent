@@ -24,14 +24,14 @@ import s_mach.concurrent.{PeriodicTask, ScheduledExecutionContext}
 import s_mach.concurrent.util.{Progress, PeriodicProgressReporter}
 
 class PeriodicProgressReporterImpl(
-  optTotal: Option[Long],
+  optTotal: Option[Int],
   val reportInterval: Duration,
   report: Progress => Unit
 )(implicit
   executionContext: ExecutionContext,
   scheduledExecutionContext: ScheduledExecutionContext
 ) extends PeriodicProgressReporter {
-  val totalSoFar = new java.util.concurrent.atomic.AtomicLong(0)
+  val totalSoFar = new java.util.concurrent.atomic.AtomicInteger(0)
 
   val lock = new Object
   var startTime_ns = 0l
@@ -66,11 +66,11 @@ class PeriodicProgressReporterImpl(
     }
   }
 
-  override def onStartStep(stepId: Long) = { }
+  override def onStartStep(stepId: Int) = { }
 
-  override def onCompleteStep(stepId: Long) = totalSoFar.addAndGet(1)
+  override def onCompleteStep(stepId: Int) = totalSoFar.addAndGet(1)
 
-  def doReport(localTotalSoFar: Long) {
+  def doReport(localTotalSoFar: Int) {
     lock.synchronized {
       // Note: is possible for a report to be queued on the lock while onEnd is in progress
       if(reporter != None) {

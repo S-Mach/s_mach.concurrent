@@ -149,9 +149,22 @@ object ExampleCode {
   }
 
   def example7: Unit = {
+//    for {
+//      (i1,i2,i3) <- concurrently(read("1"), read("2"), read("3"))
+//    } yield (i1,i2,i3)
+    implicit val sec : ScheduledExecutionContext = ???
     for {
-      (i1,i2,i3) <- concurrently(read("1"), read("2"), read("3"))
-    } yield (i1,i2,i3)
+//      (i1,i2) <- async
+//                  .par(2)
+//                  .progress(1.second)(progress => println(progress))
+//                  .throttle(3.seconds)
+//                  .apply(read("1"), read("2"))
+
+      (i1,i2) <- async(read("1"), read("2"))
+                  .par(2)
+                  .progress(1.second)(progress => println(progress))
+                  .throttle(3.seconds)
+    } yield (i1,i2)
   }
 
   def example8: Unit = {

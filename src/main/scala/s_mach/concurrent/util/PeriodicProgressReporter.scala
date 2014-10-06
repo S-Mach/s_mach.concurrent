@@ -34,7 +34,7 @@ trait PeriodicProgressReporter extends TaskEventListener {
 
 object PeriodicProgressReporter {
   def apply(
-    optTotal: Option[Long],
+    optTotal: Option[Int],
     reportInterval: Duration,
     report: Progress => Unit
   )(implicit

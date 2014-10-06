@@ -6,7 +6,7 @@ import s_mach.concurrent.util.TaskHook.StepId
 import scala.concurrent.{ExecutionContext, Future}
 
 object TaskHook {
-  type StepId = Long
+  type StepId = Int
 }
 
 trait TaskHook {
@@ -28,9 +28,9 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     f: () => Future[A]
   )(implicit ec:ExecutionContext) : Future[ZZ] = {
     hookTask { () =>
-      val stepIdGen = new java.util.concurrent.atomic.AtomicLong(0)
+      val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { () =>
-        hookStep0({ (stepId:Long) => f() }).apply(stepIdGen.incrementAndGet())
+        hookStep0({ (stepId:Int) => f() }).apply(stepIdGen.incrementAndGet())
       })
     }.apply()
   }
@@ -41,9 +41,9 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     f: A => Future[B]
   )(implicit ec:ExecutionContext) : Future[ZZ] = {
     hookTask { () =>
-      val stepIdGen = new java.util.concurrent.atomic.AtomicLong(0)
+      val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { a:A =>
-        hookStep1({ (stepId:Long, a:A) => f(a) }).apply(stepIdGen.incrementAndGet(), a)
+        hookStep1({ (stepId:Int, a:A) => f(a) }).apply(stepIdGen.incrementAndGet(), a)
       })
     }.apply()
   }
@@ -54,11 +54,21 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     f: (A,B) => Future[C]
   )(implicit ec:ExecutionContext) : Future[ZZ] = {
     hookTask { () =>
-      val stepIdGen = new java.util.concurrent.atomic.AtomicLong(0)
+      val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { (a:A,b:B) =>
-        hookStep2({ (stepId:Long, a:A, b:B) => f(a,b) }).apply(stepIdGen.incrementAndGet(), a, b)
+        hookStep2({ (stepId:Int, a:A, b:B) => f(a,b) }).apply(stepIdGen.incrementAndGet(), a, b)
       })
     }.apply()
+  }
+
+  def runTupleTask2[A,B](
+    fa: () => Future[A],
+    fb: () => Future[B],
+    runner: (() => Future[A], () => Future[B]) => Future[(A,B)]
+  )(implicit ec:ExecutionContext) : Future[(A,B)] = {
+    val wfa = { () => hookStep0 { stepId:Int => fa() }.apply(1) }
+    val wfb = { () => hookStep0 { stepId:Int => fb() }.apply(2) }
+    hookTask { () => runner(wfa, wfb) }.apply()
   }
 }
 
