@@ -21,7 +21,7 @@ package s_mach.concurrent.impl
 import scala.concurrent.duration.Duration
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent._
-import s_mach.concurrent.util.{TaskStepHook, TaskHook, Throttler}
+import s_mach.concurrent.util.Throttler
 
 /**
  * A trait for a builder of ThrottleConfig. Callers may set the optional throttle period by calling the throttle_ns
@@ -77,7 +77,6 @@ case class ThrottleState(
 )(implicit
   scheduledExecutionContext: ScheduledExecutionContext
 ) extends TaskStepHook {
-  import TaskHook._
 
   val throttler = Throttler(throttle_ns)
 

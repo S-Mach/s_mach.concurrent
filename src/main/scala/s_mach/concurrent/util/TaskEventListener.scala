@@ -31,7 +31,7 @@ import s_mach.concurrent._
  *
  * Note: the progress reporter is assumed to be stateful. All derived implementations must be thread safe
  */
-trait TaskEventListener extends TaskHook {
+trait TaskEventListener {
   /** Called at the beginning of the computation */
   def onStartTask() : Unit
   /** Called once the computation completes */
@@ -40,35 +40,4 @@ trait TaskEventListener extends TaskHook {
   def onStartStep(stepId: Int) : Unit
   /** Called at the beginning of execution of a step of the computation */
   def onCompleteStep(stepId: Int) : Unit
-}
-
-trait TaskEventListenerHook extends TaskEventListener with TaskHook with TaskStepHook {
-  import TaskHook._
-
-  override def hookTask[A](task: () => Future[A])(implicit ec:ExecutionContext) : () => Future[A] = {
-    { () =>
-      onStartTask()
-      task() sideEffect onCompleteTask()
-    }
-  }
-  override def hookStep0[R](step: StepId => Future[R])(implicit ec:ExecutionContext) : StepId => Future[R] = {
-    { stepId =>
-      onStartStep(stepId)
-      step(stepId) sideEffect onCompleteStep(stepId)
-    }
-  }
-
-  override def hookStep1[A,R](step: (StepId,A) => Future[R])(implicit ec:ExecutionContext) : (StepId,A) => Future[R] = {
-    { (stepId,a) =>
-      onStartStep(stepId)
-      step(stepId,a) sideEffect onCompleteStep(stepId)
-    }
-  }
-
-  override def hookStep2[A,B,R](step: (StepId,A,B) => Future[R])(implicit ec:ExecutionContext) : (StepId,A,B) => Future[R] = {
-    { (stepId,a,b) =>
-      onStartStep(stepId)
-      step(stepId,a,b) sideEffect onCompleteStep(stepId)
-    }
-  }
 }

@@ -18,8 +18,6 @@
 */
 package s_mach.concurrent.impl
 
-import s_mach.concurrent.util.{TaskStepHook, TaskHook}
-
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent._
 
@@ -88,7 +86,6 @@ trait RetryDecider {
 }
 
 case class RetryState(retryer: RetryDecider) extends TaskStepHook {
-  import TaskHook._
 
   override def hookStep0[R](step: StepId => Future[R])(implicit ec:ExecutionContext): StepId => Future[R] = {
     def loop(stepId: StepId): Future[R] = {

@@ -20,7 +20,7 @@ package s_mach
 
 
 import java.util.concurrent.ScheduledExecutorService
-import s_mach.concurrent.util.{TaskStepHook, TaskHook}
+import s_mach.concurrent.util.Semaphore
 
 import scala.language.higherKinds
 import scala.concurrent._
@@ -114,90 +114,17 @@ package object concurrent extends TupleConcurrentlyOps {
   }
 
   implicit class SMach_Concurrent_PimpMyTraversableOnce[A,M[+AA] <: TraversableOnce[AA]](val self: M[A]) extends AnyVal {
-    @inline def async(implicit ec:ExecutionContext) = TraverseableOnceAsyncExecutionPlanBuilder(self)
+    @inline def async(implicit ec:ExecutionContext) = TraverseableOnceAsyncConfigBuilder(self)
   }
-
 
   val async = AsyncConfigBuilder()
 
-  implicit class SMach_Concurrent_PimpMyAsyncConfigBuilder(val self:AsyncConfigBuilder) extends AnyVal {
+  implicit class SMach_Concurrent_PimpMyAsyncConfigBuilder(val self:AsyncConfig) extends AnyVal {
     import self._
 
-    def apply[A,M[+AA] <: TraversableOnce[AA]](ma: M[A]) = TraverseableOnceAsyncExecutionPlanBuilder(
-      enumerator = ma,
-      optProgress = optProgress,
-      optRetry = optRetry,
-      optThrottle = optThrottle
-    )
-
-    def apply[A,B](fa: => Future[A],fb: => Future[B])(implicit ec:ExecutionContext) = Tuple2AsyncExecutionPlanBuilder(
-      fa = { () => fa },
-      fb = { () => fb },
-      optProgress = optProgress,
-      optRetry = optRetry,
-      optThrottle = optThrottle
-    )
+    def run[A,B](fa: => Future[A],fb: => Future[B])(implicit ec:ExecutionContext) : Future[(A,B)] = {
+      AsyncTaskRunner(self).runTupleTask2(fa,fb,workerCount)
+    }
   }
-
-  implicit class SMach_Concurrent_PimpMyParAsyncConfigBuilder(val self:ParAsyncConfigBuilder) extends AnyVal {
-    import self._
-
-    def apply[A,M[+AA] <: TraversableOnce[AA]](ma: M[A]) = ParTraverseableOnceAsyncExecutionPlanBuilder(
-      enumerator = ma,
-      optProgress = optProgress,
-      optRetry = optRetry,
-      optThrottle = optThrottle
-    )
-
-    def apply[A,B](fa: => Future[A],fb: => Future[B])(implicit ec:ExecutionContext) = ParTuple2AsyncExecutionPlanBuilder(
-      fa = { () => fa },
-      fb = { () => fb },
-      workerCount = workerCount,
-      optProgress = optProgress,
-      optRetry = optRetry,
-      optThrottle = optThrottle
-    )
-  }
-//
-//  implicit class SMach_Concurrent_PimpMyTuple2[A,B](val self: TupleAsyncParConfigBuilder[(Unit => Future[A],Unit => Future[B])]) extends AnyVal {
-//    // TODO: for some reason these have to be implemented?
-//    def filter(p: ((A,B)) => Boolean) : TupleAsyncParConfigBuilder[(Unit => Future[A],Unit => Future[B])] = {
-//      throw new UnsupportedOperationException
-//    }
-//    def withFilter(p: ((A,B)) => Boolean) : TupleAsyncParConfigBuilder[(Unit => Future[A],Unit => Future[B])] = {
-//      val result = p(null.asInstanceOf[A],null.asInstanceOf[B])
-//      println(s"withFilter=$result")
-//      if(result == false)
-//        throw new UnsupportedOperationException
-//      self
-//    }
-//
-//    def map[ZZ](f: ((A,B)) => ZZ)(implicit ec:ExecutionContext) : Future[ZZ] = {
-//      val cfg = self.build()
-//
-//      cfg.onLoopStart()
-//      val fa = cfg.build2(self.tuple._1)
-//      val fb = cfg.build2(self.tuple._2)
-//      for {
-//        a <- fa(())
-//        b <- fb(())
-//      } yield {
-//        cfg.onLoopEnd()
-//        f((a, b))
-//      }
-//    }
-//    def flatMap[ZZ](f: ((A,B)) => Future[ZZ])(implicit ec:ExecutionContext) : Future[ZZ] = {
-//      val cfg = self.build()
-//      val fa = cfg.build2(self.tuple._1)
-//      val fb = cfg.build2(self.tuple._2)
-//
-//      {
-//        for {
-//          a <- fa(())
-//          b <- fb(())
-//        } yield f((a, b))
-//      }.flatten
-//    }
-//  }
 }
 

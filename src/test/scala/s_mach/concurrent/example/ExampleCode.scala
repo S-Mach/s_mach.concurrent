@@ -154,16 +154,31 @@ object ExampleCode {
 //    } yield (i1,i2,i3)
     implicit val sec : ScheduledExecutionContext = ???
     for {
-//      (i1,i2) <- async
-//                  .par(2)
-//                  .progress(1.second)(progress => println(progress))
-//                  .throttle(3.seconds)
-//                  .apply(read("1"), read("2"))
 
-      (i1,i2) <- async(read("1"), read("2"))
-                  .par(2)
-                  .progress(1.second)(progress => println(progress))
-                  .throttle(3.seconds)
+      // Note: this requires an execution plan object that supports map/flatMap
+//        (i1,i2) <-
+//          lazyeval(read("1"), read("2"))
+//            .async
+//            .par(2)
+//            .progress(1.second)(progress => println(progress))
+//            .throttle(3.seconds)
+
+      // Not a big fan of this style
+//        (i1,i2) <-
+//          async(read("1"), read("2"))
+//            .par(2)
+//            .progress(1.second)(progress => println(progress))
+//            .throttle(3.seconds)
+
+        // This method only requires adding a run pimp-my-lib method for 21 run methods to AsyncConfig
+        // To avoid having to repeat
+        (i1,i2) <-
+          async
+            .par(2)
+            .progress(1.second)(progress => println(progress))
+            .throttle(3.seconds)
+            .run(read("1"), read("2"))
+
     } yield (i1,i2)
   }
 
@@ -175,3 +190,4 @@ object ExampleCode {
     val t = Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.getTry
   }
 }
+
