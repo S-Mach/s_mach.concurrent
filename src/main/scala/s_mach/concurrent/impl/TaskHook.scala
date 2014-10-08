@@ -8,8 +8,8 @@ trait TaskHook {
 }
 
 trait TaskStepHook {
-  def hookStep0[R](step: StepId => Future[R])(implicit ec:ExecutionContext) : StepId => Future[R]
-  def hookStep1[A,R](step: (StepId, A) => Future[R])(implicit ec:ExecutionContext) : (StepId, A) => Future[R]
-  def hookStep2[A,B,R](step: (StepId, A,B) => Future[R])(implicit ec:ExecutionContext) : (StepId,A,B) => Future[R]
+  def hookStepFunction0[R](step: TaskStepId => Future[R])(implicit ec:ExecutionContext) : TaskStepId => Future[R]
+  def hookStepFunction1[A,R](step: (TaskStepId, A) => Future[R])(implicit ec:ExecutionContext) : (TaskStepId, A) => Future[R]
+  def hookStepFunction2[A,B,R](step: (TaskStepId, A,B) => Future[R])(implicit ec:ExecutionContext) : (TaskStepId,A,B) => Future[R]
 }
 

@@ -80,16 +80,16 @@ case class ThrottleState(
 
   val throttler = Throttler(throttle_ns)
 
-  override def hookStep0[R](f: StepId => Future[R])(implicit ec:ExecutionContext) : StepId => Future[R] = {
-    { stepId:StepId => throttler.run(f(stepId)) }
+  override def hookStepFunction0[R](f: TaskStepId => Future[R])(implicit ec:ExecutionContext) : TaskStepId => Future[R] = {
+    { stepId:TaskStepId => throttler.run(f(stepId)) }
   }
 
-  override def hookStep1[A,R](f: (StepId,A) => Future[R])(implicit ec:ExecutionContext) : (StepId,A) => Future[R] = {
-    { (stepId:StepId,a:A) => throttler.run(f(stepId,a)) }
+  override def hookStepFunction1[A,R](f: (TaskStepId,A) => Future[R])(implicit ec:ExecutionContext) : (TaskStepId,A) => Future[R] = {
+    { (stepId:TaskStepId,a:A) => throttler.run(f(stepId,a)) }
   }
 
-  override def hookStep2[A,B,R](f: (StepId,A,B) => Future[R])(implicit ec:ExecutionContext) : (StepId,A,B) => Future[R] = {
-    { (stepId:StepId,a:A,b:B) => throttler.run(f(stepId,a,b)) }
+  override def hookStepFunction2[A,B,R](f: (TaskStepId,A,B) => Future[R])(implicit ec:ExecutionContext) : (TaskStepId,A,B) => Future[R] = {
+    { (stepId:TaskStepId,a:A,b:B) => throttler.run(f(stepId,a,b)) }
   }
 }
 

@@ -87,8 +87,8 @@ trait RetryDecider {
 
 case class RetryState(retryer: RetryDecider) extends TaskStepHook {
 
-  override def hookStep0[R](step: StepId => Future[R])(implicit ec:ExecutionContext): StepId => Future[R] = {
-    def loop(stepId: StepId): Future[R] = {
+  override def hookStepFunction0[R](step: TaskStepId => Future[R])(implicit ec:ExecutionContext): TaskStepId => Future[R] = {
+    def loop(stepId: TaskStepId): Future[R] = {
       step(stepId).flatFold(
         onSuccess = { r:R => Future.successful(r)},
         onFailure = { t: Throwable =>
@@ -105,8 +105,8 @@ case class RetryState(retryer: RetryDecider) extends TaskStepHook {
     loop
   }
 
-  override def hookStep1[A,R](step: (StepId,A) => Future[R])(implicit ec:ExecutionContext): (StepId,A) => Future[R] = {
-    def loop(stepId: StepId, a: A): Future[R] = {
+  override def hookStepFunction1[A,R](step: (TaskStepId,A) => Future[R])(implicit ec:ExecutionContext): (TaskStepId,A) => Future[R] = {
+    def loop(stepId: TaskStepId, a: A): Future[R] = {
       step(stepId, a).flatFold(
         onSuccess = { r:R => Future.successful(r)},
         onFailure = { t: Throwable =>
@@ -123,8 +123,8 @@ case class RetryState(retryer: RetryDecider) extends TaskStepHook {
     loop
   }
 
-  override def hookStep2[A,B,R](step: (StepId,A,B) => Future[R])(implicit ec:ExecutionContext): (StepId,A,B) => Future[R] = {
-    def loop(stepId: StepId, a: A, b: B): Future[R] = {
+  override def hookStepFunction2[A,B,R](step: (TaskStepId,A,B) => Future[R])(implicit ec:ExecutionContext): (TaskStepId,A,B) => Future[R] = {
+    def loop(stepId: TaskStepId, a: A, b: B): Future[R] = {
       step(stepId, a, b).flatFold(
         onSuccess = { r:R => Future.successful(r)},
         onFailure = { t: Throwable =>

@@ -12,21 +12,21 @@ trait TaskEventListenerHook extends TaskEventListener with TaskHook with TaskSte
       task() sideEffect onCompleteTask()
     }
   }
-  override def hookStep0[R](step: StepId => Future[R])(implicit ec:ExecutionContext) : StepId => Future[R] = {
+  override def hookStepFunction0[R](step: TaskStepId => Future[R])(implicit ec:ExecutionContext) : TaskStepId => Future[R] = {
     { stepId =>
       onStartStep(stepId)
       step(stepId) sideEffect onCompleteStep(stepId)
     }
   }
 
-  override def hookStep1[A,R](step: (StepId,A) => Future[R])(implicit ec:ExecutionContext) : (StepId,A) => Future[R] = {
+  override def hookStepFunction1[A,R](step: (TaskStepId,A) => Future[R])(implicit ec:ExecutionContext) : (TaskStepId,A) => Future[R] = {
     { (stepId,a) =>
       onStartStep(stepId)
       step(stepId,a) sideEffect onCompleteStep(stepId)
     }
   }
 
-  override def hookStep2[A,B,R](step: (StepId,A,B) => Future[R])(implicit ec:ExecutionContext) : (StepId,A,B) => Future[R] = {
+  override def hookStepFunction2[A,B,R](step: (TaskStepId,A,B) => Future[R])(implicit ec:ExecutionContext) : (TaskStepId,A,B) => Future[R] = {
     { (stepId,a,b) =>
       onStartStep(stepId)
       step(stepId,a,b) sideEffect onCompleteStep(stepId)

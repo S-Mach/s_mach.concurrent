@@ -13,7 +13,7 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     hookTask { () =>
       val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { () =>
-        hookStep0({ (stepId:Int) => f() }).apply(stepIdGen.incrementAndGet())
+        hookStepFunction0({ (stepId:Int) => f() }).apply(stepIdGen.incrementAndGet())
       })
     }.apply()
   }
@@ -26,7 +26,7 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     hookTask { () =>
       val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { a:A =>
-        hookStep1({ (stepId:Int, a:A) => f(a) }).apply(stepIdGen.incrementAndGet(), a)
+        hookStepFunction1({ (stepId:Int, a:A) => f(a) }).apply(stepIdGen.incrementAndGet(), a)
       })
     }.apply()
   }
@@ -39,27 +39,10 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     hookTask { () =>
       val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { (a:A,b:B) =>
-        hookStep2({ (stepId:Int, a:A, b:B) => f(a,b) }).apply(stepIdGen.incrementAndGet(), a, b)
+        hookStepFunction2({ (stepId:Int, a:A, b:B) => f(a,b) }).apply(stepIdGen.incrementAndGet(), a, b)
       })
     }.apply()
   }
 
-  def runTupleTask2[A,B](
-    fa: => Future[A],
-    fb: => Future[B],
-    workerCount: Int
-  )(implicit ec:ExecutionContext) : Future[(A,B)] = {
-    val wfa = { () => hookStep0 { stepId:Int => fa }.apply(1) }
-    val wfb = { () => hookStep0 { stepId:Int => fb }.apply(2) }
-    hookTask { () =>
-      val semaphore = Semaphore(workerCount)
-      val fa = semaphore.acquire(1)(wfa())
-      val fb = semaphore.acquire(1)(wfb())
-      for {
-        a <- fa
-        b <- fb
-      } yield (a,b)
-    }.apply()
-  }
 }
 

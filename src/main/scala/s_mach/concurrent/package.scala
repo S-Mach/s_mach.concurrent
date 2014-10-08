@@ -123,7 +123,7 @@ package object concurrent extends TupleConcurrentlyOps {
     import self._
 
     def run[A,B](fa: => Future[A],fb: => Future[B])(implicit ec:ExecutionContext) : Future[(A,B)] = {
-      AsyncTaskRunner(self).runTupleTask2(fa,fb,workerCount)
+      Tuple2AsyncTaskRunner(self).run(fa,fb)
     }
   }
 }
