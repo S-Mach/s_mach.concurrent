@@ -172,14 +172,14 @@ object ExampleCode {
 
         // This method only requires adding a run pimp-my-lib method for 21 run methods to AsyncConfig
         // To avoid having to repeat
-        (i1,i2) <-
+        (i1,i2,i3) <-
           async
             .par(2)
             .progress(1.second)(progress => println(progress))
             .throttle(3.seconds)
-            .run(read("1"), read("2"))
+            .run(read("1"), read("2"), read("3"))
 
-    } yield (i1,i2)
+    } yield (i1,i2,i3)
   }
 
   def example8: Unit = {

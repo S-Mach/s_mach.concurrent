@@ -119,12 +119,6 @@ package object concurrent extends TupleConcurrentlyOps {
 
   val async = AsyncConfigBuilder()
 
-  implicit class SMach_Concurrent_PimpMyAsyncConfigBuilder(val self:AsyncConfig) extends AnyVal {
-    import self._
-
-    def run[A,B](fa: => Future[A],fb: => Future[B])(implicit ec:ExecutionContext) : Future[(A,B)] = {
-      Tuple2AsyncTaskRunner(self).run(fa,fb)
-    }
-  }
+  implicit class SMach_Concurrent_PimpMyAsyncConfigBuilder(val self:AsyncConfig) extends AnyVal with SMach_Concurrent_AbstractPimpMyAsyncConfig
 }
 
