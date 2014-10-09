@@ -258,8 +258,13 @@ commands that must take place in a specific sequential order. The pattern in
 example 2 is necessary because Scala lacks an applicative workflow which
 captures commands that may be run in any order. +s_mach.concurrent+ adds the
 +async.par.run+ workflow which is an applicative workflow specifically for
-fixed size heterogeneous asynchronous tasks. This method can more concisely
-express the pattern above:
+fixed size heterogeneous asynchronous tasks. This workflow can more concisely
+express the pattern above.
+
+In the example below, all futures are started at the same time by
++async.par.run+ which returns a +Future[(Int,Int,Int)]+ that completes once all
+supplied futures complete. After this returned Future completes, the tuple value
+results can be extracted using normal Scala idioms.
 
 .Example 7: +async.par.run+ workflow
 [source,scala,numbered]
@@ -296,13 +301,6 @@ for {
       )
 } yield (i1,i2,i3)
 ----
-
-In the example above, all futures are started at the same time. +async.par.run+
-returns a +Future[(Int,Int,Int)]+ which completes once all supplied futures
-complete. After this returned Future completes, the tuple value results can be
-extracted using normal Scala idioms. The +async.par.run+ method also fixes
-problems with +scala.concurrent+ exception handling (see the 'Under the hood:
-Merge' section below).
 
 == Under the hood: +Merge+ function
 The +async+ and +async.par+ primitives utilize the +merge+ and +flatMerge+
