@@ -19,14 +19,14 @@ performing fixed size heterogeneous (tuple) and variable size homogeneous
 (collection) asynchronous  tasks
 ** Allow enabling optional progress reporting, failure retry and/or throttle
 control for asynchronous tasks
+** Ensures proper sequencing of returned futures, e.g. given +f: Int =>
+Future[String]+:
+*** +List(1,2,3).async.map(f)+ returns +Future[List[String]]+
+*** +async.par.run(f(1),f(2),f(3))+ returns +Future[(String,String)]+
 ** Ensure fail-immediate sequencing of future results (see the 'Under the hood:
 Merge' section for details)
 ** Ensure all exceptions generated during asynchronous task processing can be
 retrieved (+Future.sequence+ returns only the first)
-** Return a future of the new collection or tuple, e.g. given +f: Int =>
-Future[String]+:
-*** +List(1,2,3).async.map(f)+ returns +Future[List[String]]+
-*** +async.par.run(f(1),f(2),f(3))+ returns +Future[(String,String)]+
 * +collection.async+ and +collection.async.par+ support collection operations
 such as +map+, +flatMap+ and +foreach+
 * +async.par.run(future1, future2, ...)+ supports running a heterogeneous
