@@ -24,7 +24,7 @@ import scala.util.{Success, Failure}
 import org.scalatest.{FlatSpec, Matchers}
 import util._
 
-class TupleConcurrentlyTest extends FlatSpec with Matchers with ConcurrentTestCommon {
+class AsyncTupleTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
   "concurrently-t0" must "wait on all Futures to complete concurrently" in {
     val results =
@@ -41,7 +41,7 @@ class TupleConcurrentlyTest extends FlatSpec with Matchers with ConcurrentTestCo
         val f5 = success(5)
         val f6 = success(6)
 
-        val result = concurrently(f1,f2,f3,f4,f5,f6)
+        val result = async.par.run(f1,f2,f3,f4,f5,f6)
 
         waitForActiveExecutionCount(0)
         sched.addEvent("end")
@@ -73,7 +73,7 @@ class TupleConcurrentlyTest extends FlatSpec with Matchers with ConcurrentTestCo
       val f5 = endLatch happensBefore success(5)
       val f6 = endLatch happensBefore success(6)
 
-      val result = concurrently(f1,f2,f3,f4,f5,f6)
+      val result = async.par.run(f1,f2,f3,f4,f5,f6)
 
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
@@ -147,7 +147,7 @@ class TupleConcurrentlyTest extends FlatSpec with Matchers with ConcurrentTestCo
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
 
-      val result = concurrently(fail(1),success(2),success(3),fail(4),success(5),fail(6))
+      val result = async.par.run(fail(1),success(2),success(3),fail(4),success(5),fail(6))
 
       waitForActiveExecutionCount(0)
 

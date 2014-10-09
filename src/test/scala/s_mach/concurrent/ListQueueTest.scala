@@ -135,7 +135,7 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       q.pollQueueSize should equal(0)
       q.offerQueueSize should equal(1)
 
-      val result = concurrently(f1,f2,f3,f4)
+      val result = async.par.run(f1,f2,f3,f4)
 
       waitForActiveExecutionCount(0)
       serialTestContext.waitForActiveExecutionCount(0)

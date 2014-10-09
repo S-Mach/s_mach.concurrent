@@ -92,7 +92,7 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       f3.isCompleted should equal(false)
 
       latch.set()
-      concurrently(f1,f2,f3).get
+      async.par.run(f1,f2,f3).get
 
       sched.happensBefore("1", "2") should equal(true)
       sched.happensBefore("2", "3") should equal(true)

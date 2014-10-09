@@ -1,3 +1,21 @@
+/*
+                    ,i::,
+               :;;;;;;;
+              ;:,,::;.
+            1ft1;::;1tL
+              t1;::;1,
+               :;::;               _____        __  ___              __
+          fCLff ;:: tfLLC         / ___/      /  |/  /____ _ _____ / /_
+         CLft11 :,, i1tffLi       \__ \ ____ / /|_/ // __ `// ___// __ \
+         1t1i   .;;   .1tf       ___/ //___// /  / // /_/ // /__ / / / /
+       CLt1i    :,:    .1tfL.   /____/     /_/  /_/ \__,_/ \___//_/ /_/
+       Lft1,:;:       , 1tfL:
+       ;it1i ,,,:::;;;::1tti      s_mach.concurrent
+         .t1i .,::;;; ;1tt        Copyright (c) 2014 S-Mach, Inc.
+         Lft11ii;::;ii1tfL:       Author: lance.gatlin@gmail.com
+          .L1 1tt1ttt,,Li
+            ...1LLLL...
+*/
 package s_mach.concurrent.impl
 
 /* WARNING: Generated code. To modify see s_mach.concurrent.codegen.TupleAsyncTaskRunnerCodeGen */
@@ -405,12 +423,12 @@ case class Tuple2AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
       mergeFailImmediately(promise, Vector(fa,fb))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
+          b <- fb
         } yield (a,b)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -435,13 +453,13 @@ case class Tuple3AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fb = semaphore.acquire(1)(wfb())
       val fc = semaphore.acquire(1)(wfc())
       mergeFailImmediately(promise, Vector(fa,fb,fc))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
+          b <- fb
+          c <- fc
         } yield (a,b,c)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -469,14 +487,14 @@ case class Tuple4AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fc = semaphore.acquire(1)(wfc())
       val fd = semaphore.acquire(1)(wfd())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
+          b <- fb
+          c <- fc
+          d <- fd
         } yield (a,b,c,d)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -507,15 +525,15 @@ case class Tuple5AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fd = semaphore.acquire(1)(wfd())
       val fe = semaphore.acquire(1)(wfe())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
         } yield (a,b,c,d,e)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -549,16 +567,16 @@ case class Tuple6AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fe = semaphore.acquire(1)(wfe())
       val ff = semaphore.acquire(1)(wff())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
         } yield (a,b,c,d,e,f)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -595,17 +613,17 @@ case class Tuple7AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val ff = semaphore.acquire(1)(wff())
       val fg = semaphore.acquire(1)(wfg())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
         } yield (a,b,c,d,e,f,g)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -645,18 +663,18 @@ case class Tuple8AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fg = semaphore.acquire(1)(wfg())
       val fh = semaphore.acquire(1)(wfh())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
         } yield (a,b,c,d,e,f,g,h)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -699,19 +717,19 @@ case class Tuple9AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fh = semaphore.acquire(1)(wfh())
       val fi = semaphore.acquire(1)(wfi())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
         } yield (a,b,c,d,e,f,g,h,i)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -757,20 +775,20 @@ case class Tuple10AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fi = semaphore.acquire(1)(wfi())
       val fj = semaphore.acquire(1)(wfj())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
         } yield (a,b,c,d,e,f,g,h,i,j)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -819,21 +837,21 @@ case class Tuple11AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fj = semaphore.acquire(1)(wfj())
       val fk = semaphore.acquire(1)(wfk())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
         } yield (a,b,c,d,e,f,g,h,i,j,k)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -885,22 +903,22 @@ case class Tuple12AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fk = semaphore.acquire(1)(wfk())
       val fl = semaphore.acquire(1)(wfl())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
         } yield (a,b,c,d,e,f,g,h,i,j,k,l)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -955,23 +973,23 @@ case class Tuple13AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fl = semaphore.acquire(1)(wfl())
       val fm = semaphore.acquire(1)(wfm())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1029,24 +1047,24 @@ case class Tuple14AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fm = semaphore.acquire(1)(wfm())
       val fn = semaphore.acquire(1)(wfn())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1107,25 +1125,25 @@ case class Tuple15AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fn = semaphore.acquire(1)(wfn())
       val fo = semaphore.acquire(1)(wfo())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
-        o <- fo
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
+          o <- fo
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1189,26 +1207,26 @@ case class Tuple16AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fo = semaphore.acquire(1)(wfo())
       val fp = semaphore.acquire(1)(wfp())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
-        o <- fo
-        p <- fp
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
+          o <- fo
+          p <- fp
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1275,27 +1293,27 @@ case class Tuple17AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fp = semaphore.acquire(1)(wfp())
       val fq = semaphore.acquire(1)(wfq())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
-        o <- fo
-        p <- fp
-        q <- fq
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
+          o <- fo
+          p <- fp
+          q <- fq
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1365,28 +1383,28 @@ case class Tuple18AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fq = semaphore.acquire(1)(wfq())
       val fr = semaphore.acquire(1)(wfr())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
-        o <- fo
-        p <- fp
-        q <- fq
-        r <- fr
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
+          o <- fo
+          p <- fp
+          q <- fq
+          r <- fr
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1459,29 +1477,29 @@ case class Tuple19AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fr = semaphore.acquire(1)(wfr())
       val fs = semaphore.acquire(1)(wfs())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr,fs))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
-        o <- fo
-        p <- fp
-        q <- fq
-        r <- fr
-        s <- fs
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
+          o <- fo
+          p <- fp
+          q <- fq
+          r <- fr
+          s <- fs
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1557,30 +1575,30 @@ case class Tuple20AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fs = semaphore.acquire(1)(wfs())
       val ft = semaphore.acquire(1)(wft())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr,fs,ft))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
-        o <- fo
-        p <- fp
-        q <- fq
-        r <- fr
-        s <- fs
-        t <- ft
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
+          o <- fo
+          p <- fp
+          q <- fq
+          r <- fr
+          s <- fs
+          t <- ft
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1659,31 +1677,31 @@ case class Tuple21AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val ft = semaphore.acquire(1)(wft())
       val fu = semaphore.acquire(1)(wfu())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr,fs,ft,fu))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
-        o <- fo
-        p <- fp
-        q <- fq
-        r <- fr
-        s <- fs
-        t <- ft
-        u <- fu
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
+          o <- fo
+          p <- fp
+          q <- fq
+          r <- fr
+          s <- fs
+          t <- ft
+          u <- fu
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -1765,32 +1783,32 @@ case class Tuple22AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fu = semaphore.acquire(1)(wfu())
       val fv = semaphore.acquire(1)(wfv())
       mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr,fs,ft,fu,fv))
-      promise.completeWith {
+      val future =
         for {
           a <- fa
-        b <- fb
-        c <- fc
-        d <- fd
-        e <- fe
-        f <- ff
-        g <- fg
-        h <- fh
-        i <- fi
-        j <- fj
-        k <- fk
-        l <- fl
-        m <- fm
-        n <- fn
-        o <- fo
-        p <- fp
-        q <- fq
-        r <- fr
-        s <- fs
-        t <- ft
-        u <- fu
-        v <- fv
+          b <- fb
+          c <- fc
+          d <- fd
+          e <- fe
+          f <- ff
+          g <- fg
+          h <- fh
+          i <- fi
+          j <- fj
+          k <- fk
+          l <- fl
+          m <- fm
+          n <- fn
+          o <- fo
+          p <- fp
+          q <- fq
+          r <- fr
+          s <- fs
+          t <- ft
+          u <- fu
+          v <- fv
         } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }

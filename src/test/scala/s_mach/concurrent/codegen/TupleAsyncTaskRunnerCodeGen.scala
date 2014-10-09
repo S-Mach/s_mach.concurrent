@@ -43,14 +43,14 @@ case class Tuple${n}AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAs
         s"val f$lc = semaphore.acquire(1)(wf$lc())" 
       }.mkString("\n      ")}
       mergeFailImmediately(promise, Vector(${lcs.map(lc => s"f$lc").mkString(",")}))
-      promise.completeWith {
+      val future =
         for {
           ${(0 until n).map { i =>
             val lc = lcs(i)
             s"$lc <- f$lc"
-          }.mkString("\n        ")}
+          }.mkString("\n          ")}
         } yield ($allLcs)
-      }
+      future onSuccess { case t => promise.success(t) }
       promise.future
     }.apply()
   }

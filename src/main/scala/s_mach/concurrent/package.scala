@@ -29,7 +29,7 @@ import scala.util.Try
 import scala.collection.generic.CanBuildFrom
 import s_mach.concurrent.impl._
 
-package object concurrent extends TupleConcurrentlyOps {
+package object concurrent {
   implicit class SMach_Concurrent_PimpEverything[A](val self: A) extends AnyVal {
     @inline def future = Future.successful(self)
   }
