@@ -36,17 +36,22 @@ case class Tuple${n}AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAs
       s"val wf$lc = { () => hookStepFunction0 { stepId:Int => f$lc }.apply(${i+1}) }"
     }.mkString("\n    ")}
     hookTask { () =>
+      val promise = Promise[($allUcs)]()
       val semaphore = Semaphore(workerCount)
       ${(0 until n).map { i =>
         val lc = lcs(i)
         s"val f$lc = semaphore.acquire(1)(wf$lc())" 
       }.mkString("\n      ")}
-      for {
-        ${(0 until n).map { i =>
-          val lc = lcs(i)
-          s"$lc <- f$lc"
-        }.mkString("\n        ")}
-      } yield ($allLcs)
+      mergeFailImmediately(promise, Vector(${lcs.map(lc => s"f$lc").mkString(",")}))
+      promise.completeWith {
+        for {
+          ${(0 until n).map { i =>
+            val lc = lcs(i)
+            s"$lc <- f$lc"
+          }.mkString("\n        ")}
+        } yield ($allLcs)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -61,6 +66,7 @@ s"""package s_mach.concurrent.impl
 
 import s_mach.concurrent.util.Semaphore
 import scala.concurrent.{ExecutionContext, Future}
+import s_mach.concurrent.impl.MergeOps.mergeFailImmediately
 
 trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   def self: AsyncConfig

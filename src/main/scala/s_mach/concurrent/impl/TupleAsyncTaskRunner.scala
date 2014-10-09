@@ -3,7 +3,8 @@ package s_mach.concurrent.impl
 /* WARNING: Generated code. To modify see s_mach.concurrent.codegen.TupleAsyncTaskRunnerCodeGen */
 
 import s_mach.concurrent.util.Semaphore
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{Promise, ExecutionContext, Future}
+import s_mach.concurrent.impl.MergeOps.mergeFailImmediately
 
 trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   def self: AsyncConfig
@@ -399,13 +400,18 @@ case class Tuple2AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
     val wfa = { () => hookStepFunction0 { stepId:Int => fa }.apply(1) }
     val wfb = { () => hookStepFunction0 { stepId:Int => fb }.apply(2) }
     hookTask { () =>
+      val promise = Promise[(A,B)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
-      } yield (a,b)
+        } yield (a,b)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -423,15 +429,20 @@ case class Tuple3AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
     val wfb = { () => hookStepFunction0 { stepId:Int => fb }.apply(2) }
     val wfc = { () => hookStepFunction0 { stepId:Int => fc }.apply(3) }
     hookTask { () =>
+      val promise = Promise[(A,B,C)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
       val fc = semaphore.acquire(1)(wfc())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
-      } yield (a,b,c)
+        } yield (a,b,c)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -451,17 +462,22 @@ case class Tuple4AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
     val wfc = { () => hookStepFunction0 { stepId:Int => fc }.apply(3) }
     val wfd = { () => hookStepFunction0 { stepId:Int => fd }.apply(4) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
       val fc = semaphore.acquire(1)(wfc())
       val fd = semaphore.acquire(1)(wfd())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
-      } yield (a,b,c,d)
+        } yield (a,b,c,d)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -483,19 +499,24 @@ case class Tuple5AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
     val wfd = { () => hookStepFunction0 { stepId:Int => fd }.apply(4) }
     val wfe = { () => hookStepFunction0 { stepId:Int => fe }.apply(5) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
       val fc = semaphore.acquire(1)(wfc())
       val fd = semaphore.acquire(1)(wfd())
       val fe = semaphore.acquire(1)(wfe())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
         e <- fe
-      } yield (a,b,c,d,e)
+        } yield (a,b,c,d,e)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -519,6 +540,7 @@ case class Tuple6AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
     val wfe = { () => hookStepFunction0 { stepId:Int => fe }.apply(5) }
     val wff = { () => hookStepFunction0 { stepId:Int => ff }.apply(6) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -526,14 +548,18 @@ case class Tuple6AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fd = semaphore.acquire(1)(wfd())
       val fe = semaphore.acquire(1)(wfe())
       val ff = semaphore.acquire(1)(wff())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
         e <- fe
         f <- ff
-      } yield (a,b,c,d,e,f)
+        } yield (a,b,c,d,e,f)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -559,6 +585,7 @@ case class Tuple7AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
     val wff = { () => hookStepFunction0 { stepId:Int => ff }.apply(6) }
     val wfg = { () => hookStepFunction0 { stepId:Int => fg }.apply(7) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -567,15 +594,19 @@ case class Tuple7AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fe = semaphore.acquire(1)(wfe())
       val ff = semaphore.acquire(1)(wff())
       val fg = semaphore.acquire(1)(wfg())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
         e <- fe
         f <- ff
         g <- fg
-      } yield (a,b,c,d,e,f,g)
+        } yield (a,b,c,d,e,f,g)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -603,6 +634,7 @@ case class Tuple8AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
     val wfg = { () => hookStepFunction0 { stepId:Int => fg }.apply(7) }
     val wfh = { () => hookStepFunction0 { stepId:Int => fh }.apply(8) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -612,8 +644,10 @@ case class Tuple8AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val ff = semaphore.acquire(1)(wff())
       val fg = semaphore.acquire(1)(wfg())
       val fh = semaphore.acquire(1)(wfh())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -621,7 +655,9 @@ case class Tuple8AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
         f <- ff
         g <- fg
         h <- fh
-      } yield (a,b,c,d,e,f,g,h)
+        } yield (a,b,c,d,e,f,g,h)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -651,6 +687,7 @@ case class Tuple9AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
     val wfh = { () => hookStepFunction0 { stepId:Int => fh }.apply(8) }
     val wfi = { () => hookStepFunction0 { stepId:Int => fi }.apply(9) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -661,8 +698,10 @@ case class Tuple9AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
       val fg = semaphore.acquire(1)(wfg())
       val fh = semaphore.acquire(1)(wfh())
       val fi = semaphore.acquire(1)(wfi())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -671,7 +710,9 @@ case class Tuple9AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsync
         g <- fg
         h <- fh
         i <- fi
-      } yield (a,b,c,d,e,f,g,h,i)
+        } yield (a,b,c,d,e,f,g,h,i)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -703,6 +744,7 @@ case class Tuple10AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfi = { () => hookStepFunction0 { stepId:Int => fi }.apply(9) }
     val wfj = { () => hookStepFunction0 { stepId:Int => fj }.apply(10) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -714,8 +756,10 @@ case class Tuple10AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fh = semaphore.acquire(1)(wfh())
       val fi = semaphore.acquire(1)(wfi())
       val fj = semaphore.acquire(1)(wfj())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -725,7 +769,9 @@ case class Tuple10AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         h <- fh
         i <- fi
         j <- fj
-      } yield (a,b,c,d,e,f,g,h,i,j)
+        } yield (a,b,c,d,e,f,g,h,i,j)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -759,6 +805,7 @@ case class Tuple11AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfj = { () => hookStepFunction0 { stepId:Int => fj }.apply(10) }
     val wfk = { () => hookStepFunction0 { stepId:Int => fk }.apply(11) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -771,8 +818,10 @@ case class Tuple11AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fi = semaphore.acquire(1)(wfi())
       val fj = semaphore.acquire(1)(wfj())
       val fk = semaphore.acquire(1)(wfk())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -783,7 +832,9 @@ case class Tuple11AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         i <- fi
         j <- fj
         k <- fk
-      } yield (a,b,c,d,e,f,g,h,i,j,k)
+        } yield (a,b,c,d,e,f,g,h,i,j,k)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -819,6 +870,7 @@ case class Tuple12AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfk = { () => hookStepFunction0 { stepId:Int => fk }.apply(11) }
     val wfl = { () => hookStepFunction0 { stepId:Int => fl }.apply(12) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -832,8 +884,10 @@ case class Tuple12AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fj = semaphore.acquire(1)(wfj())
       val fk = semaphore.acquire(1)(wfk())
       val fl = semaphore.acquire(1)(wfl())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -845,7 +899,9 @@ case class Tuple12AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         j <- fj
         k <- fk
         l <- fl
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -883,6 +939,7 @@ case class Tuple13AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfl = { () => hookStepFunction0 { stepId:Int => fl }.apply(12) }
     val wfm = { () => hookStepFunction0 { stepId:Int => fm }.apply(13) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -897,8 +954,10 @@ case class Tuple13AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fk = semaphore.acquire(1)(wfk())
       val fl = semaphore.acquire(1)(wfl())
       val fm = semaphore.acquire(1)(wfm())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -911,7 +970,9 @@ case class Tuple13AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         k <- fk
         l <- fl
         m <- fm
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -951,6 +1012,7 @@ case class Tuple14AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfm = { () => hookStepFunction0 { stepId:Int => fm }.apply(13) }
     val wfn = { () => hookStepFunction0 { stepId:Int => fn }.apply(14) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -966,8 +1028,10 @@ case class Tuple14AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fl = semaphore.acquire(1)(wfl())
       val fm = semaphore.acquire(1)(wfm())
       val fn = semaphore.acquire(1)(wfn())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -981,7 +1045,9 @@ case class Tuple14AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         l <- fl
         m <- fm
         n <- fn
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -1023,6 +1089,7 @@ case class Tuple15AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfn = { () => hookStepFunction0 { stepId:Int => fn }.apply(14) }
     val wfo = { () => hookStepFunction0 { stepId:Int => fo }.apply(15) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -1039,8 +1106,10 @@ case class Tuple15AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fm = semaphore.acquire(1)(wfm())
       val fn = semaphore.acquire(1)(wfn())
       val fo = semaphore.acquire(1)(wfo())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -1055,7 +1124,9 @@ case class Tuple15AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         m <- fm
         n <- fn
         o <- fo
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -1099,6 +1170,7 @@ case class Tuple16AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfo = { () => hookStepFunction0 { stepId:Int => fo }.apply(15) }
     val wfp = { () => hookStepFunction0 { stepId:Int => fp }.apply(16) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -1116,8 +1188,10 @@ case class Tuple16AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fn = semaphore.acquire(1)(wfn())
       val fo = semaphore.acquire(1)(wfo())
       val fp = semaphore.acquire(1)(wfp())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -1133,7 +1207,9 @@ case class Tuple16AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         n <- fn
         o <- fo
         p <- fp
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -1179,6 +1255,7 @@ case class Tuple17AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfp = { () => hookStepFunction0 { stepId:Int => fp }.apply(16) }
     val wfq = { () => hookStepFunction0 { stepId:Int => fq }.apply(17) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -1197,8 +1274,10 @@ case class Tuple17AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fo = semaphore.acquire(1)(wfo())
       val fp = semaphore.acquire(1)(wfp())
       val fq = semaphore.acquire(1)(wfq())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -1215,7 +1294,9 @@ case class Tuple17AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         o <- fo
         p <- fp
         q <- fq
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -1263,6 +1344,7 @@ case class Tuple18AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfq = { () => hookStepFunction0 { stepId:Int => fq }.apply(17) }
     val wfr = { () => hookStepFunction0 { stepId:Int => fr }.apply(18) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -1282,8 +1364,10 @@ case class Tuple18AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fp = semaphore.acquire(1)(wfp())
       val fq = semaphore.acquire(1)(wfq())
       val fr = semaphore.acquire(1)(wfr())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -1301,7 +1385,9 @@ case class Tuple18AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         p <- fp
         q <- fq
         r <- fr
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -1351,6 +1437,7 @@ case class Tuple19AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfr = { () => hookStepFunction0 { stepId:Int => fr }.apply(18) }
     val wfs = { () => hookStepFunction0 { stepId:Int => fs }.apply(19) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -1371,8 +1458,10 @@ case class Tuple19AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fq = semaphore.acquire(1)(wfq())
       val fr = semaphore.acquire(1)(wfr())
       val fs = semaphore.acquire(1)(wfs())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr,fs))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -1391,7 +1480,9 @@ case class Tuple19AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         q <- fq
         r <- fr
         s <- fs
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -1443,6 +1534,7 @@ case class Tuple20AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfs = { () => hookStepFunction0 { stepId:Int => fs }.apply(19) }
     val wft = { () => hookStepFunction0 { stepId:Int => ft }.apply(20) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -1464,8 +1556,10 @@ case class Tuple20AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fr = semaphore.acquire(1)(wfr())
       val fs = semaphore.acquire(1)(wfs())
       val ft = semaphore.acquire(1)(wft())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr,fs,ft))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -1485,7 +1579,9 @@ case class Tuple20AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         r <- fr
         s <- fs
         t <- ft
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -1539,6 +1635,7 @@ case class Tuple21AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wft = { () => hookStepFunction0 { stepId:Int => ft }.apply(20) }
     val wfu = { () => hookStepFunction0 { stepId:Int => fu }.apply(21) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -1561,8 +1658,10 @@ case class Tuple21AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val fs = semaphore.acquire(1)(wfs())
       val ft = semaphore.acquire(1)(wft())
       val fu = semaphore.acquire(1)(wfu())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr,fs,ft,fu))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -1583,7 +1682,9 @@ case class Tuple21AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         s <- fs
         t <- ft
         u <- fu
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u)
+      }
+      promise.future
     }.apply()
   }
 }
@@ -1639,6 +1740,7 @@ case class Tuple22AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
     val wfu = { () => hookStepFunction0 { stepId:Int => fu }.apply(21) }
     val wfv = { () => hookStepFunction0 { stepId:Int => fv }.apply(22) }
     hookTask { () =>
+      val promise = Promise[(A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V)]()
       val semaphore = Semaphore(workerCount)
       val fa = semaphore.acquire(1)(wfa())
       val fb = semaphore.acquire(1)(wfb())
@@ -1662,8 +1764,10 @@ case class Tuple22AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
       val ft = semaphore.acquire(1)(wft())
       val fu = semaphore.acquire(1)(wfu())
       val fv = semaphore.acquire(1)(wfv())
-      for {
-        a <- fa
+      mergeFailImmediately(promise, Vector(fa,fb,fc,fd,fe,ff,fg,fh,fi,fj,fk,fl,fm,fn,fo,fp,fq,fr,fs,ft,fu,fv))
+      promise.completeWith {
+        for {
+          a <- fa
         b <- fb
         c <- fc
         d <- fd
@@ -1685,7 +1789,9 @@ case class Tuple22AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyn
         t <- ft
         u <- fu
         v <- fv
-      } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v)
+        } yield (a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v)
+      }
+      promise.future
     }.apply()
   }
 }
