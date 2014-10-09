@@ -1,5 +1,6 @@
 package s_mach.concurrent.example
 
+import java.net.SocketTimeoutException
 
 
 /**
@@ -183,10 +184,31 @@ object ExampleCode {
   }
 
   def example8: Unit = {
+    implicit val sec : ScheduledExecutionContext = ???
+    for {
+      (i1,i2,i3) <-
+        async
+          .par(2)
+          .progress(1.second)(progress => println(progress))
+          .retry {
+            case (_: TimeoutException) :: tail if tail.size < 3 =>
+              Future.delayed(100.millis)(true)
+            case (_: SocketTimeoutException) :: tail if tail.size < 3 =>
+              Future.delayed(100.millis)(true)
+            case _ => false.future
+          }
+          .run(
+            read("1"),
+            read("2"),
+            read("3")
+          )
+    } yield (i1,i2,i3)
+  }
+  def example9: Unit = {
     val t = Future.sequence(Vector(longRead("1"),readFail("2"),readFail("3"),read("4"))).getTry
   }
 
-  def example9: Unit = {
+  def example10: Unit = {
     val t = Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.getTry
   }
 }

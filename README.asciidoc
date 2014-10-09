@@ -8,19 +8,42 @@ v2,30-Sep-2014
 
 image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"] https://github.com/S-Mach/s_mach.concurrent[Code] http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
-+s_mach.concurrent+ is an open-source Scala library that provides concurrent serial and parallel execution flow control
-primitives for working with the scala.concurrent standard library.
++s_mach.concurrent+ is an open-source Scala library that provides asynchronous
+serial and parallel execution flow control primitives for working with code
+that uses +scala.concurrent.Future+.
 
-* Adds new concurrent flow control primitives +async+ and +async.par+ for performing collection operations such as +map+, +flatMap+ and +foreach+ when the called function returns a Future of the result (A => Future[B]) instead of the result (A => B)
-* Each primitive ensures proper sequencing of future results to return a future of the new collection (e.g. List(1,2,3).async.map(f) returns a Future[List[Int]])
-* Allows enabling optional progress reporting, failure retry and/or throttle control for all primitives
-* Adds +ScheduledExecutionContext+, a Scala interface wrapper for +java.util.concurrent.ScheduledExecutorService+ that provides for scheduling delayed and periodic tasks
-* Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+, +Lock+, +Semaphore+ and +Queue+
+* Adds concurrent flow control primitives +async+ and +async.par+ for
+performing heterogeneous and homogeneous asynchronous tasks.
++
+NOTE: An asynchronous task consists of two or more calls to function(s) that
+return a Future result (A => Future[B]) instead of the result (A => B)
++
+** Allow enabling optional progress reporting, failure retry and/or throttle
+control for asynchronous tasks
+** Ensure fail-immediate sequencing of future results (see the 'Under the hood:
+Merge' section below)
+** Ensure all exceptions are thrown during asynchronous tasks are thrown
+(instead of only the first)
+** Return a future of the new collection or tuple, e.g. given +f: Int =>
+Future[String]+:
+*** +List(1,2,3).async.map(f)+ returns +Future[List[String]]+
+*** +async.par.run(f(1),f(2),f(3))+ returns +Future[(String,String)]+
+* +collection.async+ and +collection.async.par+ support collection operations
+such as +map+, +flatMap+ and +foreach+
+* +async.par.run(future1, future2, ...)+ supports running a heterogeneous
+asynchronous task (of up to 22 futures) in parallel
+* Adds +ScheduledExecutionContext+, a Scala interface wrapper for
++java.util.concurrent.ScheduledExecutorService+ that provides for scheduling
+delayed and periodic tasks
+* Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+,
++Lock+, +Semaphore+ and +Queue+
 * Overcomes some design limitations of the scala.concurrent library
-* Provides convenience methods for writing more readable, concise and DRY concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
+* Provides convenience methods for writing more readable, concise and DRY
+concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
 == Include in SBT
-1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (2.10.4 support can be added if there is interest)
+1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (2.10.4
+support can be added if there is interest)
 2. Add to +build.sbt+ OR +~/.sbt/{verison}/build.sbt+
 +
 [source,sbt,numbered]
@@ -55,10 +78,13 @@ def write(id: String, item: Item) : Future[Boolean] = Future { Thread.sleep(1000
 def writeFail(id: String, item: Item) : Future[Boolean] = Future { Thread.sleep(1000); println(id); throw new RuntimeException(id.toString) }
 ----
 
-== Concurrently transform or traverse collections
-A common task when working with futures is transforming or traversing a collection in serial or parallel that will call
-a method that returns a future. With only a few levels of nesting, the standard methods for accomplishing this lead to
-difficult to read code:
+== Asynchronously transform or traverse collections
+A common task when working with futures is transforming or traversing a
+collection in serial or parallel that will call a method that returns a future.
+With only a few levels of nesting, the standard methods for accomplishing this
+lead to difficult to read code. In the following example, a collection of ten
+identifiers is grouped to batch requests. The flow of execution for each batch
+is serial while the flow of the identifiers within each batch is parallel.
 
 .Example 1: Transform and traverse collections, standard method
 [source,scala,numbered]
@@ -118,10 +144,12 @@ val future = { // necessary for pasting into repl
 }
 ----
 
-== Limiting the maximum number of simultaneous workers used during concurrent parallel operations
+== Limiting the maximum number of simultaneous workers used during parallel operations
 
-+s_mach.concurrent+ allows specifying the maximum number of simultaneous workers used during concurrent parallel
-operations.
++s_mach.concurrent+ allows specifying the maximum number of simultaneous workers
+used during parallel operations. In the following example, batches are processed
+in parallel with at most two workers, while each identifier within a batch is
+processed with at most four workers.
 
 .Example 3: Using +s_mach.concurrent+ workers to transform and traverse collections:
 [source,scala,numbered]
@@ -145,8 +173,13 @@ val future = { // necessary for pasting into repl
 
 
 == Adding progress reporting, retry and throttle control to collection concurrent operations
-+s_mach.concurrent+ allows modifying the collection concurrent operations +async+ and +async.par+ to report progress,
-retry failures and/or limit iteration speed to a specific time period.
++s_mach.concurrent+ allows modifying +async+ and +async.par+ to report progress,
+retry failures and/or limit iteration speed to a specific time period for both
+heterogeneous and homogeneous asynchronous tasks. In the following example,
+completion of each batch reports progress and batches may not complete faster
+than one every three seconds. For each identifier that is read and fails, the
+first three TimeoutExceptions or first three SocketTimeoutExceptions are
+retried. All other exceptions cause the entire operation to fail.
 
 .Example 4: Adding progress reporting, retry and throttle control to collection concurrent operations
 [source,scala,numbered]
@@ -185,11 +218,11 @@ val future = { // necessary for pasting into repl
 }
 ----
 
-== Concurrently workflow
-When first using +Future+ with a for-comprehension, it is natural to assume the following will produce concurrent
-operation:
+== +async.par+ workflow for fixed size heterogeneous asynchronous tasks
+When first using +Future+ with a for-comprehension, it is natural to assume the
+following will produce parallel operation:
 
-.Example 5: Incorrect +Future+ concurrency
+.Example 5: Does not execute futures in parallel
 [source,scala,numbered]
 ----
 for {
@@ -199,10 +232,11 @@ for {
 } yield (i1,i2,i3)
 ----
 
-Sadly, this code will compile and run just fine, but it will not execute concurrently. To correctly implement concurrent
-operation, the following standard pattern is used:
+Sadly, this code will compile and run just fine, but it will not execute
+in parallel. To correctly implement parallel operation, the following
+standard pattern is used:
 
-.Example 6: Correct +Future+ concurrency:
+.Example 6: Correct +Future+ parallel operation:
 [source,scala,numbered]
 ----
 val f1 = read("1")
@@ -217,39 +251,82 @@ val future = { // necessary for pasting into repl
 }
 ----
 
-For concurrent operation, all of the futures must be started before the for-comprehension. The for-comprehension is a
-monadic workflow which captures commands that must take place in a specific sequential order. The pattern in example 2
-is necessary because Scala lacks an applicative workflow which captures commands that may be run in any order.
-+s_mach.concurrent+ adds the method +concurrently+ which is an applicative workflow specifically for futures. This
-method can more concisely express the pattern above:
+For parallel operation, all of the futures must be started before the
+for-comprehension. The for-comprehension is a monadic workflow which captures
+commands that must take place in a specific sequential order. The pattern in
+example 2 is necessary because Scala lacks an applicative workflow which
+captures commands that may be run in any order. +s_mach.concurrent+ adds the
++async.par.run+ workflow which is an applicative workflow specifically for
+fixed size heterogeneous asynchronous tasks. This method can more concisely
+express the pattern above:
 
-.Example 7: New +concurrently+ method
+.Example 7: +async.par.run+ workflow
 [source,scala,numbered]
 ----
 for {
-  (i1,i2,i3) <- concurrently(read("1"), read("2"), read("3"))
+  (i1,i2,i3) <- async.par.run(read("1"), read("2"), read("3"))
 } yield (i1,i2,i3)
 ----
 
-In the example above, all futures are started at the same time and fed to the +concurrently+ method. The method returns
-a +Future[(Int,Int,Int)]+ which completes once all supplied futures complete. After this returned Future completes, the
-tuple value results can be extracted using normal Scala idioms. The +concurrently+ method also fixes problems with
-+scala.concurrent+ exception handling (see the 'Under the hood: Merge' section below).
+Additionally, all of the configuration options available for
++collection.async.par+ are valid for +async.par.run+. In the example below, the
+number of workers is limited to two, progress is reported once a second and
+certain failures are retried.
+
+.Example 8: +async.par.run+ workflow with progress reporting and retry
+[source,scala,numbered]
+----
+for {
+  (i1,i2,i3) <-
+    async
+      .par(2)
+      .progress(1.second)(progress => println(progress))
+      .retry {
+        case (_: TimeoutException) :: tail if tail.size < 3 =>
+          Future.delayed(100.millis)(true)
+        case (_: SocketTimeoutException) :: tail if tail.size < 3 =>
+          Future.delayed(100.millis)(true)
+        case _ => false.future
+      }
+      .run(
+        read("1"),
+        read("2"),
+        read("3")
+      )
+} yield (i1,i2,i3)
+----
+
+In the example above, all futures are started at the same time. +async.par.run+
+returns a +Future[(Int,Int,Int)]+ which completes once all supplied futures
+complete. After this returned Future completes, the tuple value results can be
+extracted using normal Scala idioms. The +async.par.run+ method also fixes
+problems with +scala.concurrent+ exception handling (see the 'Under the hood:
+Merge' section below).
 
 == Under the hood: +Merge+ method
-Powering both the tuple +concurrently+ method and the collection +.concurrently.map+, +.concurrently.flatMap+ and
-+.concurrently.foreach+ methods is the +merge+ and +flatMerge+ methods. The +merge+ method performs the same
-function as +Future.sequence+ (it calls +Future.sequence+ internally) but it ensures that the returned future completes
-immediately after an exception occurs in any of the futures. Because +Future.sequence+ waits on all futures in left
-to right order before completing, an exception thrown at the beginning of the computation by a future at the
-far right will not be detected until after all other futures have completed. For long running computations, this can
-mean a significant amount of wasted time waiting on futures to complete whose results will be discarded. Also, while
-the scala parallel collections correctly handle multiple concurrent exceptions, +Future.sequence+ only returns the
-first exception encountered. In +Future.sequence+, all further exceptions past the first are discarded. The +merge+ and
-+flatMerge+ methods fix these problems by throwing +ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to
-access both the first exception thrown and a future of all exceptions thrown during the computation.
+The +async+ and +async.par+ primitives utilize the +merge+ and +flatMerge+
+sequencing functions to ensure that execution ends immediately once a  failure
+occurs. This is in contrast to +Future.sequence+ which may not always  fail
+immediately when a failure occurs.
 
-.Example 8: +Future.sequence+ gets stuck waiting on longRead to complete and only returns the first exception:
+The +merge+ function performs the same function as +Future.sequence+ (it calls
++Future.sequence+ internally) but it ensures that the returned future completes
+immediately after an exception occurs in any of the futures. Because
++Future.sequence+ waits on all futures in left to right order before completing,
+an exception thrown at the beginning of the computation by a future at the far
+right will not be detected until after all other futures have completed. For
+long running computations, this can mean a significant amount of wasted time
+waiting on futures to complete whose results will be discarded.
+
+Additionally, while the scala parallel collections correctly handle multiple
+concurrent exceptions, +Future.sequence+ only returns the first exception
+encountered. In +Future.sequence+, all further exceptions past the first are
+discarded. The +merge+ and +flatMerge+ methods fix these problems by throwing
++ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to access both
+the first exception thrown and a future of all exceptions thrown during the
+computation.
+
+.Example 9: +Future.sequence+ gets stuck waiting on longRead to complete and only returns the first exception:
 [source,scala,numbered]
 ----
 scala> val t = Future.sequence(Vector(longRead("1"),readFail("2"),readFail("3"),read("4"))).getTry
@@ -262,7 +339,7 @@ t: scala.util.Try[scala.collection.immutable.Vector[Item]] = Failure(java.lang.R
 scala>
 ----
 
-.Example 9: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+, which can retrieve all exceptions:
+.Example 10: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+, which can retrieve all exceptions:
 [source,scala,numbered]
 ----
 scala> val t = Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.getTry
