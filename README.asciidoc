@@ -80,11 +80,12 @@ def writeFail(id: String, item: Item) : Future[Boolean] = Future { Thread.sleep(
 
 == Asynchronously transform or traverse collections
 A common task when working with futures is transforming or traversing a
-collection in serial or parallel that will call a method that returns a future.
-With only a few levels of nesting, the standard methods for accomplishing this
-lead to difficult to read code. In the following example, a collection of ten
-identifiers is grouped to batch requests. The flow of execution for each batch
-is serial while the flow of the identifiers within each batch is parallel.
+collection in serial or parallel that will call a function that returns a
+future. With only a few levels of nesting, the standard idioms for
+accomplishing this lead to difficult to read code. In the following example, a
+collection of ten identifiers is grouped to batch identifier reads. The flow of
+execution for each batch is serial while the flow of the identifiers within each
+batch is parallel.
 
 .Example 1: Transform and traverse collections, standard method
 [source,scala,numbered]
