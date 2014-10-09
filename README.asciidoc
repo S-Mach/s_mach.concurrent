@@ -87,7 +87,7 @@ collection of ten identifiers is grouped to batch identifier reads. The flow of
 execution for each batch is serial while the flow of the identifiers within each
 batch is parallel.
 
-.Example 1: Transform and traverse collections, standard method
+.Example 1: Transform and traverse collections, standard idiom
 [source,scala,numbered]
 ----
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
