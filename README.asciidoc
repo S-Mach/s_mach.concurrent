@@ -28,7 +28,8 @@ Merge' section for details)
 ** Ensure all exceptions generated during asynchronous task processing can be
 retrieved (+Future.sequence+ returns only the first)
 * +collection.async+ and +collection.async.par+ support collection operations
-such as +map+, +flatMap+ and +foreach+
+such as +map+, +flatMap+ and +foreach+ on asynchronous functions, i.e.
++A => Future[B]+
 * +async.par.run(future1, future2, ...)+ supports running fixed size
 heterogeneous asynchronous task (of up to 22 futures) in parallel
 * Adds +ScheduledExecutionContext+, a Scala interface wrapper for
