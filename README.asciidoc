@@ -255,7 +255,7 @@ val future = { // necessary for pasting into repl
 For parallel operation, all of the futures must be started before the
 for-comprehension. The for-comprehension is a monadic workflow which captures
 commands that must take place in a specific sequential order. The pattern in
-example 2 is necessary because Scala lacks an applicative workflow which
+Example 6 is necessary because Scala lacks an applicative workflow which
 captures commands that may be run in any order. +s_mach.concurrent+ adds the
 +async.par.run+ workflow which is an applicative workflow specifically for
 fixed size heterogeneous asynchronous tasks. This workflow can more concisely
