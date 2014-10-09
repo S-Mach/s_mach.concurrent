@@ -20,9 +20,9 @@ performing fixed size heterogeneous (tuple) and variable size homogeneous
 ** Allow enabling optional progress reporting, failure retry and/or throttle
 control for asynchronous tasks
 ** Ensure fail-immediate sequencing of future results (see the 'Under the hood:
-Merge' section below)
-** Ensure all exceptions are thrown during asynchronous tasks are thrown
-(instead of only the first)
+Merge' section for details)
+** Ensure all exceptions generated during asynchronous task processing are
+thrown (instead of only the first)
 ** Return a future of the new collection or tuple, e.g. given +f: Int =>
 Future[String]+:
 *** +List(1,2,3).async.map(f)+ returns +Future[List[String]]+
@@ -302,7 +302,7 @@ extracted using normal Scala idioms. The +async.par.run+ method also fixes
 problems with +scala.concurrent+ exception handling (see the 'Under the hood:
 Merge' section below).
 
-== Under the hood: +Merge+ method
+== Under the hood: +Merge+ function
 The +async+ and +async.par+ primitives utilize the +merge+ and +flatMerge+
 sequencing functions to ensure that execution ends immediately once a  failure
 occurs. This is in contrast to +Future.sequence+ which may not always  fail
