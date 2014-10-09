@@ -21,8 +21,8 @@ performing fixed size heterogeneous (tuple) and variable size homogeneous
 control for asynchronous tasks
 ** Ensure fail-immediate sequencing of future results (see the 'Under the hood:
 Merge' section for details)
-** Ensure all exceptions generated during asynchronous task processing are
-thrown (instead of only the first)
+** Ensure all exceptions generated during asynchronous task processing can be
+retrieved (+Future.sequence+ returns only the first)
 ** Return a future of the new collection or tuple, e.g. given +f: Int =>
 Future[String]+:
 *** +List(1,2,3).async.map(f)+ returns +Future[List[String]]+
