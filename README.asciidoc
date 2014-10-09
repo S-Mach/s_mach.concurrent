@@ -123,9 +123,9 @@ val future = { // necessary for pasting into repl
 }
 ----
 
-The same code, rewritten using +s_mach.concurrent+:
+The same code, rewritten using +async+ and +async.par+:
 
-.Example 2: Using +s_mach.concurrent+ to transform and traverse collections:
+.Example 2: Using +async+ and +async.par+ to transform and traverse collections:
 [source,scala,numbered]
 ----
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
@@ -147,9 +147,9 @@ val future = { // necessary for pasting into repl
 
 == Limiting the maximum number of simultaneous workers used during parallel operations
 
-+s_mach.concurrent+ allows specifying the maximum number of simultaneous workers
-used during parallel operations. In the following example, batches are processed
-in parallel with at most two workers, while each identifier within a batch is
++async.par+ allows specifying the maximum number of simultaneous workers used
+during an asynchronous task. In the following example, batches are processed in
+parallel with at most two workers, while each identifier within a batch is
 processed with at most four workers.
 
 .Example 3: Using +s_mach.concurrent+ workers to transform and traverse collections:
@@ -173,14 +173,14 @@ val future = { // necessary for pasting into repl
 ----
 
 
-== Adding progress reporting, retry and throttle control to collection concurrent operations
-+s_mach.concurrent+ allows modifying +async+ and +async.par+ to report progress,
-retry failures and/or limit iteration speed to a specific time period for both
-heterogeneous and homogeneous asynchronous tasks. In the following example,
-completion of each batch reports progress and batches may not complete faster
-than one every three seconds. For each identifier that is read and fails, the
-first three TimeoutExceptions or first three SocketTimeoutExceptions are
-retried. All other exceptions cause the entire operation to fail.
+== Adding progress reporting, retry and throttle control to asynchronous tasks
++async+ and +async.par+ can be optionally modified to report progress, retry
+failures and/or limit iteration speed to a specific time period for asynchronous
+tasks. In the following example, completion of each batch reports progress and
+batches may not complete faster than one every three seconds. For each
+identifier that is read and fails, the first three TimeoutExceptions or
+SocketTimeoutExceptions are retried. All other exceptions cause the entire
+task to fail.
 
 .Example 4: Adding progress reporting, retry and throttle control to collection concurrent operations
 [source,scala,numbered]
