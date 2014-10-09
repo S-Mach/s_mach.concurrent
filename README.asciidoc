@@ -263,7 +263,7 @@ express the pattern above.
 
 In the example below, all futures are started at the same time by
 +async.par.run+ which returns a +Future[(Int,Int,Int)]+ that completes once all
-supplied futures complete. After this returned Future completes, the tuple value
+supplied futures complete. After this returned future completes, the tuple value
 results can be extracted using normal Scala idioms.
 
 .Example 7: +async.par.run+ workflow
@@ -279,7 +279,7 @@ Additionally, all of the configuration options available for
 number of workers is limited to two, progress is reported once a second and
 certain failures are retried.
 
-.Example 8: +async.par.run+ workflow with progress reporting and retry
+.Example 8: +async.par.run+ workflow with two workers, progress reporting and failure retry
 [source,scala,numbered]
 ----
 for {
@@ -318,7 +318,7 @@ long running computations, this can mean a significant amount of wasted time
 waiting on futures to complete whose results will be discarded.
 
 Additionally, while the scala parallel collections correctly handle multiple
-concurrent exceptions, +Future.sequence+ only returns the first exception
+parallel exceptions, +Future.sequence+ only returns the first exception
 encountered. In +Future.sequence+, all further exceptions past the first are
 discarded. The +merge+ and +flatMerge+ methods fix these problems by throwing
 +ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to access both
@@ -338,7 +338,7 @@ t: scala.util.Try[scala.collection.immutable.Vector[Item]] = Failure(java.lang.R
 scala>
 ----
 
-.Example 10: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+, which can retrieve all exceptions:
+.Example 10: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+ which can retrieve all exceptions:
 [source,scala,numbered]
 ----
 scala> val t = Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.getTry
