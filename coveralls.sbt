@@ -3,9 +3,9 @@ import org.scoverage.coveralls.CoverallsPlugin.coverallsSettings
 
 instrumentSettings
 
-ScoverageKeys.minimumCoverage := 60
+//ScoverageKeys.minimumCoverage := 60
 
-ScoverageKeys.failOnMinimumCoverage := true
+//ScoverageKeys.failOnMinimumCoverage := true
 
 ScoverageKeys.highlighting := true
 
