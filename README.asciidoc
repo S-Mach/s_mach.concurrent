@@ -145,7 +145,7 @@ val future = { // necessary for pasting into repl
 }
 ----
 
-== Limiting the maximum number of simultaneous workers used during parallel operations
+== Limiting the maximum number of simultaneous workers
 
 +async.par+ allows specifying the maximum number of simultaneous workers used
 during an asynchronous task. In the following example, batches are processed in
