@@ -69,6 +69,7 @@ import scala.concurrent.duration._
 import s_mach.concurrent._
 import s_mach.concurrent.util._
 
+implicit val scheduledExecutionContext = ScheduledExecutionContext(2)
 case class Item(id: String, value: Int, relatedItemId: String)
 def read(id: String) : Future[Item] = Future { Thread.sleep(1000); println(id); Item(id,id.toInt,(id.toInt+1).toString) }
 def readFail(id: String) : Future[Item] = Future { Thread.sleep(1000); println(id); throw new RuntimeException(id.toString) }

@@ -15,6 +15,7 @@ object ExampleCode {
   import s_mach.concurrent.util._
 
 
+  implicit val scheduledExecutionContext = ScheduledExecutionContext(2)
   case class Item(id: String, value: Int, relatedItemId: String)
   def read(id: String) : Future[Item] = Future { Thread.sleep(1000); println(id); Item(id,id.toInt,(id.toInt+1).toString) }
   def readFail(id: String) : Future[Item] = Future { Thread.sleep(1000); println(id); throw new RuntimeException(id.toString) }
@@ -93,7 +94,6 @@ object ExampleCode {
   }
 
   def example4: Unit = {
-    implicit val sec : ScheduledExecutionContext = ???
     val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
     val future = { // necessary for pasting into repl
       for {
@@ -153,7 +153,6 @@ object ExampleCode {
 //    for {
 //      (i1,i2,i3) <- concurrently(read("1"), read("2"), read("3"))
 //    } yield (i1,i2,i3)
-    implicit val sec : ScheduledExecutionContext = ???
     for {
 
       // Note: this requires an execution plan object that supports map/flatMap
@@ -184,7 +183,6 @@ object ExampleCode {
   }
 
   def example8: Unit = {
-    implicit val sec : ScheduledExecutionContext = ???
     for {
       (i1,i2,i3) <-
         async
