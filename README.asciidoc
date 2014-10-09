@@ -9,15 +9,13 @@ v2,30-Sep-2014
 image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"] https://github.com/S-Mach/s_mach.concurrent[Code] http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
-serial and parallel execution flow control primitives for working with code
-that uses +scala.concurrent.Future+.
+serial and parallel execution flow control primitives for working with
+asynchronous tasks. An asynchronous task consists of two or more calls to
+function(s) that return a future result +A => Future[B]+ instead of the result
++A => B+
 
 * Adds concurrent flow control primitives +async+ and +async.par+ for
 performing heterogeneous and homogeneous asynchronous tasks.
-+
-NOTE: An asynchronous task consists of two or more calls to function(s) that
-return a Future result (A => Future[B]) instead of the result (A => B)
-+
 ** Allow enabling optional progress reporting, failure retry and/or throttle
 control for asynchronous tasks
 ** Ensure fail-immediate sequencing of future results (see the 'Under the hood:
