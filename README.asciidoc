@@ -15,7 +15,8 @@ function(s) that return a future result +A => Future[B]+ instead of the result
 +A => B+
 
 * Adds concurrent flow control primitives +async+ and +async.par+ for
-performing heterogeneous and homogeneous asynchronous tasks.
+performing fixed size heterogeneous (tuple) and variable size homogeneous
+(collection) asynchronous  tasks
 ** Allow enabling optional progress reporting, failure retry and/or throttle
 control for asynchronous tasks
 ** Ensure fail-immediate sequencing of future results (see the 'Under the hood:
