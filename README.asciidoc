@@ -185,7 +185,6 @@ task to fail.
 .Example 4: Adding progress reporting, retry and throttle control to collection concurrent operations
 [source,scala,numbered]
 ----
-implicit val sec : ScheduledExecutionContext = ???
 val oomItemIdBatch = (1 to 10).toList.map(_.toString).grouped(2).toList
 val future = { // necessary for pasting into repl
   for {
