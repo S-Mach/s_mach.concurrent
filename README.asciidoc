@@ -22,7 +22,7 @@ control for asynchronous tasks
 ** Ensures proper sequencing of returned futures, e.g. given +f: Int =>
 Future[String]+:
 *** +List(1,2,3).async.map(f)+ returns +Future[List[String]]+
-*** +async.par.run(f(1),f(2),f(3))+ returns +Future[(String,String)]+
+*** +async.par.run(f(1),f(2),f(3))+ returns +Future[(String,String,String)]+
 ** Ensure fail-immediate sequencing of future results (see the 'Under the hood:
 Merge' section for details)
 ** Ensure all exceptions generated during asynchronous task processing can be
