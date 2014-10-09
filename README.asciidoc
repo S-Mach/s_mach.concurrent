@@ -29,14 +29,13 @@ Merge' section for details)
 retrieved (+Future.sequence+ returns only the first)
 * +collection.async+ and +collection.async.par+ support collection operations
 such as +map+, +flatMap+ and +foreach+
-* +async.par.run(future1, future2, ...)+ supports running a heterogeneous
-asynchronous task (of up to 22 futures) in parallel
+* +async.par.run(future1, future2, ...)+ supports running fixed size
+heterogeneous asynchronous task (of up to 22 futures) in parallel
 * Adds +ScheduledExecutionContext+, a Scala interface wrapper for
 +java.util.concurrent.ScheduledExecutorService+ that provides for scheduling
 delayed and periodic tasks
 * Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+,
 +Lock+, +Semaphore+ and +Queue+
-* Overcomes some design limitations of the scala.concurrent library
 * Provides convenience methods for writing more readable, concise and DRY
 concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
