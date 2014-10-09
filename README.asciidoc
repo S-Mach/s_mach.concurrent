@@ -16,10 +16,10 @@ function(s) that return a future result +A => Future[B]+ instead of the result
 
 * Adds concurrent flow control primitives +async+ and +async.par+ for
 performing fixed size heterogeneous (tuple) and variable size homogeneous
-(collection) asynchronous  tasks
+(collection) asynchronous  tasks. These primitives:
 ** Allow enabling optional progress reporting, failure retry and/or throttle
 control for asynchronous tasks
-** Ensures proper sequencing of returned futures, e.g. given +f: Int =>
+** Ensure proper sequencing of returned futures, e.g. given +f: Int =>
 Future[String]+:
 *** +List(1,2,3).async.map(f)+ returns +Future[List[String]]+
 *** +async.par.run(f(1),f(2),f(3))+ returns +Future[(String,String,String)]+
