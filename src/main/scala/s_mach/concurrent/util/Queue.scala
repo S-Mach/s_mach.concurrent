@@ -21,7 +21,12 @@ package s_mach.concurrent.util
 import scala.concurrent.{ExecutionContext, Future}
 
 /**
- * A trait for a non-blocking queue
+ * A trait for a non-blocking queue. Note: offer is blocking by design here to
+ * give callers the greatest freedom in deciding how to react to a full queue.
+ * Should an asynchronous offer be desired, simply wrap the call to offer in a
+ * Future. Keep in mind that Futures are not free and uses a Future to wait for
+ * the queue to empty is simply displaying the enqueue onto a different system
+ * queue.
  */
 trait Queue[A] {
   /** @return a future that completes once input is available */

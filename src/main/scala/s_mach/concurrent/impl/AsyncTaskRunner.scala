@@ -18,5 +18,9 @@
 */
 package s_mach.concurrent.impl
 
-case class AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAsyncTaskRunner
+import s_mach.concurrent.config.AsyncConfig
+
+case class AsyncTaskRunner(
+  asyncConfig: AsyncConfig
+) extends AbstractAsyncTaskRunner
 

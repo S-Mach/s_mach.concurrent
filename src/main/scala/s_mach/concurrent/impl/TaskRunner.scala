@@ -30,7 +30,9 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     hookTask { () =>
       val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { () =>
-        hookStepFunction0({ (stepId:Int) => f() }).apply(stepIdGen.incrementAndGet())
+        hookStepFunction0 { (stepId:Int) =>
+          f()
+        }.apply(stepIdGen.incrementAndGet())
       })
     }.apply()
   }
@@ -43,7 +45,9 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     hookTask { () =>
       val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { a:A =>
-        hookStepFunction1({ (stepId:Int, a:A) => f(a) }).apply(stepIdGen.incrementAndGet(), a)
+        hookStepFunction1 { (stepId:Int, a:A) =>
+          f(a)
+        }.apply(stepIdGen.incrementAndGet(), a)
       })
     }.apply()
   }
@@ -56,7 +60,9 @@ trait TaskRunner extends TaskHook with TaskStepHook {
     hookTask { () =>
       val stepIdGen = new java.util.concurrent.atomic.AtomicInteger(0)
       runner(ma, { (a:A,b:B) =>
-        hookStepFunction2({ (stepId:Int, a:A, b:B) => f(a,b) }).apply(stepIdGen.incrementAndGet(), a, b)
+        hookStepFunction2 { (stepId:Int, a:A, b:B) =>
+          f(a,b)
+        }.apply(stepIdGen.incrementAndGet(), a, b)
       })
     }.apply()
   }

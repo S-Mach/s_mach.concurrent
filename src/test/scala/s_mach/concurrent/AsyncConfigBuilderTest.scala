@@ -18,14 +18,13 @@
 */
 package s_mach.concurrent
 
-import s_mach.concurrent.impl.{RetryDecider, ThrottleConfig, AsyncConfig}
-
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.util.{Failure, Success, Try}
 import org.scalatest.{Matchers, FlatSpec}
 import util._
 import TestBuilder._
+import s_mach.concurrent.config.AsyncConfig
 
 class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 

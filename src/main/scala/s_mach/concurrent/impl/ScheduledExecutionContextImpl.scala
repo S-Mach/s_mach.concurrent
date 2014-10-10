@@ -18,11 +18,11 @@
 */
 package s_mach.concurrent.impl
 
-import java.util.concurrent.{ScheduledFuture, TimeUnit, ScheduledExecutorService}
+import java.util.concurrent.{TimeUnit, ScheduledExecutorService}
 import scala.concurrent.{Promise, ExecutionContext}
 import scala.concurrent.duration._
 import scala.util.Try
-import s_mach.concurrent.{PeriodicTask, ScheduledExecutionContext, DelayedFuture}
+import s_mach.concurrent._
 import s_mach.concurrent.util.{Latch, DelegatedFuture}
 
 object ScheduledExecutionContextImpl {
@@ -30,7 +30,9 @@ object ScheduledExecutionContextImpl {
     task: () => A,
     delay: Duration,
     scheduledExecutorService: ScheduledExecutorService
-  )(implicit ec:ExecutionContext) extends DelayedFuture[A] with DelegatedFuture[A] {
+  )(implicit
+    ec:ExecutionContext
+  ) extends DelayedFuture[A] with DelegatedFuture[A] {
     val delay_ns = delay.toNanos
     val startTime_ns = System.nanoTime + delay_ns
     val promise = Promise[A]()
@@ -59,7 +61,9 @@ object ScheduledExecutionContextImpl {
     val initialDelay_ns = initialDelay.toNanos
     val period_ns = period.toNanos
 
-    val _nextEvent_ns = new java.util.concurrent.atomic.AtomicLong(System.nanoTime() + initialDelay_ns)
+    val _nextEvent_ns = new java.util.concurrent.atomic.AtomicLong(
+      System.nanoTime() + initialDelay_ns
+    )
     def nextEvent_ns = _nextEvent_ns.get
 
     val runnable = new Runnable {
@@ -108,7 +112,10 @@ case class ScheduledExecutionContextImpl(
     )
   }
 
-  def scheduleAtFixedRate[U](initialDelay: Duration, period: Duration)(task: () => U) : PeriodicTask = {
+  def scheduleAtFixedRate[U](
+    initialDelay: Duration,
+    period: Duration
+  )(task: () => U) : PeriodicTask = {
     PeriodicTaskImpl(
       task = task,
       initialDelay = initialDelay,

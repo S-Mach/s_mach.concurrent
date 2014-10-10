@@ -18,47 +18,40 @@
 */
 package s_mach.concurrent.impl
 
+import s_mach.concurrent.config.ThrottleConfig
+
 import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent.util.TaskEventListener
-import s_mach.concurrent._
+import s_mach.concurrent.ScheduledExecutionContext
+import s_mach.concurrent.util.Throttler
 
-trait TaskEventListenerHook extends
-  TaskEventListener with
-  TaskHook with
-  TaskStepHook {
+case class ThrottleState(
+  throttle_ns: Long
+)(implicit
+  scheduledExecutionContext: ScheduledExecutionContext
+) extends TaskStepHook {
 
-  override def hookTask[A](
-    task: () => Future[A]
-  )(implicit ec:ExecutionContext) : () => Future[A] = {
-    { () =>
-      onStartTask()
-      task() sideEffect onCompleteTask()
-    }
-  }
+  val throttler = Throttler(throttle_ns)
+
   override def hookStepFunction0[R](
-    step: TaskStepId => Future[R]
+    f: TaskStepId => Future[R]
   )(implicit ec:ExecutionContext) : TaskStepId => Future[R] = {
-    { stepId =>
-      onStartStep(stepId)
-      step(stepId) sideEffect onCompleteStep(stepId)
-    }
+    { stepId:TaskStepId => throttler.run(f(stepId)) }
   }
 
   override def hookStepFunction1[A,R](
-    step: (TaskStepId,A) => Future[R]
+    f: (TaskStepId,A) => Future[R]
   )(implicit ec:ExecutionContext) : (TaskStepId,A) => Future[R] = {
-    { (stepId,a) =>
-      onStartStep(stepId)
-      step(stepId,a) sideEffect onCompleteStep(stepId)
-    }
+    { (stepId:TaskStepId,a:A) => throttler.run(f(stepId,a)) }
   }
 
   override def hookStepFunction2[A,B,R](
-    step: (TaskStepId,A,B) => Future[R]
+    f: (TaskStepId,A,B) => Future[R]
   )(implicit ec:ExecutionContext) : (TaskStepId,A,B) => Future[R] = {
-    { (stepId,a,b) =>
-      onStartStep(stepId)
-      step(stepId,a,b) sideEffect onCompleteStep(stepId)
-    }
+    { (stepId:TaskStepId,a:A,b:B) => throttler.run(f(stepId,a,b)) }
   }
+}
+
+object ThrottleState {
+  def apply(cfg: ThrottleConfig) : ThrottleState =
+    ThrottleState(cfg.throttle_ns)(cfg.scheduledExecutionContext)
 }

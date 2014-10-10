@@ -18,18 +18,19 @@
 */
 package s_mach.concurrent.util
 
-import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent._
-
 /**
- * A trait for reporting progress of a task that consists of one or more discrete steps. Each step is identified by an 
- * ordinal step identifier. The step id is a generic concept and may be mapped by callers to any concrete concept. For 
- * tasks with a known fixed input size, the step id is mapped directly to the index of the input (i.e. input with index 
- * 0 = step 0, index 1 = step 1, etc). For tasks with an unknown input size, the step id is mapped to the Nth item 
- * encountered minus one (i.e. 1st item = step 0, 2nd item = step 1). The step id must be incrementally assigned, 
- * ensuring that that total steps always equals last step id - 1.
+ * A trait for listening to the progress of a task that consists of one or more
+ * discrete steps. Each step is identified by an  ordinal step identifier. The
+ * step id is a generic concept and may be mapped by callers to any concrete
+ * concept. For  tasks with a known fixed input size, the step id is mapped
+ * directly to the index of the input (i.e. input with index  0 = step 1, index
+ * 1 = step 2, etc). For tasks with an unknown input size, the step id is mapped
+ * to the Nth item  encountered (i.e. 1st item = step 1, 2nd item = step 2). The
+ * step id must be incrementally assigned,  ensuring that that total steps
+ * always equals last step id.
  *
- * Note: the progress reporter is assumed to be stateful. All derived implementations must be thread safe
+ * Note: derived task event listeners are assumed to be stateful.
+ * Implementations must be thread safe
  */
 trait TaskEventListener {
   /** Called at the beginning of the computation */

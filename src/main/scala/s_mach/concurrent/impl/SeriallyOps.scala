@@ -27,7 +27,8 @@ trait SeriallyOps {
   /**
    * Transform Futures serially
    * Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/
-   * @return a Future of M[B] that completes once all Futures have been transformed serially
+   * @return a Future of M[B] that completes once all Futures have been
+   *         transformed serially
    */
   def mapSerially[A, B, M[AA] <: TraversableOnce[AA]](
     self: M[A],
@@ -51,7 +52,8 @@ trait SeriallyOps {
   /**
    * Transform and flatten Futures serially
    * Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/
-   * @return a Future of M[B] that completes once all Futures have been transformed serially
+   * @return a Future of M[B] that completes once all Futures have been
+   *         transformed serially
    */
   def flatMapSerially[A, B, M[AA] <: TraversableOnce[AA]](
     self: M[A],
@@ -75,7 +77,8 @@ trait SeriallyOps {
   /**
    * Traverse Futures serially.
    * Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/
-   * @return a Future of M[B] that completes once all Futures have been traversed serially
+   * @return a Future of M[B] that completes once all Futures have been
+   *         traversed serially
    */
   def foreachSerially[A, U, M[AA] <: TraversableOnce[AA]](
     self: M[A],
@@ -94,7 +97,8 @@ trait SeriallyOps {
   /**
    * Fold left Futures serially
    * Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/
-   * @return a Future of M[B] that completes once all Futures have been fold left
+   * @return a Future of M[B] that completes once all Futures have been fold
+   *         left
    */
   def foldLeftSerially[A, B, M[AA] <: TraversableOnce[AA]](z: B)(
     self: M[A],

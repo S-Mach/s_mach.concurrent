@@ -22,22 +22,29 @@ import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent.impl.DeferredFutureImpl
 
 /**
- * A trait for a future whose execution does not begin until some condition occurs. DeferredFuture completes once the
- * start condition occurs and the deferred future completes.
+ * A trait for a future whose execution does not begin until some condition
+ * occurs. DeferredFuture completes once the start condition occurs and the
+ * deferred future completes.
  */
 trait DeferredFuture[A] extends Future[A] {
-  /** @return a future that completes once the start condition occurs. The future contains the deferred future (which
-    *         is now running) */
+  /** @return a future that completes once the start condition occurs. The
+   * future contains the deferred future (which is now running) */
   def deferred : Future[Future[A]]
 }
 
 object DeferredFuture {
-  def successful[A](future: Future[A])(implicit ec:ExecutionContext) : DeferredFuture[A] =
+  def successful[A](
+    future: Future[A]
+  )(implicit ec:ExecutionContext) : DeferredFuture[A] =
     DeferredFutureImpl(Future.successful(future))
 
-  def failed(cause: Throwable)(implicit ec:ExecutionContext) : DeferredFuture[Nothing] =
+  def failed(
+    cause: Throwable
+  )(implicit ec:ExecutionContext) : DeferredFuture[Nothing] =
     DeferredFutureImpl(Future.failed(cause))
 
-  def apply[A](deferred: Future[Future[A]])(implicit ec: ExecutionContext) : DeferredFuture[A] =
+  def apply[A](
+    deferred: Future[Future[A]]
+  )(implicit ec: ExecutionContext) : DeferredFuture[A] =
     DeferredFutureImpl(deferred)
 }

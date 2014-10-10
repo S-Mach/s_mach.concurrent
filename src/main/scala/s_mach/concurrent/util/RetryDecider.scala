@@ -18,16 +18,13 @@
 */
 package s_mach.concurrent.util
 
+import scala.concurrent.Future
+
 /**
- * A case class to report progress in a computation
- * @param completed the count of iterations completed so far
- * @param optTotal Some(total iterations in computation) or None if the
- *                 computation has an unknown size
- * @param startTime_ns the time in nanoseconds returned by System.nanoTime when
- *                     the computation was started
+ * A trait to decide whether to retry a failure during a step of task.
+ *
+ * Note: derived implementations must be threadsafe.
  */
-case class Progress(
-  completed: Int,
-  optTotal: Option[Int],
-  startTime_ns: Long
-)
+trait RetryDecider {
+  def shouldRetry(taskStepId: Long, failure: Throwable) : Future[Boolean]
+}

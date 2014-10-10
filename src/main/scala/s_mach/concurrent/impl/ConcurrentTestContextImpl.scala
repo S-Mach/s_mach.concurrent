@@ -41,7 +41,10 @@ class ConcurrentTestContextImpl()(implicit
     })
   }
 
-  override def scheduleAtFixedRate[U](initialDelay: Duration, period: Duration)(task: () => U) = {
+  override def scheduleAtFixedRate[U](
+    initialDelay: Duration,
+    period: Duration
+  )(task: () => U) = {
     _activeExecutionCount.incrementAndGet()
     val retv = sec.scheduleAtFixedRate(initialDelay, period)(task)
     retv.onCancel.onSet {

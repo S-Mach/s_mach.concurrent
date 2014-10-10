@@ -16,19 +16,15 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.impl
-
-import scala.language.higherKinds
-import scala.collection.generic.CanBuildFrom
-import scala.concurrent.{ExecutionContext, Future}
-import s_mach.concurrent.util._
-import s_mach.concurrent.ScheduledExecutionContext
+package s_mach.concurrent.config
 
 /**
- * A trait for the configuration of a concurrent serial TraversableOnce.async workflow that can wrap a concurrent
- * function with progress reporting, retry and throttling functions
+ * A trait for the configuration of a concurrent serial TraversableOnce.async
+ * workflow that can wrap a concurrent function with progress reporting, retry
+ * and throttling functions
  *
- * Note: Inheritance order here matters - throttle should be inner wrapper on f (progress and retry are interchangeable)
+ * Note: Inheritance order here matters - throttle should be inner wrapper on
+ * f (progress and retry are interchangeable)
  */
 trait AsyncConfig extends OptProgressConfig with OptRetryConfig with OptThrottleConfig {
   def workerCount : Int

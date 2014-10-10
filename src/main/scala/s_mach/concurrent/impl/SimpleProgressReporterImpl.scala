@@ -32,6 +32,8 @@ class SimpleProgressReporterImpl(
     lock.synchronized {
       totalSoFar = 0
       startTime_ns = System.nanoTime()
+      // Alien method here is ok because called code has no way to create a
+      // recursive loop
       report(Progress(0, optTotal, startTime_ns))
     }
   }
@@ -42,9 +44,12 @@ class SimpleProgressReporterImpl(
   override def onStartStep(stepId: Int) = { }
 
   override def onCompleteStep(stepId: Int) : Unit = {
-    // Note: lock is required here to ensure proper ordering of very fast reports
+    // Note: lock is required here to ensure proper ordering of very fast
+    // reports
     lock.synchronized {
       totalSoFar += 1
+      // Alien method here is ok because called code has no way to create a
+      // recursive loop
       report(Progress(totalSoFar, optTotal, startTime_ns))
     }
   }

@@ -20,6 +20,7 @@ package s_mach.concurrent.impl
 
 /* WARNING: Generated code. To modify see s_mach.concurrent.codegen.TupleAsyncTaskRunnerCodeGen */
 
+import s_mach.concurrent.config.AsyncConfig
 import s_mach.concurrent.util.Semaphore
 import scala.concurrent.{Promise, ExecutionContext, Future}
 import s_mach.concurrent.impl.MergeOps.mergeFailImmediately

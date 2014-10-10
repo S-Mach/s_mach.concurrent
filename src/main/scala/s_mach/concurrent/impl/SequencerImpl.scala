@@ -26,18 +26,20 @@ import s_mach.concurrent.util.Sequencer
 
 class SequencerImpl(__next: Int) extends Sequencer {
   type Task = () => Unit
-  private[this] val lock = new Object
+  val lock = new Object
 
-  private[this] var _next = __next
+  var _next = __next
   override def next = lock.synchronized { _next }
 
-  private[this] val polling = mutable.PriorityQueue[(Int, Task)]()(new Ordering[(Int, Task)] {
+  val queOrdering = new Ordering[(Int, Task)] {
     override def compare(x: (Int, Task), y: (Int, Task)) =
-      // Note: inverted x and y compare here to make lowest index = highest priority
+      // Note: inverted x and y compare here to make lowest index =
+      // highest priority
       implicitly[Ordering[Int]].compare(y._1,x._1)
-  })
+  }
+  val polling = mutable.PriorityQueue[(Int, Task)]()(queOrdering)
 
-  private[this] def doNext()(implicit ec:ExecutionContext) {
+  def doNext()(implicit ec:ExecutionContext) {
     lock.synchronized {
       _next = _next + 1
       if(polling.nonEmpty && _next == polling.head._1) {
@@ -46,13 +48,15 @@ class SequencerImpl(__next: Int) extends Sequencer {
     }
   }
 
-  private[this] def run[X](task: => Future[X])(implicit ec:ExecutionContext) : Future[X] = {
+  def run[X](task: => Future[X])(implicit ec:ExecutionContext) : Future[X] = {
     val retv = task
     retv onComplete { case _ => doNext() }
     retv
   }
 
-  override def when[X](i: Int)(task: => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
+  override def when[X](
+    i: Int
+  )(task: => Future[X])(implicit ec: ExecutionContext): DeferredFuture[X] = {
     lock.synchronized {
       require(i >= _next)
 

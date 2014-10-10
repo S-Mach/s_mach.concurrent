@@ -18,6 +18,9 @@
 */
 package s_mach.concurrent.impl
 
+import s_mach.concurrent.config._
+import s_mach.concurrent.util._
+
 import scala.language.higherKinds
 import scala.collection.generic.CanBuildFrom
 import scala.concurrent.{ExecutionContext, Future}
@@ -103,11 +106,18 @@ case class TraverseableOnceAsyncConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
     ec: ExecutionContext
   ) : Future[B] = {
     val fSwap = { (a:A,b:B) => f(b,a) }
-    AsyncTaskRunner(this).runTask2[A,B,B,M,B](enumerator, foldLeftSerially[A,B,M](z), fSwap)
+    AsyncTaskRunner(this).runTask2[A,B,B,M,B](
+      enumerator,
+      foldLeftSerially[A,B,M](z),
+      fSwap
+    )
   }
 }
 
-case class ParTraverseableOnceAsyncConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
+case class ParTraverseableOnceAsyncConfigBuilder[
+  A,
+  M[+AA] <: TraversableOnce[AA]
+](
   enumerator: M[A],
   workerCount: Int = AsyncConfig.DEFAULT_PAR_WORKER_COUNT,
   optProgress: Option[ProgressConfig] = None,
@@ -134,19 +144,31 @@ case class ParTraverseableOnceAsyncConfigBuilder[A,M[+AA] <: TraversableOnce[AA]
     cbf: CanBuildFrom[Nothing, B, M[B]],
     ec: ExecutionContext
   ) : Future[M[B]] = {
-    AsyncTaskRunner(this).runTask1(enumerator, mapWorkers[A,B,M](workerCount), f)
+    AsyncTaskRunner(this).runTask1(
+      enumerator,
+      mapWorkers[A,B,M](workerCount),
+      f
+    )
   }
 
   @inline def flatMap[B](f: A => Future[TraversableOnce[B]])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]],
     ec: ExecutionContext
   ) : Future[M[B]] = {
-    AsyncTaskRunner(this).runTask1(enumerator, flatMapWorkers[A,B,M](workerCount), f)
+    AsyncTaskRunner(this).runTask1(
+      enumerator,
+      flatMapWorkers[A,B,M](workerCount),
+      f
+    )
   }
 
   @inline def foreach[U](f: A => Future[U])(implicit
     ec: ExecutionContext
   ) : Future[Unit] = {
-    AsyncTaskRunner(this).runTask1(enumerator, foreachWorkers[A,U,M](workerCount), f)
+    AsyncTaskRunner(this).runTask1(
+      enumerator,
+      foreachWorkers[A,U,M](workerCount),
+      f
+    )
   }
 }

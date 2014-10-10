@@ -21,7 +21,8 @@ package s_mach.concurrent.util
 import s_mach.concurrent.impl.LatchImpl
 
 /**
- * A trait for a latch that can be set once to synchronize events that are waiting on the barrier.
+ * A trait for a latch that can be set once to synchronize events that are
+ * waiting on the barrier.
  */
 trait Latch extends Barrier {
   /**
@@ -32,12 +33,14 @@ trait Latch extends Barrier {
 
   /**
    * Try to set the latch
-   * @return TRUE if the latch is now set FALSE if the latch has already been set
+   * @return TRUE if the latch is now set FALSE if the latch has already been
+   *         set
    */
   def trySet() : Boolean
 }
 
 object Latch {
   val defaultFailMessage = "Latch is already set!"
-  def apply(failMessage: String = defaultFailMessage) : Latch = new LatchImpl(failMessage)
+  def apply(failMessage: String = defaultFailMessage) : Latch =
+    new LatchImpl(failMessage)
 }

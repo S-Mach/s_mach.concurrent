@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent.util
 
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic._
 import scala.concurrent.duration._
 import scala.collection.JavaConverters._
 
@@ -38,7 +40,8 @@ object SerializationSchedule {
 }
 
 /**
- * A case class for determining the ordering of instantaneous and time-spanning real-time events
+ * A case class for determining the ordering of instantaneous and
+ * time-spanning real-time events
  * @tparam ID event identifier type
  */
 case class SerializationSchedule[ID]() {
@@ -46,13 +49,13 @@ case class SerializationSchedule[ID]() {
 
   val startTime_ns = System.nanoTime()
 
-  private[this] val _startEvents = new java.util.concurrent.ConcurrentHashMap[ID, StartEvent[ID]]()
-  private[this] val _endEvents = new java.util.concurrent.ConcurrentHashMap[ID, EndEvent[ID]]()
+  private[this] val _startEvents = new ConcurrentHashMap[ID, StartEvent[ID]]()
+  private[this] val _endEvents = new ConcurrentHashMap[ID, EndEvent[ID]]()
 
-  private[this] val cacheValid = new java.util.concurrent.atomic.AtomicBoolean(true)
+  private[this] val cacheValid = new AtomicBoolean(true)
   private[this] var cachedEvents = Vector[Event[ID]]()
 
-  private[this] val _debug = new java.util.concurrent.atomic.AtomicReference({ id:ID => () })
+  private[this] val _debug = new AtomicReference({ id:ID => () })
 
   def debug(__debug: ID => Unit) = _debug.getAndSet(__debug)
 
@@ -119,13 +122,15 @@ case class SerializationSchedule[ID]() {
   }
 
   /** @return an unordered Vector of start events */
-  def startEvents : Vector[StartEvent[ID]] = _startEvents.values().asScala.toVector
+  def startEvents : Vector[StartEvent[ID]] =
+    _startEvents.values().asScala.toVector
 
   /** @return an unordered Vector of end events */
   def endEvents : Vector[EndEvent[ID]] = _endEvents.values().asScala.toVector
 
   /**
-   * @throws IllegalArgumentException if id1 or id2 doesn't exist OR if id2 is not a time-spanning event
+   * @throws IllegalArgumentException if id1 or id2 doesn't exist OR if id2 is
+   *         not a time-spanning event
    * @return TRUE if the event id1 happened before event id2
    * */
   def happensBefore(id1: ID, id2: ID) : Boolean = {
@@ -144,7 +149,8 @@ case class SerializationSchedule[ID]() {
   }
 
   /**
-   * @throws IllegalArgumentException if id1 or id2 doesn't exist OR if id2 is not a time-spanning event
+   * @throws IllegalArgumentException if id1 or id2 doesn't exist OR if id2 is
+   *         not a time-spanning event
    * @return TRUE if the event id1 happened during time-spanning event id2
    * */
   def happensDuring(id1: ID, id2: ID) : Boolean = {

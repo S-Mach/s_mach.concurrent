@@ -34,7 +34,8 @@ class ListQueueImpl[A](elems: A*) extends ListQueue[A] {
     list ++= elems
     list
   }
-  private[this] val polling = new mutable.ListBuffer[Either[Promise[A], (Promise[Vector[A]], Int)]]()
+  private[this] val polling =
+    new mutable.ListBuffer[Either[Promise[A], (Promise[Vector[A]], Int)]]()
   private[this] val lock = new Object
 
   override def offerQueueSize = lock.synchronized { offering.size }
@@ -84,7 +85,8 @@ class ListQueueImpl[A](elems: A*) extends ListQueue[A] {
 //        polling.remove(0)
 //      case _ => offering += a
 //    }
-    // Note: not using match above for now for speed up (this code is expected to have high call rate)
+    // Note: not using match above for now for speed up (this code is expected
+    // to have high call rate)
     if(polling.nonEmpty) {
       if(polling.head.isLeft) {
         val p = polling.head.left.get

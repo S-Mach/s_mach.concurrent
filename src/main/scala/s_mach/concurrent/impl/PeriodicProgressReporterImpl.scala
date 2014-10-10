@@ -72,7 +72,8 @@ class PeriodicProgressReporterImpl(
 
   def doReport(localTotalSoFar: Int) {
     lock.synchronized {
-      // Note: is possible for a report to be queued on the lock while onEnd is in progress
+      // Note: is possible for a report to be queued on the lock while onEnd is
+      // in progress
       if(reporter != None) {
         lastReport_ns = System.nanoTime()
         report(Progress(localTotalSoFar, optTotal, startTime_ns))

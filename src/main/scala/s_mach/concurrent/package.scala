@@ -20,68 +20,89 @@ package s_mach
 
 
 import java.util.concurrent.ScheduledExecutorService
-import s_mach.concurrent.util.Semaphore
-
 import scala.language.higherKinds
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.util.Try
 import scala.collection.generic.CanBuildFrom
 import s_mach.concurrent.impl._
+import s_mach.concurrent.config.{AsyncConfigBuilder, AsyncConfig}
 
 package object concurrent {
-  implicit class SMach_Concurrent_PimpEverything[A](val self: A) extends AnyVal {
-    @inline def future = Future.successful(self)
+  
+  implicit class SMach_Concurrent_PimpEverything[A](
+    val self: A
+  ) extends AnyVal {
+    def future = Future.successful(self)
   }
-  // Note: can't put value class in trait so this code has to be repeated in object Implicits and in package future
-  implicit class SMach_Concurrent_PimpMyFutureType(val self:Future.type) extends AnyVal {
-    @inline def delayed[A](delay: FiniteDuration)(f: => A)(implicit
+  
+  // Note: can't put value class in trait so this code has to be repeated in
+  // object Implicits and in package future
+  implicit class SMach_Concurrent_PimpMyFutureType(
+    val self:Future.type
+  ) extends AnyVal {
+    def delayed[A](delay: FiniteDuration)(f: => A)(implicit
       scheduledExecutionContext:ScheduledExecutionContext
     ) : DelayedFuture[A] = scheduledExecutionContext.schedule(delay)(f)
-    @inline def unit : Future[Unit] = FutureOps.unit
+    def unit : Future[Unit] = FutureOps.unit
   }
-  implicit class SMach_Concurrent_PimpMyFuture[A](val self: Future[A]) extends AnyVal {
-    @inline def get: A = FutureOps.get(self)
-    @inline def get(max: Duration): A = FutureOps.get(self,max)
-    @inline def getTry: Try[A] = FutureOps.getTry(self)
-    @inline def getTry(max: Duration): Try[A] = FutureOps.getTry(self, max)
-    @inline def background(implicit ec: ExecutionContext) : Unit = FutureOps.background(self)
-    @inline def toTry(implicit ec: ExecutionContext): Future[Try[A]] = FutureOps.toTry(self)
-    @inline def fold[X](
+  
+  implicit class SMach_Concurrent_PimpMyFuture[A](
+    val self: Future[A]
+  ) extends AnyVal {
+    def get: A = FutureOps.get(self)
+    def get(max: Duration): A = FutureOps.get(self,max)
+    def getTry: Try[A] = FutureOps.getTry(self)
+    def getTry(max: Duration): Try[A] = FutureOps.getTry(self, max)
+    def background(implicit ec: ExecutionContext) : Unit = 
+      FutureOps.background(self)
+    def toTry(implicit ec: ExecutionContext): Future[Try[A]] = 
+      FutureOps.toTry(self)
+    def fold[X](
       onSuccess: A => X,
       onFailure: Throwable => X
     )(implicit
       ec:ExecutionContext
     ) : Future[X] = FutureOps.fold(self, onSuccess, onFailure)
-    @inline def flatFold[X](
+    def flatFold[X](
       onSuccess: A => Future[X],
       onFailure: Throwable => Future[X]
     )(implicit
       ec:ExecutionContext
     ) : Future[X] = FutureOps.flatFold(self, onSuccess, onFailure)
-    @inline def happensBefore[B](other: => Future[B])(implicit ec: ExecutionContext) : DeferredFuture[B]
+    def happensBefore[B](
+      other: => Future[B]
+    )(implicit ec: ExecutionContext) : DeferredFuture[B]
       = FutureOps.happensBefore(self, other)
-    @inline def sideEffect(sideEffect: => Unit)(implicit ec: ExecutionContext) : Future[A]
+    def sideEffect(
+      sideEffect: => Unit
+    )(implicit ec: ExecutionContext) : Future[A]
       = FutureOps.sideEffect(self, sideEffect)
   }
-  implicit class SMach_Concurrent_PimpMyFutureFuture[A](val self: Future[Future[A]]) extends AnyVal {
-    @inline def flatten(implicit ec:ExecutionContext) : Future[A] = self.flatMap(v => v)
+  implicit class SMach_Concurrent_PimpMyFutureFuture[A](
+    val self: Future[Future[A]]
+  ) extends AnyVal {
+    def flatten(implicit ec:ExecutionContext) : Future[A] = 
+      self.flatMap(v => v)
   }
-  implicit class SMach_Concurrent_PimpMyTraversableFuture[A, M[+AA] <: Traversable[AA]](
+  implicit class SMach_Concurrent_PimpMyTraversableFuture[
+    A, 
+    M[+AA] <: Traversable[AA]
+  ](
     val self: M[Future[A]]
   ) extends AnyVal {
-    @inline def merge(implicit
+    def merge(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[Nothing, A, M[A]]
     ) : Future[M[A]] = MergeOps.merge(self)
 
-    @inline def merge(atMost: Duration)(implicit
-      ec: ExecutionContext,
-      ses: ScheduledExecutorService,
-      cbf: CanBuildFrom[Nothing, A, M[A]]
-    ) : Future[M[A]] = MergeOps.mergeTimeout(atMost, self)
+//    def merge(atMost: Duration)(implicit
+//      ec: ExecutionContext,
+//      ses: ScheduledExecutorService,
+//      cbf: CanBuildFrom[Nothing, A, M[A]]
+//    ) : Future[M[A]] = MergeOps.mergeTimeout(atMost, self)
 
-    @inline def firstSuccess(implicit
+    def firstSuccess(implicit
       ec: ExecutionContext
     ) : Future[A] = FutureOps.firstSuccess(self)
   }
@@ -93,32 +114,41 @@ package object concurrent {
   ](
     val self: M[Future[N[A]]]
   ) extends AnyVal {
-    @inline def flatMerge(implicit
+    def flatMerge(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[Nothing, A, M[A]]
     ) : Future[M[A]] = MergeOps.flatMerge(self)
   }
 
-  implicit class SMach_Concurrent_PimpMyTraversableOnceFuture[A,M[AA] <: TraversableOnce[AA]](
+  implicit class SMach_Concurrent_PimpMyTraversableOnceFuture[
+    A,
+    M[AA] <: TraversableOnce[AA]
+  ](
     val self: M[Future[A]]
   ) extends AnyVal {
-    @inline def mergeAllFailures(implicit
+    def mergeAllFailures(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[M[Future[A]], Throwable, M[Throwable]]
     ) : Future[M[Throwable]] = MergeOps.mergeAllFailures(self)
 
-    @inline def sequence(implicit
+    def sequence(implicit
       cbf: CanBuildFrom[M[Future[A]], A, M[A]],
       ec: ExecutionContext
     ) : Future[M[A]] = Future.sequence(self)
   }
 
-  implicit class SMach_Concurrent_PimpMyTraversableOnce[A,M[+AA] <: TraversableOnce[AA]](val self: M[A]) extends AnyVal {
-    @inline def async(implicit ec:ExecutionContext) = TraverseableOnceAsyncConfigBuilder(self)
+  implicit class SMach_Concurrent_PimpMyTraversableOnce[
+    A,
+    M[+AA] <: TraversableOnce[AA]
+  ](val self: M[A]) extends AnyVal {
+    def async(implicit ec:ExecutionContext) =
+      TraverseableOnceAsyncConfigBuilder(self)
   }
 
   val async = AsyncConfigBuilder()
 
-  implicit class SMach_Concurrent_PimpMyAsyncConfigBuilder(val self:AsyncConfig) extends AnyVal with SMach_Concurrent_AbstractPimpMyAsyncConfig
+  implicit class SMach_Concurrent_PimpMyAsyncConfigBuilder(
+    val self:AsyncConfig
+  ) extends AnyVal with SMach_Concurrent_AbstractPimpMyAsyncConfig
 }
 

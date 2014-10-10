@@ -18,15 +18,13 @@
 */
 package s_mach.concurrent.impl
 
-import java.util.concurrent.{ScheduledExecutorService, TimeUnit}
-
-import s_mach.concurrent.{DeferredFuture, ScheduledExecutionContext, ConcurrentThrowable}
 
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.language.higherKinds
 import scala.util.{Failure, Success, Try}
 import MergeOps._
+import s_mach.concurrent.{DeferredFuture, ConcurrentThrowable}
 
 object FutureOps extends FutureOps
 trait FutureOps {
@@ -35,8 +33,8 @@ trait FutureOps {
   @inline def unit : Future[Unit] = _unit
 
   /**
-   * @return the result of the Future after it completes (Note: this waits indefinitely for the
-   *         Future to complete)
+   * @return the result of the Future after it completes (Note: this waits
+   * indefinitely for the Future to complete)
    * @throws if Future completed with a failure, throws the exception
    * */
   @inline def get[A](self: Future[A]): A = {
@@ -47,11 +45,12 @@ trait FutureOps {
    * @return the result of the Future after it completes
    * @throws TimeoutException if Future does not complete within max duration
    * */
-  @inline def get[A](self: Future[A], max: Duration): A = Await.result(self, max)
+  @inline def get[A](self: Future[A], max: Duration): A =
+    Await.result(self, max)
 
   /**
-   * @return the Try result of the Future after it completes (Note: this waits indefinitely for the
-   *         Future to complete)
+   * @return the Try result of the Future after it completes (Note: this waits
+   * indefinitely for the Future to complete)
    * */
   @inline def getTry[A](self: Future[A]): Try[A] = {
     Await.ready(self, Duration.Inf).value.get
@@ -65,22 +64,29 @@ trait FutureOps {
     Await.ready(self, max).value.get
   }
 
-  /** Run future in the background. Discard the result of this Future but ensure if there is an exception it gets
-    * reported to the ExecutionContext */
-  @inline def background[A](self: Future[A])(implicit ec: ExecutionContext) : Unit = {
+  /** Run future in the background. Discard the result of this Future but
+    * ensure if there is an exception it gets reported to the ExecutionContext
+    * */
+  @inline def background[A](
+    self: Future[A]
+  )(implicit ec: ExecutionContext) : Unit = {
     self onFailure { case throwable => ec.reportFailure(throwable) }
   }
 
-  /** @return a Future of a Try of the result that always completes successfully even if the Future eventually throws
-    *         an exception */
-  def toTry[A](self: Future[A])(implicit ec: ExecutionContext): Future[Try[A]] = {
+  /** @return a Future of a Try of the result that always completes
+    * successfully even if the Future eventually throws an exception
+    * */
+  def toTry[A](
+    self: Future[A]
+  )(implicit ec: ExecutionContext): Future[Try[A]] = {
     val p = Promise[Try[A]]()
     self onComplete { case result => p.success(result) }
     p.future
   }
 
-  /** @return a Future of X that always succeeds. If self is successful, X is derived from onSuccess otherwise
-    *         if self is a failure, X is derived from onFailure.
+  /** @return a Future of X that always succeeds. If self is successful, X
+    * is derived from onSuccess otherwise if self is a failure, X is derived
+    * from onFailure.
     * */
   def fold[A, X](
     self: Future[A],
@@ -97,8 +103,9 @@ trait FutureOps {
     p.future
   }
 
-  /** @return a Future of X that always succeeds. If self is successful, X is derived from onSuccess otherwise
-    *         if self is a failure, X is derived from onFailure.
+  /** @return a Future of X that always succeeds. If self is successful, X
+    * is derived from onSuccess otherwise if self is a failure, X is derived
+    * from onFailure.
     * */
   def flatFold[A, X](
     self: Future[A],
@@ -116,10 +123,12 @@ trait FutureOps {
   }
 
   /**
-   * @return the first successfully completed future. If all futures fail, then completes the future with
-   * ConcurrentThrowable of all failures.
+   * @return the first successfully completed future. If all futures fail,
+   * then completes the future with ConcurrentThrowable of all failures.
    */
-  def firstSuccess[A](xa: Traversable[Future[A]])(implicit ec:ExecutionContext) : Future[A] = {
+  def firstSuccess[A](
+    xa: Traversable[Future[A]]
+  )(implicit ec:ExecutionContext) : Future[A] = {
     val promise = Promise[A]()
     // First success completes the promise
     xa.foreach { fa =>
@@ -128,14 +137,21 @@ trait FutureOps {
     // If all futures fail, then complete with ConcurrentThrowable
     mergeAllFailures(xa) onSuccess { case allFailure =>
       if(allFailure.nonEmpty) {
-        promise.tryFailure(ConcurrentThrowable(allFailure.head, Future.successful(allFailure.toVector)))
+        promise.tryFailure(
+          ConcurrentThrowable(
+            allFailure.head,
+            Future.successful(allFailure.toVector)
+          )
+        )
       }
     }
     promise.future
   }
 
-  /** @return after spinning the current thread for delay_ns, returns the error between the requested delay and the
-    *         actual delay. Use this function only when a precise delay is more important than overall performance. */
+  /** @return after spinning the current thread for delay_ns, returns the
+    * error between the requested delay and the actual delay. Use this function
+    * only when a precise delay is more important than overall performance.
+    * */
   def nanoSpinDelay(delay_ns: Long) : Long = {
     if(delay_ns > 0) {
       val startTime_ns = System.nanoTime()
@@ -150,14 +166,21 @@ trait FutureOps {
 
 
   /** @return a future of A that is guaranteed to happen before lhs */
-  def happensBefore[A](lhs: Future[Any], rhs: => Future[A])(implicit ec: ExecutionContext) : DeferredFuture[A] = {
+  def happensBefore[A](
+    lhs: Future[Any],
+    rhs: => Future[A]
+  )(implicit ec: ExecutionContext) : DeferredFuture[A] = {
     val promise = Promise[Future[A]]()
     lhs onComplete { case _ => promise.completeWith(Future.successful(rhs)) }
     DeferredFuture(promise.future)
   }
 
-  /** @return execute a side effect after a future completes (even if it fails) */
-  def sideEffect[A](lhs: Future[A], sideEffect: => Unit)(implicit ec:ExecutionContext) : Future[A] = {
+  /** @return execute a side effect after a future completes (even if it fails)
+    * */
+  def sideEffect[A](
+    lhs: Future[A],
+    sideEffect: => Unit
+  )(implicit ec:ExecutionContext) : Future[A] = {
     val promise = Promise[A]()
     lhs onComplete { case v =>
       sideEffect

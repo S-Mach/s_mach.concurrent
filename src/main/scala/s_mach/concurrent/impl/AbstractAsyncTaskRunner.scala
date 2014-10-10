@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent.impl
 
+import s_mach.concurrent.config.AsyncConfig
+
 trait AbstractAsyncTaskRunner extends DelegatingTaskRunner {
   val asyncConfig: AsyncConfig
   import asyncConfig._

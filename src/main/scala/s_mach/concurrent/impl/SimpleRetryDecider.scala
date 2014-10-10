@@ -18,12 +18,22 @@
 */
 package s_mach.concurrent.impl
 
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
+import s_mach.concurrent.util.RetryDecider
 
-/**
- * A base trait for a builder that wraps concurrent functions with pre or post execution side effects
- * */
-trait ConcurrentFunctionBuilder {
-  def build2[A,B](f: A => Future[B]) : A => Future[B] = f
-  def build3[A,B,C](f: (A,B) => Future[C]) : (A,B) => Future[C] = f
+case class SimpleRetryDecider(
+  f: List[Throwable] => Future[Boolean]
+)(implicit ec:ExecutionContext) extends RetryDecider {
+  val failures = new java.util.concurrent.ConcurrentHashMap[Long, List[Throwable]]
+  override def shouldRetry(
+    taskStepId: Long,
+    failure: Throwable
+  ): Future[Boolean] = {
+    // Note: this test/execute is not atomic but this is ok since access to a
+    // particular step will always be synchronous
+    val newFailList = failure :: Option(failures.get(taskStepId)).getOrElse(Nil)
+    failures.put(taskStepId, newFailList)
+    f(newFailList)
+  }
 }
+

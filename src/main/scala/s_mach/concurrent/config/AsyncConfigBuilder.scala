@@ -16,7 +16,7 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.impl
+package s_mach.concurrent.config
 
 case class AsyncConfigBuilder(
   workerCount: Int = 1,

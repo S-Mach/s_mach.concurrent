@@ -24,35 +24,50 @@ import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent.impl.SemaphoreImpl
 
 /**
- * A trait for a non-blocking semaphore that ensures limiting concurrent execution to tasks that have been granted
- * the requested number of permits from a limited pool of permits. The acquire method is used to request the execution
- * of a task once the requested number of permits become available. If the permits are not immediately available, the
- * request is placed into a FIFO queue while waiting for permits to become available. The permit pool size is typically
- * static with permits released back to the pool upon completion of tasks. However, some implementations may have
- * dynamic sized pools that expend permits instead of releasing them, replenishing permits through some other mechanism.
+ * A trait for a non-blocking semaphore that ensures limiting concurrent
+ * execution to tasks that have been granted the requested number of permits
+ * from a limited pool of permits. The acquire method is used to request the
+ * execution of a task once the requested number of permits become available. If
+ * the permits are not immediately available, the request is placed into a FIFO
+ * queue while waiting for permits to become available. The permit pool size is
+ * typically static with permits released back to the pool upon completion of
+ * tasks. However, some implementations may have dynamic sized pools that expend
+ * permits instead of releasing them, replenishing permits through some other
+ * mechanism.
  *
- * Note1: Because Semaphore accepts a function to the task to run, it is not possible for callers to double lock, double 
- * release or forget to release permits.
+ * Note1: Because Semaphore accepts a function to the task to run, it is not
+ * possible for callers to double lock, double  release or forget to release
+ * permits.
  * Note2: Semaphore is NOT reentrant
- * Note3: Semaphore should never be used when other options make more sense. Semaphore is designed for synchronizing
- * many tasks (100+) and/or long running tasks (10ms+). Unlike other options, Semaphore does not block and consume a
- * thread while waiting for permits to become available. However, Semaphore is not the most performant option.
+ * Note3: Semaphore should never be used when other options make more sense.
+ * Semaphore is designed for synchronizing many tasks (100+) and/or long running
+ * tasks (10ms+). Unlike other options, Semaphore does not block and consume a
+ * thread while waiting for permits to become available. However, Semaphore is
+ * not the most performant option.
  */
 trait Semaphore {
   /**
    * @param task the task to run once permits are available
-   * @throws IllegalArgumentException if the number of requested permits exceeds maxAvailablePermits
-   * @return a future that completes once permitCount permits are available AND task completes. task is started once
-   *         permitCount permits are available. The permits are removed from the pool while task is running and after
-   *         task completes the permits are returned to the pool.
+   * @throws IllegalArgumentException if the number of requested permits exceeds
+   *                                  maxAvailablePermits
+   * @return a future that completes once permitCount permits are available AND
+   *         task completes. task is started once permitCount permits are
+   *         available. The permits are removed from the pool while task is
+   *         running and after task completes the permits are returned to the
+   *         pool.
    * */
-  def acquire[X](permitCount: Long)(task: => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
+  def acquire[X](
+    permitCount: Long
+  )(
+    task: => Future[X]
+  )(implicit ec:ExecutionContext) : DeferredFuture[X]
 
   /** @return the maximum number of permits in the pool */
   def maxAvailablePermits : Long
   /** @return the current number of permits available  */
   def availablePermits : Long
-  /** @return the count of callers currently waiting on permits to become available */
+  /** @return the count of callers currently waiting on permits to become
+    *         available */
   def waitQueueLength: Long
 }
 

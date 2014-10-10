@@ -18,32 +18,37 @@
 */
 package s_mach.concurrent.util
 
-import java.util.concurrent.ExecutorService
 import scala.concurrent.ExecutionContext
 import s_mach.concurrent.impl.ConcurrentTestContextImpl
 import s_mach.concurrent.ScheduledExecutionContext
 
 /**
  * A context for testing concurrent code that provides:
- * 1) an ExecutionContext that keeps track of the number of active and completed Runnables
+ * 1) an ExecutionContext that keeps track of the number of active and completed
+ * Runnables
  * 2) a Timer for tracking elapsed duration since start of test
  * 3) a SerializationSchedule for detecting order of execution of events
  * 4) a precision delay function that accumulates any delay error
  */
-trait ConcurrentTestContext extends ExecutionContext with ScheduledExecutionContext {
-  /** @return the current number of active Runnables and scheduled tasks being processed */
+trait ConcurrentTestContext extends
+  ExecutionContext with
+  ScheduledExecutionContext {
+  /** @return the current number of active Runnables and scheduled tasks being
+    *         processed */
   def activeExecutionCount: Int
 
   /** @return the SerializationSchedule for the context */
   implicit def sched: SerializationSchedule[String]
 
-  /** precisely delay for a period of time in nanoseconds. If the elapsed time differs from the requested the delay,
-    * the error in delay is accumulated in delayError_ns */
+  /** precisely delay for a period of time in nanoseconds. If the elapsed time
+    * differs from the requested the delay, the error in delay is accumulated in
+    * delayError_ns */
   def delay(delay_ns: Long) : Unit
   /** @return the accumulated delay error */
   def delayError_ns : Long
 
-  /** Sleep until the active execution count is equal to or less than the specified value */
+  /** Sleep until the active execution count is equal to or less than the
+    * specified value */
   def waitForActiveExecutionCount(_activeRunnableCount: Int) {
     while(this.activeExecutionCount > _activeRunnableCount) {
       Thread.sleep(1)

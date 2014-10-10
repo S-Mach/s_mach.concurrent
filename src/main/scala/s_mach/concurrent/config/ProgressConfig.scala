@@ -16,23 +16,40 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent.config
 
-import s_mach.concurrent.impl.SimpleProgressReporterImpl
+import s_mach.concurrent.util.TaskEventListener
+
+import scala.concurrent.ExecutionContext
 
 /**
- * A trait for a simple progress reporter that accumulates total progress from
- * completed reports and makes a report for each completed report
+ * A trait for a concurrent function builder that can add progress reporting to
+ * a concurrent function
  */
-trait SimpleProgressReporter extends TaskEventListener
+trait OptProgressConfig {
+  def optTotal: Option[Int]
 
-object SimpleProgressReporter {
+  def optProgress: Option[ProgressConfig]
+}
+
+trait ProgressConfig {
+  implicit def executionContext: ExecutionContext
+  def reporter: TaskEventListener
+}
+
+object ProgressConfig {
+  case class ProgressConfigImpl(
+    optTotal: Option[Int],
+    reporter: TaskEventListener
+  )(implicit
+    val executionContext: ExecutionContext
+  ) extends ProgressConfig
+
   def apply(
     optTotal: Option[Int],
-    report: Progress => Unit
-  ) : SimpleProgressReporter = new SimpleProgressReporterImpl(
-    optTotal = optTotal,
-    report = report
-  )
+    reporter: TaskEventListener
+  )(implicit
+    executionContext: ExecutionContext
+  ) : ProgressConfig = ProgressConfigImpl(optTotal, reporter)
 }
 

@@ -18,19 +18,22 @@
 */
 package s_mach.concurrent.impl
 
-import s_mach.concurrent._
+import s_mach.concurrent.config.ProgressConfig
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
+import s_mach.concurrent.util.TaskEventListener
 
-/**
- * A trait for configuring pre and post loop side effects
- */
-trait LoopHook {
-  def onLoopStart() : Unit = { }
-  def onLoopEnd() : Unit = { }
+case class ProgressState(
+  reporter: TaskEventListener
+)(implicit
+  executionContext: ExecutionContext
+) extends TaskEventListenerHook {
+  override def onStartTask() = reporter.onStartTask()
+  override def onCompleteTask() = reporter.onCompleteTask()
+  override def onStartStep(stepId: Int) = reporter.onStartStep(stepId)
+  override def onCompleteStep(stepId: Int) = reporter.onCompleteStep(stepId)
+}
 
-  final def runLoop[A](f: => Future[A])(implicit ec:ExecutionContext) : Future[A] = {
-    onLoopStart()
-    f sideEffect { onLoopEnd() }
-  }
+object ProgressState {
+  def apply(cfg: ProgressConfig) : ProgressState = ProgressState(cfg.reporter)(cfg.executionContext)
 }

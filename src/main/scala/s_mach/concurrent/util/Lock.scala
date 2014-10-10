@@ -18,28 +18,34 @@
 */
 package s_mach.concurrent.util
 
-import s_mach.concurrent.DeferredFuture
-
 import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent.impl.LockImpl
+import s_mach.concurrent.DeferredFuture
 
 /**
- * A trait for a non-blocking lock that ensures a synchronous execution schedule for all callers. A caller calls the
- * lock method to execute a task synchronously once the lock is available. Simultaneous tasks are placed in a FIFO queue 
- * while awaiting execution.
+ * A trait for a non-blocking lock that ensures a synchronous execution
+ * schedule for all callers. A caller calls the lock method to execute a task
+ * synchronously once the lock is available. Simultaneous tasks are placed in a
+ * FIFO queue  while awaiting execution.
  *
- * Note1: Because Lock accepts a function to the task to run, it is not possible for callers to double lock, double 
- * release or forget to release the lock.
+ * Note1: Because Lock accepts a function to the task to run, it is not
+ * possible for callers to double lock, double  release or forget to release the
+ * lock.
  * Note2: Lock is NOT reentrant
- * Note3: Lock should never be used when other locking options make more sense. Lock is designed for synchronizing many
- * tasks (100+) and/or long running tasks (10ms+). Unlike other locking options, Lock does not block and consume
- * a thread while waiting for the lock to become available. However, Lock is not the most performant option.
+ * Note3: Lock should never be used when other locking options make more
+ * sense. Lock is designed for synchronizing many tasks (100+) and/or long
+ * running tasks (10ms+). Unlike other locking options, Lock does not block and
+ * consume a thread while waiting for the lock to become available. However,
+ * Lock is not the most performant option.
  */
 trait Lock {
-  /** @return a future that completes once the lock is available AND task completes. The lock is locked while task is
-    *         running and after task completes it is unlocked.
+  /** @return a future that completes once the lock is available AND task
+    *         completes. The lock is locked while task is running and after task
+    *         completes it is unlocked.
    */
-  def lock[X](task: => Future[X])(implicit ec:ExecutionContext) : DeferredFuture[X]
+  def lock[X](
+    task: => Future[X]
+  )(implicit ec:ExecutionContext) : DeferredFuture[X]
 
   /** @return TRUE if the lock is available */
   def isUnlocked : Boolean

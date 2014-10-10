@@ -47,6 +47,8 @@ class LatchImpl(val failMessage: String) extends Latch {
       promiseA.future
     }
   }
-  override def happensBefore[A](next: => Future[A])(implicit ec:ExecutionContext) = future happensBefore next
+  override def happensBefore[A](
+    next: => Future[A]
+  )(implicit ec:ExecutionContext) = future happensBefore next
 
 }

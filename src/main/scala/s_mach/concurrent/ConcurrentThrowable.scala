@@ -21,8 +21,9 @@ package s_mach.concurrent
 import scala.concurrent.Future
 
 /**
- * A trait for capturing all Throwables thrown during a concurrent operation. The first Throwable is immediately
- * available and all others can be retrieved by waiting on a future of all Throwables.
+ * A trait for capturing all Throwables thrown during a concurrent operation.
+ * The first Throwable is immediately available and all others can be retrieved
+ * by waiting on a future of all Throwables.
  */
 trait ConcurrentThrowable extends Throwable {
   /** @return the first failure thrown during concurrent processing */
@@ -43,10 +44,13 @@ object ConcurrentThrowable {
       override def allFailure = _allFailure
       
       override def getMessage: String = firstFailure.getMessage
-      override def getLocalizedMessage: String = firstFailure.getLocalizedMessage
+      override def getLocalizedMessage: String =
+        firstFailure.getLocalizedMessage
       override def getCause: Throwable = firstFailure
-      override def initCause(cause: Throwable): Throwable = throw new UnsupportedOperationException
-      override def toString: String = s"ConcurrentThrowable(${firstFailure.toString})"
+      override def initCause(cause: Throwable): Throwable =
+        throw new UnsupportedOperationException
+      override def toString: String =
+        s"ConcurrentThrowable(${firstFailure.toString})"
     }
   }
 }

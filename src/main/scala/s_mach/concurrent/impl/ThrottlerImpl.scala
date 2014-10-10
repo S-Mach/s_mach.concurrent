@@ -30,7 +30,8 @@ class ThrottlerImpl(
   scheduledExecutionContext: ScheduledExecutionContext
 ) extends Throttler {
 
-  private[this] val _throttle_ns = new java.util.concurrent.atomic.AtomicLong(__throttle_ns)
+  private[this] val _throttle_ns =
+    new java.util.concurrent.atomic.AtomicLong(__throttle_ns)
 
   override def throttle_ns = _throttle_ns.get
 

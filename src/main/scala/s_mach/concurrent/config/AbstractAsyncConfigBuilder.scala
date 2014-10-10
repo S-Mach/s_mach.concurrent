@@ -16,12 +16,13 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.impl
+package s_mach.concurrent.config
 
-import scala.language.higherKinds
 import s_mach.concurrent.ScheduledExecutionContext
-import s_mach.concurrent.util.TaskEventListener
+import s_mach.concurrent.util._
+
 import scala.concurrent.ExecutionContext
+import scala.language.higherKinds
 
 trait AbstractAsyncConfigBuilder[MDT <: AbstractAsyncConfigBuilder[MDT]] extends
   ProgressConfigBuilder[MDT] with

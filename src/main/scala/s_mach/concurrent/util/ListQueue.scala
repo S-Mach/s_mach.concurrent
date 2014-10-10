@@ -21,7 +21,8 @@ package s_mach.concurrent.util
 import s_mach.concurrent.impl.ListQueueImpl
 
 /**
- * A trait for queue that uses an unlimited size linked list as the backend for the queue.
+ * A trait for queue that uses an unlimited size linked list as the backend
+ * for the queue.
  */
 trait ListQueue[A] extends Queue[A]
 

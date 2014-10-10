@@ -29,8 +29,10 @@ import s_mach.concurrent.util._
 object WorkersOps {
 
   /**
-   * Transform Futures concurrently, limiting concurrency to at most WorkerConfig.workerCount workers
-   * @return a Future of M[B] that completes once all Futures have been transformed
+   * Transform Futures concurrently, limiting concurrency to at most
+   * WorkerConfig.workerCount workers
+   * @return a Future of M[B] that completes once all Futures have been
+   *         transformed
    */
   def mapWorkers[A,B,M[+AA] <: TraversableOnce[AA]](workerCount: Int)(
     self: M[A],
@@ -51,8 +53,10 @@ object WorkersOps {
   }
 
   /**
-   * Transform and flatten Futures concurrently, limiting concurrency to at most WorkerConfig.workerCount workers
-   * @return a Future of M[B] that completes once all Futures have been transformed
+   * Transform and flatten Futures concurrently, limiting concurrency to at
+   * most WorkerConfig.workerCount workers
+   * @return a Future of M[B] that completes once all Futures have been
+   *         transformed
    */
   def flatMapWorkers[A,B,M[+AA] <: TraversableOnce[AA]](workerCount: Int)(
     self: M[A],
@@ -74,8 +78,10 @@ object WorkersOps {
   }
 
   /**
-   * Traverse Futures concurrently, limiting concurrency to at most WorkerConfig.workerCount workers
-   * @return a Future of M[B] that completes once all Futures have been transformed
+   * Traverse Futures concurrently, limiting concurrency to at most
+   * WorkerConfig.workerCount workers
+   * @return a Future of M[B] that completes once all Futures have been
+   *         transformed
    */
   def foreachWorkers[A,U,M[+AA] <: TraversableOnce[AA]](workerCount: Int)(
     self: M[A],
@@ -87,10 +93,12 @@ object WorkersOps {
   }
 
   /**
-   * Using the collection members xa, concurrently execute a processing function f, outputting the result of f to the
-   * function g. Concurrency is limited to the number of workers specified in WorkersConfig. Any exception that occurs
-   * during a worker's processing will cause a ConcurrentThrowable to be immediately returned. Any other exceptions from
-   * workers that have yet to complete can be retrieved from ConcurrentThrowable.
+   * Using the collection members xa, concurrently execute a processing
+   * function f, outputting the result of f to the function g. Concurrency is
+   * limited to the number of workers specified in WorkersConfig. Any exception
+   * that occurs during a worker's processing will cause a ConcurrentThrowable
+   * to be immediately returned. Any other exceptions from workers that have yet
+   * to complete can be retrieved from ConcurrentThrowable.
    *
    * @param xa the collection
    * @param f the processing function
@@ -125,8 +133,10 @@ object WorkersOps {
             s.acquire(1) {
               // Run worker in the background
               f(a).toTry
-                // Worker returns Future[Try[]] to ensure that exceptions from f are not carried in the future but in
-                // the result. There should be no exceptions in Future here (unless there is a bug here in WorkerOps)
+                // Worker returns Future[Try[]] to ensure that exceptions from
+                // f are not carried in the future but in the result. There
+                // should be no exceptions in Future here (unless there is a bug
+                // here in WorkerOps)
                 .flatMap {
                   // Worker completed successfully
                   case Success(b) =>
@@ -135,23 +145,27 @@ object WorkersOps {
                   case Failure(t) =>
                     // Worker failed - start process of early exit
                     workerFailures.offer(t)
-                    // Still need to ensure sequence can progress to allow later workers to finish
+                    // Still need to ensure sequence can progress to allow later
+                    // workers to finish
                     o.when(i)(Future.unit)
                 }
             }.deferred.map { inner =>
-              // Throwaway result of worker but make sure to at least report exceptions to ExecutionContext
+              // Throwaway result of worker but make sure to at least report
+              // exceptions to ExecutionContext
               inner.background
               i + 1
             }
           } else {
-            // Detected a failure. Wait for workers to complete then end loop early with failures
+            // Detected a failure. Wait for workers to complete then end loop
+            // early with failures
             s.acquire(workerCount) { mkWorkerFailureException() }
           }
         }
       }
       // Wait for completion
       _ <- s.acquire(workerCount)(Future.unit)
-      // If an exception occurs during the last worker it won't be detected during the main loop
+      // If an exception occurs during the last worker it won't be detected
+      // during the main loop
       _ <- if(workerFailures.offerQueueSize == 0) {
         Future.unit
       } else {

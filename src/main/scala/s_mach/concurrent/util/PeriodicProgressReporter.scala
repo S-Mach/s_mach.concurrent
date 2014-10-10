@@ -19,14 +19,15 @@
 package s_mach.concurrent.util
 
 
-import s_mach.concurrent.impl.PeriodicProgressReporterImpl
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 import s_mach.concurrent.ScheduledExecutionContext
+import s_mach.concurrent.impl.PeriodicProgressReporterImpl
 
 /**
- * A trait for a progress reporter that reports progress only at the specified report interval
+ * A trait for a progress reporter that reports progress only at the specified
+ * report interval
  */
 trait PeriodicProgressReporter extends TaskEventListener {
   def reportInterval: Duration

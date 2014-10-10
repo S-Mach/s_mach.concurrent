@@ -16,18 +16,31 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
+package s_mach.concurrent.config
 
-/**
- * A case class to report progress in a computation
- * @param completed the count of iterations completed so far
- * @param optTotal Some(total iterations in computation) or None if the
- *                 computation has an unknown size
- * @param startTime_ns the time in nanoseconds returned by System.nanoTime when
- *                     the computation was started
- */
-case class Progress(
-  completed: Int,
-  optTotal: Option[Int],
-  startTime_ns: Long
-)
+import s_mach.concurrent.util.RetryDecider
+
+import scala.concurrent.ExecutionContext
+
+trait OptRetryConfig {
+  def optRetry: Option[RetryConfig]
+}
+trait RetryConfig {
+  implicit def executionContext: ExecutionContext
+
+  def retryer: RetryDecider
+}
+
+object RetryConfig {
+  case class RetryConfigImpl(
+    retryer: RetryDecider
+  )(implicit
+    val executionContext: ExecutionContext
+  ) extends RetryConfig
+
+  def apply(
+    retryer: RetryDecider
+  )(implicit
+    executionContext: ExecutionContext
+  ) : RetryConfig = RetryConfigImpl(retryer)
+}

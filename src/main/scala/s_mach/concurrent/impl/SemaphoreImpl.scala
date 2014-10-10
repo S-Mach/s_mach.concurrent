@@ -25,8 +25,9 @@ import scala.concurrent.{Promise, ExecutionContext, Future}
 import s_mach.concurrent._
 
 /**
- * The default implementation of Semaphore using a ListBuffer backend. maxAvailablePermits is not defined and a hook
- * for making new permits available is provided.
+ * The default implementation of Semaphore using a ListBuffer backend.
+ * maxAvailablePermits is not defined and a hook for making new permits
+ * available is provided.
  */
 abstract class SemaphoreImpl(
   initialOffering: Long
@@ -37,19 +38,27 @@ abstract class SemaphoreImpl(
 
   override def waitQueueLength = lock.synchronized { polling.size }
   override def availablePermits = lock.synchronized { offering }
-  protected def availablePermits(_availablePermits: Long) = lock.synchronized { offering = _availablePermits }
+  protected def availablePermits(_availablePermits: Long) = lock.synchronized {
+    offering = _availablePermits
+  }
 
-  protected def run[X](task: => Future[X], permitCount: Long)(implicit ec: ExecutionContext) : Future[X] = {
+  protected def run[X](
+    task: => Future[X],
+    permitCount: Long
+  )(implicit ec: ExecutionContext) : Future[X] = {
     val retv = task
     retv onComplete { case _ => replenish(permitCount) }
     retv
   }
 
-  protected def replenish(permitCount: Long)(implicit ec:ExecutionContext) : Unit = {
-    // Note: locking here isn't the fastest however not much is done here - tho I'm sure a better concurrent impl
-    // exists
+  protected def replenish(
+    permitCount: Long
+  )(implicit ec:ExecutionContext) : Unit = {
+    // Note: locking here isn't the fastest however not much is done here - tho
+    // I'm sure a better concurrent impl exists
     lock.synchronized {
-      // Steal offering to local to avoid conflicts b/c locks are released between loops here
+      // Steal offering to local to avoid conflicts b/c locks are released
+      // between loops here
       val localOffering = permitCount + offering
       offering =
         if(polling.nonEmpty && localOffering >= polling.head._2) {
@@ -74,8 +83,8 @@ abstract class SemaphoreImpl(
   )(implicit ec:ExecutionContext): DeferredFuture[X] = {
     require(permitCount <= maxAvailablePermits)
 
-    // Note: locking here isn't the fastest however not much is done here - tho I'm sure a better concurrent impl
-    // exists
+    // Note: locking here isn't the fastest however not much is done here - tho
+    // I'm sure a better concurrent impl exists
     lock.synchronized {
       if(offering >= permitCount) {
         offering -= permitCount
