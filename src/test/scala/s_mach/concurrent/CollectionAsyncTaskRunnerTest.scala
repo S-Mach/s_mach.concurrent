@@ -26,9 +26,9 @@ import util._
 import TestBuilder._
 import s_mach.concurrent.config.AsyncConfig
 
-class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestCommon {
+class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
-  "AsyncConfigBuilder-t0" must "build and copy config correctly" in {
+  "TraversableOnceAsyncConfigBuilder-t0" must "build and copy config correctly" in {
     implicit val ctc = mkConcurrentTestContext()
 
     val items = mkItems
@@ -86,7 +86,7 @@ class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestC
     config3 should equal(config2)
   }
 
-  "AsyncConfigBuilder.map-t1" must "execute each future one at a time" in {
+  "TraversableOnceAsyncConfigBuilder.map-t1" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -104,7 +104,7 @@ class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestC
     }
   }
 
-  "AsyncConfigBuilder.flatMap-t2" must "execute each future one at a time" in {
+  "TraversableOnceAsyncConfigBuilder.flatMap-t2" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -123,7 +123,7 @@ class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestC
   }
 
 
-  "AsyncConfigBuilder.foreach-t3" must "execute each future one at a time" in {
+  "TraversableOnceAsyncConfigBuilder.foreach-t3" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -145,7 +145,7 @@ class AsyncConfigBuilderTest extends FlatSpec with Matchers with ConcurrentTestC
     }
   }
 
-  "AsyncConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+  "TraversableOnceAsyncConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
     val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()

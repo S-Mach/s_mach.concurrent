@@ -24,9 +24,9 @@ import scala.util.{Success, Failure}
 import org.scalatest.{FlatSpec, Matchers}
 import util._
 
-class AsyncTupleTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
+class TupleAsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
-  "concurrently-t0" must "wait on all Futures to complete concurrently" in {
+  "TupleAsyncTaskRunner-t0" must "wait on all Futures to complete concurrently" in {
     val results =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -54,7 +54,7 @@ class AsyncTupleTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTes
     concurrentPercent should be >= MIN_CONCURRENCY_PERCENT
   }
 
-  "concurrently-t1" must "complete immediately after any Future fails" in {
+  "TupleAsyncTaskRunner-t1" must "complete immediately after any Future fails" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -92,7 +92,7 @@ class AsyncTupleTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTes
     }
   }
 
-  "concurrently-vs-sequence-t2" must "not complete immediately after any Future fails and must throw only the first exception" in {
+  "TupleAsyncTaskRunner-vs-sequence-t2" must "not complete immediately after any Future fails and must throw only the first exception" in {
     test repeat TEST_COUNT run {
      implicit val ctc = mkConcurrentTestContext()
      import ctc._
@@ -142,7 +142,7 @@ class AsyncTupleTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTes
   }
 
 
-  "concurrently-t2" must "throw ConcurrentThrowable which can wait for all failures" in {
+  "TupleAsyncTaskRunner-t2" must "throw ConcurrentThrowable which can wait for all failures" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._

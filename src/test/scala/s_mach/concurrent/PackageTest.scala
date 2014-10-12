@@ -72,9 +72,9 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     Future.failed(ex).flatten.getTry should equal(Failure(ex))
 
     val items = Vector(1,2,3)
-    items.async should equal(TraverseableOnceAsyncConfigBuilder(items))
-    items.async.par should equal(ParTraverseableOnceAsyncConfigBuilder(items))
-    items.async.par(1) should equal(ParTraverseableOnceAsyncConfigBuilder(items,1))
+    items.async should equal(CollectionAsyncTaskRunner(items))
+    items.async.par should equal(ParCollectionAsyncTaskRunner(items))
+    items.async.par(1) should equal(ParCollectionAsyncTaskRunner(items,1))
   }
 
   "Future.sideEffect" must "execute the side effect after the future completes" in {

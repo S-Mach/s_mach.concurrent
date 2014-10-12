@@ -25,10 +25,10 @@ import scala.language.higherKinds
 import scala.collection.generic.CanBuildFrom
 import scala.concurrent.{ExecutionContext, Future}
 
-trait AbstractTraverseableOnceAsyncConfigBuilder[
+trait AbstractCollectionAsyncTaskRunner[
   A,
   M[+AA] <: TraversableOnce[AA],
-  MDT <: AbstractTraverseableOnceAsyncConfigBuilder[A,M,MDT]
+  MDT <: AbstractCollectionAsyncTaskRunner[A,M,MDT]
 ] extends AbstractAsyncConfigBuilder[MDT] {
   def enumerator: M[A]
 
@@ -39,15 +39,15 @@ trait AbstractTraverseableOnceAsyncConfigBuilder[
   }
 }
 
-case class TraverseableOnceAsyncConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
+case class CollectionAsyncTaskRunner[A,M[+AA] <: TraversableOnce[AA]](
   enumerator: M[A],
   optProgress: Option[ProgressConfig] = None,
   optRetry: Option[RetryConfig] = None,
   optThrottle: Option[ThrottleConfig] = None
-) extends AbstractTraverseableOnceAsyncConfigBuilder[
+) extends AbstractCollectionAsyncTaskRunner[
     A,
     M,
-    TraverseableOnceAsyncConfigBuilder[A,M]
+    CollectionAsyncTaskRunner[A,M]
   ] {
 
   val workerCount = 1
@@ -63,7 +63,7 @@ case class TraverseableOnceAsyncConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   )
 
   /** @return a copy of this config for a parallel workflow */
-  def par = ParTraverseableOnceAsyncConfigBuilder[A,M](
+  def par = ParCollectionAsyncTaskRunner[A,M](
     enumerator = enumerator,
     workerCount = AsyncConfig.DEFAULT_PAR_WORKER_COUNT,
     optProgress = optProgress,
@@ -72,7 +72,7 @@ case class TraverseableOnceAsyncConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   )
 
   /** @return a copy of this config for a parallel workflow */
-  def par(workerCount: Int) = ParTraverseableOnceAsyncConfigBuilder[A,M](
+  def par(workerCount: Int) = ParCollectionAsyncTaskRunner[A,M](
     enumerator = enumerator,
     workerCount = workerCount,
     optProgress = optProgress,
@@ -114,7 +114,7 @@ case class TraverseableOnceAsyncConfigBuilder[A,M[+AA] <: TraversableOnce[AA]](
   }
 }
 
-case class ParTraverseableOnceAsyncConfigBuilder[
+case class ParCollectionAsyncTaskRunner[
   A,
   M[+AA] <: TraversableOnce[AA]
 ](
@@ -123,10 +123,10 @@ case class ParTraverseableOnceAsyncConfigBuilder[
   optProgress: Option[ProgressConfig] = None,
   optRetry: Option[RetryConfig] = None,
   optThrottle: Option[ThrottleConfig] = None
-) extends AbstractTraverseableOnceAsyncConfigBuilder[
+) extends AbstractCollectionAsyncTaskRunner[
     A,
     M,
-    ParTraverseableOnceAsyncConfigBuilder[A,M]
+    ParCollectionAsyncTaskRunner[A,M]
   ] {
 
   def using(

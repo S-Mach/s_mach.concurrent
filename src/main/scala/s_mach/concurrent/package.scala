@@ -142,7 +142,7 @@ package object concurrent {
     M[+AA] <: TraversableOnce[AA]
   ](val self: M[A]) extends AnyVal {
     def async(implicit ec:ExecutionContext) =
-      TraverseableOnceAsyncConfigBuilder(self)
+      CollectionAsyncTaskRunner(self)
   }
 
   val async = AsyncConfigBuilder()
