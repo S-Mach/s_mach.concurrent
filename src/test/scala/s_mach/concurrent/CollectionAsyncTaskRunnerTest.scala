@@ -232,5 +232,74 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
 //    avgPeriod_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.1)
   }
 
+  "TraversableOnceAsyncConfigBuilder.modifiers-foldLeft-t6" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+    val allPeriod_ns =
+      test repeat TEST_COUNT run {
+        implicit val ctc = mkConcurrentTestContext()
+        import ctc._
+
+        var even = true
+
+        val items = Vector(1,2,3)//mkItems
+        val result =
+          items
+            .async
+            .throttle(DELAY)
+            .retry {
+              case List(r:RuntimeException) =>
+                sched.addEvent(s"retry-${r.getMessage}")
+                true.future
+              case _ => false.future
+            }
+            .progress { progress =>
+              sched.addEvent(s"progress-${progress.completed}")
+            }
+            .foldLeft(0) { (acc,i) =>
+              sched.addEvent(s"map-$i-$even")
+              Future {
+                if(even) {
+                  even = false
+                  throw new RuntimeException(i.toString)
+                } else {
+                  even = true
+                  acc + i
+                }
+              }
+            }
+
+        result.get
+        // TODO: this doesn't work properly below 1 ms throttle?
+  //      waitForActiveExecutionCount(0)
+
+        sched.orderedEvents.map(_.id) should equal(
+          Vector("progress-0") ++
+          items.zipWithIndex.flatMap { case (item,idx) =>
+            Vector(
+              s"map-$item-true",
+              s"retry-$item",
+              s"map-$item-false",
+              s"progress-${idx+1}"
+            )
+          }
+        )
+
+        val eventMap = sched.eventMap
+        items.inits.zipWithIndex flatMap { case(item, idx) =>
+          val e1 = eventMap(s"map-$item-true")
+          val e2 = eventMap(s"map-$item-false")
+          val e3 = eventMap(s"map-${items(idx+1)}-true")
+          Vector(
+            e2.elapsed_ns - e1.elapsed_ns,
+            e3.elapsed_ns - e2.elapsed_ns
+          )
+        }
+      }
+
+    // TODO: uncomment once precision thottler is available
+//    val filteredPeriod_ns = filterOutliersBy(allPeriod_ns.flatten.map(_.toDouble),{ v:Double => v})
+//    val avgPeriod_ns = filteredPeriod_ns.sum / filteredPeriod_ns.size
+//    avgPeriod_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.1)
+  }
+
 }
 
