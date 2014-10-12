@@ -41,23 +41,30 @@ class CollectionAsyncParTaskRunnerTest extends FlatSpec with Matchers with Concu
       override def onCompleteTask(): Unit = ???
     }
 
-    val retryFn = { _:List[Throwable] => false.future }
+    val retryer = new RetryDecider {
+      override def shouldRetry(stepId: Long, failure: Throwable): Future[Boolean] = ???
+    }
 
     val config1Builder =
       items
         .async
         .par(3)
         .throttle(DELAY)
-        .retry(retryFn)
+        .retryDecider(retryer)
         .progress(progressReporter)
 
 
     config1Builder.enumerator should equal(items)
     config1Builder.optTotal should equal(Some(items.size))
     config1Builder.workerCount should equal(3)
-    config1Builder.optThrottle should equal(Some(ThrottleConfig(DELAY_NS)(ctc)))
-    config1Builder.optRetry should equal(Some(retryFn))
-    config1Builder.optProgress should equal(Some(progressReporter))
+    config1Builder.optThrottle.get.throttle_ns should equal(DELAY.toNanos)
+    config1Builder.optThrottle.get.scheduledExecutionContext should equal(ctc)
+    config1Builder.optRetry.nonEmpty should equal(true)
+    config1Builder.optRetry.get.retryer should equal(retryer)
+    config1Builder.optRetry.get.executionContext should equal(ctc)
+    config1Builder.optProgress.nonEmpty should equal(true)
+    config1Builder.optProgress.get.reporter should equal(progressReporter)
+    config1Builder.optProgress.get.executionContext should equal(ctc)
 
     val config2Builder =
       items
@@ -68,7 +75,7 @@ class CollectionAsyncParTaskRunnerTest extends FlatSpec with Matchers with Concu
     config2Builder.optTotal should equal(None)
 
     val config1 = config1Builder.build()
-    val config2 = items.async.par.using(config1).build()
+    val config2 = items.async.par(3).using(config1).build()
 
     config1 should equal(config2)
 
