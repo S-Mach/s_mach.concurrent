@@ -39,7 +39,7 @@ trait ConcurrentTestCommon extends Matchers {
   // Note: these tests will fail unless there is at least two cores
   assert(Runtime.getRuntime.availableProcessors() > 1)
 
-  val TEST_COUNT = 10000
+  val TEST_COUNT = 10
 
   object DelayAccuracyTest extends Tag("s_mach.concurrent.DelayAccuracyTest")
 

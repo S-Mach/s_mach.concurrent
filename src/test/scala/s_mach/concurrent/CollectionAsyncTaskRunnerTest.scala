@@ -145,7 +145,25 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     }
   }
 
-  "TraversableOnceAsyncConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+  "TraversableOnceAsyncConfigBuilder.foldLeft-t4" must "execute each future one at a time" in {
+    test repeat TEST_COUNT run {
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
+
+      sched.addEvent("start")
+
+      val items = mkItems
+      val result = items.async.foldLeft(0)((acc,item) => success(item).map(_ + acc))
+
+      waitForActiveExecutionCount(0)
+      sched.addEvent("end")
+
+      result.getTry should equal(Success(items.sum))
+      isSerialSchedule(items, sched) should equal(true)
+    }
+  }
+
+  "TraversableOnceAsyncConfigBuilder.modifiers-t5" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
     val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
