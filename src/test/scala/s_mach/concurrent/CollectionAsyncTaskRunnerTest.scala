@@ -28,7 +28,7 @@ import s_mach.concurrent.config.AsyncConfig
 
 class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
-  "TraversableOnceAsyncConfigBuilder-t0" must "build and copy config correctly" in {
+  "CollectionAsyncTaskRunner-t0" must "build and copy config correctly" in {
     implicit val ctc = mkConcurrentTestContext()
 
     val items = mkItems
@@ -86,7 +86,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     config3 should equal(config2)
   }
 
-  "TraversableOnceAsyncConfigBuilder.map-t1" must "execute each future one at a time" in {
+  "CollectionAsyncTaskRunner.map-t1" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -104,7 +104,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     }
   }
 
-  "TraversableOnceAsyncConfigBuilder.flatMap-t2" must "execute each future one at a time" in {
+  "CollectionAsyncTaskRunner.flatMap-t2" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -123,7 +123,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
   }
 
 
-  "TraversableOnceAsyncConfigBuilder.foreach-t3" must "execute each future one at a time" in {
+  "CollectionAsyncTaskRunner.foreach-t3" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -145,7 +145,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     }
   }
 
-  "TraversableOnceAsyncConfigBuilder.foldLeft-t4" must "execute each future one at a time" in {
+  "CollectionAsyncTaskRunner.foldLeft-t4" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -163,7 +163,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     }
   }
 
-  "TraversableOnceAsyncConfigBuilder.modifiers-t5" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+  "CollectionAsyncTaskRunner.modifiers-t5" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
     val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -232,7 +232,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
 //    avgPeriod_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.1)
   }
 
-  "TraversableOnceAsyncConfigBuilder.modifiers-foldLeft-t6" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+  "CollectionAsyncTaskRunner.modifiers-foldLeft-t6" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
     val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
