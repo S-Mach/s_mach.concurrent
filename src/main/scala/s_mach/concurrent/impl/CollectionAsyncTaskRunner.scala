@@ -63,7 +63,7 @@ case class CollectionAsyncTaskRunner[A,M[+AA] <: TraversableOnce[AA]](
   )
 
   /** @return a copy of this config for a parallel workflow */
-  def par = CollectionAsyncParTaskRunner[A,M](
+  def par = ParCollectionAsyncTaskRunner[A,M](
     enumerator = enumerator,
     workerCount = AsyncConfig.DEFAULT_PAR_WORKER_COUNT,
     optProgress = optProgress,
@@ -72,7 +72,7 @@ case class CollectionAsyncTaskRunner[A,M[+AA] <: TraversableOnce[AA]](
   )
 
   /** @return a copy of this config for a parallel workflow */
-  def par(workerCount: Int) = CollectionAsyncParTaskRunner[A,M](
+  def par(workerCount: Int) = ParCollectionAsyncTaskRunner[A,M](
     enumerator = enumerator,
     workerCount = workerCount,
     optProgress = optProgress,
@@ -114,7 +114,7 @@ case class CollectionAsyncTaskRunner[A,M[+AA] <: TraversableOnce[AA]](
   }
 }
 
-case class CollectionAsyncParTaskRunner[
+case class ParCollectionAsyncTaskRunner[
   A,
   M[+AA] <: TraversableOnce[AA]
 ](
@@ -126,7 +126,7 @@ case class CollectionAsyncParTaskRunner[
 ) extends AbstractCollectionAsyncTaskRunner[
     A,
     M,
-    CollectionAsyncParTaskRunner[A,M]
+    ParCollectionAsyncTaskRunner[A,M]
   ] {
 
   def using(

@@ -8,9 +8,8 @@ notifications:
     recipients:
     - lance.gatlin@s-mach.net
 script:
-# - sbt scoverage:test -J-Xmx3g
-# - sbt coveralls -J-Xmx3g
-- sbt test -J-Xmx4g
+- sbt scoverage:test -J-Xmx3g
+- sbt coveralls -J-Xmx3g
 env:
   global:
   - secure: C+EY+X0B5fFH25LWscULBniDcbcvXdTFBEsEzuWNhHXnref+At23tC71cO5TGFYfAKKudF8ah2QWmSw3SSvdggnOLKnAmHXdzJHgMUsGxeja2ivB4NtCSLc172LTGiHBLnYKWamWSfcuPoRJp1zfpy+S+vrLE4vGwXnUpqUF83M=

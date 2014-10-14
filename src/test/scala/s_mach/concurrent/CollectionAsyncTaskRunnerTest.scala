@@ -28,7 +28,7 @@ import s_mach.concurrent.config.AsyncConfig
 
 class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
-  "CollectionAsyncTaskRunner-t0" must "build and copy config correctly" in {
+  "TraversableOnceAsyncConfigBuilder-t0" must "build and copy config correctly" in {
     implicit val ctc = mkConcurrentTestContext()
 
     val items = mkItems
@@ -86,7 +86,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     config3 should equal(config2)
   }
 
-  "CollectionAsyncTaskRunner.map-t1" must "execute each future one at a time" in {
+  "TraversableOnceAsyncConfigBuilder.map-t1" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -104,7 +104,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     }
   }
 
-  "CollectionAsyncTaskRunner.flatMap-t2" must "execute each future one at a time" in {
+  "TraversableOnceAsyncConfigBuilder.flatMap-t2" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -123,7 +123,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
   }
 
 
-  "CollectionAsyncTaskRunner.foreach-t3" must "execute each future one at a time" in {
+  "TraversableOnceAsyncConfigBuilder.foreach-t3" must "execute each future one at a time" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -145,105 +145,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     }
   }
 
-  "CollectionAsyncTaskRunner.foldLeft-t4" must "execute each future one at a time" in {
-    test repeat TEST_COUNT run {
-      implicit val ctc = mkConcurrentTestContext()
-      import ctc._
-
-      sched.addEvent("start")
-
-      val items = mkItems
-      val result = items.async.foldLeft(0)((acc,item) => success(item).map(_ + acc))
-
-      waitForActiveExecutionCount(0)
-      sched.addEvent("end")
-
-      result.getTry should equal(Success(items.sum))
-      isSerialSchedule(items, sched) should equal(true)
-    }
-  }
-
-  "CollectionAsyncTaskRunner.modifiers-t5" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
-    val allPeriod_ns =
-      test repeat TEST_COUNT run {
-        implicit val ctc = mkConcurrentTestContext()
-        import ctc._
-
-        val items = Vector(1,2,3)//mkItems
-        val allAttempts = Array.fill(items.size)(1)
-
-        val result =
-          items
-            .zipWithIndex
-            .async
-            .throttle(DELAY)
-            .retry {
-              case List(r:RuntimeException) =>
-                sched.addEvent(s"retry-${r.getMessage}")
-                true.future
-              case List(r1:RuntimeException,r2:RuntimeException) =>
-                sched.addEvent(s"retry-${r1.getMessage}")
-                true.future
-              case _ => false.future
-            }
-            .progress(new TaskEventListener {
-              override def onStartTask() = sched.addEvent(s"progress-start")
-              override def onCompleteTask() = sched.addEvent(s"progress-end")
-              override def onStartStep(stepId: Int) = { }
-              override def onCompleteStep(stepId: Int) = sched.addEvent(s"progress-$stepId")
-            })
-            .map { case (i,idx) =>
-              val attempts = allAttempts(idx)
-              Future {
-                if(attempts < 3) {
-                  allAttempts(idx) += 1
-                  sched.addEvent(s"map-$i+$attempts")
-                  throw new RuntimeException(s"$i+$attempts")
-                } else {
-                  sched.addEvent(s"map-$i+$attempts")
-                  i
-                }
-              }
-            }
-
-        result.get
-
-        sched.orderedEvents.map(_.id) should contain theSameElementsInOrderAs(
-          Vector("progress-start") ++
-          items.zipWithIndex.flatMap { case (item,idx) =>
-            Vector(
-              s"map-$item+1",
-              s"retry-$item+1",
-              s"map-$item+2",
-              s"retry-$item+2",
-              s"map-$item+3",
-              s"progress-${idx+1}"
-            )
-          } ++
-          Vector("progress-end")
-        )
-
-        // TODO: uncomment once precision thottler is available
-//        val eventMap = sched.eventMap
-//        items.take(items.size - 1).zipWithIndex flatMap { case (i,idx) =>
-//          val e1 = eventMap(s"map-$i+1")
-//          val e2 = eventMap(s"map-$i+2")
-//          val e3 = eventMap(s"map-$i+3")
-//          val e4 = eventMap(s"map-${items(idx+1)}+1")
-//          Vector(
-//            e2.elapsed_ns - e1.elapsed_ns,
-//            e3.elapsed_ns - e2.elapsed_ns,
-//            e4.elapsed_ns - e3.elapsed_ns
-//          )
-//        }
-      }
-
-//    val filteredPeriod_ns = filterOutliersBy(allPeriod_ns.flatten.map(_.toDouble),{ v:Double => v})
-//    val avgPeriod_ns = filteredPeriod_ns.sum / filteredPeriod_ns.size
-//    avgPeriod_ns should equal(DELAY_NS.toDouble +- DELAY_NS * 0.1)
-  }
-
-  "CollectionAsyncTaskRunner.modifiers-foldLeft-t6" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
+  "TraversableOnceAsyncConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
     val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
@@ -265,7 +167,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
             .progress { progress =>
               sched.addEvent(s"progress-${progress.completed}")
             }
-            .foldLeft(0) { (acc,i) =>
+            .map { i =>
               sched.addEvent(s"map-$i-$even")
               Future {
                 if(even) {
@@ -273,7 +175,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
                   throw new RuntimeException(i.toString)
                 } else {
                   even = true
-                  acc + i
+                  i
                 }
               }
             }
