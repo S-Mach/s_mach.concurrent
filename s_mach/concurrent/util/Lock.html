@@ -47,14 +47,18 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a non-blocking lock that ensures a synchronous execution schedule for all callers. A caller calls the
-lock method to execute a task synchronously once the lock is available. Simultaneous tasks are placed in a FIFO queue
-while awaiting execution.</p><p>Note1: Because Lock accepts a function to the task to run, it is not possible for callers to double lock, double
-release or forget to release the lock.
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a non-blocking lock that ensures a synchronous execution
+schedule for all callers. A caller calls the lock method to execute a task
+synchronously once the lock is available. Simultaneous tasks are placed in a
+FIFO queue  while awaiting execution.</p><p>Note1: Because Lock accepts a function to the task to run, it is not
+possible for callers to double lock, double  release or forget to release the
+lock.
 Note2: Lock is NOT reentrant
-Note3: Lock should never be used when other locking options make more sense. Lock is designed for synchronizing many
-tasks (100+) and/or long running tasks (10ms+). Unlike other locking options, Lock does not block and consume
-a thread while waiting for the lock to become available. However, Lock is not the most performant option.
+Note3: Lock should never be used when other locking options make more
+sense. Lock is designed for synchronizing many tasks (100+) and/or long
+running tasks (10ms+). Unlike other locking options, Lock does not block and
+consume a thread while waiting for the lock to become available. However,
+Lock is not the most performant option.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
@@ -120,7 +124,7 @@ a thread while waiting for the lock to become available. However, Lock is not th
     </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the lock is available</p></dd></dl></div>
     </li><li name="s_mach.concurrent.util.Lock#lock" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="lock[X](task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.util.DeferredFuture[X]"></a>
+      <a id="lock[X](task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[X]"></a>
       <a id="lock[X](⇒Future[X])(ExecutionContext):DeferredFuture[X]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -128,15 +132,16 @@ a thread while waiting for the lock to become available. However, Lock is not th
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">lock</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="task">task: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Lock.lock.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.util.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.util.Lock.lock.X">X</span>]</span>
+        <span class="name">lock</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="task">task: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Lock.lock.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.util.Lock.lock.X">X</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Lock@lock[X](task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.util.DeferredFuture[X]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.Lock@lock[X](task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[X]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes once the lock is available AND task completes. The lock is locked while task is
-        running and after task completes it is unlocked.
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes once the lock is available AND task
+        completes. The lock is locked while task is running and after task
+        completes it is unlocked.
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.util.Lock#waitQueueLength" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="waitQueueLength:Long"></a>

@@ -262,27 +262,29 @@
     </span>
       <p class="shortcomment cmt">Transform and flatten Futures serially
 Derived from: http://www.</p><div class="fullcomment"><div class="comment cmt"><p>Transform and flatten Futures serially
-Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of M[B] that completes once all Futures have been transformed serially
+Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of M[B] that completes once all Futures have been
+        transformed serially
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.SeriallyOps#foldLeftSerially" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="foldLeftSerially[A,B,M[AA]&lt;:TraversableOnce[AA]](self:M[A],z:B,f:(B,A)=&gt;scala.concurrent.Future[B])(implicitec:scala.concurrent.ExecutionContext,implicitcbf:scala.collection.generic.CanBuildFrom[Nothing,B,M[B]]):scala.concurrent.Future[B]"></a>
-      <a id="foldLeftSerially[A,B,M[AA]&lt;:TraversableOnce[AA]](M[A],B,(B,A)⇒Future[B])(ExecutionContext,CanBuildFrom[Nothing,B,M[B]]):Future[B]"></a>
+      <a id="foldLeftSerially[A,B,M[AA]&lt;:TraversableOnce[AA]](z:B)(self:M[A],f:(A,B)=&gt;scala.concurrent.Future[B])(implicitec:scala.concurrent.ExecutionContext,implicitcbf:scala.collection.generic.CanBuildFrom[Nothing,B,M[B]]):scala.concurrent.Future[B]"></a>
+      <a id="foldLeftSerially[A,B,M[AA]&lt;:TraversableOnce[AA]](B)(M[A],(A,B)⇒Future[B])(ExecutionContext,CanBuildFrom[Nothing,B,M[B]]):Future[B]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">foldLeftSerially</span><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>, <span name="M">M<span class="tparams">[<span name="AA">AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.M.AA">AA</span>]</span>]</span><span class="params">(<span name="self">self: <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.A">A</span>]</span>, <span name="z">z: <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span></span>, <span name="f">f: (<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="cbf">cbf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.Nothing">Nothing</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>]</span>
+        <span class="name">foldLeftSerially</span><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>, <span name="M">M<span class="tparams">[<span name="AA">AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.M.AA">AA</span>]</span>]</span><span class="params">(<span name="z">z: <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span></span>)</span><span class="params">(<span name="self">self: <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.A">A</span>]</span>, <span name="f">f: (<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>) ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="cbf">cbf: <span class="extype" name="scala.collection.generic.CanBuildFrom">CanBuildFrom</span>[<span class="extype" name="scala.Nothing">Nothing</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>]]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyOps.foldLeftSerially.B">B</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.SeriallyOps@foldLeftSerially[A,B,M[AA]&lt;:TraversableOnce[AA]](self:M[A],z:B,f:(B,A)=&gt;scala.concurrent.Future[B])(implicitec:scala.concurrent.ExecutionContext,implicitcbf:scala.collection.generic.CanBuildFrom[Nothing,B,M[B]]):scala.concurrent.Future[B]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.SeriallyOps@foldLeftSerially[A,B,M[AA]&lt;:TraversableOnce[AA]](z:B)(self:M[A],f:(A,B)=&gt;scala.concurrent.Future[B])(implicitec:scala.concurrent.ExecutionContext,implicitcbf:scala.collection.generic.CanBuildFrom[Nothing,B,M[B]]):scala.concurrent.Future[B]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       <p class="shortcomment cmt">Fold left Futures serially
 Derived from: http://www.</p><div class="fullcomment"><div class="comment cmt"><p>Fold left Futures serially
-Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of M[B] that completes once all Futures have been fold left
+Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of M[B] that completes once all Futures have been fold
+        left
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.SeriallyOps#foreachSerially" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="foreachSerially[A,U,M[AA]&lt;:TraversableOnce[AA]](self:M[A],f:A=&gt;scala.concurrent.Future[U])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[Unit]"></a>
@@ -301,7 +303,8 @@ Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-on
       </a>
     </span>
       <p class="shortcomment cmt">Traverse Futures serially.</p><div class="fullcomment"><div class="comment cmt"><p>Traverse Futures serially.
-Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of M[B] that completes once all Futures have been traversed serially
+Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of M[B] that completes once all Futures have been
+        traversed serially
 </p></dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
@@ -372,7 +375,8 @@ Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-on
     </span>
       <p class="shortcomment cmt">Transform Futures serially
 Derived from: http://www.</p><div class="fullcomment"><div class="comment cmt"><p>Transform Futures serially
-Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of M[B] that completes once all Futures have been transformed serially
+Derived from: http://www.michaelpollmeier.com/execute-scala-futures-in-serial-one-after-the-other-non-blocking/</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of M[B] that completes once all Futures have been
+        transformed serially
 </p></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>

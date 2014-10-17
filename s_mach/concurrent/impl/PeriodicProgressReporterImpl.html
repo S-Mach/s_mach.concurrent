@@ -49,7 +49,7 @@
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../util/PeriodicProgressReporter.html" class="extype" name="s_mach.concurrent.util.PeriodicProgressReporter">PeriodicProgressReporter</a>, <a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../util/PeriodicProgressReporter.html" class="extype" name="s_mach.concurrent.util.PeriodicProgressReporter">PeriodicProgressReporter</a>, <a href="../util/TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -67,7 +67,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl"><span>PeriodicProgressReporterImpl</span></li><li class="in" name="s_mach.concurrent.util.PeriodicProgressReporter"><span>PeriodicProgressReporter</span></li><li class="in" name="s_mach.concurrent.util.ProgressReporter"><span>ProgressReporter</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl"><span>PeriodicProgressReporterImpl</span></li><li class="in" name="s_mach.concurrent.util.PeriodicProgressReporter"><span>PeriodicProgressReporter</span></li><li class="in" name="s_mach.concurrent.util.TaskEventListener"><span>TaskEventListener</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -88,7 +88,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(optTotal:Option[Long],reportInterval:scala.concurrent.duration.Duration,report:s_mach.concurrent.util.Progress=&gt;Unit)(implicitexecutionContext:scala.concurrent.ExecutionContext,implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):s_mach.concurrent.impl.PeriodicProgressReporterImpl"></a>
+      <a id="&lt;init&gt;(optTotal:Option[Int],reportInterval:scala.concurrent.duration.Duration,report:s_mach.concurrent.util.Progress=&gt;Unit)(implicitexecutionContext:scala.concurrent.ExecutionContext,implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):s_mach.concurrent.impl.PeriodicProgressReporterImpl"></a>
       <a id="&lt;init&gt;:PeriodicProgressReporterImpl"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -96,10 +96,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">PeriodicProgressReporterImpl</span><span class="params">(<span name="optTotal">optTotal: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Long">Long</span>]</span>, <span name="reportInterval">reportInterval: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>, <span name="report">report: (<a href="../util/Progress.html" class="extype" name="s_mach.concurrent.util.Progress">Progress</a>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="scheduledExecutionContext">scheduledExecutionContext: <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>)</span>
+        <span class="name">PeriodicProgressReporterImpl</span><span class="params">(<span name="optTotal">optTotal: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="reportInterval">reportInterval: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>, <span name="report">report: (<a href="../util/Progress.html" class="extype" name="s_mach.concurrent.util.Progress">Progress</a>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="scheduledExecutionContext">scheduledExecutionContext: <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@&lt;init&gt;(optTotal:Option[Long],reportInterval:scala.concurrent.duration.Duration,report:s_mach.concurrent.util.Progress=&gt;Unit)(implicitexecutionContext:scala.concurrent.ExecutionContext,implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):s_mach.concurrent.impl.PeriodicProgressReporterImpl" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@&lt;init&gt;(optTotal:Option[Int],reportInterval:scala.concurrent.duration.Duration,report:s_mach.concurrent.util.Progress=&gt;Unit)(implicitexecutionContext:scala.concurrent.ExecutionContext,implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):s_mach.concurrent.impl.PeriodicProgressReporterImpl" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -205,18 +205,18 @@
               
         </dd></dl></div>
     </li><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl#doReport" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="doReport(localTotalSoFar:Long):Unit"></a>
-      <a id="doReport(Long):Unit"></a>
+      <a id="doReport(localTotalSoFar:Int):Unit"></a>
+      <a id="doReport(Int):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">doReport</span><span class="params">(<span name="localTotalSoFar">localTotalSoFar: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">doReport</span><span class="params">(<span name="localTotalSoFar">localTotalSoFar: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@doReport(localTotalSoFar:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@doReport(localTotalSoFar:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -415,22 +415,22 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl#onCompleteStep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onCompleteStep(stepId:Long):Unit"></a>
-      <a id="onCompleteStep(Long):Unit"></a>
+      <a id="onCompleteStep(stepId:Int):Unit"></a>
+      <a id="onCompleteStep(Int):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onCompleteStep</span><span class="params">(<span name="stepId">stepId: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onCompleteStep</span><span class="params">(<span name="stepId">stepId: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@onCompleteStep(stepId:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@onCompleteStep(stepId:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Called at the beginning of execution of a step of the computation</p><div class="fullcomment"><div class="comment cmt"><p>Called at the beginning of execution of a step of the computation</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl">PeriodicProgressReporterImpl</a> → <a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a></dd></dl></div>
+      <p class="shortcomment cmt">Called at the beginning of execution of a step of the computation</p><div class="fullcomment"><div class="comment cmt"><p>Called at the beginning of execution of a step of the computation</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl">PeriodicProgressReporterImpl</a> → <a href="../util/TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl#onCompleteTask" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="onCompleteTask():Unit"></a>
       <a id="onCompleteTask():Unit"></a>
@@ -447,24 +447,24 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Called once the computation completes</p><div class="fullcomment"><div class="comment cmt"><p>Called once the computation completes</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl">PeriodicProgressReporterImpl</a> → <a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a></dd></dl></div>
+      <p class="shortcomment cmt">Called once the computation completes</p><div class="fullcomment"><div class="comment cmt"><p>Called once the computation completes</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl">PeriodicProgressReporterImpl</a> → <a href="../util/TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl#onStartStep" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onStartStep(stepId:Long):Unit"></a>
-      <a id="onStartStep(Long):Unit"></a>
+      <a id="onStartStep(stepId:Int):Unit"></a>
+      <a id="onStartStep(Int):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onStartStep</span><span class="params">(<span name="stepId">stepId: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onStartStep</span><span class="params">(<span name="stepId">stepId: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@onStartStep(stepId:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@onStartStep(stepId:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Called at the beginning of execution of a step of the computation</p><div class="fullcomment"><div class="comment cmt"><p>Called at the beginning of execution of a step of the computation</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl">PeriodicProgressReporterImpl</a> → <a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a></dd></dl></div>
+      <p class="shortcomment cmt">Called at the beginning of execution of a step of the computation</p><div class="fullcomment"><div class="comment cmt"><p>Called at the beginning of execution of a step of the computation</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl">PeriodicProgressReporterImpl</a> → <a href="../util/TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl#onStartTask" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="onStartTask():Unit"></a>
       <a id="onStartTask():Unit"></a>
@@ -481,7 +481,7 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Called at the beginning of the computation</p><div class="fullcomment"><div class="comment cmt"><p>Called at the beginning of the computation</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl">PeriodicProgressReporterImpl</a> → <a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a></dd></dl></div>
+      <p class="shortcomment cmt">Called at the beginning of the computation</p><div class="fullcomment"><div class="comment cmt"><p>Called at the beginning of the computation</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.PeriodicProgressReporterImpl">PeriodicProgressReporterImpl</a> → <a href="../util/TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl#reportInterval" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="reportInterval:scala.concurrent.duration.Duration"></a>
       <a id="reportInterval:Duration"></a>
@@ -568,18 +568,18 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl#totalSoFar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="totalSoFar:java.util.concurrent.atomic.AtomicLong"></a>
-      <a id="totalSoFar:AtomicLong"></a>
+      <a id="totalSoFar:java.util.concurrent.atomic.AtomicInteger"></a>
+      <a id="totalSoFar:AtomicInteger"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">totalSoFar</span><span class="result">: <span class="extype" name="java.util.concurrent.atomic.AtomicLong">AtomicLong</span></span>
+        <span class="name">totalSoFar</span><span class="result">: <span class="extype" name="java.util.concurrent.atomic.AtomicInteger">AtomicInteger</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@totalSoFar:java.util.concurrent.atomic.AtomicLong" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.PeriodicProgressReporterImpl@totalSoFar:java.util.concurrent.atomic.AtomicInteger" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -664,8 +664,8 @@
         <div id="inheritedMembers">
         <div class="parent" name="s_mach.concurrent.util.PeriodicProgressReporter">
               <h3>Inherited from <a href="../util/PeriodicProgressReporter.html" class="extype" name="s_mach.concurrent.util.PeriodicProgressReporter">PeriodicProgressReporter</a></h3>
-            </div><div class="parent" name="s_mach.concurrent.util.ProgressReporter">
-              <h3>Inherited from <a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a></h3>
+            </div><div class="parent" name="s_mach.concurrent.util.TaskEventListener">
+              <h3>Inherited from <a href="../util/TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

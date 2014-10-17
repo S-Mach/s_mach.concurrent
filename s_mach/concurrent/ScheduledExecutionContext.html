@@ -53,7 +53,7 @@
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="util/ConcurrentTestContext.html" class="extype" name="s_mach.concurrent.util.ConcurrentTestContext">ConcurrentTestContext</a>, <a href="impl/ConcurrentTestContextImpl.html" class="extype" name="s_mach.concurrent.impl.ConcurrentTestContextImpl">ConcurrentTestContextImpl</a>, <a href="impl/ScheduledExecutionContextImpl.html" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl">ScheduledExecutionContextImpl</a>, <a href="impl/ScheduledExecutionContextListener.html" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextListener">ScheduledExecutionContextListener</a></div>
+            <div class="subClasses hiddenContent"><a href="util/ConcurrentTestContext.html" class="extype" name="s_mach.concurrent.util.ConcurrentTestContext">ConcurrentTestContext</a>, <a href="impl/ConcurrentTestContextImpl.html" class="extype" name="s_mach.concurrent.impl.ConcurrentTestContextImpl">ConcurrentTestContextImpl</a>, <a href="impl/ScheduledExecutionContextImpl.html" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl">ScheduledExecutionContextImpl</a></div>
           </div></div>
         
 
@@ -129,9 +129,13 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Create a DelayedFuture that executes the supplied function after the given delay
-</p><div class="fullcomment"><div class="comment cmt"><p>Create a DelayedFuture that executes the supplied function after the given delay
-</p></div><dl class="paramcmts block"><dt class="param">delay</dt><dd class="cmt"><p>the time from now to delay execution</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a DelayedFuture that can be used to extract result or cancel (only before it has been started)</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for execution
+      <p class="shortcomment cmt">Create a DelayedFuture that executes the supplied function after the given
+delay
+</p><div class="fullcomment"><div class="comment cmt"><p>Create a DelayedFuture that executes the supplied function after the given
+delay
+</p></div><dl class="paramcmts block"><dt class="param">delay</dt><dd class="cmt"><p>the time from now to delay execution</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a DelayedFuture that can be used to extract result or cancel (only
+        before it has been started)</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
+                                   execution
 </p></span></dd></dl></div>
     </li><li name="s_mach.concurrent.ScheduledExecutionContext#scheduleAtFixedRate" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="scheduleAtFixedRate[U](initialDelay:scala.concurrent.duration.Duration,period:scala.concurrent.duration.Duration)(task:()=&gt;U):s_mach.concurrent.PeriodicTask"></a>
@@ -149,12 +153,16 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Creates a PeriodicTask that executes first after the given initial delay, and subsequently with the given period.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a PeriodicTask that executes first after the given initial delay, and subsequently with the given period.
-PeriodicTask may stopped using the cancel method or will end automatically on should a failure occur while
-processing the task. If any execution of this task takes longer than its period, then subsequent executions may
-start late, but will not concurrently execute.
+      <p class="shortcomment cmt">Creates a PeriodicTask that executes first after the given initial delay,
+and subsequently with the given period.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a PeriodicTask that executes first after the given initial delay,
+and subsequently with the given period. PeriodicTask may stopped using the
+cancel method or will end automatically on should a failure occur while
+processing the task. If any execution of this task takes longer than its
+period, then subsequent executions may start late, but will not
+concurrently execute.
 </p></div><dl class="paramcmts block"><dt class="param">initialDelay</dt><dd class="cmt"><p>the time to delay first execution</p></dd><dt class="param">period</dt><dd class="cmt"><p>the period between successive executions</p></dd><dt class="param">task</dt><dd class="cmt"><p>the task to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a PeriodicTask</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if period less than or equal to zero
-</p></span><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for execution</p></span></dd></dl></div>
+</p></span><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
+        execution</p></span></dd></dl></div>
     </li></ol>
             </div>
 

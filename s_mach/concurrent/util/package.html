@@ -82,7 +82,8 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a barrier that can be used by callers to synchronize events by waiting on the barrier to be set.</p>
+      <p class="shortcomment cmt">A trait for a barrier that can be used by callers to synchronize events by
+waiting on the barrier to be set.</p>
     </li><li name="s_mach.concurrent.util.ConcurrentTestContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ConcurrentTestContextextendsExecutionContextwithScheduledExecutionContext"></a>
       <a id="ConcurrentTestContext:ConcurrentTestContext"></a>
@@ -100,30 +101,12 @@
       </a>
     </span>
       <p class="shortcomment cmt">A context for testing concurrent code that provides:
-1) an ExecutionContext that keeps track of the number of active and completed Runnables
+1) an ExecutionContext that keeps track of the number of active and completed
+Runnables
 2) a Timer for tracking elapsed duration since start of test
 3) a SerializationSchedule for detecting order of execution of events
 4) a precision delay function that accumulates any delay error
 </p>
-    </li><li name="s_mach.concurrent.util.DeferredFuture" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="DeferredFuture[A]extendsFuture[A]"></a>
-      <a id="DeferredFuture[A]:DeferredFuture[A]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="DeferredFuture.html"><span class="name">DeferredFuture</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.DeferredFuture.A">A</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@DeferredFuture[A]extendsFuture[A]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for a future whose execution does not begin until some condition occurs.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a future whose execution does not begin until some condition occurs. DeferredFuture completes once the
-start condition occurs and the deferred future completes.
-</p></div></div>
     </li><li name="s_mach.concurrent.util.DelegatedFuture" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="DelegatedFuture[A]extendsFuture[A]"></a>
       <a id="DelegatedFuture[A]:DelegatedFuture[A]"></a>
@@ -140,7 +123,8 @@ start condition occurs and the deferred future completes.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A base trait for a future that delegates its implementation to another delegate future
+      <p class="shortcomment cmt">A base trait for a future that delegates its implementation to another
+delegate future
 </p>
     </li><li name="s_mach.concurrent.util.Latch" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="LatchextendsBarrier"></a>
@@ -158,7 +142,8 @@ start condition occurs and the deferred future completes.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a latch that can be set once to synchronize events that are waiting on the barrier.</p>
+      <p class="shortcomment cmt">A trait for a latch that can be set once to synchronize events that are
+waiting on the barrier.</p>
     </li><li name="s_mach.concurrent.util.ListQueue" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ListQueue[A]extendsQueue[A]"></a>
       <a id="ListQueue[A]:ListQueue[A]"></a>
@@ -175,7 +160,8 @@ start condition occurs and the deferred future completes.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for queue that uses an unlimited size linked list as the backend for the queue.</p>
+      <p class="shortcomment cmt">A trait for queue that uses an unlimited size linked list as the backend
+for the queue.</p>
     </li><li name="s_mach.concurrent.util.Lock" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="LockextendsAnyRef"></a>
       <a id="Lock:Lock"></a>
@@ -192,17 +178,22 @@ start condition occurs and the deferred future completes.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a non-blocking lock that ensures a synchronous execution schedule for all callers.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a non-blocking lock that ensures a synchronous execution schedule for all callers. A caller calls the
-lock method to execute a task synchronously once the lock is available. Simultaneous tasks are placed in a FIFO queue
-while awaiting execution.</p><p>Note1: Because Lock accepts a function to the task to run, it is not possible for callers to double lock, double
-release or forget to release the lock.
+      <p class="shortcomment cmt">A trait for a non-blocking lock that ensures a synchronous execution
+schedule for all callers.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a non-blocking lock that ensures a synchronous execution
+schedule for all callers. A caller calls the lock method to execute a task
+synchronously once the lock is available. Simultaneous tasks are placed in a
+FIFO queue  while awaiting execution.</p><p>Note1: Because Lock accepts a function to the task to run, it is not
+possible for callers to double lock, double  release or forget to release the
+lock.
 Note2: Lock is NOT reentrant
-Note3: Lock should never be used when other locking options make more sense. Lock is designed for synchronizing many
-tasks (100+) and/or long running tasks (10ms+). Unlike other locking options, Lock does not block and consume
-a thread while waiting for the lock to become available. However, Lock is not the most performant option.
+Note3: Lock should never be used when other locking options make more
+sense. Lock is designed for synchronizing many tasks (100+) and/or long
+running tasks (10ms+). Unlike other locking options, Lock does not block and
+consume a thread while waiting for the lock to become available. However,
+Lock is not the most performant option.
 </p></div></div>
     </li><li name="s_mach.concurrent.util.PeriodicProgressReporter" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="PeriodicProgressReporterextendsProgressReporter"></a>
+      <a id="PeriodicProgressReporterextendsTaskEventListener"></a>
       <a id="PeriodicProgressReporter:PeriodicProgressReporter"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -210,14 +201,15 @@ a thread while waiting for the lock to become available. However, Lock is not th
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="PeriodicProgressReporter.html"><span class="name">PeriodicProgressReporter</span></a><span class="result"> extends <a href="ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a></span>
+        <a href="PeriodicProgressReporter.html"><span class="name">PeriodicProgressReporter</span></a><span class="result"> extends <a href="TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@PeriodicProgressReporterextendsProgressReporter" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.package@PeriodicProgressReporterextendsTaskEventListener" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a progress reporter that reports progress only at the specified report interval
+      <p class="shortcomment cmt">A trait for a progress reporter that reports progress only at the specified
+report interval
 </p>
     </li><li name="s_mach.concurrent.util.Progress" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ProgressextendsProductwithSerializable"></a>
@@ -228,39 +220,18 @@ a thread while waiting for the lock to become available. However, Lock is not th
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Progress.html"><span class="name">Progress</span></a><span class="params">(<span name="completed">completed: <span class="extype" name="scala.Long">Long</span></span>, <span name="optTotal">optTotal: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Long">Long</span>]</span>, <span name="startTime_ns">startTime_ns: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Progress.html"><span class="name">Progress</span></a><span class="params">(<span name="completed">completed: <span class="extype" name="scala.Int">Int</span></span>, <span name="optTotal">optTotal: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="startTime_ns">startTime_ns: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#s_mach.concurrent.util.package@ProgressextendsProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A case class to report progress in a computation</p><div class="fullcomment"><div class="comment cmt"><p>A case class to report progress in a computation</p></div><dl class="paramcmts block"><dt class="param">completed</dt><dd class="cmt"><p>the count of iterations completed so far</p></dd><dt class="param">optTotal</dt><dd class="cmt"><p>Some(total iterations in computation) or None if the computation has an unknown size</p></dd><dt class="param">startTime_ns</dt><dd class="cmt"><p>the time in nanoseconds returned by System.nanoTime when the computation was started
+      <p class="shortcomment cmt">A case class to report progress in a computation</p><div class="fullcomment"><div class="comment cmt"><p>A case class to report progress in a computation</p></div><dl class="paramcmts block"><dt class="param">completed</dt><dd class="cmt"><p>the count of iterations completed so far</p></dd><dt class="param">optTotal</dt><dd class="cmt"><p>Some(total iterations in computation) or None if the
+                computation has an unknown size</p></dd><dt class="param">startTime_ns</dt><dd class="cmt"><p>the time in nanoseconds returned by System.nanoTime when
+                    the computation was started
 </p></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.ProgressReporter" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ProgressReporterextendsAnyRef"></a>
-      <a id="ProgressReporter:ProgressReporter"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="ProgressReporter.html"><span class="name">ProgressReporter</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@ProgressReporterextendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for reporting progress of a task that consists of one or more discrete steps.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for reporting progress of a task that consists of one or more discrete steps. Each step is identified by an
-ordinal step identifier. The step id is a generic concept and may be mapped by callers to any concrete concept. For
-tasks with a known fixed input size, the step id is mapped directly to the index of the input (i.e. input with index
-0 = step 0, index 1 = step 1, etc). For tasks with an unknown input size, the step id is mapped to the Nth item
-encountered minus one (i.e. 1st item = step 0, 2nd item = step 1). The step id must be incrementally assigned,
-ensuring that that total steps always equals last step id - 1.</p><p>Note: the progress reporter is assumed to be stateful. All derived implementations must be thread safe
-</p></div></div>
-    </li><li name="s_mach.concurrent.util.Queue" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+    </li><li name="s_mach.concurrent.util.Queue" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="Queue[A]extendsAnyRef"></a>
       <a id="Queue[A]:Queue[A]"></a>
       <h4 class="signature">
@@ -276,8 +247,31 @@ ensuring that that total steps always equals last step id - 1.</p><p>Note: the p
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a non-blocking queue
-</p>
+      <p class="shortcomment cmt">A trait for a non-blocking queue.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a non-blocking queue. Note: offer is blocking by design here to
+give callers the greatest freedom in deciding how to react to a full queue.
+Should an asynchronous offer be desired, simply wrap the call to offer in a
+Future. Keep in mind that Futures are not free and uses a Future to wait for
+the queue to empty is simply displaying the enqueue onto a different system
+queue.
+</p></div></div>
+    </li><li name="s_mach.concurrent.util.RetryDecider" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="RetryDeciderextendsAnyRef"></a>
+      <a id="RetryDecider:RetryDecider"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RetryDecider.html"><span class="name">RetryDecider</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@RetryDeciderextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait to decide whether to retry a failure during a step of task.</p><div class="fullcomment"><div class="comment cmt"><p>A trait to decide whether to retry a failure during a step of task.</p><p>Note: derived implementations must be threadsafe.
+</p></div></div>
     </li><li name="s_mach.concurrent.util.Semaphore" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SemaphoreextendsAnyRef"></a>
       <a id="Semaphore:Semaphore"></a>
@@ -294,18 +288,26 @@ ensuring that that total steps always equals last step id - 1.</p><p>Note: the p
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a non-blocking semaphore that ensures limiting concurrent execution to tasks that have been granted
-the requested number of permits from a limited pool of permits.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a non-blocking semaphore that ensures limiting concurrent execution to tasks that have been granted
-the requested number of permits from a limited pool of permits. The acquire method is used to request the execution
-of a task once the requested number of permits become available. If the permits are not immediately available, the
-request is placed into a FIFO queue while waiting for permits to become available. The permit pool size is typically
-static with permits released back to the pool upon completion of tasks. However, some implementations may have
-dynamic sized pools that expend permits instead of releasing them, replenishing permits through some other mechanism.</p><p>Note1: Because Semaphore accepts a function to the task to run, it is not possible for callers to double lock, double
-release or forget to release permits.
+      <p class="shortcomment cmt">A trait for a non-blocking semaphore that ensures limiting concurrent
+execution to tasks that have been granted the requested number of permits
+from a limited pool of permits.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a non-blocking semaphore that ensures limiting concurrent
+execution to tasks that have been granted the requested number of permits
+from a limited pool of permits. The acquire method is used to request the
+execution of a task once the requested number of permits become available. If
+the permits are not immediately available, the request is placed into a FIFO
+queue while waiting for permits to become available. The permit pool size is
+typically static with permits released back to the pool upon completion of
+tasks. However, some implementations may have dynamic sized pools that expend
+permits instead of releasing them, replenishing permits through some other
+mechanism.</p><p>Note1: Because Semaphore accepts a function to the task to run, it is not
+possible for callers to double lock, double  release or forget to release
+permits.
 Note2: Semaphore is NOT reentrant
-Note3: Semaphore should never be used when other options make more sense. Semaphore is designed for synchronizing
-many tasks (100+) and/or long running tasks (10ms+). Unlike other options, Semaphore does not block and consume a
-thread while waiting for permits to become available. However, Semaphore is not the most performant option.
+Note3: Semaphore should never be used when other options make more sense.
+Semaphore is designed for synchronizing many tasks (100+) and/or long running
+tasks (10ms+). Unlike other options, Semaphore does not block and consume a
+thread while waiting for permits to become available. However, Semaphore is
+not the most performant option.
 </p></div></div>
     </li><li name="s_mach.concurrent.util.Sequencer" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SequencerextendsAnyRef"></a>
@@ -323,11 +325,14 @@ thread while waiting for permits to become available. However, Semaphore is not 
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait used to guarantee a series of unordered tasks occur sequentially.</p><div class="fullcomment"><div class="comment cmt"><p>A trait used to guarantee a series of unordered tasks occur sequentially. By associating a sequence number with
-each task, the sequencer can determine whether to immediately run a task or queue the task for later. When a task has
-been queued and the sequence number for that task has been reached, the task is removed from the queue and executed.
-The sequence number is only advanced after the task completes.</p><p>Note: it is assumed each task has a unique sequence number. A request to execute a task with a sequence number that
-is less than the current sequence number causes an IllegalArgumentException to be thrown.
+      <p class="shortcomment cmt">A trait used to guarantee a series of unordered tasks occur sequentially.</p><div class="fullcomment"><div class="comment cmt"><p>A trait used to guarantee a series of unordered tasks occur sequentially.
+By associating a sequence number with each task, the sequencer can determine
+whether to immediately run a task or queue the task for later. When a task
+has been queued and the sequence number for that task has been reached, the
+task is removed from the queue and executed. The sequence number is only
+advanced after the task completes.</p><p>Note: it is assumed each task has a unique sequence number. A request to
+execute a task with a sequence number that is less than the current sequence
+number causes an IllegalArgumentException to be thrown.
 </p></div></div>
     </li><li name="s_mach.concurrent.util.SerializationSchedule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="SerializationSchedule[ID]extendsProductwithSerializable"></a>
@@ -345,10 +350,12 @@ is less than the current sequence number causes an IllegalArgumentException to b
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A case class for determining the ordering of instantaneous and time-spanning real-time events</p><div class="fullcomment"><div class="comment cmt"><p>A case class for determining the ordering of instantaneous and time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="tparam">ID</dt><dd class="cmt"><p>event identifier type
+      <p class="shortcomment cmt">A case class for determining the ordering of instantaneous and
+time-spanning real-time events</p><div class="fullcomment"><div class="comment cmt"><p>A case class for determining the ordering of instantaneous and
+time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="tparam">ID</dt><dd class="cmt"><p>event identifier type
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.util.SimpleProgressReporter" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="SimpleProgressReporterextendsProgressReporter"></a>
+      <a id="SimpleProgressReporterextendsTaskEventListener"></a>
       <a id="SimpleProgressReporter:SimpleProgressReporter"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -356,16 +363,44 @@ is less than the current sequence number causes an IllegalArgumentException to b
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="SimpleProgressReporter.html"><span class="name">SimpleProgressReporter</span></a><span class="result"> extends <a href="ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a></span>
+        <a href="SimpleProgressReporter.html"><span class="name">SimpleProgressReporter</span></a><span class="result"> extends <a href="TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@SimpleProgressReporterextendsProgressReporter" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.package@SimpleProgressReporterextendsTaskEventListener" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a simple progress reporter that accumulates total progress from completed reports and makes a report
-for each completed report
+      <p class="shortcomment cmt">A trait for a simple progress reporter that accumulates total progress from
+completed reports and makes a report for each completed report
 </p>
+    </li><li name="s_mach.concurrent.util.TaskEventListener" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="TaskEventListenerextendsAnyRef"></a>
+      <a id="TaskEventListener:TaskEventListener"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="TaskEventListener.html"><span class="name">TaskEventListener</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@TaskEventListenerextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for listening to the progress of a task that consists of one or more
+discrete steps.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for listening to the progress of a task that consists of one or more
+discrete steps. Each step is identified by an  ordinal step identifier. The
+step id is a generic concept and may be mapped by callers to any concrete
+concept. For  tasks with a known fixed input size, the step id is mapped
+directly to the index of the input (i.e. input with index  0 = step 1, index
+1 = step 2, etc). For tasks with an unknown input size, the step id is mapped
+to the Nth item  encountered (i.e. 1st item = step 1, 2nd item = step 2). The
+step id must be incrementally assigned,  ensuring that that total steps
+always equals last step id.</p><p>Note: derived task event listeners are assumed to be stateful.
+Implementations must be thread safe
+</p></div></div>
     </li><li name="s_mach.concurrent.util.ThrottleControl" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ThrottleControlextendsAnyRef"></a>
       <a id="ThrottleControl:ThrottleControl"></a>
@@ -400,31 +435,16 @@ for each completed report
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait that ensures a series of tasks run no faster than the throttle setting.</p><div class="fullcomment"><div class="comment cmt"><p>A trait that ensures a series of tasks run no faster than the throttle setting. Callers schedule tasks by calling the
-run method. If at least throttle setting nanoseconds have passed since the last task completed, the supplied function
-is immediately executed, otherwise it is scheduled for execution once throttle nanoseconds have expired. Tasks
-scheduled at the same time for later execution will be executed in a FIFO manner. Throttler guarantees that all tasks
-will have at least throttle nanoseconds separating their completion. However, it can not guarantee that the elapsed
-time between tasks will not be greater than the throttle setting.</p><p>Note: throttle settings below 5us produce unstable results</p></div></div>
-    </li><li name="s_mach.concurrent.util.Timer" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="TimerextendsProductwithSerializable"></a>
-      <a id="Timer:Timer"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Timer.html"><span class="name">Timer</span></a><span class="params">(<span name="startTime_ns">startTime_ns: <span class="extype" name="scala.Long">Long</span> = <span class="symbol">System.nanoTime()</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@TimerextendsProductwithSerializable" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A sugar case class for calculating the elapsed time since some initial time.</p><div class="fullcomment"><div class="comment cmt"><p>A sugar case class for calculating the elapsed time since some initial time. Initial time defaults to the time at
-the moment the timer was created.
-</p></div></div>
+      <p class="shortcomment cmt">A trait that ensures a series of tasks run no faster than the throttle
+setting.</p><div class="fullcomment"><div class="comment cmt"><p>A trait that ensures a series of tasks run no faster than the throttle
+setting. Callers schedule tasks by calling the run method. If at least
+throttle setting nanoseconds have passed since the last task completed, the
+supplied function is immediately executed, otherwise it is scheduled for
+execution once throttle nanoseconds have expired. Tasks scheduled at the same
+time for later execution will be executed in a FIFO manner. Throttler
+guarantees that all tasks will have at least throttle nanoseconds separating
+their completion. However, it can not guarantee that the elapsed time between
+tasks will not be greater than the throttle setting.</p></div></div>
     </li></ol>
             </div>
 
@@ -462,23 +482,6 @@ the moment the timer was created.
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#s_mach.concurrent.util.package@ConcurrentTestContext" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.util.DeferredFuture" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="DeferredFuture"></a>
-      <a id="DeferredFuture:DeferredFuture"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="DeferredFuture$.html"><span class="name">DeferredFuture</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@DeferredFuture" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>

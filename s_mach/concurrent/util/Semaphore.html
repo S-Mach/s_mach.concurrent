@@ -47,17 +47,24 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a non-blocking semaphore that ensures limiting concurrent execution to tasks that have been granted
-the requested number of permits from a limited pool of permits. The acquire method is used to request the execution
-of a task once the requested number of permits become available. If the permits are not immediately available, the
-request is placed into a FIFO queue while waiting for permits to become available. The permit pool size is typically
-static with permits released back to the pool upon completion of tasks. However, some implementations may have
-dynamic sized pools that expend permits instead of releasing them, replenishing permits through some other mechanism.</p><p>Note1: Because Semaphore accepts a function to the task to run, it is not possible for callers to double lock, double
-release or forget to release permits.
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a non-blocking semaphore that ensures limiting concurrent
+execution to tasks that have been granted the requested number of permits
+from a limited pool of permits. The acquire method is used to request the
+execution of a task once the requested number of permits become available. If
+the permits are not immediately available, the request is placed into a FIFO
+queue while waiting for permits to become available. The permit pool size is
+typically static with permits released back to the pool upon completion of
+tasks. However, some implementations may have dynamic sized pools that expend
+permits instead of releasing them, replenishing permits through some other
+mechanism.</p><p>Note1: Because Semaphore accepts a function to the task to run, it is not
+possible for callers to double lock, double  release or forget to release
+permits.
 Note2: Semaphore is NOT reentrant
-Note3: Semaphore should never be used when other options make more sense. Semaphore is designed for synchronizing
-many tasks (100+) and/or long running tasks (10ms+). Unlike other options, Semaphore does not block and consume a
-thread while waiting for permits to become available. However, Semaphore is not the most performant option.
+Note3: Semaphore should never be used when other options make more sense.
+Semaphore is designed for synchronizing many tasks (100+) and/or long running
+tasks (10ms+). Unlike other options, Semaphore does not block and consume a
+thread while waiting for permits to become available. However, Semaphore is
+not the most performant option.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
@@ -106,7 +113,7 @@ thread while waiting for permits to become available. However, Semaphore is not 
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
               <ol><li name="s_mach.concurrent.util.Semaphore#acquire" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="acquire[X](permitCount:Long)(task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.util.DeferredFuture[X]"></a>
+      <a id="acquire[X](permitCount:Long)(task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[X]"></a>
       <a id="acquire[X](Long)(⇒Future[X])(ExecutionContext):DeferredFuture[X]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -114,17 +121,20 @@ thread while waiting for permits to become available. However, Semaphore is not 
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">acquire</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="permitCount">permitCount: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="params">(<span name="task">task: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Semaphore.acquire.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.util.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.util.Semaphore.acquire.X">X</span>]</span>
+        <span class="name">acquire</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="permitCount">permitCount: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="params">(<span name="task">task: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Semaphore.acquire.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.util.Semaphore.acquire.X">X</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Semaphore@acquire[X](permitCount:Long)(task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.util.DeferredFuture[X]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.Semaphore@acquire[X](permitCount:Long)(task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[X]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">task</dt><dd class="cmt"><p>the task to run once permits are available</p></dd><dt>returns</dt><dd class="cmt"><p>a future that completes once permitCount permits are available AND task completes. task is started once
-        permitCount permits are available. The permits are removed from the pool while task is running and after
-        task completes the permits are returned to the pool.
-</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of requested permits exceeds maxAvailablePermits</p></span></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">task</dt><dd class="cmt"><p>the task to run once permits are available</p></dd><dt>returns</dt><dd class="cmt"><p>a future that completes once permitCount permits are available AND
+        task completes. task is started once permitCount permits are
+        available. The permits are removed from the pool while task is
+        running and after task completes the permits are returned to the
+        pool.
+</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of requested permits exceeds
+                                 maxAvailablePermits</p></span></dd></dl></div>
     </li><li name="s_mach.concurrent.util.Semaphore#availablePermits" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="availablePermits:Long"></a>
       <a id="availablePermits:Long"></a>
@@ -175,7 +185,8 @@ thread while waiting for permits to become available. However, Semaphore is not 
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the count of callers currently waiting on permits to become available</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the count of callers currently waiting on permits to become
+        available</p></dd></dl></div>
     </li></ol>
             </div>
 

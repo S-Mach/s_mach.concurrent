@@ -197,8 +197,9 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Run future in the background.</p><div class="fullcomment"><div class="comment cmt"><p>Run future in the background. Discard the result of this Future but ensure if there is an exception it gets
-reported to the ExecutionContext</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt">Run future in the background.</p><div class="fullcomment"><div class="comment cmt"><p>Run future in the background. Discard the result of this Future but
+ensure if there is an exception it gets reported to the ExecutionContext
+</p></div><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
@@ -298,8 +299,8 @@ reported to the ExecutionContext</p></div><dl class="attributes block"> <dt>Anno
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the first successfully completed future. If all futures fail, then completes the future with
-ConcurrentThrowable of all failures.
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the first successfully completed future. If all futures fail,
+then completes the future with ConcurrentThrowable of all failures.
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.FutureOps#flatFold" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="flatFold[A,X](self:scala.concurrent.Future[A],onSuccess:A=&gt;scala.concurrent.Future[X],onFailure:Throwable=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[X]"></a>
@@ -317,8 +318,9 @@ ConcurrentThrowable of all failures.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of X that always succeeds. If self is successful, X is derived from onSuccess otherwise
-        if self is a failure, X is derived from onFailure.
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of X that always succeeds. If self is successful, X
+is derived from onSuccess otherwise if self is a failure, X is derived
+from onFailure.
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.FutureOps#fold" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="fold[A,X](self:scala.concurrent.Future[A],onSuccess:A=&gt;X,onFailure:Throwable=&gt;X)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[X]"></a>
@@ -336,8 +338,9 @@ ConcurrentThrowable of all failures.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of X that always succeeds. If self is successful, X is derived from onSuccess otherwise
-        if self is a failure, X is derived from onFailure.
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of X that always succeeds. If self is successful, X
+is derived from onSuccess otherwise if self is a failure, X is derived
+from onFailure.
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.FutureOps#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="get[A](self:scala.concurrent.Future[A],max:scala.concurrent.duration.Duration):A"></a>
@@ -376,8 +379,8 @@ ConcurrentThrowable of all failures.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the result of the Future after it completes (Note: this waits indefinitely for the
-        Future to complete)</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the result of the Future after it completes (Note: this waits
+indefinitely for the Future to complete)</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd><dt>Exceptions thrown</dt><dd><span class="cmt">if<p>Future completed with a failure, throws the exception
@@ -436,25 +439,25 @@ ConcurrentThrowable of all failures.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the Try result of the Future after it completes (Note: this waits indefinitely for the
-        Future to complete)
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the Try result of the Future after it completes (Note: this waits
+indefinitely for the Future to complete)
 </p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
                 <span class="name">@inline</span><span class="args">()</span>
               
         </dd></dl></div>
     </li><li name="s_mach.concurrent.impl.FutureOps#happensBefore" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="happensBefore[A](lhs:scala.concurrent.Future[Any],rhs:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
-      <a id="happensBefore[A](Future[Any],⇒Future[A])(ExecutionContext):Future[A]"></a>
+      <a id="happensBefore[A](lhs:scala.concurrent.Future[Any],rhs:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[A]"></a>
+      <a id="happensBefore[A](Future[Any],⇒Future[A])(ExecutionContext):DeferredFuture[A]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">happensBefore</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="lhs">lhs: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Any">Any</span>]</span>, <span name="rhs">rhs: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.happensBefore.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.happensBefore.A">A</span>]</span>
+        <span class="name">happensBefore</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="lhs">lhs: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Any">Any</span>]</span>, <span name="rhs">rhs: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.happensBefore.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.happensBefore.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.FutureOps@happensBefore[A](lhs:scala.concurrent.Future[Any],rhs:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.FutureOps@happensBefore[A](lhs:scala.concurrent.Future[Any],rhs:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[A]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -509,8 +512,10 @@ ConcurrentThrowable of all failures.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>after spinning the current thread for delay_ns, returns the error between the requested delay and the
-        actual delay. Use this function only when a precise delay is more important than overall performance.</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>after spinning the current thread for delay_ns, returns the
+error between the requested delay and the actual delay. Use this function
+only when a precise delay is more important than overall performance.
+</p></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -578,7 +583,8 @@ ConcurrentThrowable of all failures.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>execute a side effect after a future completes (even if it fails)</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>execute a side effect after a future completes (even if it fails)
+</p></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -629,8 +635,9 @@ ConcurrentThrowable of all failures.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of a Try of the result that always completes successfully even if the Future eventually throws
-        an exception</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of a Try of the result that always completes
+successfully even if the Future eventually throws an exception
+</p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.FutureOps#unit" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="unit:scala.concurrent.Future[Unit]"></a>
       <a id="unit:Future[Unit]"></a>

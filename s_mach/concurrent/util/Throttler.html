@@ -47,12 +47,15 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait that ensures a series of tasks run no faster than the throttle setting. Callers schedule tasks by calling the
-run method. If at least throttle setting nanoseconds have passed since the last task completed, the supplied function
-is immediately executed, otherwise it is scheduled for execution once throttle nanoseconds have expired. Tasks
-scheduled at the same time for later execution will be executed in a FIFO manner. Throttler guarantees that all tasks
-will have at least throttle nanoseconds separating their completion. However, it can not guarantee that the elapsed
-time between tasks will not be greater than the throttle setting.</p><p>Note: throttle settings below 5us produce unstable results</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait that ensures a series of tasks run no faster than the throttle
+setting. Callers schedule tasks by calling the run method. If at least
+throttle setting nanoseconds have passed since the last task completed, the
+supplied function is immediately executed, otherwise it is scheduled for
+execution once throttle nanoseconds have expired. Tasks scheduled at the same
+time for later execution will be executed in a FIFO manner. Throttler
+guarantees that all tasks will have at least throttle nanoseconds separating
+their completion. However, it can not guarantee that the elapsed time between
+tasks will not be greater than the throttle setting.</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="ThrottleControl.html" class="extype" name="s_mach.concurrent.util.ThrottleControl">ThrottleControl</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
@@ -118,7 +121,7 @@ time between tasks will not be greater than the throttle setting.</p><p>Note: th
       <p class="shortcomment cmt">Modify the throttle setting</p><div class="fullcomment"><div class="comment cmt"><p>Modify the throttle setting</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the previous throttle setting
 </p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ThrottleControl.html" class="extype" name="s_mach.concurrent.util.ThrottleControl">ThrottleControl</a></dd></dl></div>
     </li><li name="s_mach.concurrent.util.Throttler#run" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="run[X](task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.util.DeferredFuture[X]"></a>
+      <a id="run[X](task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[X]"></a>
       <a id="run[X](⇒Future[X])(ExecutionContext):DeferredFuture[X]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -126,15 +129,15 @@ time between tasks will not be greater than the throttle setting.</p><p>Note: th
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">run</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="task">task: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Throttler.run.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.util.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.util.Throttler.run.X">X</span>]</span>
+        <span class="name">run</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="task">task: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Throttler.run.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.util.Throttler.run.X">X</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Throttler@run[X](task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.util.DeferredFuture[X]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.Throttler@run[X](task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[X]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future that completes once at least throttle_ns nanoseconds have expired since the last task AND task
-completes</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future that completes once at least throttle_ns nanoseconds have
+        expired since the last task AND task completes</p></dd></dl></div>
     </li><li name="s_mach.concurrent.util.ThrottleControl#throttle_ns" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="throttle_ns(throttle_ns:Long):Long"></a>
       <a id="throttle_ns(Long):Long"></a>

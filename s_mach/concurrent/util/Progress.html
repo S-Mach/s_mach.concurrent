@@ -43,11 +43,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Progress</span><span class="params">(<span name="completed">completed: <span class="extype" name="scala.Long">Long</span></span>, <span name="optTotal">optTotal: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Long">Long</span>]</span>, <span name="startTime_ns">startTime_ns: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Progress</span><span class="params">(<span name="completed">completed: <span class="extype" name="scala.Int">Int</span></span>, <span name="optTotal">optTotal: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="startTime_ns">startTime_ns: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A case class to report progress in a computation</p></div><dl class="paramcmts block"><dt class="param">completed</dt><dd class="cmt"><p>the count of iterations completed so far</p></dd><dt class="param">optTotal</dt><dd class="cmt"><p>Some(total iterations in computation) or None if the computation has an unknown size</p></dd><dt class="param">startTime_ns</dt><dd class="cmt"><p>the time in nanoseconds returned by System.nanoTime when the computation was started
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A case class to report progress in a computation</p></div><dl class="paramcmts block"><dt class="param">completed</dt><dd class="cmt"><p>the count of iterations completed so far</p></dd><dt class="param">optTotal</dt><dd class="cmt"><p>Some(total iterations in computation) or None if the
+                computation has an unknown size</p></dd><dt class="param">startTime_ns</dt><dd class="cmt"><p>the time in nanoseconds returned by System.nanoTime when
+                    the computation was started
 </p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
@@ -89,7 +91,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="s_mach.concurrent.util.Progress#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(completed:Long,optTotal:Option[Long],startTime_ns:Long):s_mach.concurrent.util.Progress"></a>
+      <a id="&lt;init&gt;(completed:Int,optTotal:Option[Int],startTime_ns:Long):s_mach.concurrent.util.Progress"></a>
       <a id="&lt;init&gt;:Progress"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -97,14 +99,16 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Progress</span><span class="params">(<span name="completed">completed: <span class="extype" name="scala.Long">Long</span></span>, <span name="optTotal">optTotal: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Long">Long</span>]</span>, <span name="startTime_ns">startTime_ns: <span class="extype" name="scala.Long">Long</span></span>)</span>
+        <span class="name">Progress</span><span class="params">(<span name="completed">completed: <span class="extype" name="scala.Int">Int</span></span>, <span name="optTotal">optTotal: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>, <span name="startTime_ns">startTime_ns: <span class="extype" name="scala.Long">Long</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Progress@&lt;init&gt;(completed:Long,optTotal:Option[Long],startTime_ns:Long):s_mach.concurrent.util.Progress" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.Progress@&lt;init&gt;(completed:Int,optTotal:Option[Int],startTime_ns:Long):s_mach.concurrent.util.Progress" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">completed</dt><dd class="cmt"><p>the count of iterations completed so far</p></dd><dt class="param">optTotal</dt><dd class="cmt"><p>Some(total iterations in computation) or None if the computation has an unknown size</p></dd><dt class="param">startTime_ns</dt><dd class="cmt"><p>the time in nanoseconds returned by System.nanoTime when the computation was started
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">completed</dt><dd class="cmt"><p>the count of iterations completed so far</p></dd><dt class="param">optTotal</dt><dd class="cmt"><p>Some(total iterations in computation) or None if the
+                computation has an unknown size</p></dd><dt class="param">startTime_ns</dt><dd class="cmt"><p>the time in nanoseconds returned by System.nanoTime when
+                    the computation was started
 </p></dd></dl></div>
     </li></ol>
             </div>
@@ -207,18 +211,18 @@
               
         </dd></dl></div>
     </li><li name="s_mach.concurrent.util.Progress#completed" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="completed:Long"></a>
-      <a id="completed:Long"></a>
+      <a id="completed:Int"></a>
+      <a id="completed:Int"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">completed</span><span class="result">: <span class="extype" name="scala.Long">Long</span></span>
+        <span class="name">completed</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Progress@completed:Long" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.Progress@completed:Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -349,22 +353,23 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="s_mach.concurrent.util.Progress#optTotal" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="optTotal:Option[Long]"></a>
-      <a id="optTotal:Option[Long]"></a>
+      <a id="optTotal:Option[Int]"></a>
+      <a id="optTotal:Option[Int]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">optTotal</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Long">Long</span>]</span>
+        <span class="name">optTotal</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Int">Int</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Progress@optTotal:Option[Long]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.Progress@optTotal:Option[Int]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Some(total iterations in computation) or None if the computation has an unknown size</p>
+      <p class="shortcomment cmt">Some(total iterations in computation) or None if the
+                computation has an unknown size</p>
     </li><li name="s_mach.concurrent.util.Progress#startTime_ns" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="startTime_ns:Long"></a>
       <a id="startTime_ns:Long"></a>
@@ -381,7 +386,8 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">the time in nanoseconds returned by System.</p><div class="fullcomment"><div class="comment cmt"><p>the time in nanoseconds returned by System.nanoTime when the computation was started
+      <p class="shortcomment cmt">the time in nanoseconds returned by System.</p><div class="fullcomment"><div class="comment cmt"><p>the time in nanoseconds returned by System.nanoTime when
+                    the computation was started
 </p></div></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>

@@ -48,7 +48,8 @@
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A context for testing concurrent code that provides:
-1) an ExecutionContext that keeps track of the number of active and completed Runnables
+1) an ExecutionContext that keeps track of the number of active and completed
+Runnables
 2) a Timer for tracking elapsed duration since start of test
 3) a SerializationSchedule for detecting order of execution of events
 4) a precision delay function that accumulates any delay error
@@ -115,7 +116,8 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the current number of active Runnables and scheduled tasks being processed</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the current number of active Runnables and scheduled tasks being
+        processed</p></dd></dl></div>
     </li><li name="s_mach.concurrent.util.ConcurrentTestContext#delay" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="delay(delay_ns:Long):Unit"></a>
       <a id="delay(Long):Unit"></a>
@@ -132,8 +134,9 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">precisely delay for a period of time in nanoseconds.</p><div class="fullcomment"><div class="comment cmt"><p>precisely delay for a period of time in nanoseconds. If the elapsed time differs from the requested the delay,
-the error in delay is accumulated in delayError_ns</p></div></div>
+      <p class="shortcomment cmt">precisely delay for a period of time in nanoseconds.</p><div class="fullcomment"><div class="comment cmt"><p>precisely delay for a period of time in nanoseconds. If the elapsed time
+differs from the requested the delay, the error in delay is accumulated in
+delayError_ns</p></div></div>
     </li><li name="s_mach.concurrent.util.ConcurrentTestContext#delayError_ns" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="delayError_ns:Long"></a>
       <a id="delayError_ns:Long"></a>
@@ -219,9 +222,13 @@ the error in delay is accumulated in delayError_ns</p></div></div>
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Create a DelayedFuture that executes the supplied function after the given delay
-</p><div class="fullcomment"><div class="comment cmt"><p>Create a DelayedFuture that executes the supplied function after the given delay
-</p></div><dl class="paramcmts block"><dt class="param">delay</dt><dd class="cmt"><p>the time from now to delay execution</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a DelayedFuture that can be used to extract result or cancel (only before it has been started)</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for execution
+      <p class="shortcomment cmt">Create a DelayedFuture that executes the supplied function after the given
+delay
+</p><div class="fullcomment"><div class="comment cmt"><p>Create a DelayedFuture that executes the supplied function after the given
+delay
+</p></div><dl class="paramcmts block"><dt class="param">delay</dt><dd class="cmt"><p>the time from now to delay execution</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a DelayedFuture that can be used to extract result or cancel (only
+        before it has been started)</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
+                                   execution
 </p></span></dd></dl></div>
     </li><li name="s_mach.concurrent.ScheduledExecutionContext#scheduleAtFixedRate" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="scheduleAtFixedRate[U](initialDelay:scala.concurrent.duration.Duration,period:scala.concurrent.duration.Duration)(task:()=&gt;U):s_mach.concurrent.PeriodicTask"></a>
@@ -239,29 +246,16 @@ the error in delay is accumulated in delayError_ns</p></div></div>
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Creates a PeriodicTask that executes first after the given initial delay, and subsequently with the given period.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a PeriodicTask that executes first after the given initial delay, and subsequently with the given period.
-PeriodicTask may stopped using the cancel method or will end automatically on should a failure occur while
-processing the task. If any execution of this task takes longer than its period, then subsequent executions may
-start late, but will not concurrently execute.
+      <p class="shortcomment cmt">Creates a PeriodicTask that executes first after the given initial delay,
+and subsequently with the given period.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a PeriodicTask that executes first after the given initial delay,
+and subsequently with the given period. PeriodicTask may stopped using the
+cancel method or will end automatically on should a failure occur while
+processing the task. If any execution of this task takes longer than its
+period, then subsequent executions may start late, but will not
+concurrently execute.
 </p></div><dl class="paramcmts block"><dt class="param">initialDelay</dt><dd class="cmt"><p>the time to delay first execution</p></dd><dt class="param">period</dt><dd class="cmt"><p>the period between successive executions</p></dd><dt class="param">task</dt><dd class="cmt"><p>the task to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a PeriodicTask</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if period less than or equal to zero
-</p></span><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for execution</p></span></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.ConcurrentTestContext#timer" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="timer:s_mach.concurrent.util.Timer"></a>
-      <a id="timer:Timer"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">implicit abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">timer</span><span class="result">: <a href="Timer.html" class="extype" name="s_mach.concurrent.util.Timer">Timer</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.ConcurrentTestContext@timer:s_mach.concurrent.util.Timer" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Timer that is started on construction of the test context</p></dd></dl></div>
+</p></span><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
+        execution</p></span></dd></dl></div>
     </li></ol>
             </div>
 
@@ -653,7 +647,8 @@ start late, but will not concurrently execute.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Sleep until the active execution count is equal to or less than the specified value</p>
+      <p class="shortcomment cmt">Sleep until the active execution count is equal to or less than the
+specified value</p>
     </li></ol>
             </div>
 

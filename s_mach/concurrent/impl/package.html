@@ -47,13 +47,36 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"></div>
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <span class="toggle">Linear Supertypes</span>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
         
 
       <div id="mbrsel">
         <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
-        
-        
+        <div id="order">
+              <span class="filtertype">Ordering</span>
+              <ol>
+                
+                <li class="alpha in"><span>Alphabetic</span></li>
+                <li class="inherit out"><span>By inheritance</span></li>
+              </ol>
+            </div>
+        <div id="ancestors">
+                <span class="filtertype">Inherited<br />
+                </span>
+                <ol id="linearization">
+                  <li class="in" name="s_mach.concurrent.impl"><span>impl</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                </ol>
+              </div><div id="ancestors">
+            <span class="filtertype"></span>
+            <ol>
+              <li class="hideall out"><span>Hide All</span></li>
+              <li class="showall in"><span>Show all</span></li>
+            </ol>
+            <a href="http://docs.scala-lang.org/overviews/scaladoc/usage.html#members" target="_blank">Learn more about member selection</a>
+          </div>
         <div id="visbl">
             <span class="filtertype">Visibility</span>
             <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
@@ -66,24 +89,74 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="s_mach.concurrent.impl.ConcurrentFunctionBuilder" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ConcurrentFunctionBuilderextendsAnyRef"></a>
-      <a id="ConcurrentFunctionBuilder:ConcurrentFunctionBuilder"></a>
+              <ol><li name="s_mach.concurrent.impl.AbstractAsyncTaskRunner" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AbstractAsyncTaskRunnerextendsDelegatingTaskRunner"></a>
+      <a id="AbstractAsyncTaskRunner:AbstractAsyncTaskRunner"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="ConcurrentFunctionBuilder.html"><span class="name">ConcurrentFunctionBuilder</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="AbstractAsyncTaskRunner.html"><span class="name">AbstractAsyncTaskRunner</span></a><span class="result"> extends <a href="DelegatingTaskRunner.html" class="extype" name="s_mach.concurrent.impl.DelegatingTaskRunner">DelegatingTaskRunner</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ConcurrentFunctionBuilderextendsAnyRef" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@AbstractAsyncTaskRunnerextendsDelegatingTaskRunner" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A base trait for a builder that wraps concurrent functions with pre or post execution side effects
-</p>
+      
+    </li><li name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="AbstractCollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA],MDT&lt;:s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner[A,M,MDT]]extendsAbstractAsyncConfigBuilder[MDT]"></a>
+      <a id="AbstractCollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA],MDT&lt;:AbstractCollectionAsyncTaskRunner[A,M,MDT]]:AbstractCollectionAsyncTaskRunner[A,M,MDT]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="AbstractCollectionAsyncTaskRunner.html"><span class="name">AbstractCollectionAsyncTaskRunner</span></a><span class="tparams">[<span name="A">A</span>, <span name="M">M<span class="tparams">[<span name="AA">+AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner.M.AA">AA</span>]</span>, <span name="MDT">MDT &lt;: <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner.M">M</span>, <span class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner.MDT">MDT</span>]</span>]</span><span class="result"> extends <a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner.MDT">MDT</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@AbstractCollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA],MDT&lt;:s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner[A,M,MDT]]extendsAbstractAsyncConfigBuilder[MDT]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="AsyncTaskRunner:AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="AsyncTaskRunner.html"><span class="name">AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.CollectionAsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA]]extendsAbstractCollectionAsyncTaskRunner[A,M,s_mach.concurrent.impl.CollectionAsyncTaskRunner[A,M]]withProductwithSerializable"></a>
+      <a id="CollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA]]:CollectionAsyncTaskRunner[A,M]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="CollectionAsyncTaskRunner.html"><span class="name">CollectionAsyncTaskRunner</span></a><span class="tparams">[<span name="A">A</span>, <span name="M">M<span class="tparams">[<span name="AA">+AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner.M.AA">AA</span>]</span>]</span><span class="params">(<span name="enumerator">enumerator: <span class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner.A">A</span>]</span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ProgressConfig.html" class="extype" name="s_mach.concurrent.config.ProgressConfig">ProgressConfig</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[<a href="../config/RetryConfig.html" class="extype" name="s_mach.concurrent.config.RetryConfig">RetryConfig</a>] = <span class="symbol">None</span></span>, <span name="optThrottle">optThrottle: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ThrottleConfig.html" class="extype" name="s_mach.concurrent.config.ThrottleConfig">ThrottleConfig</a>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner.M">M</span>, <a href="CollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner">CollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner.M">M</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@CollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA]]extendsAbstractCollectionAsyncTaskRunner[A,M,s_mach.concurrent.impl.CollectionAsyncTaskRunner[A,M]]withProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="s_mach.concurrent.impl.ConcurrentTestContextImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ConcurrentTestContextImplextendsConcurrentTestContext"></a>
       <a id="ConcurrentTestContextImpl:ConcurrentTestContextImpl"></a>
@@ -101,77 +174,40 @@
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.ConcurrentlyConfig" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ConcurrentlyConfigextendsProgressConfigwithRetryConfig"></a>
-      <a id="ConcurrentlyConfig:ConcurrentlyConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="ConcurrentlyConfig.html"><span class="name">ConcurrentlyConfig</span></a><span class="result"> extends <a href="ProgressConfig.html" class="extype" name="s_mach.concurrent.impl.ProgressConfig">ProgressConfig</a> with <a href="RetryConfig.html" class="extype" name="s_mach.concurrent.impl.RetryConfig">RetryConfig</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ConcurrentlyConfigextendsProgressConfigwithRetryConfig" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for the configuration of a Traversable.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for the configuration of a Traversable.concurrently workflow that can wrap a concurrent function with
-progress reporting and retry functions
-</p></div></div>
-    </li><li name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ConcurrentlyConfigBuilder[A,M[+AA]&lt;:Traversable[AA]]extendsProgressConfigBuilder[s_mach.concurrent.impl.ConcurrentlyConfigBuilder[A,M]]withRetryConfigBuilder[s_mach.concurrent.impl.ConcurrentlyConfigBuilder[A,M]]withConcurrentlyConfigwithProductwithSerializable"></a>
-      <a id="ConcurrentlyConfigBuilder[A,M[+AA]&lt;:Traversable[AA]]:ConcurrentlyConfigBuilder[A,M]"></a>
+    </li><li name="s_mach.concurrent.impl.DeferredFutureImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="DeferredFutureImpl[A]extendsDeferredFuture[A]withDelegatedFuture[A]withProductwithSerializable"></a>
+      <a id="DeferredFutureImpl[A]:DeferredFutureImpl[A]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="ConcurrentlyConfigBuilder.html"><span class="name">ConcurrentlyConfigBuilder</span></a><span class="tparams">[<span name="A">A</span>, <span name="M">M<span class="tparams">[<span name="AA">+AA</span>]</span> &lt;: <span class="extype" name="scala.Traversable">Traversable</span>[<span class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder.M.AA">AA</span>]</span>]</span><span class="params">(<span name="ma">ma: <span class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder.A">A</span>]</span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Throwable">Throwable</span>]) ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Boolean">Boolean</span>]] = <span class="symbol">None</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result"> extends <a href="ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ProgressConfigBuilder">ProgressConfigBuilder</a>[<a href="ConcurrentlyConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder">ConcurrentlyConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder.M">M</span>]] with <a href="RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.RetryConfigBuilder">RetryConfigBuilder</a>[<a href="ConcurrentlyConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder">ConcurrentlyConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfigBuilder.M">M</span>]] with <a href="ConcurrentlyConfig.html" class="extype" name="s_mach.concurrent.impl.ConcurrentlyConfig">ConcurrentlyConfig</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="DeferredFutureImpl.html"><span class="name">DeferredFutureImpl</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="deferred">deferred: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.DeferredFutureImpl.A">A</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result"> extends <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.impl.DeferredFutureImpl.A">A</span>] with <a href="../util/DelegatedFuture.html" class="extype" name="s_mach.concurrent.util.DelegatedFuture">DelegatedFuture</a>[<span class="extype" name="s_mach.concurrent.impl.DeferredFutureImpl.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ConcurrentlyConfigBuilder[A,M[+AA]&lt;:Traversable[AA]]extendsProgressConfigBuilder[s_mach.concurrent.impl.ConcurrentlyConfigBuilder[A,M]]withRetryConfigBuilder[s_mach.concurrent.impl.ConcurrentlyConfigBuilder[A,M]]withConcurrentlyConfigwithProductwithSerializable" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@DeferredFutureImpl[A]extendsDeferredFuture[A]withDelegatedFuture[A]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A builder for a configuration of a Traversable.</p><div class="fullcomment"><div class="comment cmt"><p>A builder for a configuration of a Traversable.concurrently workflow</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>type of collection</p></dd><dt class="tparam">M</dt><dd class="cmt"><p>collection type
-</p></dd><dt class="param">ma</dt><dd class="cmt"><p>the collection</p></dd><dt class="param">optProgress</dt><dd class="cmt"><p>optional progress report function</p></dd><dt class="param">optRetry</dt><dd class="cmt"><p>optional retry function</p></dd><dt class="param">executionContext</dt><dd class="cmt"><p>execution context</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.ConcurrentlyOps" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ConcurrentlyOpsextendsAnyRef"></a>
-      <a id="ConcurrentlyOps:ConcurrentlyOps"></a>
+      
+    </li><li name="s_mach.concurrent.impl.DelegatingTaskRunner" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DelegatingTaskRunnerextendsTaskRunner"></a>
+      <a id="DelegatingTaskRunner:DelegatingTaskRunner"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="ConcurrentlyOps.html"><span class="name">ConcurrentlyOps</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="DelegatingTaskRunner.html"><span class="name">DelegatingTaskRunner</span></a><span class="result"> extends <a href="TaskRunner.html" class="extype" name="s_mach.concurrent.impl.TaskRunner">TaskRunner</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ConcurrentlyOpsextendsAnyRef" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@DelegatingTaskRunnerextendsTaskRunner" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.ExecutionContextListener" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ExecutionContextListenerextendsExecutionContext"></a>
-      <a id="ExecutionContextListener:ExecutionContextListener"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="ExecutionContextListener.html"><span class="name">ExecutionContextListener</span></a><span class="result"> extends <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ExecutionContextListenerextendsExecutionContext" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">An immutable ExecutionContext wrapper that allows listening to the ExecutionContext events of the delegate.</p>
     </li><li name="s_mach.concurrent.impl.FutureOps" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="FutureOpsextendsAnyRef"></a>
       <a id="FutureOps:FutureOps"></a>
@@ -228,24 +264,6 @@ TODO: (http://docs.</p><div class="fullcomment"><div class="comment cmt"><p>An i
 TODO: explore using a true &quot;concurrent&quot; back end collection that avoids locking
 TODO: (http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html)</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>
 </p></dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.Listener" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="Listener[ID,E,MDT]extendsAnyRef"></a>
-      <a id="Listener[ID,E,MDT]:Listener[ID,E,MDT]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Listener.html"><span class="name">Listener</span></a><span class="tparams">[<span name="ID">ID</span>, <span name="E">E</span>, <span name="MDT">MDT</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@Listener[ID,E,MDT]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for adding or removing event listeners.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for adding or removing event listeners.</p></div><dl class="paramcmts block"><dt class="tparam">ID</dt><dd class="cmt"><p>identifier type</p></dd><dt class="tparam">E</dt><dd class="cmt"><p>event type</p></dd><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
-</p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.LockImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="LockImplextendsLock"></a>
       <a id="LockImpl:LockImpl"></a>
@@ -264,24 +282,6 @@ TODO: (http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentL
     </span>
       <p class="shortcomment cmt">The default implementation of Lock using a Semaphore backend
 </p>
-    </li><li name="s_mach.concurrent.impl.LoopConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="LoopConfigextendsAnyRef"></a>
-      <a id="LoopConfig:LoopConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="LoopConfig.html"><span class="name">LoopConfig</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@LoopConfigextendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for configuring pre and post loop side effects
-</p>
     </li><li name="s_mach.concurrent.impl.MergeOps" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="MergeOpsextendsAnyRef"></a>
       <a id="MergeOps:MergeOps"></a>
@@ -299,26 +299,23 @@ TODO: (http://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentL
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.NotifiableListener" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="NotifiableListener[ID,E]extendsListener[ID,E,s_mach.concurrent.impl.NotifiableListener[ID,E]]withProductwithSerializable"></a>
-      <a id="NotifiableListener[ID,E]:NotifiableListener[ID,E]"></a>
+    </li><li name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParCollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA]]extendsAbstractCollectionAsyncTaskRunner[A,M,s_mach.concurrent.impl.ParCollectionAsyncTaskRunner[A,M]]withProductwithSerializable"></a>
+      <a id="ParCollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA]]:ParCollectionAsyncTaskRunner[A,M]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="NotifiableListener.html"><span class="name">NotifiableListener</span></a><span class="tparams">[<span name="ID">ID</span>, <span name="E">E</span>]</span><span class="params">(<span name="listeners">listeners: <span class="extype" name="scala.List">List</span>[(<span class="extype" name="s_mach.concurrent.impl.NotifiableListener.ID">ID</span>, (<span class="extype" name="s_mach.concurrent.impl.NotifiableListener.ID">ID</span>, <span class="extype" name="s_mach.concurrent.impl.NotifiableListener.E">E</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span>)] = <span class="symbol">Nil</span></span>)</span><span class="result"> extends <a href="Listener.html" class="extype" name="s_mach.concurrent.impl.Listener">Listener</a>[<span class="extype" name="s_mach.concurrent.impl.NotifiableListener.ID">ID</span>, <span class="extype" name="s_mach.concurrent.impl.NotifiableListener.E">E</span>, <a href="NotifiableListener.html" class="extype" name="s_mach.concurrent.impl.NotifiableListener">NotifiableListener</a>[<span class="extype" name="s_mach.concurrent.impl.NotifiableListener.ID">ID</span>, <span class="extype" name="s_mach.concurrent.impl.NotifiableListener.E">E</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="ParCollectionAsyncTaskRunner.html"><span class="name">ParCollectionAsyncTaskRunner</span></a><span class="tparams">[<span name="A">A</span>, <span name="M">M<span class="tparams">[<span name="AA">+AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M.AA">AA</span>]</span>]</span><span class="params">(<span name="enumerator">enumerator: <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>]</span>, <span name="workerCount">workerCount: <span class="extype" name="scala.Int">Int</span> = <span class="defval" name='<span class="name"><a href="../../package.html">AsyncConfig.DEFAULT_PAR_WORKER_COUNT</a></span>'>...</span></span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ProgressConfig.html" class="extype" name="s_mach.concurrent.config.ProgressConfig">ProgressConfig</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[<a href="../config/RetryConfig.html" class="extype" name="s_mach.concurrent.config.RetryConfig">RetryConfig</a>] = <span class="symbol">None</span></span>, <span name="optThrottle">optThrottle: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ThrottleConfig.html" class="extype" name="s_mach.concurrent.config.ThrottleConfig">ThrottleConfig</a>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>, <a href="ParCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@NotifiableListener[ID,E]extendsListener[ID,E,s_mach.concurrent.impl.NotifiableListener[ID,E]]withProductwithSerializable" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@ParCollectionAsyncTaskRunner[A,M[+AA]&lt;:TraversableOnce[AA]]extendsAbstractCollectionAsyncTaskRunner[A,M,s_mach.concurrent.impl.ParCollectionAsyncTaskRunner[A,M]]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">An implementation of Listener used to add a listener as a member of the case class.</p><div class="fullcomment"><div class="comment cmt"><p>An implementation of Listener used to add a listener as a member of the case class. Not intended to be exposed
-directly to callers. Instead the method lense should be exposed for modifying the inner value.
-</p></div><dl class="paramcmts block"><dt class="tparam">ID</dt><dd class="cmt"><p>identifier type</p></dd><dt class="tparam">E</dt><dd class="cmt"><p>event type
-</p></dd><dt class="param">listeners</dt><dd class="cmt"><p>current listeners</p></dd></dl></div>
+      
     </li><li name="s_mach.concurrent.impl.PeriodicProgressReporterImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="PeriodicProgressReporterImplextendsPeriodicProgressReporter"></a>
       <a id="PeriodicProgressReporterImpl:PeriodicProgressReporterImpl"></a>
@@ -336,81 +333,57 @@ directly to callers. Instead the method lense should be exposed for modifying th
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.ProgressConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ProgressConfigextendsConcurrentFunctionBuilderwithLoopConfig"></a>
-      <a id="ProgressConfig:ProgressConfig"></a>
+    </li><li name="s_mach.concurrent.impl.ProgressState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProgressStateextendsTaskEventListenerHookwithProductwithSerializable"></a>
+      <a id="ProgressState:ProgressState"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ProgressState.html"><span class="name">ProgressState</span></a><span class="params">(<span name="reporter">reporter: <a href="../util/TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result"> extends <a href="TaskEventListenerHook.html" class="extype" name="s_mach.concurrent.impl.TaskEventListenerHook">TaskEventListenerHook</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@ProgressStateextendsTaskEventListenerHookwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.RetryState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RetryStateextendsTaskStepHookwithProductwithSerializable"></a>
+      <a id="RetryState:RetryState"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="RetryState.html"><span class="name">RetryState</span></a><span class="params">(<span name="retryer">retryer: <a href="../util/RetryDecider.html" class="extype" name="s_mach.concurrent.util.RetryDecider">RetryDecider</a></span>)</span><span class="result"> extends <a href="TaskStepHook.html" class="extype" name="s_mach.concurrent.impl.TaskStepHook">TaskStepHook</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@RetryStateextendsTaskStepHookwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.SMach_Concurrent_AbstractPimpMyAsyncConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SMach_Concurrent_AbstractPimpMyAsyncConfigextendsAny"></a>
+      <a id="SMach_Concurrent_AbstractPimpMyAsyncConfig:SMach_Concurrent_AbstractPimpMyAsyncConfig"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="ProgressConfig.html"><span class="name">ProgressConfig</span></a><span class="result"> extends <a href="ConcurrentFunctionBuilder.html" class="extype" name="s_mach.concurrent.impl.ConcurrentFunctionBuilder">ConcurrentFunctionBuilder</a> with <a href="LoopConfig.html" class="extype" name="s_mach.concurrent.impl.LoopConfig">LoopConfig</a></span>
+        <a href="SMach_Concurrent_AbstractPimpMyAsyncConfig.html"><span class="name">SMach_Concurrent_AbstractPimpMyAsyncConfig</span></a><span class="result"> extends <span class="extype" name="scala.Any">Any</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ProgressConfigextendsConcurrentFunctionBuilderwithLoopConfig" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@SMach_Concurrent_AbstractPimpMyAsyncConfigextendsAny" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a concurrent function builder that can add progress reporting to a concurrent function
-</p>
-    </li><li name="s_mach.concurrent.impl.ProgressConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ProgressConfigBuilder[MDT&lt;:s_mach.concurrent.impl.ProgressConfigBuilder[MDT]]extendsAnyRef"></a>
-      <a id="ProgressConfigBuilder[MDT&lt;:ProgressConfigBuilder[MDT]]:ProgressConfigBuilder[MDT]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="ProgressConfigBuilder.html"><span class="name">ProgressConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ProgressConfigBuilder">ProgressConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.ProgressConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ProgressConfigBuilder[MDT&lt;:s_mach.concurrent.impl.ProgressConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for a builder of ProgressConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a builder of ProgressConfig. Callers may set the optional progress reporting function by calling one of
-the progress methods. If the progress reporting function is never called then the optional progress function is left
-unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
-</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.RetryConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="RetryConfigextendsConcurrentFunctionBuilder"></a>
-      <a id="RetryConfig:RetryConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="RetryConfig.html"><span class="name">RetryConfig</span></a><span class="result"> extends <a href="ConcurrentFunctionBuilder.html" class="extype" name="s_mach.concurrent.impl.ConcurrentFunctionBuilder">ConcurrentFunctionBuilder</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@RetryConfigextendsConcurrentFunctionBuilder" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for a function builder that can wrap a function to retry failures
-</p>
-    </li><li name="s_mach.concurrent.impl.RetryConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="RetryConfigBuilder[MDT&lt;:s_mach.concurrent.impl.RetryConfigBuilder[MDT]]extendsAnyRef"></a>
-      <a id="RetryConfigBuilder[MDT&lt;:RetryConfigBuilder[MDT]]:RetryConfigBuilder[MDT]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="RetryConfigBuilder.html"><span class="name">RetryConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.RetryConfigBuilder">RetryConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.RetryConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@RetryConfigBuilder[MDT&lt;:s_mach.concurrent.impl.RetryConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for a builder of RetryConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a builder of RetryConfig. Callers may set the optional retry function by calling the retry method. If the
-retry function is never called then the optional retry function is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
-</p></dd></dl></div>
+      
     </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ScheduledExecutionContextImplextendsScheduledExecutionContextwithProductwithSerializable"></a>
       <a id="ScheduledExecutionContextImpl:ScheduledExecutionContextImpl"></a>
@@ -428,24 +401,6 @@ retry function is never called then the optional retry function is left unset.</
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextListener" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ScheduledExecutionContextListenerextendsScheduledExecutionContext"></a>
-      <a id="ScheduledExecutionContextListener:ScheduledExecutionContextListener"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="ScheduledExecutionContextListener.html"><span class="name">ScheduledExecutionContextListener</span></a><span class="result"> extends <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ScheduledExecutionContextListenerextendsScheduledExecutionContext" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">An immutable ScheduleAtFixedRatedExecutorService wrapper that allows listening to the
-ScheduleAtFixedRatedExecutorService events of the delegate.</p>
     </li><li name="s_mach.concurrent.impl.SemaphoreImpl" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SemaphoreImplextendsSemaphore"></a>
       <a id="SemaphoreImpl:SemaphoreImpl"></a>
@@ -462,8 +417,9 @@ ScheduleAtFixedRatedExecutorService events of the delegate.</p>
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">The default implementation of Semaphore using a ListBuffer backend.</p><div class="fullcomment"><div class="comment cmt"><p>The default implementation of Semaphore using a ListBuffer backend. maxAvailablePermits is not defined and a hook
-for making new permits available is provided.
+      <p class="shortcomment cmt">The default implementation of Semaphore using a ListBuffer backend.</p><div class="fullcomment"><div class="comment cmt"><p>The default implementation of Semaphore using a ListBuffer backend.
+maxAvailablePermits is not defined and a hook for making new permits
+available is provided.
 </p></div></div>
     </li><li name="s_mach.concurrent.impl.SequencerImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SequencerImplextendsSequencer"></a>
@@ -482,43 +438,6 @@ for making new permits available is provided.
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.SeriallyConfig" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="SeriallyConfigextendsProgressConfigwithRetryConfigwithThrottleConfig"></a>
-      <a id="SeriallyConfig:SeriallyConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="SeriallyConfig.html"><span class="name">SeriallyConfig</span></a><span class="result"> extends <a href="ProgressConfig.html" class="extype" name="s_mach.concurrent.impl.ProgressConfig">ProgressConfig</a> with <a href="RetryConfig.html" class="extype" name="s_mach.concurrent.impl.RetryConfig">RetryConfig</a> with <a href="ThrottleConfig.html" class="extype" name="s_mach.concurrent.impl.ThrottleConfig">ThrottleConfig</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@SeriallyConfigextendsProgressConfigwithRetryConfigwithThrottleConfig" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for the configuration of a TraversableOnce.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for the configuration of a TraversableOnce.serially workflow that can wrap a concurrent function with
-progress reporting, retry and throttling functions</p><p>Note: Inheritance order here matters - throttle should be inner wrapper on f (progress and retry are interchangeable)
-</p></div></div>
-    </li><li name="s_mach.concurrent.impl.SeriallyConfigBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="SeriallyConfigBuilder[A,M[+AA]&lt;:TraversableOnce[AA]]extendsProgressConfigBuilder[s_mach.concurrent.impl.SeriallyConfigBuilder[A,M]]withRetryConfigBuilder[s_mach.concurrent.impl.SeriallyConfigBuilder[A,M]]withThrottleConfigBuilder[s_mach.concurrent.impl.SeriallyConfigBuilder[A,M]]withSeriallyConfigwithProductwithSerializable"></a>
-      <a id="SeriallyConfigBuilder[A,M[+AA]&lt;:TraversableOnce[AA]]:SeriallyConfigBuilder[A,M]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="SeriallyConfigBuilder.html"><span class="name">SeriallyConfigBuilder</span></a><span class="tparams">[<span name="A">A</span>, <span name="M">M<span class="tparams">[<span name="AA">+AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.M.AA">AA</span>]</span>]</span><span class="params">(<span name="ma">ma: <span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.A">A</span>]</span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Throwable">Throwable</span>]) ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Boolean">Boolean</span>]] = <span class="symbol">None</span></span>, <span name="optThrottle">optThrottle: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.Long">Long</span>, <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a>)] = <span class="symbol">None</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result"> extends <a href="ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ProgressConfigBuilder">ProgressConfigBuilder</a>[<a href="SeriallyConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder">SeriallyConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.M">M</span>]] with <a href="RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.RetryConfigBuilder">RetryConfigBuilder</a>[<a href="SeriallyConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder">SeriallyConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.M">M</span>]] with <a href="ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ThrottleConfigBuilder">ThrottleConfigBuilder</a>[<a href="SeriallyConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder">SeriallyConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.SeriallyConfigBuilder.M">M</span>]] with <a href="SeriallyConfig.html" class="extype" name="s_mach.concurrent.impl.SeriallyConfig">SeriallyConfig</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@SeriallyConfigBuilder[A,M[+AA]&lt;:TraversableOnce[AA]]extendsProgressConfigBuilder[s_mach.concurrent.impl.SeriallyConfigBuilder[A,M]]withRetryConfigBuilder[s_mach.concurrent.impl.SeriallyConfigBuilder[A,M]]withThrottleConfigBuilder[s_mach.concurrent.impl.SeriallyConfigBuilder[A,M]]withSeriallyConfigwithProductwithSerializable" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A builder for a configuration of a TraversableOnce.</p><div class="fullcomment"><div class="comment cmt"><p>A builder for a configuration of a TraversableOnce.serially workflow</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>type of collection</p></dd><dt class="tparam">M</dt><dd class="cmt"><p>collection type
-</p></dd><dt class="param">ma</dt><dd class="cmt"><p>the collection</p></dd><dt class="param">optProgress</dt><dd class="cmt"><p>optional progress report function</p></dd><dt class="param">optRetry</dt><dd class="cmt"><p>optional retry function</p></dd><dt class="param">optThrottle</dt><dd class="cmt"><p>optional throttle settings</p></dd><dt class="param">executionContext</dt><dd class="cmt"><p>execution context</p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.SeriallyOps" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="SeriallyOpsextendsAnyRef"></a>
       <a id="SeriallyOps:SeriallyOps"></a>
@@ -553,42 +472,125 @@ progress reporting, retry and throttling functions</p><p>Note: Inheritance order
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.ThrottleConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ThrottleConfigextendsConcurrentFunctionBuilder"></a>
-      <a id="ThrottleConfig:ThrottleConfig"></a>
+    </li><li name="s_mach.concurrent.impl.SimpleRetryDecider" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpleRetryDeciderextendsRetryDeciderwithProductwithSerializable"></a>
+      <a id="SimpleRetryDecider:SimpleRetryDecider"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">trait</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="ThrottleConfig.html"><span class="name">ThrottleConfig</span></a><span class="result"> extends <a href="ConcurrentFunctionBuilder.html" class="extype" name="s_mach.concurrent.impl.ConcurrentFunctionBuilder">ConcurrentFunctionBuilder</a></span>
+        <a href="SimpleRetryDecider.html"><span class="name">SimpleRetryDecider</span></a><span class="params">(<span name="f">f: (<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Throwable">Throwable</span>]) ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result"> extends <a href="../util/RetryDecider.html" class="extype" name="s_mach.concurrent.util.RetryDecider">RetryDecider</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ThrottleConfigextendsConcurrentFunctionBuilder" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@SimpleRetryDeciderextendsRetryDeciderwithProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.ThrottleConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ThrottleConfigBuilder[MDT&lt;:s_mach.concurrent.impl.ThrottleConfigBuilder[MDT]]extendsAnyRef"></a>
-      <a id="ThrottleConfigBuilder[MDT&lt;:ThrottleConfigBuilder[MDT]]:ThrottleConfigBuilder[MDT]"></a>
+    </li><li name="s_mach.concurrent.impl.TaskEventListenerHook" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TaskEventListenerHookextendsTaskEventListenerwithTaskHookwithTaskStepHook"></a>
+      <a id="TaskEventListenerHook:TaskEventListenerHook"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="ThrottleConfigBuilder.html"><span class="name">ThrottleConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ThrottleConfigBuilder">ThrottleConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.ThrottleConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="TaskEventListenerHook.html"><span class="name">TaskEventListenerHook</span></a><span class="result"> extends <a href="../util/TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a> with <a href="TaskHook.html" class="extype" name="s_mach.concurrent.impl.TaskHook">TaskHook</a> with <a href="TaskStepHook.html" class="extype" name="s_mach.concurrent.impl.TaskStepHook">TaskStepHook</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ThrottleConfigBuilder[MDT&lt;:s_mach.concurrent.impl.ThrottleConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@TaskEventListenerHookextendsTaskEventListenerwithTaskHookwithTaskStepHook" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a builder of ThrottleConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a builder of ThrottleConfig. Callers may set the optional throttle period by calling the throttle_ns
-method. If the throttle method is never called then the optional throttle period is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
-</p></dd></dl></div>
+      
+    </li><li name="s_mach.concurrent.impl.TaskHook" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TaskHookextendsAnyRef"></a>
+      <a id="TaskHook:TaskHook"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="TaskHook.html"><span class="name">TaskHook</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@TaskHookextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.TaskRunner" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TaskRunnerextendsTaskHookwithTaskStepHook"></a>
+      <a id="TaskRunner:TaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="TaskRunner.html"><span class="name">TaskRunner</span></a><span class="result"> extends <a href="TaskHook.html" class="extype" name="s_mach.concurrent.impl.TaskHook">TaskHook</a> with <a href="TaskStepHook.html" class="extype" name="s_mach.concurrent.impl.TaskStepHook">TaskStepHook</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@TaskRunnerextendsTaskHookwithTaskStepHook" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.TaskStepHook" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="TaskStepHookextendsAnyRef"></a>
+      <a id="TaskStepHook:TaskStepHook"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="TaskStepHook.html"><span class="name">TaskStepHook</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@TaskStepHookextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.TaskStepId" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TaskStepId=Int"></a>
+      <a id="TaskStepId:TaskStepId"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">TaskStepId</span><span class="result"> = <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@TaskStepId=Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.ThrottleState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ThrottleStateextendsTaskStepHookwithProductwithSerializable"></a>
+      <a id="ThrottleState:ThrottleState"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ThrottleState.html"><span class="name">ThrottleState</span></a><span class="params">(<span name="throttle_ns">throttle_ns: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="scheduledExecutionContext">scheduledExecutionContext: <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>)</span><span class="result"> extends <a href="TaskStepHook.html" class="extype" name="s_mach.concurrent.impl.TaskStepHook">TaskStepHook</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@ThrottleStateextendsTaskStepHookwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="s_mach.concurrent.impl.ThrottlerImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ThrottlerImplextendsThrottler"></a>
       <a id="ThrottlerImpl:ThrottlerImpl"></a>
@@ -606,60 +608,363 @@ method. If the throttle method is never called then the optional throttle period
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.TupleConcurrentlyOps" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="TupleConcurrentlyOpsextendsAnyRef"></a>
-      <a id="TupleConcurrentlyOps:TupleConcurrentlyOps"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="TupleConcurrentlyOps.html"><span class="name">TupleConcurrentlyOps</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@TupleConcurrentlyOpsextendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.impl.WorkersConfig" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="WorkersConfigextendsProgressConfigwithRetryConfigwithThrottleConfig"></a>
-      <a id="WorkersConfig:WorkersConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="WorkersConfig.html"><span class="name">WorkersConfig</span></a><span class="result"> extends <a href="ProgressConfig.html" class="extype" name="s_mach.concurrent.impl.ProgressConfig">ProgressConfig</a> with <a href="RetryConfig.html" class="extype" name="s_mach.concurrent.impl.RetryConfig">RetryConfig</a> with <a href="ThrottleConfig.html" class="extype" name="s_mach.concurrent.impl.ThrottleConfig">ThrottleConfig</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@WorkersConfigextendsProgressConfigwithRetryConfigwithThrottleConfig" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for the configuration of a TraversableOnce.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for the configuration of a TraversableOnce.serially workflow that can wrap a concurrent function with
-progress reporting, retry and throttling functions</p><p>Note: Inheritance order here matters - throttle should be inner wrapper on f (progress and retry are interchangeable)
-</p></div></div>
-    </li><li name="s_mach.concurrent.impl.WorkersConfigBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="WorkersConfigBuilder[A,M[+AA]&lt;:TraversableOnce[AA]]extendsProgressConfigBuilder[s_mach.concurrent.impl.WorkersConfigBuilder[A,M]]withRetryConfigBuilder[s_mach.concurrent.impl.WorkersConfigBuilder[A,M]]withThrottleConfigBuilder[s_mach.concurrent.impl.WorkersConfigBuilder[A,M]]withWorkersConfigwithProductwithSerializable"></a>
-      <a id="WorkersConfigBuilder[A,M[+AA]&lt;:TraversableOnce[AA]]:WorkersConfigBuilder[A,M]"></a>
+    </li><li name="s_mach.concurrent.impl.Tuple10AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple10AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple10AsyncTaskRunner:Tuple10AsyncTaskRunner"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="WorkersConfigBuilder.html"><span class="name">WorkersConfigBuilder</span></a><span class="tparams">[<span name="A">A</span>, <span name="M">M<span class="tparams">[<span name="AA">+AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.M.AA">AA</span>]</span>]</span><span class="params">(<span name="ma">ma: <span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.A">A</span>]</span>, <span name="workerCount">workerCount: <span class="extype" name="scala.Int">Int</span> = <span class="symbol"><span class="name"><a href="WorkersConfig$.html">WorkersConfig.DEFAULT_WORKER_COUNT</a></span></span></span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../util/ProgressReporter.html" class="extype" name="s_mach.concurrent.util.ProgressReporter">ProgressReporter</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.List">List</span>[<span class="extype" name="scala.Throwable">Throwable</span>]) ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Boolean">Boolean</span>]] = <span class="symbol">None</span></span>, <span name="optThrottle">optThrottle: <span class="extype" name="scala.Option">Option</span>[(<span class="extype" name="scala.Long">Long</span>, <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a>)] = <span class="symbol">None</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result"> extends <a href="ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ProgressConfigBuilder">ProgressConfigBuilder</a>[<a href="WorkersConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder">WorkersConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.M">M</span>]] with <a href="RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.RetryConfigBuilder">RetryConfigBuilder</a>[<a href="WorkersConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder">WorkersConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.M">M</span>]] with <a href="ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.ThrottleConfigBuilder">ThrottleConfigBuilder</a>[<a href="WorkersConfigBuilder.html" class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder">WorkersConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.WorkersConfigBuilder.M">M</span>]] with <a href="WorkersConfig.html" class="extype" name="s_mach.concurrent.impl.WorkersConfig">WorkersConfig</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Tuple10AsyncTaskRunner.html"><span class="name">Tuple10AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@WorkersConfigBuilder[A,M[+AA]&lt;:TraversableOnce[AA]]extendsProgressConfigBuilder[s_mach.concurrent.impl.WorkersConfigBuilder[A,M]]withRetryConfigBuilder[s_mach.concurrent.impl.WorkersConfigBuilder[A,M]]withThrottleConfigBuilder[s_mach.concurrent.impl.WorkersConfigBuilder[A,M]]withWorkersConfigwithProductwithSerializable" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple10AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A builder for a configuration of a TraversableOnce.</p><div class="fullcomment"><div class="comment cmt"><p>A builder for a configuration of a TraversableOnce.workers workflow</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>type of collection</p></dd><dt class="tparam">M</dt><dd class="cmt"><p>collection type
-</p></dd><dt class="param">ma</dt><dd class="cmt"><p>the collection</p></dd><dt class="param">workerCount</dt><dd class="cmt"><p>count of workers</p></dd><dt class="param">optProgress</dt><dd class="cmt"><p>optional progress report function</p></dd><dt class="param">optRetry</dt><dd class="cmt"><p>optional retry function</p></dd><dt class="param">optThrottle</dt><dd class="cmt"><p>optional throttle settings</p></dd><dt class="param">executionContext</dt><dd class="cmt"><p>execution context</p></dd></dl></div>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple11AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple11AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple11AsyncTaskRunner:Tuple11AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple11AsyncTaskRunner.html"><span class="name">Tuple11AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple11AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple12AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple12AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple12AsyncTaskRunner:Tuple12AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple12AsyncTaskRunner.html"><span class="name">Tuple12AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple12AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple13AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple13AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple13AsyncTaskRunner:Tuple13AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple13AsyncTaskRunner.html"><span class="name">Tuple13AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple13AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple14AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple14AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple14AsyncTaskRunner:Tuple14AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple14AsyncTaskRunner.html"><span class="name">Tuple14AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple14AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple15AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple15AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple15AsyncTaskRunner:Tuple15AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple15AsyncTaskRunner.html"><span class="name">Tuple15AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple15AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple16AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple16AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple16AsyncTaskRunner:Tuple16AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple16AsyncTaskRunner.html"><span class="name">Tuple16AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple16AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple17AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple17AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple17AsyncTaskRunner:Tuple17AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple17AsyncTaskRunner.html"><span class="name">Tuple17AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple17AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple18AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple18AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple18AsyncTaskRunner:Tuple18AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple18AsyncTaskRunner.html"><span class="name">Tuple18AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple18AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple19AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple19AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple19AsyncTaskRunner:Tuple19AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple19AsyncTaskRunner.html"><span class="name">Tuple19AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple19AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple20AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple20AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple20AsyncTaskRunner:Tuple20AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple20AsyncTaskRunner.html"><span class="name">Tuple20AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple20AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple21AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple21AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple21AsyncTaskRunner:Tuple21AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple21AsyncTaskRunner.html"><span class="name">Tuple21AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple21AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple22AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple22AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple22AsyncTaskRunner:Tuple22AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple22AsyncTaskRunner.html"><span class="name">Tuple22AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple22AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple2AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple2AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple2AsyncTaskRunner:Tuple2AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple2AsyncTaskRunner.html"><span class="name">Tuple2AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple2AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple3AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple3AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple3AsyncTaskRunner:Tuple3AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple3AsyncTaskRunner.html"><span class="name">Tuple3AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple3AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple4AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple4AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple4AsyncTaskRunner:Tuple4AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple4AsyncTaskRunner.html"><span class="name">Tuple4AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple4AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple5AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple5AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple5AsyncTaskRunner:Tuple5AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple5AsyncTaskRunner.html"><span class="name">Tuple5AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple5AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple6AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple6AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple6AsyncTaskRunner:Tuple6AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple6AsyncTaskRunner.html"><span class="name">Tuple6AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple6AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple7AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple7AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple7AsyncTaskRunner:Tuple7AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple7AsyncTaskRunner.html"><span class="name">Tuple7AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple7AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple8AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple8AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple8AsyncTaskRunner:Tuple8AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple8AsyncTaskRunner.html"><span class="name">Tuple8AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple8AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.Tuple9AsyncTaskRunner" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Tuple9AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable"></a>
+      <a id="Tuple9AsyncTaskRunner:Tuple9AsyncTaskRunner"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Tuple9AsyncTaskRunner.html"><span class="name">Tuple9AsyncTaskRunner</span></a><span class="params">(<span name="asyncConfig">asyncConfig: <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>)</span><span class="result"> extends <a href="AbstractAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractAsyncTaskRunner">AbstractAsyncTaskRunner</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@Tuple9AsyncTaskRunnerextendsAbstractAsyncTaskRunnerwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li></ol>
             </div>
 
@@ -667,58 +972,7 @@ progress reporting, retry and throttling functions</p><p>Note: Inheritance order
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="s_mach.concurrent.impl.ConcurrentlyConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ConcurrentlyConfig"></a>
-      <a id="ConcurrentlyConfig:ConcurrentlyConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="ConcurrentlyConfig$.html"><span class="name">ConcurrentlyConfig</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ConcurrentlyConfig" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.impl.ConcurrentlyOps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ConcurrentlyOps"></a>
-      <a id="ConcurrentlyOps:ConcurrentlyOps"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="ConcurrentlyOps$.html"><span class="name">ConcurrentlyOps</span></a><span class="result"> extends <a href="ConcurrentlyOps.html" class="extype" name="s_mach.concurrent.impl.ConcurrentlyOps">ConcurrentlyOps</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ConcurrentlyOps" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.impl.ExecutionContextListener" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ExecutionContextListener"></a>
-      <a id="ExecutionContextListener:ExecutionContextListener"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="ExecutionContextListener$.html"><span class="name">ExecutionContextListener</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ExecutionContextListener" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.impl.FutureOps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="s_mach.concurrent.impl.FutureOps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="FutureOps"></a>
       <a id="FutureOps:FutureOps"></a>
       <h4 class="signature">
@@ -752,6 +1006,40 @@ progress reporting, retry and throttling functions</p><p>Note: Inheritance order
       </a>
     </span>
       
+    </li><li name="s_mach.concurrent.impl.ProgressState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ProgressState"></a>
+      <a id="ProgressState:ProgressState"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ProgressState$.html"><span class="name">ProgressState</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@ProgressState" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.RetryState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RetryState"></a>
+      <a id="RetryState:RetryState"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="RetryState$.html"><span class="name">RetryState</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@RetryState" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ScheduledExecutionContextImpl"></a>
       <a id="ScheduledExecutionContextImpl:ScheduledExecutionContextImpl"></a>
@@ -765,40 +1053,6 @@ progress reporting, retry and throttling functions</p><p>Note: Inheritance order
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#s_mach.concurrent.impl.package@ScheduledExecutionContextImpl" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextListener" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ScheduledExecutionContextListener"></a>
-      <a id="ScheduledExecutionContextListener:ScheduledExecutionContextListener"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="ScheduledExecutionContextListener$.html"><span class="name">ScheduledExecutionContextListener</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@ScheduledExecutionContextListener" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.impl.SeriallyConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="SeriallyConfig"></a>
-      <a id="SeriallyConfig:SeriallyConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="SeriallyConfig$.html"><span class="name">SeriallyConfig</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@SeriallyConfig" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -820,36 +1074,19 @@ progress reporting, retry and throttling functions</p><p>Note: Inheritance order
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.TupleConcurrentlyOps" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="TupleConcurrentlyOps"></a>
-      <a id="TupleConcurrentlyOps:TupleConcurrentlyOps"></a>
+    </li><li name="s_mach.concurrent.impl.ThrottleState" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ThrottleState"></a>
+      <a id="ThrottleState:ThrottleState"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="TupleConcurrentlyOps$.html"><span class="name">TupleConcurrentlyOps</span></a><span class="result"> extends <a href="TupleConcurrentlyOps.html" class="extype" name="s_mach.concurrent.impl.TupleConcurrentlyOps">TupleConcurrentlyOps</a></span>
+        <a href="ThrottleState$.html"><span class="name">ThrottleState</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@TupleConcurrentlyOps" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.impl.WorkersConfig" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="WorkersConfig"></a>
-      <a id="WorkersConfig:WorkersConfig"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="WorkersConfig$.html"><span class="name">WorkersConfig</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.package@WorkersConfig" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.package@ThrottleState" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -880,7 +1117,11 @@ progress reporting, retry and throttling functions</p><p>Note: Inheritance order
         </div>
 
         <div id="inheritedMembers">
-        
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
+            </div><div class="parent" name="scala.Any">
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
+            </div>
         
         </div>
 

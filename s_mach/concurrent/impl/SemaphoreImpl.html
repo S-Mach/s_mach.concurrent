@@ -47,8 +47,9 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>The default implementation of Semaphore using a ListBuffer backend. maxAvailablePermits is not defined and a hook
-for making new permits available is provided.
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>The default implementation of Semaphore using a ListBuffer backend.
+maxAvailablePermits is not defined and a hook for making new permits
+available is provided.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="../util/Semaphore.html" class="extype" name="s_mach.concurrent.util.Semaphore">Semaphore</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
@@ -187,7 +188,7 @@ for making new permits available is provided.
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="s_mach.concurrent.impl.SemaphoreImpl#acquire" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="acquire[X](permitCount:Long)(task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.util.DeferredFuture[X]"></a>
+      <a id="acquire[X](permitCount:Long)(task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[X]"></a>
       <a id="acquire[X](Long)(⇒Future[X])(ExecutionContext):DeferredFuture[X]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -195,17 +196,20 @@ for making new permits available is provided.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">acquire</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="permitCount">permitCount: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="params">(<span name="task">task: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.SemaphoreImpl.acquire.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="../util/DeferredFuture.html" class="extype" name="s_mach.concurrent.util.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.impl.SemaphoreImpl.acquire.X">X</span>]</span>
+        <span class="name">acquire</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="permitCount">permitCount: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="params">(<span name="task">task: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.SemaphoreImpl.acquire.X">X</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.impl.SemaphoreImpl.acquire.X">X</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.SemaphoreImpl@acquire[X](permitCount:Long)(task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.util.DeferredFuture[X]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.SemaphoreImpl@acquire[X](permitCount:Long)(task:=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[X]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">task</dt><dd class="cmt"><p>the task to run once permits are available</p></dd><dt>returns</dt><dd class="cmt"><p>a future that completes once permitCount permits are available AND task completes. task is started once
-        permitCount permits are available. The permits are removed from the pool while task is running and after
-        task completes the permits are returned to the pool.
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.SemaphoreImpl">SemaphoreImpl</a> → <a href="../util/Semaphore.html" class="extype" name="s_mach.concurrent.util.Semaphore">Semaphore</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of requested permits exceeds maxAvailablePermits</p></span></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">task</dt><dd class="cmt"><p>the task to run once permits are available</p></dd><dt>returns</dt><dd class="cmt"><p>a future that completes once permitCount permits are available AND
+        task completes. task is started once permitCount permits are
+        available. The permits are removed from the pool while task is
+        running and after task completes the permits are returned to the
+        pool.
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.SemaphoreImpl">SemaphoreImpl</a> → <a href="../util/Semaphore.html" class="extype" name="s_mach.concurrent.util.Semaphore">Semaphore</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the number of requested permits exceeds
+                                 maxAvailablePermits</p></span></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -592,7 +596,8 @@ for making new permits available is provided.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the count of callers currently waiting on permits to become available</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.SemaphoreImpl">SemaphoreImpl</a> → <a href="../util/Semaphore.html" class="extype" name="s_mach.concurrent.util.Semaphore">Semaphore</a></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the count of callers currently waiting on permits to become
+        available</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.SemaphoreImpl">SemaphoreImpl</a> → <a href="../util/Semaphore.html" class="extype" name="s_mach.concurrent.util.Semaphore">Semaphore</a></dd></dl></div>
     </li></ol>
             </div>
 
