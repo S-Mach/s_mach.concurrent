@@ -19,7 +19,7 @@
 package s_mach.concurrent.impl
 
 import java.util.concurrent.{TimeUnit, ScheduledExecutorService}
-import scala.concurrent.{Promise, ExecutionContext}
+import scala.concurrent.{Future, Promise, ExecutionContext}
 import scala.concurrent.duration._
 import scala.util.Try
 import s_mach.concurrent._
@@ -33,14 +33,19 @@ object ScheduledExecutionContextImpl {
   )(implicit
     ec:ExecutionContext
   ) extends DelayedFuture[A] with DelegatedFuture[A] {
+
     val delay_ns = delay.toNanos
     val startTime_ns = System.nanoTime + delay_ns
+    val futPromise = Promise[Future[A]]()
     val promise = Promise[A]()
 
     val javaScheduledFuture =
       scheduledExecutorService.schedule(
         new Runnable {
-          override def run() = promise.complete(Try(task()))
+          override def run() = {
+            futPromise.success(delegate)
+            promise.complete(Try(task()))
+          }
         },
         delay_ns,
         TimeUnit.NANOSECONDS
@@ -48,6 +53,7 @@ object ScheduledExecutionContextImpl {
 
     val delegate = promise.future
 
+    val deferred = futPromise.future
   }
 
   case class PeriodicTaskImpl[U](

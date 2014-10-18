@@ -18,13 +18,12 @@
 */
 package s_mach.concurrent
 
-import scala.concurrent._
 import scala.concurrent.duration._
 
 /**
  * A trait for a future that will be started after a delay
  */
-trait DelayedFuture[A] extends Future[A] {
+trait DelayedFuture[A] extends DeferredFuture[A] {
   /** @return the time stamp in nanoseconds when the future will be started */
   def startTime_ns : Long
   /** @return the delay before starting */

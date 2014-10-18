@@ -30,6 +30,9 @@ trait DeferredFuture[A] extends Future[A] {
   /** @return a future that completes once the start condition occurs. The
    * future contains the deferred future (which is now running) */
   def deferred : Future[Future[A]]
+
+  /** @return TRUE if the future has been started */
+  def isStarted : Boolean = deferred.isCompleted
 }
 
 object DeferredFuture {
