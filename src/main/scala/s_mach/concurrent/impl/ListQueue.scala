@@ -16,9 +16,7 @@
           .L1 1tt1ttt,,Li
             ...1LLLL...
 */
-package s_mach.concurrent.util
-
-import s_mach.concurrent.impl.ListQueueImpl
+package s_mach.concurrent.impl
 
 /**
  * A trait for queue that uses an unlimited size linked list as the backend

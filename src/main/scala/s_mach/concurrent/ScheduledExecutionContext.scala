@@ -43,9 +43,9 @@ trait ScheduledExecutionContext {
   /**
    * Creates a PeriodicTask that executes first after the given initial delay,
    * and subsequently with the given period. PeriodicTask may stopped using the
-   * cancel method or will end automatically on should a failure occur while
-   * processing the task. If any execution of this task takes longer than its
-   * period, then subsequent executions may start late, but will not
+   * cancel method. If a failure occurs while processing the task, the task is
+   * automatically cancelled. If any execution of this task takes longer than
+   * its period, then subsequent executions may start late, but will not
    * concurrently execute.
    *
    * @param initialDelay the time to delay first execution

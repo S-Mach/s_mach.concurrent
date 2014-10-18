@@ -23,8 +23,7 @@ import s_mach.concurrent.util.TaskEventListener
 import scala.concurrent.ExecutionContext
 
 /**
- * A trait for a concurrent function builder that can add progress reporting to
- * a concurrent function
+ * A trait for configuring optional progress reporting
  */
 trait OptProgressConfig {
   def optTotal: Option[Int]
@@ -32,6 +31,9 @@ trait OptProgressConfig {
   def optProgress: Option[ProgressConfig]
 }
 
+/**
+ * A trait that configures progress reporting
+ */
 trait ProgressConfig {
   implicit def executionContext: ExecutionContext
   def reporter: TaskEventListener

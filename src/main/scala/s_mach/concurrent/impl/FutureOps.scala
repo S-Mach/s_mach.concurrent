@@ -24,7 +24,7 @@ import scala.concurrent.duration._
 import scala.language.higherKinds
 import scala.util.{Failure, Success, Try}
 import MergeOps._
-import s_mach.concurrent.{DeferredFuture, ConcurrentThrowable}
+import s_mach.concurrent.{DeferredFuture, AsyncParThrowable}
 
 object FutureOps extends FutureOps
 trait FutureOps {
@@ -124,7 +124,7 @@ trait FutureOps {
 
   /**
    * @return the first successfully completed future. If all futures fail,
-   * then completes the future with ConcurrentThrowable of all failures.
+   * then completes the future with AsyncParThrowable of all failures.
    */
   def firstSuccess[A](
     xa: Traversable[Future[A]]
@@ -134,11 +134,11 @@ trait FutureOps {
     xa.foreach { fa =>
       fa onSuccess { case a => promise.trySuccess(a) }
     }
-    // If all futures fail, then complete with ConcurrentThrowable
+    // If all futures fail, then complete with AsyncParThrowable
     mergeAllFailures(xa) onSuccess { case allFailure =>
       if(allFailure.nonEmpty) {
         promise.tryFailure(
-          ConcurrentThrowable(
+          AsyncParThrowable(
             allFailure.head,
             Future.successful(allFailure.toVector)
           )

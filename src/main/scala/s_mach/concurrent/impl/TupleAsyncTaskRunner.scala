@@ -28,7 +28,9 @@ import s_mach.concurrent.impl.MergeOps.mergeFailImmediately
 trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   def self: AsyncConfig
 
-  
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B](
     fa: => Future[A],
     fb: => Future[B]
@@ -37,6 +39,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C](
     fa: => Future[A],
     fb: => Future[B],
@@ -46,6 +51,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D](
     fa: => Future[A],
     fb: => Future[B],
@@ -56,6 +64,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E](
     fa: => Future[A],
     fb: => Future[B],
@@ -67,6 +78,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F](
     fa: => Future[A],
     fb: => Future[B],
@@ -79,6 +93,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G](
     fa: => Future[A],
     fb: => Future[B],
@@ -92,6 +109,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H](
     fa: => Future[A],
     fb: => Future[B],
@@ -106,6 +126,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I](
     fa: => Future[A],
     fb: => Future[B],
@@ -121,6 +144,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J](
     fa: => Future[A],
     fb: => Future[B],
@@ -137,6 +163,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K](
     fa: => Future[A],
     fb: => Future[B],
@@ -154,6 +183,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L](
     fa: => Future[A],
     fb: => Future[B],
@@ -172,6 +204,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M](
     fa: => Future[A],
     fb: => Future[B],
@@ -191,6 +226,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N](
     fa: => Future[A],
     fb: => Future[B],
@@ -211,6 +249,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O](
     fa: => Future[A],
     fb: => Future[B],
@@ -232,6 +273,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P](
     fa: => Future[A],
     fb: => Future[B],
@@ -254,6 +298,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q](
     fa: => Future[A],
     fb: => Future[B],
@@ -277,6 +324,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R](
     fa: => Future[A],
     fb: => Future[B],
@@ -301,6 +351,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S](
     fa: => Future[A],
     fb: => Future[B],
@@ -326,6 +379,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T](
     fa: => Future[A],
     fb: => Future[B],
@@ -352,6 +408,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U](
     fa: => Future[A],
     fb: => Future[B],
@@ -379,6 +438,9 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   }
 
 
+  /** @return a future of a tuple that completes successfully once all futures
+    *         successfullly complete OR that fails immediately once any future
+    *         fails. */
   def run[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V](
     fa: => Future[A],
     fb: => Future[B],

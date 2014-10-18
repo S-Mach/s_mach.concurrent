@@ -18,8 +18,6 @@
 */
 package s_mach.concurrent.util
 
-
-
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 import s_mach.concurrent.ScheduledExecutionContext

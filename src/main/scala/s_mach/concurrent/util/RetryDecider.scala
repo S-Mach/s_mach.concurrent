@@ -21,10 +21,11 @@ package s_mach.concurrent.util
 import scala.concurrent.Future
 
 /**
- * A trait to decide whether to retry a failure during a step of task.
+ * A trait to decide whether to retry a failure in a task. Tasks are identified
+ * by their sequence number.
  *
- * Note: derived implementations must be threadsafe.
+ * Note: implementations must be thread safe.
  */
 trait RetryDecider {
-  def shouldRetry(taskStepId: Long, failure: Throwable) : Future[Boolean]
+  def shouldRetry(sequenceNumber: Long, failure: Throwable) : Future[Boolean]
 }

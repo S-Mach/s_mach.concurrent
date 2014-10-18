@@ -19,12 +19,9 @@
 package s_mach.concurrent.config
 
 /**
- * A trait for the configuration of a concurrent serial TraversableOnce.async
- * workflow that can wrap a concurrent function with progress reporting, retry
- * and throttling functions
- *
- * Note: Inheritance order here matters - throttle should be inner wrapper on
- * f (progress and retry are interchangeable)
+ * A trait for an asynchronous task configuration that allows configuring
+ * the number of parallel workers used to process the task, optional progress
+ * reporting, failure retry and throttling.
  */
 trait AsyncConfig extends OptProgressConfig with OptRetryConfig with OptThrottleConfig {
   def workerCount : Int

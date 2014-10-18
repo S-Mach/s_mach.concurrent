@@ -18,20 +18,19 @@
 */
 package s_mach.concurrent.config
 
+import scala.concurrent.ExecutionContext
+import scala.concurrent.duration.Duration
 import s_mach.concurrent.ScheduledExecutionContext
 import s_mach.concurrent.util._
 
-import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.Duration
-
 /**
- * A trait for a builder of ProgressConfig. Callers may set the optional
- * progress reporting function by calling one of the progress methods. If the
- * progress reporting function is never called then the optional progress
- * function is left unset.
+ * A trait for an immutable builder of OptProgressConfig. Callers may set the
+ * optional progress reporter by calling one of the progress methods. If no
+ * progress reporting method is ever called then the optional progress function
+ * is left unset.
  * @tparam MDT most derived type
  */
-trait ProgressConfigBuilder[MDT <: ProgressConfigBuilder[MDT]] {
+trait OptProgressConfigBuilder[MDT <: OptProgressConfigBuilder[MDT]] {
 
   /** The optional total number of operations as set by derived type */
   def optTotal : Option[Int]

@@ -96,9 +96,9 @@ object WorkersOps {
    * Using the collection members xa, concurrently execute a processing
    * function f, outputting the result of f to the function g. Concurrency is
    * limited to the number of workers specified in WorkersConfig. Any exception
-   * that occurs during a worker's processing will cause a ConcurrentThrowable
+   * that occurs during a worker's processing will cause a AsyncParThrowable
    * to be immediately returned. Any other exceptions from workers that have yet
-   * to complete can be retrieved from ConcurrentThrowable.
+   * to complete can be retrieved from AsyncParThrowable.
    *
    * @param xa the collection
    * @param f the processing function
@@ -121,7 +121,7 @@ object WorkersOps {
       workerFailures.poll().flatMap { head =>
         Future.failed {
           val tail = workerFailures.poll(workerFailures.offerQueueSize)
-           ConcurrentThrowable(head, tail)
+           AsyncParThrowable(head, tail)
         }
       }
     }

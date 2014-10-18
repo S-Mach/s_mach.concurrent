@@ -20,7 +20,6 @@ package s_mach.concurrent.impl
 
 import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, Future, Promise}
-import s_mach.concurrent.util.ListQueue
 
 /**
  * An implementation of ConcurrentQueue using a ListBuffer backend

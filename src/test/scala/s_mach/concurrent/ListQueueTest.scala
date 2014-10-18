@@ -21,6 +21,7 @@ package s_mach.concurrent
 import java.util.concurrent.Executors
 
 import org.scalatest.{Matchers, FlatSpec}
+import s_mach.concurrent.impl.ListQueue
 import scala.concurrent.{Future, ExecutionContext}
 
 import scala.concurrent.duration._

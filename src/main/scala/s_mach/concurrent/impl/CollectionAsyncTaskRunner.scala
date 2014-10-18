@@ -18,29 +18,37 @@
 */
 package s_mach.concurrent.impl
 
-import s_mach.concurrent.config._
-import s_mach.concurrent.util._
-
 import scala.language.higherKinds
 import scala.collection.generic.CanBuildFrom
 import scala.concurrent.{ExecutionContext, Future}
+import s_mach.concurrent.config._
 
 trait AbstractCollectionAsyncTaskRunner[
   A,
   M[+AA] <: TraversableOnce[AA],
   MDT <: AbstractCollectionAsyncTaskRunner[A,M,MDT]
 ] extends AbstractAsyncConfigBuilder[MDT] {
-  def enumerator: M[A]
+  def input: M[A]
 
-  def optTotal = if(enumerator.hasDefiniteSize) {
-    Some(enumerator.size)
+  def optTotal = if(input.hasDefiniteSize) {
+    Some(input.size)
   } else {
     None
   }
 }
 
+/**
+ * A case class for a serial asynchronous task runner that is configurable with
+ * optional progress reporting, throttling and/or failure retry.
+ * @param input the input collection
+ * @param optProgress optional progress reporting settings
+ * @param optRetry optional failure retry settings
+ * @param optThrottle optional throttle settings
+ * @tparam A the input type
+ * @tparam M the collection type
+ */
 case class CollectionAsyncTaskRunner[A,M[+AA] <: TraversableOnce[AA]](
-  enumerator: M[A],
+  input: M[A],
   optProgress: Option[ProgressConfig] = None,
   optRetry: Option[RetryConfig] = None,
   optThrottle: Option[ThrottleConfig] = None
@@ -62,18 +70,20 @@ case class CollectionAsyncTaskRunner[A,M[+AA] <: TraversableOnce[AA]](
     optThrottle = optThrottle
   )
 
-  /** @return a copy of this config for a parallel workflow */
+  /** @return a parallel async task runner configured with a copy of all
+    *         settings  */
   def par = ParCollectionAsyncTaskRunner[A,M](
-    enumerator = enumerator,
-    workerCount = AsyncConfig.DEFAULT_PAR_WORKER_COUNT,
+    input = input,
     optProgress = optProgress,
     optRetry = optRetry,
     optThrottle = optThrottle
   )
 
-  /** @return a copy of this config for a parallel workflow */
+  /**
+   * @return a parallel async task runner configured to run with workerCount
+   *         workers and with a copy of all settings  */
   def par(workerCount: Int) = ParCollectionAsyncTaskRunner[A,M](
-    enumerator = enumerator,
+    input = input,
     workerCount = workerCount,
     optProgress = optProgress,
     optRetry = optRetry,
@@ -85,20 +95,20 @@ case class CollectionAsyncTaskRunner[A,M[+AA] <: TraversableOnce[AA]](
     cbf: CanBuildFrom[Nothing, B, M[B]],
     ec: ExecutionContext
   ) : Future[M[B]] = {
-    AsyncTaskRunner(this).runTask1(enumerator, mapSerially[A,B,M], f)
+    AsyncTaskRunner(this).runTask1(input, mapSerially[A,B,M], f)
   }
 
   @inline def flatMap[B](f: A => Future[TraversableOnce[B]])(implicit
     cbf: CanBuildFrom[Nothing, B, M[B]],
     ec: ExecutionContext
   ) : Future[M[B]] = {
-    AsyncTaskRunner(this).runTask1(enumerator, flatMapSerially[A,B,M], f)
+    AsyncTaskRunner(this).runTask1(input, flatMapSerially[A,B,M], f)
   }
 
   @inline def foreach[U](f: A => Future[U])(implicit
     ec: ExecutionContext
   ) : Future[Unit] = {
-    AsyncTaskRunner(this).runTask1(enumerator, foreachSerially[A,U,M], f)
+    AsyncTaskRunner(this).runTask1(input, foreachSerially[A,U,M], f)
   }
 
   @inline def foldLeft[B](z:B)(f: (B,A) => Future[B])(implicit
@@ -107,18 +117,28 @@ case class CollectionAsyncTaskRunner[A,M[+AA] <: TraversableOnce[AA]](
   ) : Future[B] = {
     val fSwap = { (a:A,b:B) => f(b,a) }
     AsyncTaskRunner(this).runTask2[A,B,B,M,B](
-      enumerator,
+      input,
       foldLeftSerially[A,B,M](z),
       fSwap
     )
   }
 }
 
+/**
+ * A case class for a parallel asynchronous task runner that is configurable 
+ * with optional progress reporting, throttling and/or failure retry.
+ * @param input the input collection
+ * @param optProgress optional progress reporting settings
+ * @param optRetry optional failure retry settings
+ * @param optThrottle optional throttle settings
+ * @tparam A the input type
+ * @tparam M the collection type
+ */
 case class ParCollectionAsyncTaskRunner[
   A,
   M[+AA] <: TraversableOnce[AA]
 ](
-  enumerator: M[A],
+  input: M[A],
   workerCount: Int = AsyncConfig.DEFAULT_PAR_WORKER_COUNT,
   optProgress: Option[ProgressConfig] = None,
   optRetry: Option[RetryConfig] = None,
@@ -145,7 +165,7 @@ case class ParCollectionAsyncTaskRunner[
     ec: ExecutionContext
   ) : Future[M[B]] = {
     AsyncTaskRunner(this).runTask1(
-      enumerator,
+      input,
       mapWorkers[A,B,M](workerCount),
       f
     )
@@ -156,7 +176,7 @@ case class ParCollectionAsyncTaskRunner[
     ec: ExecutionContext
   ) : Future[M[B]] = {
     AsyncTaskRunner(this).runTask1(
-      enumerator,
+      input,
       flatMapWorkers[A,B,M](workerCount),
       f
     )
@@ -166,7 +186,7 @@ case class ParCollectionAsyncTaskRunner[
     ec: ExecutionContext
   ) : Future[Unit] = {
     AsyncTaskRunner(this).runTask1(
-      enumerator,
+      input,
       foreachWorkers[A,U,M](workerCount),
       f
     )

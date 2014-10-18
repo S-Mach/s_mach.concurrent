@@ -18,13 +18,19 @@
 */
 package s_mach.concurrent.config
 
+import scala.concurrent.ExecutionContext
 import s_mach.concurrent.util.RetryDecider
 
-import scala.concurrent.ExecutionContext
-
+/**
+ * A trait for configuring optional failure retry
+ */
 trait OptRetryConfig {
   def optRetry: Option[RetryConfig]
 }
+
+/**
+ * A trait that configures failure retry
+ */
 trait RetryConfig {
   implicit def executionContext: ExecutionContext
 

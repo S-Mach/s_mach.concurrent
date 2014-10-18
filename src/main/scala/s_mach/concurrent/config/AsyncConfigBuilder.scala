@@ -18,6 +18,13 @@
 */
 package s_mach.concurrent.config
 
+/**
+ * A case class for an immutable AsyncConfig builder
+ * @param workerCount number of parallel workers to use during task
+ * @param optProgress optional progress reporting settings
+ * @param optRetry optional failure retry settings
+ * @param optThrottle optional throttle setting
+ */
 case class AsyncConfigBuilder(
   workerCount: Int = 1,
   optProgress: Option[ProgressConfig] = None,

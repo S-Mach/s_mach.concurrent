@@ -19,7 +19,6 @@
 package s_mach
 
 
-import java.util.concurrent.ScheduledExecutorService
 import scala.language.higherKinds
 import scala.concurrent._
 import scala.concurrent.duration._
@@ -28,11 +27,84 @@ import scala.collection.generic.CanBuildFrom
 import s_mach.concurrent.impl._
 import s_mach.concurrent.config.{AsyncConfigBuilder, AsyncConfig}
 
+/**
+ * s_mach.concurrent is an open-source Scala library that provides asynchronous
+ * serial and parallel execution flow control primitives for working with
+ * asynchronous tasks. An asynchronous task consists of two or more calls to
+ * function(s) that return a future result <code>A ⇒ Future[B]</code> instead of
+ * the result <code>A ⇒ B</code>.</p>
+ * <ul>
+ *   <li>
+ *     <p>Adds concurrent flow control primitives <code>async</code> and
+ *     <code>async.par</code> for performing fixed size heterogeneous (tuple)
+ *     and variable size homogeneous (collection) asynchronous  tasks. These
+ *     primitives:</p>
+ *     <div>
+ *       <ul>
+ *         <li>
+ *           <p>Allow enabling optional progress reporting, failure retry and/or
+ *           throttle control for asynchronous tasks</p>
+ *         </li>
+ *         <li>
+ *           <p>Ensure proper sequencing of returned futures, e.g. given
+ *           <code>f: Int ⇒ Future[String]</code>:</p>
+ *           <div>
+ *             <ul>
+ *               <li>
+ *                 <p><code>List(1,2,3).async.map(f)</code> returns
+ *                 <code>Future[List[String]]</code></p>
+ *               </li>
+ *               <li>
+ *                 <p><code>async.par.run(f(1),f(2),f(3))</code> returns
+ *                 <code>Future[(String,String,String)]</code></p>
+ *               </li>
+ *             </ul>
+ *           </div>
+ *         </li>
+ *         <li>
+ *           <p>Ensure fail-immediate sequencing of future results (see the
+ *           <em>Under the hood: Merge</em> section for details)</p>
+ *         </li>
+ *         <li><p>Ensure all exceptions generated during asynchronous task
+ *         processing can be retrieved (<code>Future.sequence</code> returns
+ *         only the first)</p></li>
+ *       </ul>
+ *     </div>
+ *   </li>
+ *   <li>
+ *     <p><code>collection.async</code> and <code>collection.async.par</code>
+ *     support collection operations such as <code>map</code>,
+ *     <code>flatMap</code> and <code>foreach</code> on asynchronous functions,
+ *     i.e. <code>A ⇒ Future[B]</code></p>
+ *   </li>
+ *   <li>
+ *     <p><code>async.par.run(future1, future2, …)</code> supports running
+ *     fixed size heterogeneous asynchronous task (of up to 22 futures) in
+ *     parallel</p>
+ *   </li>
+ *   <li>
+ *     <p>Adds <code>ScheduledExecutionContext</code>, a Scala interface wrapper
+ *     for <code>java.util.concurrent.ScheduledExecutorService</code> that
+ *     provides for scheduling delayed and periodic tasks</p>
+ *   </li>
+ *   <li>
+ *     <p>Adds non-blocking concurrent control primitives such as
+ *     <code>Barrier</code>, <code>Latch</code>, <code>Lock</code> and
+ *     <code>Semaphore</code></p>
+ *   </li>
+ *   <li>
+ *     <p>Provides convenience methods for writing more readable, concise and
+ *     DRY concurrent code such as <code>Future.get</code>,
+ *     <code>Future.toTry</code> and <code>Future.fold</code></p>
+ *   </li>
+ * </ul>
+ */
 package object concurrent {
   
   implicit class SMach_Concurrent_PimpEverything[A](
     val self: A
   ) extends AnyVal {
+    /** @return a successful Future of self */
     def future = Future.successful(self)
   }
   
@@ -41,39 +113,75 @@ package object concurrent {
   implicit class SMach_Concurrent_PimpMyFutureType(
     val self:Future.type
   ) extends AnyVal {
+    /** @return a DelayedFuture that executes f after the specified delay */
     def delayed[A](delay: FiniteDuration)(f: => A)(implicit
       scheduledExecutionContext:ScheduledExecutionContext
     ) : DelayedFuture[A] = scheduledExecutionContext.schedule(delay)(f)
+    /** @return a successful future of Unit */
     def unit : Future[Unit] = FutureOps.unit
   }
   
   implicit class SMach_Concurrent_PimpMyFuture[A](
     val self: Future[A]
   ) extends AnyVal {
+    /**
+     * @return the result of the Future after it completes (Note: this waits
+     * indefinitely for the Future to complete)
+     * @throws if Future completed with a failure, throws the exception
+     * */
     def get: A = FutureOps.get(self)
+    /**
+     * @return the result of the Future after it completes
+     * @throws TimeoutException if Future does not complete within max duration
+     * */
     def get(max: Duration): A = FutureOps.get(self,max)
+    /**
+     * @return the Try result of the Future after it completes (Note: this waits
+     * indefinitely for the Future to complete)
+     * */
     def getTry: Try[A] = FutureOps.getTry(self)
+    /**
+     * @return the Try result of the Future after it completes
+     * @throws TimeoutException if Future does not complete within max duration
+     * */
     def getTry(max: Duration): Try[A] = FutureOps.getTry(self, max)
-    def background(implicit ec: ExecutionContext) : Unit = 
+    /** Run future in the background. Discard the result of this Future but
+      * ensure if there is an exception it gets reported to the ExecutionContext
+      * */
+    def background(implicit ec: ExecutionContext) : Unit =
       FutureOps.background(self)
-    def toTry(implicit ec: ExecutionContext): Future[Try[A]] = 
+    /** @return a Future of a Try of the result that always completes
+      * successfully even if the Future eventually throws an exception
+      * */
+    def toTry(implicit ec: ExecutionContext): Future[Try[A]] =
       FutureOps.toTry(self)
+    /** @return a Future of X that always succeeds. If self is successful, X
+      * is derived from onSuccess otherwise if self is a failure, X is derived
+      * from onFailure.
+      * */
     def fold[X](
       onSuccess: A => X,
       onFailure: Throwable => X
     )(implicit
       ec:ExecutionContext
     ) : Future[X] = FutureOps.fold(self, onSuccess, onFailure)
+    /** @return a Future of X that always succeeds. If self is successful, X
+      * is derived from onSuccess otherwise if self is a failure, X is derived
+      * from onFailure.
+      * */
     def flatFold[X](
       onSuccess: A => Future[X],
       onFailure: Throwable => Future[X]
     )(implicit
       ec:ExecutionContext
     ) : Future[X] = FutureOps.flatFold(self, onSuccess, onFailure)
+    /** @return a future of A that is guaranteed to happen before lhs */
     def happensBefore[B](
       other: => Future[B]
     )(implicit ec: ExecutionContext) : DeferredFuture[B]
       = FutureOps.happensBefore(self, other)
+    /** @return execute a side effect after a future completes (even if it fails)
+      * */
     def sideEffect(
       sideEffect: => Unit
     )(implicit ec: ExecutionContext) : Future[A]
@@ -82,6 +190,8 @@ package object concurrent {
   implicit class SMach_Concurrent_PimpMyFutureFuture[A](
     val self: Future[Future[A]]
   ) extends AnyVal {
+    /** @return a future that completes once both the outer and inner future
+      *         completes */
     def flatten(implicit ec:ExecutionContext) : Future[A] = 
       self.flatMap(v => v)
   }
@@ -91,17 +201,30 @@ package object concurrent {
   ](
     val self: M[Future[A]]
   ) extends AnyVal {
+    /**
+     * @return a Future of a collection of items that completes once all futures
+     * are successful OR completes immediately after any failure. This is in
+     * contrast to Future.sequence which will only complete once *all* Futures
+     * have completed, even if one of the futures fails immediately. The first
+     * failure encountered immediately throws AsyncParThrowable which has a
+     * method to return a Future of all failures.
+     **/
     def merge(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[Nothing, A, M[A]]
     ) : Future[M[A]] = MergeOps.merge(self)
 
+    // TODO:
 //    def merge(atMost: Duration)(implicit
 //      ec: ExecutionContext,
 //      ses: ScheduledExecutorService,
 //      cbf: CanBuildFrom[Nothing, A, M[A]]
 //    ) : Future[M[A]] = MergeOps.mergeTimeout(atMost, self)
 
+    /**
+     * @return the first successfully completed future. If all futures fail,
+     * then completes the future with AsyncParThrowable of all failures.
+     */
     def firstSuccess(implicit
       ec: ExecutionContext
     ) : Future[A] = FutureOps.firstSuccess(self)
@@ -114,6 +237,14 @@ package object concurrent {
   ](
     val self: M[Future[N[A]]]
   ) extends AnyVal {
+    /**
+     * @return a Future of a collection of items that completes once all futures
+     * are successful OR completes immediately after any failure. This is in
+     * contrast to Future.sequence which will only complete once *all* Futures
+     * have completed, even if one of the futures fails immediately. The first
+     * failure encountered immediately throws AsyncParThrowable which has a
+     * method to return a Future of all failures.
+     **/
     def flatMerge(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[Nothing, A, M[A]]
@@ -126,11 +257,15 @@ package object concurrent {
   ](
     val self: M[Future[A]]
   ) extends AnyVal {
+    /** @return all failures thrown once all futures complete (maybe empty) */
     def mergeAllFailures(implicit
       ec: ExecutionContext,
       cbf: CanBuildFrom[M[Future[A]], Throwable, M[Throwable]]
     ) : Future[M[Throwable]] = MergeOps.mergeAllFailures(self)
-
+    /** @return a future of a collection of all results that completes
+      *         successfully once all futures complete or that completes with
+      *         the first failure encountered while scanning futures in left to
+      *         right order */
     def sequence(implicit
       cbf: CanBuildFrom[M[Future[A]], A, M[A]],
       ec: ExecutionContext
@@ -141,12 +276,16 @@ package object concurrent {
     A,
     M[+AA] <: TraversableOnce[AA]
   ](val self: M[A]) extends AnyVal {
+    /** @return an asynchronous task runner for the collection */
     def async(implicit ec:ExecutionContext) =
       CollectionAsyncTaskRunner(self)
   }
 
+  /** The global base asynchronous config builder configured with one worker
+    * (serial) operation with all options disabled by default */
   val async = AsyncConfigBuilder()
 
+  // Note: heterogeneous (tuple-based) asynchronous task processing is injected here
   implicit class SMach_Concurrent_PimpMyAsyncConfigBuilder(
     val self:AsyncConfig
   ) extends AnyVal with SMach_Concurrent_AbstractPimpMyAsyncConfig

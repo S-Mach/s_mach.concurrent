@@ -23,8 +23,8 @@ import scala.util.Try
 import s_mach.concurrent._
 
 /**
- * A trait for a barrier that can be used by callers to synchronize events by
- * waiting on the barrier to be set.
+ * A trait for a barrier that can be used by callers to synchronize on an event
+ * by waiting for the barrier to be set.
  */
 trait Barrier {
   /** @return TRUE if the barrier is set */

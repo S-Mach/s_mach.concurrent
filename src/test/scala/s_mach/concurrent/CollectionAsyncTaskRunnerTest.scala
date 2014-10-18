@@ -52,7 +52,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
         .progress(progressReporter)
 
 
-    config1Builder.enumerator should equal(items)
+    config1Builder.input should equal(items)
     config1Builder.optTotal should equal(Some(items.size))
     config1Builder.optThrottle.nonEmpty should equal(true)
     config1Builder.optThrottle.get.throttle_ns should equal(DELAY.toNanos)

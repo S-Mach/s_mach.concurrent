@@ -20,17 +20,9 @@ package s_mach.concurrent.util
 
 /**
  * A trait for listening to the progress of a task that consists of one or more
- * discrete steps. Each step is identified by an  ordinal step identifier. The
- * step id is a generic concept and may be mapped by callers to any concrete
- * concept. For  tasks with a known fixed input size, the step id is mapped
- * directly to the index of the input (i.e. input with index  0 = step 1, index
- * 1 = step 2, etc). For tasks with an unknown input size, the step id is mapped
- * to the Nth item  encountered (i.e. 1st item = step 1, 2nd item = step 2). The
- * step id must be incrementally assigned,  ensuring that that total steps
- * always equals last step id.
+ * discrete steps. Each step is identified by a sequence number.
  *
- * Note: derived task event listeners are assumed to be stateful.
- * Implementations must be thread safe
+ * Note: implementations must be thread safe
  */
 trait TaskEventListener {
   /** Called at the beginning of the computation */
@@ -38,7 +30,7 @@ trait TaskEventListener {
   /** Called once the computation completes */
   def onCompleteTask() : Unit
   /** Called at the beginning of execution of a step of the computation */
-  def onStartStep(stepId: Int) : Unit
+  def onStartStep(sequenceNumber: Int) : Unit
   /** Called at the beginning of execution of a step of the computation */
-  def onCompleteStep(stepId: Int) : Unit
+  def onCompleteStep(sequenceNumber: Int) : Unit
 }

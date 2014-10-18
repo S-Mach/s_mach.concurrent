@@ -18,20 +18,25 @@
 */
 package s_mach.concurrent.config
 
+import scala.concurrent.{ExecutionContext, Future}
 import s_mach.concurrent.impl.SimpleRetryDecider
 import s_mach.concurrent.util.RetryDecider
 
-import scala.concurrent.{ExecutionContext, Future}
-
 /**
- * A trait for a builder of RetryConfig. Callers may set the optional retry
- * function by calling the retry method. If the retry function is never called
- * then the optional retry function is left unset.
+ * A trait for an immutable builder of OptRetryConfig. Callers may set the
+ * optional retryDecider by calling the retryDecider method. If the retryDecider
+ * method is never called then the optional retry function is left unset.
  * @tparam MDT most derived type
  */
-trait RetryConfigBuilder[MDT <: RetryConfigBuilder[MDT]] {
+trait OptRetryConfigBuilder[MDT <: OptRetryConfigBuilder[MDT]] {
 
-  def retryDecider(r: RetryDecider)(implicit ec:ExecutionContext) : MDT
+  /**
+   * Set the optional retry decider
+   * @param decider a retry decider that is used to determine whether to
+   *                continue after failure
+   * @return a copy of the builder with the new setting
+   */
+  def retryDecider(decider: RetryDecider)(implicit ec:ExecutionContext) : MDT
 
   /**
    * Set the optional retry function

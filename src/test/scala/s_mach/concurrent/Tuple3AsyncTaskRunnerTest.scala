@@ -80,7 +80,7 @@ class Tuple3AsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTe
       waitForActiveExecutionCount(0)
 
       result.getTry shouldBe a [Failure[_]]
-      result.getTry.failed.get shouldBe a [ConcurrentThrowable]
+      result.getTry.failed.get shouldBe a [AsyncParThrowable]
 
       sched.happensBefore("start","fail-2") should equal(true)
       sched.happensBefore("fail-2","end") should equal(true)
@@ -92,7 +92,7 @@ class Tuple3AsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTe
   }
  
 
-  "TupleAsyncTaskRunner-t2" must "throw ConcurrentThrowable which can wait for all failures" in {
+  "TupleAsyncTaskRunner-t2" must "throw AsyncParThrowable which can wait for all failures" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
@@ -107,7 +107,7 @@ class Tuple3AsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentTe
 
       waitForActiveExecutionCount(0)
 
-      val thrown = result.failed.get.asInstanceOf[ConcurrentThrowable]
+      val thrown = result.failed.get.asInstanceOf[AsyncParThrowable]
 
       // Even though there are two worker threads, it technically is a race condition to see which failure happens
       // first. This actually happens in about 1/1000 runs where it appears worker one while processing fail-1 stalls

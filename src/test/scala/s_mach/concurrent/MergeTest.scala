@@ -77,7 +77,7 @@ class MergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       waitForActiveExecutionCount(0)
 
       result.getTry shouldBe a [Failure[_]]
-      result.getTry.failed.get shouldBe a [ConcurrentThrowable]
+      result.getTry.failed.get shouldBe a [AsyncParThrowable]
       sched.happensBefore("start","fail-2") should equal(true)
       sched.happensBefore("fail-2","end") should equal(true)
 
@@ -130,13 +130,13 @@ class MergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   }
 
 
-  "merge-t3" must "throw ConcurrentThrowable which can wait for all failures" in {
+  "merge-t3" must "throw AsyncParThrowable which can wait for all failures" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
 
       val result = MergeOps.merge(Vector(fail(1),success(2),success(3),fail(4),success(5),fail(6)))
-      val thrown = result.getTry.failed.get.asInstanceOf[ConcurrentThrowable]
+      val thrown = result.getTry.failed.get.asInstanceOf[AsyncParThrowable]
 
       thrown.firstFailure.toString.startsWith("java.lang.RuntimeException: fail-") should equal(true)
       thrown.allFailure.get.map(_.toString) should contain allOf(

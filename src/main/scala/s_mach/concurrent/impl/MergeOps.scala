@@ -72,7 +72,7 @@ trait MergeOps {
   }
 
   /** Wait on any failure from zomFuture. Immediately after the first failure,
-    * fail the promise with ConcurrentThrowable. */
+    * fail the promise with AsyncParThrowable. */
   def mergeFailImmediately[A](
     p: Promise[A],
     zomFuture: Traversable[Future[Any]]
@@ -87,7 +87,7 @@ trait MergeOps {
         implicit val ec = MergeOps.failureExecutionContext
         mergeAllFailures(zomFuture.toVector)
       }
-      p.tryFailure(ConcurrentThrowable(t,futAllFailure))
+      p.tryFailure(AsyncParThrowable(t,futAllFailure))
     }
     // Note: using failureExecutionContext here to allow immediately failing the
     // Promise. If ec was used then p.tryFailure wouldn't be executed until
@@ -100,7 +100,7 @@ trait MergeOps {
    * are successful OR completes immediately after any failure. This is in
    * contrast to Future.sequence which will only complete once *all* Futures
    * have completed, even if one of the futures fails immediately. The first
-   * failure encountered immediately throws ConcurrentThrowable which has a
+   * failure encountered immediately throws AsyncParThrowable which has a
    * method to return a Future of all failures.
    **/
   def merge[A, M[+AA] <: Traversable[AA]](
@@ -114,7 +114,7 @@ trait MergeOps {
     mergeFailImmediately(promise, zomFuture)
     // Note: not using p.tryCompleteWith to prevent race condition on failure of
     // first Future - only path for failure is mergeFailImmediately otherwise
-    // non-ConcurrentThrowable can leak
+    // non-AsyncParThrowable can leak
     Future.sequence(zomFuture)(scala.collection.breakOut(cbf1), ec)
       .onSuccess { case v => promise.success(v) }
     promise.future
@@ -125,7 +125,7 @@ trait MergeOps {
    * are successful OR completes immediately after any failure. This is in
    * contrast to Future.sequence which will only complete once *all* Futures
    * have completed, even if one of the futures fails immediately. The first
-   * failure encountered immediately throws ConcurrentThrowable which has a
+   * failure encountered immediately throws AsyncParThrowable which has a
    * method to return a Future of all failures.
    **/
   def flatMerge[A, M[+AA] <: Traversable[AA], N[AA] <: TraversableOnce[AA]](
@@ -192,7 +192,7 @@ trait MergeOps {
 //                builder ++= nowSuccess
 //                promise.success(builder.result())
 //              } else {
-//                promise.failure(new ConcurrentThrowable {
+//                promise.failure(new AsyncParThrowable {
 //                  override def firstFailure = nowFailures.head
 //                  override def allFailure = _futAllFailure
 //                })

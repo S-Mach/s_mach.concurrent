@@ -27,11 +27,12 @@ import s_mach.concurrent.util.Barrier
  * the task is cancelled or a failure occurs.
  */
 trait PeriodicTask {
-  /** @return the time stamp in nanoseconds when the task will be started */
+  /** @return the time stamp in nanoseconds when the next task will be started
+    * */
   def nextEvent_ns : Long
   /** @return the delay before initially starting the task */
   def initialDelay : Duration
-  /** @return the delay between the starting of the task */
+  /** @return the recurring delay between the task executions */
   def period : Duration
   /** @return TRUE if the task was cancelled FALSE if the task was already
     *         cancelled */

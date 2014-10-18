@@ -18,16 +18,20 @@
 */
 package s_mach.concurrent.config
 
+import scala.language.higherKinds
+import scala.concurrent.ExecutionContext
 import s_mach.concurrent.ScheduledExecutionContext
 import s_mach.concurrent.util._
 
-import scala.concurrent.ExecutionContext
-import scala.language.higherKinds
-
+/**
+ * A base trait for an immutable AsyncConfig builder that allows configuring
+ * optional progress reporting, failure retry and throttling.
+ * @tparam MDT most derived type
+ */
 trait AbstractAsyncConfigBuilder[MDT <: AbstractAsyncConfigBuilder[MDT]] extends
-  ProgressConfigBuilder[MDT] with
-  RetryConfigBuilder[MDT] with
-  ThrottleConfigBuilder[MDT] with
+  OptProgressConfigBuilder[MDT] with
+  OptRetryConfigBuilder[MDT] with
+  OptThrottleConfigBuilder[MDT] with
   AsyncConfig
 {
 

@@ -12,7 +12,7 @@ image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="htt
 serial and parallel execution flow control primitives for working with
 asynchronous tasks. An asynchronous task consists of two or more calls to
 function(s) that return a future result +A => Future[B]+ instead of the result
-+A => B+
++A => B+.
 
 * Adds concurrent flow control primitives +async+ and +async.par+ for
 performing fixed size heterogeneous (tuple) and variable size homogeneous
@@ -36,7 +36,7 @@ heterogeneous asynchronous task (of up to 22 futures) in parallel
 +java.util.concurrent.ScheduledExecutorService+ that provides for scheduling
 delayed and periodic tasks
 * Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+,
-+Lock+, +Semaphore+ and +Queue+
++Lock+ and +Semaphore+
 * Provides convenience methods for writing more readable, concise and DRY
 concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
@@ -320,7 +320,7 @@ Additionally, while the scala parallel collections correctly handle multiple
 parallel exceptions, +Future.sequence+ only returns the first exception
 encountered. In +Future.sequence+, all further exceptions past the first are
 discarded. The +merge+ and +flatMerge+ methods fix these problems by throwing
-+ConcurrentThrowable+. +ConcurrentThrowable+ has a member method to access both
++AsyncParThrowable+. +AsyncParThrowable+ has a member method to access both
 the first exception thrown and a future of all exceptions thrown during the
 computation.
 
@@ -337,17 +337,17 @@ t: scala.util.Try[scala.collection.immutable.Vector[Item]] = Failure(java.lang.R
 scala>
 ----
 
-.Example 10: +merge+ method fails immediately on the first exception and throws +ConcurrentThrowable+ which can retrieve all exceptions:
+.Example 10: +merge+ method fails immediately on the first exception and throws +AsyncParThrowable+ which can retrieve all exceptions:
 [source,scala,numbered]
 ----
 scala> val t = Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.getTry
 2
-t: scala.util.Try[scala.collection.immutable.Vector[Item]] = Failure(ConcurrentThrowable(java.lang.RuntimeException: 2))
+t: scala.util.Try[scala.collection.immutable.Vector[Item]] = Failure(AsyncParThrowable(java.lang.RuntimeException: 2))
 3
 
 scala> 4
 1
 
-scala> val allFailures = t.failed.get.asInstanceOf[ConcurrentThrowable].allFailure.get
+scala> val allFailures = t.failed.get.asInstanceOf[AsyncParThrowable].allFailure.get
 allFailures: Vector[Throwable] = Vector(java.lang.RuntimeException: 2, java.lang.RuntimeException: 3)
 ----
