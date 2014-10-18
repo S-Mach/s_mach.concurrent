@@ -66,8 +66,8 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="s_mach.concurrent.config.AbstractAsyncConfigBuilder" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="AbstractAsyncConfigBuilder[MDT&lt;:s_mach.concurrent.config.AbstractAsyncConfigBuilder[MDT]]extendsProgressConfigBuilder[MDT]withRetryConfigBuilder[MDT]withThrottleConfigBuilder[MDT]withAsyncConfig"></a>
+              <ol><li name="s_mach.concurrent.config.AbstractAsyncConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="AbstractAsyncConfigBuilder[MDT&lt;:s_mach.concurrent.config.AbstractAsyncConfigBuilder[MDT]]extendsOptProgressConfigBuilder[MDT]withOptRetryConfigBuilder[MDT]withOptThrottleConfigBuilder[MDT]withAsyncConfig"></a>
       <a id="AbstractAsyncConfigBuilder[MDT&lt;:AbstractAsyncConfigBuilder[MDT]]:AbstractAsyncConfigBuilder[MDT]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -75,15 +75,18 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="AbstractAsyncConfigBuilder.html"><span class="name">AbstractAsyncConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <a href="ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder.MDT">MDT</span>] with <a href="RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.RetryConfigBuilder">RetryConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder.MDT">MDT</span>] with <a href="ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ThrottleConfigBuilder">ThrottleConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder.MDT">MDT</span>] with <a href="AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>
+        <a href="AbstractAsyncConfigBuilder.html"><span class="name">AbstractAsyncConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <a href="OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder.MDT">MDT</span>] with <a href="OptRetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptRetryConfigBuilder">OptRetryConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder.MDT">MDT</span>] with <a href="OptThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder">OptThrottleConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder.MDT">MDT</span>] with <a href="AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.config.package@AbstractAsyncConfigBuilder[MDT&lt;:s_mach.concurrent.config.AbstractAsyncConfigBuilder[MDT]]extendsProgressConfigBuilder[MDT]withRetryConfigBuilder[MDT]withThrottleConfigBuilder[MDT]withAsyncConfig" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.package@AbstractAsyncConfigBuilder[MDT&lt;:s_mach.concurrent.config.AbstractAsyncConfigBuilder[MDT]]extendsOptProgressConfigBuilder[MDT]withOptRetryConfigBuilder[MDT]withOptThrottleConfigBuilder[MDT]withAsyncConfig" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.config.AsyncConfig" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <p class="shortcomment cmt">A base trait for an immutable AsyncConfig builder that allows configuring
+optional progress reporting, failure retry and throttling.</p><div class="fullcomment"><div class="comment cmt"><p>A base trait for an immutable AsyncConfig builder that allows configuring
+optional progress reporting, failure retry and throttling.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
+</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.config.AsyncConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="AsyncConfigextendsOptProgressConfigwithOptRetryConfigwithOptThrottleConfig"></a>
       <a id="AsyncConfig:AsyncConfig"></a>
       <h4 class="signature">
@@ -99,12 +102,10 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for the configuration of a concurrent serial TraversableOnce.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for the configuration of a concurrent serial TraversableOnce.async
-workflow that can wrap a concurrent function with progress reporting, retry
-and throttling functions</p><p>Note: Inheritance order here matters - throttle should be inner wrapper on
-f (progress and retry are interchangeable)
-</p></div></div>
-    </li><li name="s_mach.concurrent.config.AsyncConfigBuilder" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">A trait for an asynchronous task configuration that allows configuring
+the number of parallel workers used to process the task, optional progress
+reporting, failure retry and throttling.</p>
+    </li><li name="s_mach.concurrent.config.AsyncConfigBuilder" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="AsyncConfigBuilderextendsAbstractAsyncConfigBuilder[s_mach.concurrent.config.AsyncConfigBuilder]withProductwithSerializable"></a>
       <a id="AsyncConfigBuilder:AsyncConfigBuilder"></a>
       <h4 class="signature">
@@ -120,7 +121,8 @@ f (progress and retry are interchangeable)
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">A case class for an immutable AsyncConfig builder</p><div class="fullcomment"><div class="comment cmt"><p>A case class for an immutable AsyncConfig builder</p></div><dl class="paramcmts block"><dt class="param">workerCount</dt><dd class="cmt"><p>number of parallel workers to use during task</p></dd><dt class="param">optProgress</dt><dd class="cmt"><p>optional progress reporting settings</p></dd><dt class="param">optRetry</dt><dd class="cmt"><p>optional failure retry settings</p></dd><dt class="param">optThrottle</dt><dd class="cmt"><p>optional throttle setting
+</p></dd></dl></div>
     </li><li name="s_mach.concurrent.config.OptProgressConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="OptProgressConfigextendsAnyRef"></a>
       <a id="OptProgressConfig:OptProgressConfig"></a>
@@ -137,9 +139,29 @@ f (progress and retry are interchangeable)
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a concurrent function builder that can add progress reporting to
-a concurrent function
+      <p class="shortcomment cmt">A trait for configuring optional progress reporting
 </p>
+    </li><li name="s_mach.concurrent.config.OptProgressConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="OptProgressConfigBuilder[MDT&lt;:s_mach.concurrent.config.OptProgressConfigBuilder[MDT]]extendsAnyRef"></a>
+      <a id="OptProgressConfigBuilder[MDT&lt;:OptProgressConfigBuilder[MDT]]:OptProgressConfigBuilder[MDT]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="OptProgressConfigBuilder.html"><span class="name">OptProgressConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.config.package@OptProgressConfigBuilder[MDT&lt;:s_mach.concurrent.config.OptProgressConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for an immutable builder of OptProgressConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for an immutable builder of OptProgressConfig. Callers may set the
+optional progress reporter by calling one of the progress methods. If no
+progress reporting method is ever called then the optional progress function
+is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
+</p></dd></dl></div>
     </li><li name="s_mach.concurrent.config.OptRetryConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="OptRetryConfigextendsAnyRef"></a>
       <a id="OptRetryConfig:OptRetryConfig"></a>
@@ -156,7 +178,28 @@ a concurrent function
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">A trait for configuring optional failure retry
+</p>
+    </li><li name="s_mach.concurrent.config.OptRetryConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="OptRetryConfigBuilder[MDT&lt;:s_mach.concurrent.config.OptRetryConfigBuilder[MDT]]extendsAnyRef"></a>
+      <a id="OptRetryConfigBuilder[MDT&lt;:OptRetryConfigBuilder[MDT]]:OptRetryConfigBuilder[MDT]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="OptRetryConfigBuilder.html"><span class="name">OptRetryConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="OptRetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptRetryConfigBuilder">OptRetryConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.OptRetryConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.config.package@OptRetryConfigBuilder[MDT&lt;:s_mach.concurrent.config.OptRetryConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for an immutable builder of OptRetryConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for an immutable builder of OptRetryConfig. Callers may set the
+optional retryDecider by calling the retryDecider method. If the retryDecider
+method is never called then the optional retry function is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
+</p></dd></dl></div>
     </li><li name="s_mach.concurrent.config.OptThrottleConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="OptThrottleConfigextendsAnyRef"></a>
       <a id="OptThrottleConfig:OptThrottleConfig"></a>
@@ -173,7 +216,28 @@ a concurrent function
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">A trait for configuring optional throttling
+</p>
+    </li><li name="s_mach.concurrent.config.OptThrottleConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="OptThrottleConfigBuilder[MDT&lt;:s_mach.concurrent.config.OptThrottleConfigBuilder[MDT]]extendsAnyRef"></a>
+      <a id="OptThrottleConfigBuilder[MDT&lt;:OptThrottleConfigBuilder[MDT]]:OptThrottleConfigBuilder[MDT]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="OptThrottleConfigBuilder.html"><span class="name">OptThrottleConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="OptThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder">OptThrottleConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.config.package@OptThrottleConfigBuilder[MDT&lt;:s_mach.concurrent.config.OptThrottleConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for an immutable builder of OptThrottleConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for an immutable builder of OptThrottleConfig. Callers may set the
+optional throttle period by calling the throttle_ns method. If the throttle
+method is never called then the optional throttle period is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
+</p></dd></dl></div>
     </li><li name="s_mach.concurrent.config.ProgressConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ProgressConfigextendsAnyRef"></a>
       <a id="ProgressConfig:ProgressConfig"></a>
@@ -190,28 +254,8 @@ a concurrent function
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.config.ProgressConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ProgressConfigBuilder[MDT&lt;:s_mach.concurrent.config.ProgressConfigBuilder[MDT]]extendsAnyRef"></a>
-      <a id="ProgressConfigBuilder[MDT&lt;:ProgressConfigBuilder[MDT]]:ProgressConfigBuilder[MDT]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="ProgressConfigBuilder.html"><span class="name">ProgressConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.config.package@ProgressConfigBuilder[MDT&lt;:s_mach.concurrent.config.ProgressConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for a builder of ProgressConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a builder of ProgressConfig. Callers may set the optional
-progress reporting function by calling one of the progress methods. If the
-progress reporting function is never called then the optional progress
-function is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
-</p></dd></dl></div>
+      <p class="shortcomment cmt">A trait that configures progress reporting
+</p>
     </li><li name="s_mach.concurrent.config.RetryConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="RetryConfigextendsAnyRef"></a>
       <a id="RetryConfig:RetryConfig"></a>
@@ -228,27 +272,8 @@ function is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.config.RetryConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="RetryConfigBuilder[MDT&lt;:s_mach.concurrent.config.RetryConfigBuilder[MDT]]extendsAnyRef"></a>
-      <a id="RetryConfigBuilder[MDT&lt;:RetryConfigBuilder[MDT]]:RetryConfigBuilder[MDT]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="RetryConfigBuilder.html"><span class="name">RetryConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.RetryConfigBuilder">RetryConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.RetryConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.config.package@RetryConfigBuilder[MDT&lt;:s_mach.concurrent.config.RetryConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for a builder of RetryConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a builder of RetryConfig. Callers may set the optional retry
-function by calling the retry method. If the retry function is never called
-then the optional retry function is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
-</p></dd></dl></div>
+      <p class="shortcomment cmt">A trait that configures failure retry
+</p>
     </li><li name="s_mach.concurrent.config.ThrottleConfig" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ThrottleConfigextendsAnyRef"></a>
       <a id="ThrottleConfig:ThrottleConfig"></a>
@@ -265,27 +290,8 @@ then the optional retry function is left unset.</p></div><dl class="paramcmts bl
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.config.ThrottleConfigBuilder" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ThrottleConfigBuilder[MDT&lt;:s_mach.concurrent.config.ThrottleConfigBuilder[MDT]]extendsAnyRef"></a>
-      <a id="ThrottleConfigBuilder[MDT&lt;:ThrottleConfigBuilder[MDT]]:ThrottleConfigBuilder[MDT]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="ThrottleConfigBuilder.html"><span class="name">ThrottleConfigBuilder</span></a><span class="tparams">[<span name="MDT">MDT &lt;: <a href="ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ThrottleConfigBuilder">ThrottleConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.ThrottleConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.config.package@ThrottleConfigBuilder[MDT&lt;:s_mach.concurrent.config.ThrottleConfigBuilder[MDT]]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for a builder of ThrottleConfig.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a builder of ThrottleConfig. Callers may set the optional
-throttle period by calling the throttle_ns method. If the throttle method is
-never called then the optional throttle period is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
-</p></dd></dl></div>
+      <p class="shortcomment cmt">A trait for configuring throttling
+</p>
     </li></ol>
             </div>
 

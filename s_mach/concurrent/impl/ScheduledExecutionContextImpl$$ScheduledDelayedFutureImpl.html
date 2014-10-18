@@ -49,7 +49,7 @@
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../util/DelegatedFuture.html" class="extype" name="s_mach.concurrent.util.DelegatedFuture">DelegatedFuture</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <a href="../DelayedFuture.html" class="extype" name="s_mach.concurrent.DelayedFuture">DelayedFuture</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <span class="extype" name="scala.concurrent.Awaitable">Awaitable</span>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../util/DelegatedFuture.html" class="extype" name="s_mach.concurrent.util.DelegatedFuture">DelegatedFuture</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <a href="../DelayedFuture.html" class="extype" name="s_mach.concurrent.DelayedFuture">DelayedFuture</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <span class="extype" name="scala.concurrent.Awaitable">Awaitable</span>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -67,7 +67,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl"><span>ScheduledDelayedFutureImpl</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="s_mach.concurrent.util.DelegatedFuture"><span>DelegatedFuture</span></li><li class="in" name="s_mach.concurrent.DelayedFuture"><span>DelayedFuture</span></li><li class="in" name="scala.concurrent.Future"><span>Future</span></li><li class="in" name="scala.concurrent.Awaitable"><span>Awaitable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl"><span>ScheduledDelayedFutureImpl</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="s_mach.concurrent.util.DelegatedFuture"><span>DelegatedFuture</span></li><li class="in" name="s_mach.concurrent.DelayedFuture"><span>DelayedFuture</span></li><li class="in" name="s_mach.concurrent.DeferredFuture"><span>DeferredFuture</span></li><li class="in" name="scala.concurrent.Future"><span>Future</span></li><li class="in" name="scala.concurrent.Awaitable"><span>Awaitable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -238,6 +238,24 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Future</dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl#deferred" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="deferred:scala.concurrent.Future[scala.concurrent.Future[A]]"></a>
+      <a id="deferred:Future[Future[A]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">deferred</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$ScheduledDelayedFutureImpl@deferred:scala.concurrent.Future[scala.concurrent.Future[A]]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes once the start condition occurs. The
+future contains the deferred future (which is now running)</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl">ScheduledDelayedFutureImpl</a> → <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl#delay" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="delay:scala.concurrent.duration.Duration"></a>
       <a id="delay:Duration"></a>
@@ -414,6 +432,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Future</dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl#futPromise" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="futPromise:scala.concurrent.Promise[scala.concurrent.Future[A]]"></a>
+      <a id="futPromise:Promise[Future[A]]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">futPromise</span><span class="result">: <span class="extype" name="scala.concurrent.Promise">Promise</span>[<span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>]]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$ScheduledDelayedFutureImpl@futPromise:scala.concurrent.Promise[scala.concurrent.Future[A]]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -465,6 +500,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="s_mach.concurrent.DeferredFuture#isStarted" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isStarted:Boolean"></a>
+      <a id="isStarted:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isStarted</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$ScheduledDelayedFutureImpl@isStarted:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the future has been started</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl#javaScheduledFuture" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="javaScheduledFuture:java.util.concurrent.ScheduledFuture[_]"></a>
       <a id="javaScheduledFuture:ScheduledFuture[_]"></a>
@@ -946,6 +998,8 @@
               <h3>Inherited from <a href="../util/DelegatedFuture.html" class="extype" name="s_mach.concurrent.util.DelegatedFuture">DelegatedFuture</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>]</h3>
             </div><div class="parent" name="s_mach.concurrent.DelayedFuture">
               <h3>Inherited from <a href="../DelayedFuture.html" class="extype" name="s_mach.concurrent.DelayedFuture">DelayedFuture</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>]</h3>
+            </div><div class="parent" name="s_mach.concurrent.DeferredFuture">
+              <h3>Inherited from <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>]</h3>
             </div><div class="parent" name="scala.concurrent.Future">
               <h3>Inherited from <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl.A">A</span>]</h3>
             </div><div class="parent" name="scala.concurrent.Awaitable">

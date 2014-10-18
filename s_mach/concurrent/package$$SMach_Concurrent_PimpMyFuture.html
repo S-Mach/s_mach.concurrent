@@ -181,7 +181,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#background" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#background" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="background(implicitec:scala.concurrent.ExecutionContext):Unit"></a>
       <a id="background(ExecutionContext):Unit"></a>
       <h4 class="signature">
@@ -197,8 +197,10 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#flatFold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt">Run future in the background.</p><div class="fullcomment"><div class="comment cmt"><p>Run future in the background. Discard the result of this Future but
+ensure if there is an exception it gets reported to the ExecutionContext
+</p></div></div>
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#flatFold" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="flatFold[X](onSuccess:A=&gt;scala.concurrent.Future[X],onFailure:Throwable=&gt;scala.concurrent.Future[X])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[X]"></a>
       <a id="flatFold[X]((A)⇒Future[X],(Throwable)⇒Future[X])(ExecutionContext):Future[X]"></a>
       <h4 class="signature">
@@ -214,8 +216,11 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#fold" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of X that always succeeds. If self is successful, X
+is derived from onSuccess otherwise if self is a failure, X is derived
+from onFailure.
+</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#fold" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="fold[X](onSuccess:A=&gt;X,onFailure:Throwable=&gt;X)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[X]"></a>
       <a id="fold[X]((A)⇒X,(Throwable)⇒X)(ExecutionContext):Future[X]"></a>
       <h4 class="signature">
@@ -231,8 +236,11 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#get" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of X that always succeeds. If self is successful, X
+is derived from onSuccess otherwise if self is a failure, X is derived
+from onFailure.
+</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="get(max:scala.concurrent.duration.Duration):A"></a>
       <a id="get(Duration):A"></a>
       <h4 class="signature">
@@ -248,8 +256,9 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#get" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the result of the Future after it completes</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">TimeoutException<p>if Future does not complete within max duration
+</p></span></dd></dl></div>
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="get:A"></a>
       <a id="get:A"></a>
       <h4 class="signature">
@@ -265,7 +274,9 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the result of the Future after it completes (Note: this waits
+indefinitely for the Future to complete)</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">if<p>Future completed with a failure, throws the exception
+</p></span></dd></dl></div>
     </li><li name="scala.AnyVal#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_&lt;:AnyVal]"></a>
       <a id="getClass():Class[_&lt;:AnyVal]"></a>
@@ -283,7 +294,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyVal → Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#getTry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#getTry" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getTry(max:scala.concurrent.duration.Duration):scala.util.Try[A]"></a>
       <a id="getTry(Duration):Try[A]"></a>
       <h4 class="signature">
@@ -299,8 +310,9 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#getTry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the Try result of the Future after it completes</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">TimeoutException<p>if Future does not complete within max duration
+</p></span></dd></dl></div>
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#getTry" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getTry:scala.util.Try[A]"></a>
       <a id="getTry:Try[A]"></a>
       <h4 class="signature">
@@ -316,8 +328,10 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#happensBefore" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the Try result of the Future after it completes (Note: this waits
+indefinitely for the Future to complete)
+</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#happensBefore" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="happensBefore[B](other:=&gt;scala.concurrent.Future[B])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[B]"></a>
       <a id="happensBefore[B](⇒Future[B])(ExecutionContext):DeferredFuture[B]"></a>
       <h4 class="signature">
@@ -333,7 +347,7 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future of A that is guaranteed to happen before lhs</p></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -368,7 +382,7 @@
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#sideEffect" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#sideEffect" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="sideEffect(sideEffect:=&gt;Unit)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
       <a id="sideEffect(⇒Unit)(ExecutionContext):Future[A]"></a>
       <h4 class="signature">
@@ -384,7 +398,8 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>execute a side effect after a future completes (even if it fails)
+</p></dd></dl></div>
     </li><li name="scala.Any#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
@@ -402,7 +417,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#toTry" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#toTry" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toTry(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[scala.util.Try[A]]"></a>
       <a id="toTry(ExecutionContext):Future[Try[A]]"></a>
       <h4 class="signature">
@@ -418,7 +433,9 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of a Try of the result that always completes
+successfully even if the Future eventually throws an exception
+</p></dd></dl></div>
     </li></ol>
             </div>
 

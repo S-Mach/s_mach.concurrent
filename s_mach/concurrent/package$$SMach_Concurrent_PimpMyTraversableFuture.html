@@ -181,7 +181,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyTraversableFuture#firstSuccess" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyTraversableFuture#firstSuccess" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="firstSuccess(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
       <a id="firstSuccess(ExecutionContext):Future[A]"></a>
       <h4 class="signature">
@@ -197,7 +197,9 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the first successfully completed future. If all futures fail,
+then completes the future with AsyncParThrowable of all failures.
+</p></dd></dl></div>
     </li><li name="scala.AnyVal#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_&lt;:AnyVal]"></a>
       <a id="getClass():Class[_&lt;:AnyVal]"></a>
@@ -232,7 +234,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyTraversableFuture#merge" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyTraversableFuture#merge" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="merge(implicitec:scala.concurrent.ExecutionContext,implicitcbf:scala.collection.generic.CanBuildFrom[Nothing,A,M[A]]):scala.concurrent.Future[M[A]]"></a>
       <a id="merge(ExecutionContext,CanBuildFrom[Nothing,A,M[A]]):Future[M[A]]"></a>
       <h4 class="signature">
@@ -248,7 +250,13 @@
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of a collection of items that completes once all futures
+are successful OR completes immediately after any failure. This is in
+contrast to Future.sequence which will only complete once *all* Futures
+have completed, even if one of the futures fails immediately. The first
+failure encountered immediately throws AsyncParThrowable which has a
+method to return a Future of all failures.
+</p></dd></dl></div>
     </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyTraversableFuture#self" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="self:M[scala.concurrent.Future[A]]"></a>
       <a id="self:M[Future[A]]"></a>

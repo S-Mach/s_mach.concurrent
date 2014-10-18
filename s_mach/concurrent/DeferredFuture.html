@@ -55,7 +55,7 @@ deferred future completes.
           <div class="superTypes hiddenContent"><span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.DeferredFuture.A">A</span>], <span class="extype" name="scala.concurrent.Awaitable">Awaitable</span>[<span class="extype" name="s_mach.concurrent.DeferredFuture.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="impl/DeferredFutureImpl.html" class="extype" name="s_mach.concurrent.impl.DeferredFutureImpl">DeferredFutureImpl</a></div>
+            <div class="subClasses hiddenContent"><a href="impl/DeferredFutureImpl.html" class="extype" name="s_mach.concurrent.impl.DeferredFutureImpl">DeferredFutureImpl</a>, <a href="DelayedFuture.html" class="extype" name="s_mach.concurrent.DelayedFuture">DelayedFuture</a>, <a href="impl/ScheduledExecutionContextImpl$$ScheduledDelayedFutureImpl.html" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl">ScheduledDelayedFutureImpl</a></div>
           </div></div>
         
 
@@ -540,6 +540,23 @@ future contains the deferred future (which is now running)</p></dd></dl></div>
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="s_mach.concurrent.DeferredFuture#isStarted" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isStarted:Boolean"></a>
+      <a id="isStarted:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isStarted</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.concurrent.DeferredFuture@isStarted:Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the future has been started</p></dd></dl></div>
     </li><li name="scala.concurrent.Future#map" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="map[S](f:T=&gt;S)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]"></a>
       <a id="map[S]((A)⇒S)(ExecutionContext):Future[S]"></a>

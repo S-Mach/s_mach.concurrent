@@ -47,10 +47,9 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for the configuration of a concurrent serial TraversableOnce.async
-workflow that can wrap a concurrent function with progress reporting, retry
-and throttling functions</p><p>Note: Inheritance order here matters - throttle should be inner wrapper on
-f (progress and retry are interchangeable)
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for an asynchronous task configuration that allows configuring
+the number of parallel workers used to process the task, optional progress
+reporting, failure retry and throttling.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="OptThrottleConfig.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfig">OptThrottleConfig</a>, <a href="OptRetryConfig.html" class="extype" name="s_mach.concurrent.config.OptRetryConfig">OptRetryConfig</a>, <a href="OptProgressConfig.html" class="extype" name="s_mach.concurrent.config.OptProgressConfig">OptProgressConfig</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>

@@ -426,9 +426,9 @@ WorkerConfig.workerCount workers</p></div><dl class="paramcmts block"><dt>return
 function f, outputting the result of f to the function g.</p><div class="fullcomment"><div class="comment cmt"><p>Using the collection members xa, concurrently execute a processing
 function f, outputting the result of f to the function g. Concurrency is
 limited to the number of workers specified in WorkersConfig. Any exception
-that occurs during a worker's processing will cause a ConcurrentThrowable
+that occurs during a worker's processing will cause a AsyncParThrowable
 to be immediately returned. Any other exceptions from workers that have yet
-to complete can be retrieved from ConcurrentThrowable.
+to complete can be retrieved from AsyncParThrowable.
 </p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the type processed</p></dd><dt class="tparam">B</dt><dd class="cmt"><p>the output type</p></dd><dt class="param">workerCount</dt><dd class="cmt"><p>specifies the number of workers</p></dd><dt class="param">xa</dt><dd class="cmt"><p>the collection</p></dd><dt class="param">f</dt><dd class="cmt"><p>the processing function</p></dd><dt class="param">g</dt><dd class="cmt"><p>the output function</p></dd><dt>returns</dt><dd class="cmt"><p>a Future that completes once all workers have completed.
 </p></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">

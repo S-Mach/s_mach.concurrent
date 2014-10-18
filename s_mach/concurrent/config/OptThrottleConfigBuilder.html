@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>Barrier - s_mach.concurrent.util.Barrier</title>
-          <meta name="description" content="Barrier - s mach.concurrent.util.Barrier" />
-          <meta name="keywords" content="Barrier s mach.concurrent.util.Barrier" />
+          <title>OptThrottleConfigBuilder - s_mach.concurrent.config.OptThrottleConfigBuilder</title>
+          <meta name="description" content="OptThrottleConfigBuilder - s mach.concurrent.config.OptThrottleConfigBuilder" />
+          <meta name="keywords" content="OptThrottleConfigBuilder s mach.concurrent.config.OptThrottleConfigBuilder" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
-            var hash = 's_mach.concurrent.util.Barrier';
+            var hash = 's_mach.concurrent.config.OptThrottleConfigBuilder';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -28,10 +28,10 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="Barrier$.html" title="Go to companion"><img src="../../../lib/trait_to_object_big.png" /></a>
-        <p id="owner"><a href="../../package.html" class="extype" name="s_mach">s_mach</a>.<a href="../package.html" class="extype" name="s_mach.concurrent">concurrent</a>.<a href="package.html" class="extype" name="s_mach.concurrent.util">util</a></p>
-        <h1><a href="Barrier$.html" title="Go to companion">Barrier</a></h1> <span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier" title="Permalink" target="_top">
+        <img src="../../../lib/trait_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="s_mach">s_mach</a>.<a href="../package.html" class="extype" name="s_mach.concurrent">concurrent</a>.<a href="package.html" class="extype" name="s_mach.concurrent.config">config</a></p>
+        <h1>OptThrottleConfigBuilder</h1> <span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -43,18 +43,19 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">Barrier</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">OptThrottleConfigBuilder</span><span class="tparams">[<span name="MDT">MDT &lt;: <a href="" class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder">OptThrottleConfigBuilder</a>[<span class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder.MDT">MDT</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a barrier that can be used by callers to synchronize on an event
-by waiting for the barrier to be set.
-</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for an immutable builder of OptThrottleConfig. Callers may set the
+optional throttle period by calling the throttle_ns method. If the throttle
+method is never called then the optional throttle period is left unset.</p></div><dl class="paramcmts block"><dt class="tparam">MDT</dt><dd class="cmt"><p>most derived type
+</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="Latch.html" class="extype" name="s_mach.concurrent.util.Latch">Latch</a>, <a href="../impl/LatchImpl.html" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a></div>
+            <div class="subClasses hiddenContent"><a href="AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a>, <a href="../impl/AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a>, <a href="AsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AsyncConfigBuilder">AsyncConfigBuilder</a>, <a href="../impl/CollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.CollectionAsyncTaskRunner">CollectionAsyncTaskRunner</a>, <a href="../impl/ParCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a></div>
           </div></div>
         
 
@@ -72,7 +73,7 @@ by waiting for the barrier to be set.
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.util.Barrier"><span>Barrier</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.config.OptThrottleConfigBuilder"><span>OptThrottleConfigBuilder</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -96,75 +97,41 @@ by waiting for the barrier to be set.
 
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="s_mach.concurrent.util.Barrier#future" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="future:scala.concurrent.Future[Unit]"></a>
-      <a id="future:Future[Unit]"></a>
+              <ol><li name="s_mach.concurrent.config.OptThrottleConfigBuilder#build" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="build():s_mach.concurrent.config.OptThrottleConfig"></a>
+      <a id="build():OptThrottleConfig"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">future</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+        <span class="name">build</span><span class="params">()</span><span class="result">: <a href="OptThrottleConfig.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfig">OptThrottleConfig</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@future:scala.concurrent.Future[Unit]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@build():s_mach.concurrent.config.OptThrottleConfig" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future that completes once the barrier is set</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.Barrier#happensBefore" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="happensBefore[A](next:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
-      <a id="happensBefore[A](⇒Future[A])(ExecutionContext):Future[A]"></a>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a ThrottleConfig with the optional throttle setting</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.config.OptThrottleConfigBuilder#throttle_ns" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="throttle_ns(_throttle_ns:Long)(implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):MDT"></a>
+      <a id="throttle_ns(Long)(ScheduledExecutionContext):MDT"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">happensBefore</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="next">next: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Barrier.happensBefore.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Barrier.happensBefore.A">A</span>]</span>
+        <span class="name">throttle_ns</span><span class="params">(<span name="_throttle_ns">_throttle_ns: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="scheduledExecutionContext">scheduledExecutionContext: <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>)</span><span class="result">: <span class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder.MDT">MDT</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@happensBefore[A](next:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@throttle_ns(_throttle_ns:Long)(implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):MDT" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of next that only evaluates after the barrier is set</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.Barrier#isSet" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="isSet:Boolean"></a>
-      <a id="isSet:Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">isSet</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@isSet:Boolean" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the barrier is set</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.Barrier#onSet" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="onSet[A](f:=&gt;A)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
-      <a id="onSet[A](⇒A)(ExecutionContext):Future[A]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">onSet</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="s_mach.concurrent.util.Barrier.onSet.A">A</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Barrier.onSet.A">A</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@onSet[A](f:=&gt;A)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>register a callback that is triggered after the barrier is set. If
-        the barrier is already set then f is executed immediately</p></dd></dl></div>
+      <p class="shortcomment cmt">Set the optional throttle period</p><div class="fullcomment"><div class="comment cmt"><p>Set the optional throttle period</p></div><dl class="paramcmts block"><dt class="param">_throttle_ns</dt><dd class="cmt"><p>the throttle period in nanoseconds</p></dd><dt>returns</dt><dd class="cmt"><p>
+</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -182,7 +149,7 @@ by waiting for the barrier to be set.
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -199,7 +166,7 @@ by waiting for the barrier to be set.
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@##():Int" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@##():Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -216,7 +183,7 @@ by waiting for the barrier to be set.
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -233,7 +200,7 @@ by waiting for the barrier to be set.
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -250,7 +217,7 @@ by waiting for the barrier to be set.
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@clone():Object" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@clone():Object" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -273,7 +240,7 @@ by waiting for the barrier to be set.
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -290,7 +257,7 @@ by waiting for the barrier to be set.
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@equals(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -307,7 +274,7 @@ by waiting for the barrier to be set.
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@finalize():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -330,7 +297,7 @@ by waiting for the barrier to be set.
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -347,7 +314,7 @@ by waiting for the barrier to be set.
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@hashCode():Int" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@hashCode():Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -364,7 +331,7 @@ by waiting for the barrier to be set.
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -381,7 +348,7 @@ by waiting for the barrier to be set.
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -398,7 +365,7 @@ by waiting for the barrier to be set.
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@notify():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@notify():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -415,7 +382,7 @@ by waiting for the barrier to be set.
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -432,11 +399,29 @@ by waiting for the barrier to be set.
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="s_mach.concurrent.config.OptThrottleConfigBuilder#throttle" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="throttle(_throttle:scala.concurrent.duration.Duration)(implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):MDT"></a>
+      <a id="throttle(Duration)(ScheduledExecutionContext):MDT"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">throttle</span><span class="params">(<span name="_throttle">_throttle: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="scheduledExecutionContext">scheduledExecutionContext: <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>)</span><span class="result">: <span class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder.MDT">MDT</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@throttle(_throttle:scala.concurrent.duration.Duration)(implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):MDT" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Set the optional throttle period</p><div class="fullcomment"><div class="comment cmt"><p>Set the optional throttle period</p></div><dl class="paramcmts block"><dt class="param">_throttle</dt><dd class="cmt"><p>the throttle period</p></dd><dt>returns</dt><dd class="cmt"><p>
+</p></dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
@@ -449,7 +434,7 @@ by waiting for the barrier to be set.
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@toString():String" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@toString():String" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -466,7 +451,7 @@ by waiting for the barrier to be set.
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@wait():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@wait():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -489,7 +474,7 @@ by waiting for the barrier to be set.
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -512,7 +497,7 @@ by waiting for the barrier to be set.
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.config.OptThrottleConfigBuilder@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>

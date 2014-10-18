@@ -43,13 +43,15 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ParCollectionAsyncTaskRunner</span><span class="tparams">[<span name="A">A</span>, <span name="M">M<span class="tparams">[<span name="AA">+AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M.AA">AA</span>]</span>]</span><span class="params">(<span name="enumerator">enumerator: <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>]</span>, <span name="workerCount">workerCount: <span class="extype" name="scala.Int">Int</span> = <span class="defval" name='<span class="name"><a href="../../package.html">AsyncConfig.DEFAULT_PAR_WORKER_COUNT</a></span>'>...</span></span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ProgressConfig.html" class="extype" name="s_mach.concurrent.config.ProgressConfig">ProgressConfig</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[<a href="../config/RetryConfig.html" class="extype" name="s_mach.concurrent.config.RetryConfig">RetryConfig</a>] = <span class="symbol">None</span></span>, <span name="optThrottle">optThrottle: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ThrottleConfig.html" class="extype" name="s_mach.concurrent.config.ThrottleConfig">ThrottleConfig</a>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>, <a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ParCollectionAsyncTaskRunner</span><span class="tparams">[<span name="A">A</span>, <span name="M">M<span class="tparams">[<span name="AA">+AA</span>]</span> &lt;: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M.AA">AA</span>]</span>]</span><span class="params">(<span name="input">input: <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>]</span>, <span name="workerCount">workerCount: <span class="extype" name="scala.Int">Int</span> = <span class="defval" name='<span class="name"><a href="../../package.html">AsyncConfig.DEFAULT_PAR_WORKER_COUNT</a></span>'>...</span></span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ProgressConfig.html" class="extype" name="s_mach.concurrent.config.ProgressConfig">ProgressConfig</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[<a href="../config/RetryConfig.html" class="extype" name="s_mach.concurrent.config.RetryConfig">RetryConfig</a>] = <span class="symbol">None</span></span>, <span name="optThrottle">optThrottle: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ThrottleConfig.html" class="extype" name="s_mach.concurrent.config.ThrottleConfig">ThrottleConfig</a>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>, <a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A case class for a parallel asynchronous task runner that is configurable
+with optional progress reporting, throttling and/or failure retry.</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the input type</p></dd><dt class="tparam">M</dt><dd class="cmt"><p>the collection type
+</p></dd><dt class="param">input</dt><dd class="cmt"><p>the input collection</p></dd><dt class="param">optProgress</dt><dd class="cmt"><p>optional progress reporting settings</p></dd><dt class="param">optRetry</dt><dd class="cmt"><p>optional failure retry settings</p></dd><dt class="param">optThrottle</dt><dd class="cmt"><p>optional throttle settings</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>, <a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a>, <a href="../config/OptThrottleConfig.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfig">OptThrottleConfig</a>, <a href="../config/OptRetryConfig.html" class="extype" name="s_mach.concurrent.config.OptRetryConfig">OptRetryConfig</a>, <a href="../config/OptProgressConfig.html" class="extype" name="s_mach.concurrent.config.OptProgressConfig">OptProgressConfig</a>, <a href="../config/ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ThrottleConfigBuilder">ThrottleConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <a href="../config/RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.RetryConfigBuilder">RetryConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <a href="../config/ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>, <a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <a href="../config/AsyncConfig.html" class="extype" name="s_mach.concurrent.config.AsyncConfig">AsyncConfig</a>, <a href="../config/OptThrottleConfig.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfig">OptThrottleConfig</a>, <a href="../config/OptRetryConfig.html" class="extype" name="s_mach.concurrent.config.OptRetryConfig">OptRetryConfig</a>, <a href="../config/OptProgressConfig.html" class="extype" name="s_mach.concurrent.config.OptProgressConfig">OptProgressConfig</a>, <a href="../config/OptThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder">OptThrottleConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <a href="../config/OptRetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptRetryConfigBuilder">OptRetryConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <a href="../config/OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -67,7 +69,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner"><span>ParCollectionAsyncTaskRunner</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner"><span>AbstractCollectionAsyncTaskRunner</span></li><li class="in" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder"><span>AbstractAsyncConfigBuilder</span></li><li class="in" name="s_mach.concurrent.config.AsyncConfig"><span>AsyncConfig</span></li><li class="in" name="s_mach.concurrent.config.OptThrottleConfig"><span>OptThrottleConfig</span></li><li class="in" name="s_mach.concurrent.config.OptRetryConfig"><span>OptRetryConfig</span></li><li class="in" name="s_mach.concurrent.config.OptProgressConfig"><span>OptProgressConfig</span></li><li class="in" name="s_mach.concurrent.config.ThrottleConfigBuilder"><span>ThrottleConfigBuilder</span></li><li class="in" name="s_mach.concurrent.config.RetryConfigBuilder"><span>RetryConfigBuilder</span></li><li class="in" name="s_mach.concurrent.config.ProgressConfigBuilder"><span>ProgressConfigBuilder</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner"><span>ParCollectionAsyncTaskRunner</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner"><span>AbstractCollectionAsyncTaskRunner</span></li><li class="in" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder"><span>AbstractAsyncConfigBuilder</span></li><li class="in" name="s_mach.concurrent.config.AsyncConfig"><span>AsyncConfig</span></li><li class="in" name="s_mach.concurrent.config.OptThrottleConfig"><span>OptThrottleConfig</span></li><li class="in" name="s_mach.concurrent.config.OptRetryConfig"><span>OptRetryConfig</span></li><li class="in" name="s_mach.concurrent.config.OptProgressConfig"><span>OptProgressConfig</span></li><li class="in" name="s_mach.concurrent.config.OptThrottleConfigBuilder"><span>OptThrottleConfigBuilder</span></li><li class="in" name="s_mach.concurrent.config.OptRetryConfigBuilder"><span>OptRetryConfigBuilder</span></li><li class="in" name="s_mach.concurrent.config.OptProgressConfigBuilder"><span>OptProgressConfigBuilder</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -87,8 +89,8 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(enumerator:M[A],workerCount:Int,optProgress:Option[s_mach.concurrent.config.ProgressConfig],optRetry:Option[s_mach.concurrent.config.RetryConfig],optThrottle:Option[s_mach.concurrent.config.ThrottleConfig]):s_mach.concurrent.impl.ParCollectionAsyncTaskRunner[A,M]"></a>
+              <ol><li name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(input:M[A],workerCount:Int,optProgress:Option[s_mach.concurrent.config.ProgressConfig],optRetry:Option[s_mach.concurrent.config.RetryConfig],optThrottle:Option[s_mach.concurrent.config.ThrottleConfig]):s_mach.concurrent.impl.ParCollectionAsyncTaskRunner[A,M]"></a>
       <a id="&lt;init&gt;:ParCollectionAsyncTaskRunner[A,M]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -96,14 +98,14 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ParCollectionAsyncTaskRunner</span><span class="params">(<span name="enumerator">enumerator: <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>]</span>, <span name="workerCount">workerCount: <span class="extype" name="scala.Int">Int</span> = <span class="defval" name='<span class="name"><a href="../../package.html">AsyncConfig.DEFAULT_PAR_WORKER_COUNT</a></span>'>...</span></span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ProgressConfig.html" class="extype" name="s_mach.concurrent.config.ProgressConfig">ProgressConfig</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[<a href="../config/RetryConfig.html" class="extype" name="s_mach.concurrent.config.RetryConfig">RetryConfig</a>] = <span class="symbol">None</span></span>, <span name="optThrottle">optThrottle: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ThrottleConfig.html" class="extype" name="s_mach.concurrent.config.ThrottleConfig">ThrottleConfig</a>] = <span class="symbol">None</span></span>)</span>
+        <span class="name">ParCollectionAsyncTaskRunner</span><span class="params">(<span name="input">input: <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>]</span>, <span name="workerCount">workerCount: <span class="extype" name="scala.Int">Int</span> = <span class="defval" name='<span class="name"><a href="../../package.html">AsyncConfig.DEFAULT_PAR_WORKER_COUNT</a></span>'>...</span></span>, <span name="optProgress">optProgress: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ProgressConfig.html" class="extype" name="s_mach.concurrent.config.ProgressConfig">ProgressConfig</a>] = <span class="symbol">None</span></span>, <span name="optRetry">optRetry: <span class="extype" name="scala.Option">Option</span>[<a href="../config/RetryConfig.html" class="extype" name="s_mach.concurrent.config.RetryConfig">RetryConfig</a>] = <span class="symbol">None</span></span>, <span name="optThrottle">optThrottle: <span class="extype" name="scala.Option">Option</span>[<a href="../config/ThrottleConfig.html" class="extype" name="s_mach.concurrent.config.ThrottleConfig">ThrottleConfig</a>] = <span class="symbol">None</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ParCollectionAsyncTaskRunner@&lt;init&gt;(enumerator:M[A],workerCount:Int,optProgress:Option[s_mach.concurrent.config.ProgressConfig],optRetry:Option[s_mach.concurrent.config.RetryConfig],optThrottle:Option[s_mach.concurrent.config.ThrottleConfig]):s_mach.concurrent.impl.ParCollectionAsyncTaskRunner[A,M]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ParCollectionAsyncTaskRunner@&lt;init&gt;(input:M[A],workerCount:Int,optProgress:Option[s_mach.concurrent.config.ProgressConfig],optRetry:Option[s_mach.concurrent.config.RetryConfig],optThrottle:Option[s_mach.concurrent.config.ThrottleConfig]):s_mach.concurrent.impl.ParCollectionAsyncTaskRunner[A,M]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">input</dt><dd class="cmt"><p>the input collection</p></dd><dt class="param">optProgress</dt><dd class="cmt"><p>optional progress reporting settings</p></dd><dt class="param">optRetry</dt><dd class="cmt"><p>optional failure retry settings</p></dd><dt class="param">optThrottle</dt><dd class="cmt"><p>optional throttle settings</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -197,7 +199,7 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a config instance with the current settings</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a> → <a href="../config/ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ThrottleConfigBuilder">ThrottleConfigBuilder</a> → <a href="../config/RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.RetryConfigBuilder">RetryConfigBuilder</a> → <a href="../config/ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a config instance with the current settings</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a> → <a href="../config/OptThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder">OptThrottleConfigBuilder</a> → <a href="../config/OptRetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptRetryConfigBuilder">OptRetryConfigBuilder</a> → <a href="../config/OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a>
       <a id="clone():AnyRef"></a>
@@ -221,23 +223,6 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner#enumerator" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="enumerator:M[A]"></a>
-      <a id="enumerator:M[A]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">enumerator</span><span class="result">: <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ParCollectionAsyncTaskRunner@enumerator:M[A]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a> → <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -335,6 +320,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner#input" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="input:M[A]"></a>
+      <a id="input:M[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">input</span><span class="result">: <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ParCollectionAsyncTaskRunner@input:M[A]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">the input collection</p><div class="fullcomment"><div class="comment cmt"><p>the input collection</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a> → <a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -439,7 +441,7 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a> → <a href="../config/OptProgressConfig.html" class="extype" name="s_mach.concurrent.config.OptProgressConfig">OptProgressConfig</a></dd></dl></div>
+      <p class="shortcomment cmt">optional progress reporting settings</p><div class="fullcomment"><div class="comment cmt"><p>optional progress reporting settings</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a> → <a href="../config/OptProgressConfig.html" class="extype" name="s_mach.concurrent.config.OptProgressConfig">OptProgressConfig</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner#optRetry" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="optRetry:Option[s_mach.concurrent.config.RetryConfig]"></a>
       <a id="optRetry:Option[RetryConfig]"></a>
@@ -456,7 +458,7 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a> → <a href="../config/OptRetryConfig.html" class="extype" name="s_mach.concurrent.config.OptRetryConfig">OptRetryConfig</a></dd></dl></div>
+      <p class="shortcomment cmt">optional failure retry settings</p><div class="fullcomment"><div class="comment cmt"><p>optional failure retry settings</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a> → <a href="../config/OptRetryConfig.html" class="extype" name="s_mach.concurrent.config.OptRetryConfig">OptRetryConfig</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner#optThrottle" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="optThrottle:Option[s_mach.concurrent.config.ThrottleConfig]"></a>
       <a id="optThrottle:Option[ThrottleConfig]"></a>
@@ -473,7 +475,7 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a> → <a href="../config/OptThrottleConfig.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfig">OptThrottleConfig</a></dd></dl></div>
+      <p class="shortcomment cmt">optional throttle settings</p><div class="fullcomment"><div class="comment cmt"><p>optional throttle settings</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a> → <a href="../config/OptThrottleConfig.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfig">OptThrottleConfig</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner#optTotal" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="optTotal:Option[Int]"></a>
       <a id="optTotal:Option[Int]"></a>
@@ -490,7 +492,7 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">The optional total number of operations as set by derived type</p><div class="fullcomment"><div class="comment cmt"><p>The optional total number of operations as set by derived type</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a> → <a href="../config/OptProgressConfig.html" class="extype" name="s_mach.concurrent.config.OptProgressConfig">OptProgressConfig</a> → <a href="../config/ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a></dd></dl></div>
+      <p class="shortcomment cmt">The optional total number of operations as set by derived type</p><div class="fullcomment"><div class="comment cmt"><p>The optional total number of operations as set by derived type</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AbstractCollectionAsyncTaskRunner.html" class="extype" name="s_mach.concurrent.impl.AbstractCollectionAsyncTaskRunner">AbstractCollectionAsyncTaskRunner</a> → <a href="../config/OptProgressConfig.html" class="extype" name="s_mach.concurrent.config.OptProgressConfig">OptProgressConfig</a> → <a href="../config/OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a></dd></dl></div>
     </li><li name="s_mach.concurrent.config.AbstractAsyncConfigBuilder#progress" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="progress(r:s_mach.concurrent.util.TaskEventListener)(implicitec:scala.concurrent.ExecutionContext):MDT"></a>
       <a id="progress(TaskEventListener)(ExecutionContext):ParCollectionAsyncTaskRunner[A,M]"></a>
@@ -508,8 +510,8 @@
       </a>
     </span>
       <p class="shortcomment cmt">Set the optional progress reporting function</p><div class="fullcomment"><div class="comment cmt"><p>Set the optional progress reporting function</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the builder with the new setting
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a> → <a href="../config/ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a></dd></dl></div>
-    </li><li name="s_mach.concurrent.config.ProgressConfigBuilder#progress" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a> → <a href="../config/OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a></dd></dl></div>
+    </li><li name="s_mach.concurrent.config.OptProgressConfigBuilder#progress" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="progress(reportInterval:scala.concurrent.duration.Duration)(report:s_mach.concurrent.util.Progress=&gt;Unit)(implicitexecutionContext:scala.concurrent.ExecutionContext,implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):MDT"></a>
       <a id="progress(Duration)((Progress)⇒Unit)(ExecutionContext,ScheduledExecutionContext):ParCollectionAsyncTaskRunner[A,M]"></a>
       <h4 class="signature">
@@ -528,8 +530,8 @@
       <p class="shortcomment cmt">Set the progress reporting function to periodically report progress</p><div class="fullcomment"><div class="comment cmt"><p>Set the progress reporting function to periodically report progress</p></div><dl class="paramcmts block"><dt class="param">reportInterval</dt><dd class="cmt"><p>the interval to report progress</p></dd><dt class="param">report</dt><dd class="cmt"><p>a function that accepts the number of operations completed
               and the total number of operations (or 0 if the total is
               unknown)</p></dd><dt>returns</dt><dd class="cmt"><p>a copy of the builder with the new setting
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a></dd></dl></div>
-    </li><li name="s_mach.concurrent.config.ProgressConfigBuilder#progress" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a></dd></dl></div>
+    </li><li name="s_mach.concurrent.config.OptProgressConfigBuilder#progress" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="progress(report:s_mach.concurrent.util.Progress=&gt;Unit)(implicitec:scala.concurrent.ExecutionContext):MDT"></a>
       <a id="progress((Progress)⇒Unit)(ExecutionContext):ParCollectionAsyncTaskRunner[A,M]"></a>
       <h4 class="signature">
@@ -548,8 +550,8 @@
       <p class="shortcomment cmt">Set the progress reporting function</p><div class="fullcomment"><div class="comment cmt"><p>Set the progress reporting function</p></div><dl class="paramcmts block"><dt class="param">report</dt><dd class="cmt"><p>a function that accepts the number of operations completed
               and the total number of operations (or 0 if the total is
               unknown)</p></dd><dt>returns</dt><dd class="cmt"><p>a copy of the builder with the new setting
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a></dd></dl></div>
-    </li><li name="s_mach.concurrent.config.RetryConfigBuilder#retry" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a></dd></dl></div>
+    </li><li name="s_mach.concurrent.config.OptRetryConfigBuilder#retry" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="retry(f:List[Throwable]=&gt;scala.concurrent.Future[Boolean])(implicitec:scala.concurrent.ExecutionContext):MDT"></a>
       <a id="retry((List[Throwable])⇒Future[Boolean])(ExecutionContext):ParCollectionAsyncTaskRunner[A,M]"></a>
       <h4 class="signature">
@@ -568,7 +570,7 @@
       <p class="shortcomment cmt">Set the optional retry function</p><div class="fullcomment"><div class="comment cmt"><p>Set the optional retry function</p></div><dl class="paramcmts block"><dt class="param">f</dt><dd class="cmt"><p>a function that accepts a list of failures so far for an
          operation. The function returns TRUE if the operation should be
          retried.</p></dd><dt>returns</dt><dd class="cmt"><p>a copy of the builder with the new setting
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.RetryConfigBuilder">RetryConfigBuilder</a></dd></dl></div>
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/OptRetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptRetryConfigBuilder">OptRetryConfigBuilder</a></dd></dl></div>
     </li><li name="s_mach.concurrent.config.AbstractAsyncConfigBuilder#retryDecider" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="retryDecider(r:s_mach.concurrent.util.RetryDecider)(implicitec:scala.concurrent.ExecutionContext):MDT"></a>
       <a id="retryDecider(RetryDecider)(ExecutionContext):ParCollectionAsyncTaskRunner[A,M]"></a>
@@ -586,7 +588,7 @@
       </a>
     </span>
       <p class="shortcomment cmt">Set the optional retry function</p><div class="fullcomment"><div class="comment cmt"><p>Set the optional retry function</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a copy of the builder with the new setting
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a> → <a href="../config/RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.RetryConfigBuilder">RetryConfigBuilder</a></dd></dl></div>
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a> → <a href="../config/OptRetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptRetryConfigBuilder">OptRetryConfigBuilder</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -604,7 +606,7 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="s_mach.concurrent.config.ThrottleConfigBuilder#throttle" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="s_mach.concurrent.config.OptThrottleConfigBuilder#throttle" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="throttle(_throttle:scala.concurrent.duration.Duration)(implicitscheduledExecutionContext:s_mach.concurrent.ScheduledExecutionContext):MDT"></a>
       <a id="throttle(Duration)(ScheduledExecutionContext):ParCollectionAsyncTaskRunner[A,M]"></a>
       <h4 class="signature">
@@ -621,7 +623,7 @@
       </a>
     </span>
       <p class="shortcomment cmt">Set the optional throttle period</p><div class="fullcomment"><div class="comment cmt"><p>Set the optional throttle period</p></div><dl class="paramcmts block"><dt class="param">_throttle</dt><dd class="cmt"><p>the throttle period</p></dd><dt>returns</dt><dd class="cmt"><p>
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ThrottleConfigBuilder">ThrottleConfigBuilder</a></dd></dl></div>
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/OptThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder">OptThrottleConfigBuilder</a></dd></dl></div>
     </li><li name="s_mach.concurrent.config.AbstractAsyncConfigBuilder#throttle_ns" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="throttle_ns(_throttle_ns:Long)(implicitsec:s_mach.concurrent.ScheduledExecutionContext):MDT"></a>
       <a id="throttle_ns(Long)(ScheduledExecutionContext):ParCollectionAsyncTaskRunner[A,M]"></a>
@@ -641,7 +643,7 @@
       <p class="shortcomment cmt">Set the optional throttle setting in nanoseconds
 </p><div class="fullcomment"><div class="comment cmt"><p>Set the optional throttle setting in nanoseconds
 </p></div><dl class="paramcmts block"><dt class="param">_throttle_ns</dt><dd class="cmt"><p>the throttle period in nanoseconds</p></dd><dt>returns</dt><dd class="cmt"><p>a copy of the builder with the new setting
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a> → <a href="../config/ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ThrottleConfigBuilder">ThrottleConfigBuilder</a></dd></dl></div>
+</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../config/AbstractAsyncConfigBuilder.html" class="extype" name="s_mach.concurrent.config.AbstractAsyncConfigBuilder">AbstractAsyncConfigBuilder</a> → <a href="../config/OptThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder">OptThrottleConfigBuilder</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner#using" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="using(optProgress:Option[s_mach.concurrent.config.ProgressConfig],optRetry:Option[s_mach.concurrent.config.RetryConfig],optThrottle:Option[s_mach.concurrent.config.ThrottleConfig]):s_mach.concurrent.impl.ParCollectionAsyncTaskRunner[A,M]"></a>
       <a id="using(Option[ProgressConfig],Option[RetryConfig],Option[ThrottleConfig]):ParCollectionAsyncTaskRunner[A,M]"></a>
@@ -791,12 +793,12 @@
               <h3>Inherited from <a href="../config/OptRetryConfig.html" class="extype" name="s_mach.concurrent.config.OptRetryConfig">OptRetryConfig</a></h3>
             </div><div class="parent" name="s_mach.concurrent.config.OptProgressConfig">
               <h3>Inherited from <a href="../config/OptProgressConfig.html" class="extype" name="s_mach.concurrent.config.OptProgressConfig">OptProgressConfig</a></h3>
-            </div><div class="parent" name="s_mach.concurrent.config.ThrottleConfigBuilder">
-              <h3>Inherited from <a href="../config/ThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ThrottleConfigBuilder">ThrottleConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]]</h3>
-            </div><div class="parent" name="s_mach.concurrent.config.RetryConfigBuilder">
-              <h3>Inherited from <a href="../config/RetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.RetryConfigBuilder">RetryConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]]</h3>
-            </div><div class="parent" name="s_mach.concurrent.config.ProgressConfigBuilder">
-              <h3>Inherited from <a href="../config/ProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.ProgressConfigBuilder">ProgressConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]]</h3>
+            </div><div class="parent" name="s_mach.concurrent.config.OptThrottleConfigBuilder">
+              <h3>Inherited from <a href="../config/OptThrottleConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptThrottleConfigBuilder">OptThrottleConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]]</h3>
+            </div><div class="parent" name="s_mach.concurrent.config.OptRetryConfigBuilder">
+              <h3>Inherited from <a href="../config/OptRetryConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptRetryConfigBuilder">OptRetryConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]]</h3>
+            </div><div class="parent" name="s_mach.concurrent.config.OptProgressConfigBuilder">
+              <h3>Inherited from <a href="../config/OptProgressConfigBuilder.html" class="extype" name="s_mach.concurrent.config.OptProgressConfigBuilder">OptProgressConfigBuilder</a>[<a href="" class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner">ParCollectionAsyncTaskRunner</a>[<span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.A">A</span>, <span class="extype" name="s_mach.concurrent.impl.ParCollectionAsyncTaskRunner.M">M</span>]]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

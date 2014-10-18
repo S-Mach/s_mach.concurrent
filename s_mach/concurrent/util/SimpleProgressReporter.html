@@ -48,7 +48,8 @@
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a simple progress reporter that accumulates total progress from
-completed reports and makes a report for each completed report
+completed reports and makes a report each time there is progress during a
+task.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><a href="TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
@@ -97,7 +98,7 @@ completed reports and makes a report for each completed report
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
               <ol><li name="s_mach.concurrent.util.TaskEventListener#onCompleteStep" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="onCompleteStep(stepId:Int):Unit"></a>
+      <a id="onCompleteStep(sequenceNumber:Int):Unit"></a>
       <a id="onCompleteStep(Int):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -105,10 +106,10 @@ completed reports and makes a report for each completed report
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onCompleteStep</span><span class="params">(<span name="stepId">stepId: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onCompleteStep</span><span class="params">(<span name="sequenceNumber">sequenceNumber: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.SimpleProgressReporter@onCompleteStep(stepId:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.SimpleProgressReporter@onCompleteStep(sequenceNumber:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -131,7 +132,7 @@ completed reports and makes a report for each completed report
     </span>
       <p class="shortcomment cmt">Called once the computation completes</p><div class="fullcomment"><div class="comment cmt"><p>Called once the computation completes</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></dd></dl></div>
     </li><li name="s_mach.concurrent.util.TaskEventListener#onStartStep" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="onStartStep(stepId:Int):Unit"></a>
+      <a id="onStartStep(sequenceNumber:Int):Unit"></a>
       <a id="onStartStep(Int):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -139,10 +140,10 @@ completed reports and makes a report for each completed report
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onStartStep</span><span class="params">(<span name="stepId">stepId: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onStartStep</span><span class="params">(<span name="sequenceNumber">sequenceNumber: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.SimpleProgressReporter@onStartStep(stepId:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.SimpleProgressReporter@onStartStep(sequenceNumber:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>

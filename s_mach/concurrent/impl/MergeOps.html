@@ -264,7 +264,7 @@
 are successful OR completes immediately after any failure. This is in
 contrast to Future.sequence which will only complete once *all* Futures
 have completed, even if one of the futures fails immediately. The first
-failure encountered immediately throws ConcurrentThrowable which has a
+failure encountered immediately throws AsyncParThrowable which has a
 method to return a Future of all failures.
 </p></dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -338,7 +338,7 @@ method to return a Future of all failures.
 are successful OR completes immediately after any failure. This is in
 contrast to Future.sequence which will only complete once *all* Futures
 have completed, even if one of the futures fails immediately. The first
-failure encountered immediately throws ConcurrentThrowable which has a
+failure encountered immediately throws AsyncParThrowable which has a
 method to return a Future of all failures.
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.MergeOps#mergeAllFailures" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
@@ -375,7 +375,7 @@ method to return a Future of all failures.
       </a>
     </span>
       <p class="shortcomment cmt">Wait on any failure from zomFuture.</p><div class="fullcomment"><div class="comment cmt"><p>Wait on any failure from zomFuture. Immediately after the first failure,
-fail the promise with ConcurrentThrowable.</p></div></div>
+fail the promise with AsyncParThrowable.</p></div></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>

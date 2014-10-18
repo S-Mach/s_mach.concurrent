@@ -48,15 +48,7 @@
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for listening to the progress of a task that consists of one or more
-discrete steps. Each step is identified by an  ordinal step identifier. The
-step id is a generic concept and may be mapped by callers to any concrete
-concept. For  tasks with a known fixed input size, the step id is mapped
-directly to the index of the input (i.e. input with index  0 = step 1, index
-1 = step 2, etc). For tasks with an unknown input size, the step id is mapped
-to the Nth item  encountered (i.e. 1st item = step 1, 2nd item = step 2). The
-step id must be incrementally assigned,  ensuring that that total steps
-always equals last step id.</p><p>Note: derived task event listeners are assumed to be stateful.
-Implementations must be thread safe
+discrete steps. Each step is identified by a sequence number.</p><p>Note: implementations must be thread safe
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
@@ -105,7 +97,7 @@ Implementations must be thread safe
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
               <ol><li name="s_mach.concurrent.util.TaskEventListener#onCompleteStep" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="onCompleteStep(stepId:Int):Unit"></a>
+      <a id="onCompleteStep(sequenceNumber:Int):Unit"></a>
       <a id="onCompleteStep(Int):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -113,10 +105,10 @@ Implementations must be thread safe
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onCompleteStep</span><span class="params">(<span name="stepId">stepId: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onCompleteStep</span><span class="params">(<span name="sequenceNumber">sequenceNumber: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.TaskEventListener@onCompleteStep(stepId:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.TaskEventListener@onCompleteStep(sequenceNumber:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -139,7 +131,7 @@ Implementations must be thread safe
     </span>
       <p class="shortcomment cmt">Called once the computation completes</p>
     </li><li name="s_mach.concurrent.util.TaskEventListener#onStartStep" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="onStartStep(stepId:Int):Unit"></a>
+      <a id="onStartStep(sequenceNumber:Int):Unit"></a>
       <a id="onStartStep(Int):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -147,10 +139,10 @@ Implementations must be thread safe
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onStartStep</span><span class="params">(<span name="stepId">stepId: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onStartStep</span><span class="params">(<span name="sequenceNumber">sequenceNumber: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.TaskEventListener@onStartStep(stepId:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.TaskEventListener@onStartStep(sequenceNumber:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>

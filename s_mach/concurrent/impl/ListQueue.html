@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>Barrier - s_mach.concurrent.util.Barrier</title>
-          <meta name="description" content="Barrier - s mach.concurrent.util.Barrier" />
-          <meta name="keywords" content="Barrier s mach.concurrent.util.Barrier" />
+          <title>ListQueue - s_mach.concurrent.impl.ListQueue</title>
+          <meta name="description" content="ListQueue - s mach.concurrent.impl.ListQueue" />
+          <meta name="keywords" content="ListQueue s mach.concurrent.impl.ListQueue" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
-            var hash = 's_mach.concurrent.util.Barrier';
+            var hash = 's_mach.concurrent.impl.ListQueue';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -28,10 +28,10 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="Barrier$.html" title="Go to companion"><img src="../../../lib/trait_to_object_big.png" /></a>
-        <p id="owner"><a href="../../package.html" class="extype" name="s_mach">s_mach</a>.<a href="../package.html" class="extype" name="s_mach.concurrent">concurrent</a>.<a href="package.html" class="extype" name="s_mach.concurrent.util">util</a></p>
-        <h1><a href="Barrier$.html" title="Go to companion">Barrier</a></h1> <span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier" title="Permalink" target="_top">
+        <a href="ListQueue$.html" title="Go to companion"><img src="../../../lib/trait_to_object_big.png" /></a>
+        <p id="owner"><a href="../../package.html" class="extype" name="s_mach">s_mach</a>.<a href="../package.html" class="extype" name="s_mach.concurrent">concurrent</a>.<a href="package.html" class="extype" name="s_mach.concurrent.impl">impl</a></p>
+        <h1><a href="ListQueue$.html" title="Go to companion">ListQueue</a></h1> <span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -43,18 +43,18 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">Barrier</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">ListQueue</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a>[<span class="extype" name="s_mach.concurrent.impl.ListQueue.A">A</span>]</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a barrier that can be used by callers to synchronize on an event
-by waiting for the barrier to be set.
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for queue that uses an unlimited size linked list as the backend
+for the queue.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a>[<span class="extype" name="s_mach.concurrent.impl.ListQueue.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="Latch.html" class="extype" name="s_mach.concurrent.util.Latch">Latch</a>, <a href="../impl/LatchImpl.html" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a></div>
+            <div class="subClasses hiddenContent"><a href="ListQueueImpl.html" class="extype" name="s_mach.concurrent.impl.ListQueueImpl">ListQueueImpl</a></div>
           </div></div>
         
 
@@ -72,7 +72,7 @@ by waiting for the barrier to be set.
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.util.Barrier"><span>Barrier</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.impl.ListQueue"><span>ListQueue</span></li><li class="in" name="s_mach.concurrent.impl.Queue"><span>Queue</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -96,75 +96,108 @@ by waiting for the barrier to be set.
 
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="s_mach.concurrent.util.Barrier#future" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="future:scala.concurrent.Future[Unit]"></a>
-      <a id="future:Future[Unit]"></a>
+              <ol><li name="s_mach.concurrent.impl.Queue#offer" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="offer(xa:TraversableOnce[A]):Unit"></a>
+      <a id="offer(TraversableOnce[A]):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">future</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+        <span class="name">offer</span><span class="params">(<span name="xa">xa: <span class="extype" name="scala.TraversableOnce">TraversableOnce</span>[<span class="extype" name="s_mach.concurrent.impl.ListQueue.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@future:scala.concurrent.Future[Unit]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@offer(xa:TraversableOnce[A]):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future that completes once the barrier is set</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.Barrier#happensBefore" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="happensBefore[A](next:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
-      <a id="happensBefore[A](⇒Future[A])(ExecutionContext):Future[A]"></a>
+      <p class="shortcomment cmt">Offer values for waiting futures</p><div class="fullcomment"><div class="comment cmt"><p>Offer values for waiting futures</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a></dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.Queue#offer" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="offer(a:A):Unit"></a>
+      <a id="offer(A):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">happensBefore</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="next">next: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Barrier.happensBefore.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Barrier.happensBefore.A">A</span>]</span>
+        <span class="name">offer</span><span class="params">(<span name="a">a: <span class="extype" name="s_mach.concurrent.impl.ListQueue.A">A</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@happensBefore[A](next:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@offer(a:A):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of next that only evaluates after the barrier is set</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.Barrier#isSet" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="isSet:Boolean"></a>
-      <a id="isSet:Boolean"></a>
+      <p class="shortcomment cmt">Offer a value for waiting futures</p><div class="fullcomment"><div class="comment cmt"><p>Offer a value for waiting futures</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a></dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.Queue#offerQueueSize" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="offerQueueSize:Int"></a>
+      <a id="offerQueueSize:Int"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isSet</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">offerQueueSize</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@isSet:Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@offerQueueSize:Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the barrier is set</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.Barrier#onSet" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="onSet[A](f:=&gt;A)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
-      <a id="onSet[A](⇒A)(ExecutionContext):Future[A]"></a>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>size of offer queue</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a></dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.Queue#poll" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="poll(n:Int)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[Vector[A]]"></a>
+      <a id="poll(Int)(ExecutionContext):Future[Vector[A]]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onSet</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="s_mach.concurrent.util.Barrier.onSet.A">A</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.Barrier.onSet.A">A</span>]</span>
+        <span class="name">poll</span><span class="params">(<span name="n">n: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Vector">Vector</span>[<span class="extype" name="s_mach.concurrent.impl.ListQueue.A">A</span>]]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@onSet[A](f:=&gt;A)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@poll(n:Int)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[Vector[A]]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>register a callback that is triggered after the barrier is set. If
-        the barrier is already set then f is executed immediately</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes once input is available</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a></dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.Queue#poll" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="poll()(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
+      <a id="poll()(ExecutionContext):Future[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">poll</span><span class="params">()</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.ListQueue.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@poll()(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes once input is available</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a></dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.Queue#pollQueueSize" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="pollQueueSize:Int"></a>
+      <a id="pollQueueSize:Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">pollQueueSize</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@pollQueueSize:Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>size of polling queue</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -182,7 +215,7 @@ by waiting for the barrier to be set.
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -199,7 +232,7 @@ by waiting for the barrier to be set.
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@##():Int" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@##():Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -216,7 +249,7 @@ by waiting for the barrier to be set.
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -233,7 +266,7 @@ by waiting for the barrier to be set.
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -250,7 +283,7 @@ by waiting for the barrier to be set.
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@clone():Object" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@clone():Object" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -273,7 +306,7 @@ by waiting for the barrier to be set.
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -290,7 +323,7 @@ by waiting for the barrier to be set.
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@equals(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -307,7 +340,7 @@ by waiting for the barrier to be set.
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@finalize():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -330,7 +363,7 @@ by waiting for the barrier to be set.
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -347,7 +380,7 @@ by waiting for the barrier to be set.
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@hashCode():Int" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@hashCode():Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -364,7 +397,7 @@ by waiting for the barrier to be set.
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -381,7 +414,7 @@ by waiting for the barrier to be set.
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -398,7 +431,7 @@ by waiting for the barrier to be set.
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@notify():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@notify():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -415,7 +448,7 @@ by waiting for the barrier to be set.
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -432,7 +465,7 @@ by waiting for the barrier to be set.
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -449,7 +482,7 @@ by waiting for the barrier to be set.
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@toString():String" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@toString():String" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -466,7 +499,7 @@ by waiting for the barrier to be set.
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@wait():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@wait():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -489,7 +522,7 @@ by waiting for the barrier to be set.
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -512,7 +545,7 @@ by waiting for the barrier to be set.
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.Barrier@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ListQueue@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -532,7 +565,9 @@ by waiting for the barrier to be set.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="s_mach.concurrent.impl.Queue">
+              <h3>Inherited from <a href="Queue.html" class="extype" name="s_mach.concurrent.impl.Queue">Queue</a>[<span class="extype" name="s_mach.concurrent.impl.ListQueue.A">A</span>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

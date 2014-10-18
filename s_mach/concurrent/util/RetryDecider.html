@@ -47,7 +47,8 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait to decide whether to retry a failure during a step of task.</p><p>Note: derived implementations must be threadsafe.
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait to decide whether to retry a failure in a task. Tasks are identified
+by their sequence number.</p><p>Note: implementations must be thread safe.
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
@@ -96,7 +97,7 @@
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
               <ol><li name="s_mach.concurrent.util.RetryDecider#shouldRetry" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="shouldRetry(taskStepId:Long,failure:Throwable):scala.concurrent.Future[Boolean]"></a>
+      <a id="shouldRetry(sequenceNumber:Long,failure:Throwable):scala.concurrent.Future[Boolean]"></a>
       <a id="shouldRetry(Long,Throwable):Future[Boolean]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -104,10 +105,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">shouldRetry</span><span class="params">(<span name="taskStepId">taskStepId: <span class="extype" name="scala.Long">Long</span></span>, <span name="failure">failure: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>
+        <span class="name">shouldRetry</span><span class="params">(<span name="sequenceNumber">sequenceNumber: <span class="extype" name="scala.Long">Long</span></span>, <span name="failure">failure: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Boolean">Boolean</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.RetryDecider@shouldRetry(taskStepId:Long,failure:Throwable):scala.concurrent.Future[Boolean]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.RetryDecider@shouldRetry(sequenceNumber:Long,failure:Throwable):scala.concurrent.Future[Boolean]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>

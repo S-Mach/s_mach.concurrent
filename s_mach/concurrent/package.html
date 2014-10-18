@@ -47,7 +47,32 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>s_mach.concurrent is an open-source Scala library that provides asynchronous
+serial and parallel execution flow control primitives for working with
+asynchronous tasks. An asynchronous task consists of two or more calls to
+function(s) that return a future result <code>A ⇒ Future[B]</code> instead of
+the result <code>A ⇒ B</code>.</p><p> -</p><p>Adds concurrent flow control primitives <code>async</code> and
+    <code>async.par</code> for performing fixed size heterogeneous (tuple)
+    and variable size homogeneous (collection) asynchronous  tasks. These
+    primitives:</p><p> -</p><p>Allow enabling optional progress reporting, failure retry and/or
+          throttle control for asynchronous tasks</p><p> -</p><p>Ensure proper sequencing of returned futures, e.g. given
+          <code>f: Int ⇒ Future[String]</code>:</p><p> -</p><p><code>List(1,2,3).async.map(f)</code> returns
+                <code>Future[List[String]]</code></p><p> -</p><p><code>async.par.run(f(1),f(2),f(3))</code> returns
+                <code>Future[(String,String,String)]</code></p><p> -</p><p>Ensure fail-immediate sequencing of future results (see the
+          <em>Under the hood: Merge</em> section for details)</p><p> -</p><p>Ensure all exceptions generated during asynchronous task
+        processing can be retrieved (<code>Future.sequence</code> returns
+        only the first)</p><p> -</p><p><code>collection.async</code> and <code>collection.async.par</code>
+    support collection operations such as <code>map</code>,
+    <code>flatMap</code> and <code>foreach</code> on asynchronous functions,
+    i.e. <code>A ⇒ Future[B]</code></p><p> -</p><p><code>async.par.run(future1, future2, …)</code> supports running
+    fixed size heterogeneous asynchronous task (of up to 22 futures) in
+    parallel</p><p> -</p><p>Adds <code>ScheduledExecutionContext</code>, a Scala interface wrapper
+    for <code>java.util.concurrent.ScheduledExecutorService</code> that
+    provides for scheduling delayed and periodic tasks</p><p> -</p><p>Adds non-blocking concurrent control primitives such as
+    <code>Barrier</code>, <code>Latch</code>, <code>Lock</code> and
+    <code>Semaphore</code></p><p> -</p><p>Provides convenience methods for writing more readable, concise and
+    DRY concurrent code such as <code>Future.get</code>,
+    <code>Future.toTry</code> and <code>Future.fold</code></p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -89,25 +114,26 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="s_mach.concurrent.ConcurrentThrowable" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ConcurrentThrowableextendsThrowable"></a>
-      <a id="ConcurrentThrowable:ConcurrentThrowable"></a>
+              <ol><li name="s_mach.concurrent.AsyncParThrowable" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="AsyncParThrowableextendsThrowable"></a>
+      <a id="AsyncParThrowable:AsyncParThrowable"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="ConcurrentThrowable.html"><span class="name">ConcurrentThrowable</span></a><span class="result"> extends <span class="extype" name="scala.Throwable">Throwable</span></span>
+        <a href="AsyncParThrowable.html"><span class="name">AsyncParThrowable</span></a><span class="result"> extends <span class="extype" name="scala.Throwable">Throwable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.package@ConcurrentThrowableextendsThrowable" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.package@AsyncParThrowableextendsThrowable" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for capturing all Throwables thrown during a concurrent operation.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for capturing all Throwables thrown during a concurrent operation.
-The first Throwable is immediately available and all others can be retrieved
-by waiting on a future of all Throwables.
+      <p class="shortcomment cmt">A trait for capturing all failures thrown during an asynchronous parallel
+task.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for capturing all failures thrown during an asynchronous parallel
+task. The first failure is immediately available and all others can be
+retrieved by waiting on a future.
 </p></div></div>
     </li><li name="s_mach.concurrent.DeferredFuture" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="DeferredFuture[A]extendsFuture[A]"></a>
@@ -131,7 +157,7 @@ occurs. DeferredFuture completes once the start condition occurs and the
 deferred future completes.
 </p></div></div>
     </li><li name="s_mach.concurrent.DelayedFuture" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="DelayedFuture[A]extendsFuture[A]"></a>
+      <a id="DelayedFuture[A]extendsDeferredFuture[A]"></a>
       <a id="DelayedFuture[A]:DelayedFuture[A]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -139,10 +165,10 @@ deferred future completes.
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="DelayedFuture.html"><span class="name">DelayedFuture</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</span>
+        <a href="DelayedFuture.html"><span class="name">DelayedFuture</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.package@DelayedFuture[A]extendsFuture[A]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.package@DelayedFuture[A]extendsDeferredFuture[A]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -347,19 +373,19 @@ the task is cancelled or a failure occurs.
 
         <div id="values" class="values members">
               <h3>Value Members</h3>
-              <ol><li name="s_mach.concurrent.ConcurrentThrowable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ConcurrentThrowable"></a>
-      <a id="ConcurrentThrowable:ConcurrentThrowable"></a>
+              <ol><li name="s_mach.concurrent.AsyncParThrowable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AsyncParThrowable"></a>
+      <a id="AsyncParThrowable:AsyncParThrowable"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="ConcurrentThrowable$.html"><span class="name">ConcurrentThrowable</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="AsyncParThrowable$.html"><span class="name">AsyncParThrowable</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.package@ConcurrentThrowable" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.package@AsyncParThrowable" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -414,7 +440,8 @@ the task is cancelled or a failure occurs.
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">The global base asynchronous config builder configured with one worker
+(serial) operation with all options disabled by default</p>
     </li><li name="s_mach.concurrent.config" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="config"></a>
       <a id="config:config"></a>

@@ -82,8 +82,8 @@
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait for a barrier that can be used by callers to synchronize events by
-waiting on the barrier to be set.</p>
+      <p class="shortcomment cmt">A trait for a barrier that can be used by callers to synchronize on an event
+by waiting for the barrier to be set.</p>
     </li><li name="s_mach.concurrent.util.ConcurrentTestContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ConcurrentTestContextextendsExecutionContextwithScheduledExecutionContext"></a>
       <a id="ConcurrentTestContext:ConcurrentTestContext"></a>
@@ -144,24 +144,6 @@ delegate future
     </span>
       <p class="shortcomment cmt">A trait for a latch that can be set once to synchronize events that are
 waiting on the barrier.</p>
-    </li><li name="s_mach.concurrent.util.ListQueue" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ListQueue[A]extendsQueue[A]"></a>
-      <a id="ListQueue[A]:ListQueue[A]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="ListQueue.html"><span class="name">ListQueue</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="Queue.html" class="extype" name="s_mach.concurrent.util.Queue">Queue</a>[<span class="extype" name="s_mach.concurrent.util.ListQueue.A">A</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@ListQueue[A]extendsQueue[A]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for queue that uses an unlimited size linked list as the backend
-for the queue.</p>
     </li><li name="s_mach.concurrent.util.Lock" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="LockextendsAnyRef"></a>
       <a id="Lock:Lock"></a>
@@ -231,29 +213,6 @@ report interval
                 computation has an unknown size</p></dd><dt class="param">startTime_ns</dt><dd class="cmt"><p>the time in nanoseconds returned by System.nanoTime when
                     the computation was started
 </p></dd></dl></div>
-    </li><li name="s_mach.concurrent.util.Queue" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="Queue[A]extendsAnyRef"></a>
-      <a id="Queue[A]:Queue[A]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a href="Queue.html"><span class="name">Queue</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@Queue[A]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">A trait for a non-blocking queue.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a non-blocking queue. Note: offer is blocking by design here to
-give callers the greatest freedom in deciding how to react to a full queue.
-Should an asynchronous offer be desired, simply wrap the call to offer in a
-Future. Keep in mind that Futures are not free and uses a Future to wait for
-the queue to empty is simply displaying the enqueue onto a different system
-queue.
-</p></div></div>
     </li><li name="s_mach.concurrent.util.RetryDecider" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="RetryDeciderextendsAnyRef"></a>
       <a id="RetryDecider:RetryDecider"></a>
@@ -270,7 +229,8 @@ queue.
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">A trait to decide whether to retry a failure during a step of task.</p><div class="fullcomment"><div class="comment cmt"><p>A trait to decide whether to retry a failure during a step of task.</p><p>Note: derived implementations must be threadsafe.
+      <p class="shortcomment cmt">A trait to decide whether to retry a failure in a task.</p><div class="fullcomment"><div class="comment cmt"><p>A trait to decide whether to retry a failure in a task. Tasks are identified
+by their sequence number.</p><p>Note: implementations must be thread safe.
 </p></div></div>
     </li><li name="s_mach.concurrent.util.Semaphore" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="SemaphoreextendsAnyRef"></a>
@@ -371,8 +331,8 @@ time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="t
       </a>
     </span>
       <p class="shortcomment cmt">A trait for a simple progress reporter that accumulates total progress from
-completed reports and makes a report for each completed report
-</p>
+completed reports and makes a report each time there is progress during a
+task.</p>
     </li><li name="s_mach.concurrent.util.TaskEventListener" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="TaskEventListenerextendsAnyRef"></a>
       <a id="TaskEventListener:TaskEventListener"></a>
@@ -391,15 +351,7 @@ completed reports and makes a report for each completed report
     </span>
       <p class="shortcomment cmt">A trait for listening to the progress of a task that consists of one or more
 discrete steps.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for listening to the progress of a task that consists of one or more
-discrete steps. Each step is identified by an  ordinal step identifier. The
-step id is a generic concept and may be mapped by callers to any concrete
-concept. For  tasks with a known fixed input size, the step id is mapped
-directly to the index of the input (i.e. input with index  0 = step 1, index
-1 = step 2, etc). For tasks with an unknown input size, the step id is mapped
-to the Nth item  encountered (i.e. 1st item = step 1, 2nd item = step 2). The
-step id must be incrementally assigned,  ensuring that that total steps
-always equals last step id.</p><p>Note: derived task event listeners are assumed to be stateful.
-Implementations must be thread safe
+discrete steps. Each step is identified by a sequence number.</p><p>Note: implementations must be thread safe
 </p></div></div>
     </li><li name="s_mach.concurrent.util.ThrottleControl" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="ThrottleControlextendsAnyRef"></a>
@@ -499,23 +451,6 @@ tasks will not be greater than the throttle setting.</p></div></div>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#s_mach.concurrent.util.package@Latch" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
-    </li><li name="s_mach.concurrent.util.ListQueue" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ListQueue"></a>
-      <a id="ListQueue:ListQueue"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="ListQueue$.html"><span class="name">ListQueue</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.package@ListQueue" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>

@@ -407,9 +407,9 @@ delay
       <p class="shortcomment cmt">Creates a PeriodicTask that executes first after the given initial delay,
 and subsequently with the given period.</p><div class="fullcomment"><div class="comment cmt"><p>Creates a PeriodicTask that executes first after the given initial delay,
 and subsequently with the given period. PeriodicTask may stopped using the
-cancel method or will end automatically on should a failure occur while
-processing the task. If any execution of this task takes longer than its
-period, then subsequent executions may start late, but will not
+cancel method. If a failure occurs while processing the task, the task is
+automatically cancelled. If any execution of this task takes longer than
+its period, then subsequent executions may start late, but will not
 concurrently execute.
 </p></div><dl class="paramcmts block"><dt class="param">initialDelay</dt><dd class="cmt"><p>the time to delay first execution</p></dd><dt class="param">period</dt><dd class="cmt"><p>the period between successive executions</p></dd><dt class="param">task</dt><dd class="cmt"><p>the task to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a PeriodicTask</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl">ScheduledExecutionContextImpl</a> → <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if period less than or equal to zero
 </p></span><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
