@@ -4,7 +4,7 @@ organization := "net.s_mach"
 
 name := "concurrent"
 
-version := "0.2-SNAPSHOT"
+version := "1.0.0"
 
 scalacOptions ++= Seq("-feature","-unchecked", "-deprecation")
 

@@ -47,14 +47,14 @@ support can be added if there is interest)
 +
 [source,sbt,numbered]
 ----
-resolvers += Resolver.sonatypeRepo("snapshots")
+resolvers += Resolver.sonatypeRepo("releases")
 ----
 +
 3. Add to +build.sbt+
 +
 [source,sbt,numbered]
 ----
-libraryDependencies += "net.s_mach" %% "concurrent" % "0.2-SNAPSHOT"
+libraryDependencies += "net.s_mach" %% "concurrent" % "1.0.0"
 ----
 
 
