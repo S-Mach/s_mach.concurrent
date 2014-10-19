@@ -39,21 +39,15 @@ delayed and periodic tasks
 concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
 == Include in SBT
-1. +s_mach.concurrent+ is currently compatible with only Scala 2.11 (2.10.4
-support can be added if there is interest)
-2. Add to +build.sbt+ OR +~/.sbt/{verison}/build.sbt+
-+
-[source,sbt,numbered]
-----
-resolvers += Resolver.sonatypeRepo("releases")
-----
-+
-3. Add to +build.sbt+
+1. Add to +build.sbt+
 +
 [source,sbt,numbered]
 ----
 libraryDependencies += "net.s_mach" %% "concurrent" % "1.0.0"
 ----
+NOTE: +s_mach.concurrent+ is currently only compiled for Scala 2.11 (though 2.10.4
+support can be added if there is interest)
+
 
 
 == Imports for Examples
