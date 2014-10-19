@@ -43,7 +43,7 @@ concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
 +
 [source,sbt,numbered]
 ----
-libraryDependencies += "net.s_mach" %% "concurrent" % "1.0.0"
+libraryDependencies += "net.s_mach" %% "concurrent" % "1.0.2"
 ----
 NOTE: +s_mach.concurrent+ is currently only compiled for Scala 2.11 (though 2.10.4
 support can be added if there is interest)
