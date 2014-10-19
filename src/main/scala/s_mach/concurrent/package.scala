@@ -31,73 +31,8 @@ import s_mach.concurrent.config.{AsyncConfigBuilder, AsyncConfig}
  * s_mach.concurrent is an open-source Scala library that provides asynchronous
  * serial and parallel execution flow control primitives for working with
  * asynchronous tasks. An asynchronous task consists of two or more calls to
- * function(s) that return a future result <code>A ⇒ Future[B]</code> instead of
- * the result <code>A ⇒ B</code>.</p>
- * <ul>
- *   <li>
- *     <p>Adds concurrent flow control primitives <code>async</code> and
- *     <code>async.par</code> for performing fixed size heterogeneous (tuple)
- *     and variable size homogeneous (collection) asynchronous  tasks. These
- *     primitives:</p>
- *     <div>
- *       <ul>
- *         <li>
- *           <p>Allow enabling optional progress reporting, failure retry and/or
- *           throttle control for asynchronous tasks</p>
- *         </li>
- *         <li>
- *           <p>Ensure proper sequencing of returned futures, e.g. given
- *           <code>f: Int ⇒ Future[String]</code>:</p>
- *           <div>
- *             <ul>
- *               <li>
- *                 <p><code>List(1,2,3).async.map(f)</code> returns
- *                 <code>Future[List[String]]</code></p>
- *               </li>
- *               <li>
- *                 <p><code>async.par.run(f(1),f(2),f(3))</code> returns
- *                 <code>Future[(String,String,String)]</code></p>
- *               </li>
- *             </ul>
- *           </div>
- *         </li>
- *         <li>
- *           <p>Ensure fail-immediate sequencing of future results (see the
- *           <em>Under the hood: Merge</em> section for details)</p>
- *         </li>
- *         <li><p>Ensure all exceptions generated during asynchronous task
- *         processing can be retrieved (<code>Future.sequence</code> returns
- *         only the first)</p></li>
- *       </ul>
- *     </div>
- *   </li>
- *   <li>
- *     <p><code>collection.async</code> and <code>collection.async.par</code>
- *     support collection operations such as <code>map</code>,
- *     <code>flatMap</code> and <code>foreach</code> on asynchronous functions,
- *     i.e. <code>A ⇒ Future[B]</code></p>
- *   </li>
- *   <li>
- *     <p><code>async.par.run(future1, future2, …)</code> supports running
- *     fixed size heterogeneous asynchronous task (of up to 22 futures) in
- *     parallel</p>
- *   </li>
- *   <li>
- *     <p>Adds <code>ScheduledExecutionContext</code>, a Scala interface wrapper
- *     for <code>java.util.concurrent.ScheduledExecutorService</code> that
- *     provides for scheduling delayed and periodic tasks</p>
- *   </li>
- *   <li>
- *     <p>Adds non-blocking concurrent control primitives such as
- *     <code>Barrier</code>, <code>Latch</code>, <code>Lock</code> and
- *     <code>Semaphore</code></p>
- *   </li>
- *   <li>
- *     <p>Provides convenience methods for writing more readable, concise and
- *     DRY concurrent code such as <code>Future.get</code>,
- *     <code>Future.toTry</code> and <code>Future.fold</code></p>
- *   </li>
- * </ul>
+ * function(s) that return a future result *<code>A ⇒ Future[B]</code> instead
+ * of the result <code>A ⇒ B</code>.</p>
  */
 package object concurrent {
   

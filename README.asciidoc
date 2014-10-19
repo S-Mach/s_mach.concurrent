@@ -1,10 +1,8 @@
 = s_mach.concurrent: Futures utility library
 Lance Gatlin <lance.gatlin@gmail.com>
-v2,30-Sep-2014
+v2,18-Oct-2014
 :blogpost-status: unpublished
 :blogpost-categories: s_mach, scala
-
-*UNDER CONSTRUCTION*
 
 image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"] https://github.com/S-Mach/s_mach.concurrent[Code] http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
