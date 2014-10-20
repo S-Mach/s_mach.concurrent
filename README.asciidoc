@@ -10,7 +10,8 @@ image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="htt
 serial and parallel execution flow control primitives for working with
 asynchronous tasks. An asynchronous task consists of two or more calls to
 function(s) that return a future result +A => Future[B]+ instead of the result
-+A => B+.
++A => B+. +s_mach.concurrent+ also provides utility & convenience code for 
+working with scala.concurrent.Future.
 
 * Adds concurrent flow control primitives +async+ and +async.par+ for
 performing fixed size heterogeneous (tuple) and variable size homogeneous
