@@ -19,13 +19,13 @@
 package s_mach.concurrent.impl
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent.{PeriodicTask, ScheduledExecutionContext}
 import s_mach.concurrent.util.{Progress, PeriodicProgressReporter}
 
 class PeriodicProgressReporterImpl(
   optTotal: Option[Int],
-  val reportInterval: Duration,
+  val reportInterval: FiniteDuration,
   report: Progress => Unit
 )(implicit
   executionContext: ExecutionContext,

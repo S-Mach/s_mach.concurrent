@@ -20,7 +20,7 @@ package s_mach.concurrent
 
 import java.util.concurrent.{ScheduledExecutorService, ThreadFactory, Executors}
 import scala.concurrent._
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent.impl.ScheduledExecutionContextImpl
 
 /**
@@ -38,7 +38,7 @@ trait ScheduledExecutionContext {
    * @throws RejectedExecutionException if the task cannot be scheduled for
    *                                    execution
    */
-  def schedule[A](delay: Duration)(f: => A) : DelayedFuture[A]
+  def schedule[A](delay: FiniteDuration)(f: => A) : DelayedFuture[A]
 
   /**
    * Creates a PeriodicTask that executes first after the given initial delay,
@@ -57,9 +57,11 @@ trait ScheduledExecutionContext {
    * @throws IllegalArgumentException if period less than or equal to zero
    */
   def scheduleAtFixedRate[U](
-    initialDelay: Duration,
-    period: Duration
-  )(task: () => U) : PeriodicTask
+    initialDelay: FiniteDuration,
+    period: FiniteDuration
+  )(
+    task: () => U
+  ) : PeriodicTask
 
   /**
    * Report a failure. Used to report failures during periodic tasks

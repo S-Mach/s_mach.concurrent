@@ -28,7 +28,7 @@ import s_mach.concurrent.util.{Latch, DelegatedFuture}
 object ScheduledExecutionContextImpl {
   case class ScheduledDelayedFutureImpl[A](
     task: () => A,
-    delay: Duration,
+    delay: FiniteDuration,
     scheduledExecutorService: ScheduledExecutorService
   )(implicit
     ec:ExecutionContext
@@ -58,8 +58,8 @@ object ScheduledExecutionContextImpl {
 
   case class PeriodicTaskImpl[U](
     task: () => U,
-    initialDelay: Duration,
-    period: Duration,
+    initialDelay: FiniteDuration,
+    period: FiniteDuration,
     scheduledExecutorService: ScheduledExecutorService,
     reportFailure: Throwable => Unit
   ) extends PeriodicTask {
@@ -110,7 +110,7 @@ case class ScheduledExecutionContextImpl(
 ) extends ScheduledExecutionContext {
   import ScheduledExecutionContextImpl._
 
-  def schedule[A](delay: Duration)(task: => A) : DelayedFuture[A] = {
+  def schedule[A](delay: FiniteDuration)(task: => A) : DelayedFuture[A] = {
     ScheduledDelayedFutureImpl(
       task = { () => task },
       delay = delay,
@@ -119,8 +119,8 @@ case class ScheduledExecutionContextImpl(
   }
 
   def scheduleAtFixedRate[U](
-    initialDelay: Duration,
-    period: Duration
+    initialDelay: FiniteDuration,
+    period: FiniteDuration
   )(task: () => U) : PeriodicTask = {
     PeriodicTaskImpl(
       task = task,

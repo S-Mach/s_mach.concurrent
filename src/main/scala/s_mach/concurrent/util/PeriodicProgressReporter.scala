@@ -28,13 +28,13 @@ import s_mach.concurrent.impl.PeriodicProgressReporterImpl
  * report interval
  */
 trait PeriodicProgressReporter extends TaskEventListener {
-  def reportInterval: Duration
+  def reportInterval: FiniteDuration
 }
 
 object PeriodicProgressReporter {
   def apply(
     optTotal: Option[Int],
-    reportInterval: Duration,
+    reportInterval: FiniteDuration,
     report: Progress => Unit
   )(implicit
     executionContext: ExecutionContext,
