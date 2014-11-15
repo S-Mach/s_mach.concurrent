@@ -18,7 +18,6 @@
 */
 package s_mach.concurrent
 
-import scala.concurrent._
 import scala.concurrent.duration._
 import org.scalatest.{Matchers, FlatSpec}
 import util._
@@ -32,8 +31,46 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       import ctc._
       sched.addEvent("start")
       val result = scheduledExecutionContext.schedule(DELAY) { sched.addEvent("trigger");1 }
+
+      ctc.waitForActiveExecutionCount(0)
+
       result.get should equal(1)
       sched.startEvents(0).elapsed_ns - sched.startEvents(1).elapsed_ns should be >= DELAY_NS
+    }
+  }
+
+  s"ScheduledExecutionContext.scheduleCancellable" must "return a DelayedFuture that executes the task after at least the specified delay" in {
+    test repeat TEST_COUNT run {
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
+      sched.addEvent("start")
+      val result = scheduledExecutionContext.scheduleCancellable(DELAY,2) { sched.addEvent("trigger");1 }
+
+      ctc.waitForActiveExecutionCount(0)
+
+      result.get should equal(1)
+      result.isCancelled should equal(false)
+      result.canCancel should equal(false)
+      result.cancel() should equal(false)
+      sched.startEvents(0).elapsed_ns - sched.startEvents(1).elapsed_ns should be >= DELAY_NS
+    }
+  }
+
+  s"ScheduledExecutionContext.schedule" must "return a DelayedFuture that when cancelled returns the fallback value" in {
+    test repeat TEST_COUNT run {
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
+      sched.addEvent("start")
+      val result = scheduledExecutionContext.scheduleCancellable(10.seconds,2) { sched.addEvent("trigger");1 }
+      result.canCancel should equal(true)
+      result.cancel() should equal(true)
+
+      ctc.waitForActiveExecutionCount(0)
+
+      result.isCancelled should equal(true)
+      result.canCancel should equal(false)
+      result.cancel() should equal(false)
+      result.get should equal(2)
     }
   }
 

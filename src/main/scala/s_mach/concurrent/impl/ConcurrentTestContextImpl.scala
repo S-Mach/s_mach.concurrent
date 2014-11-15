@@ -52,6 +52,20 @@ class ConcurrentTestContextImpl()(implicit
     }
     retv
   }
+
+
+  override def scheduleCancellable[A](
+    delay: FiniteDuration,
+    fallback: => A
+  )(
+    f: => A
+  ): CancellableDelayedFuture[A] = {
+    _activeExecutionCount.incrementAndGet()
+    val retv = sec.scheduleCancellable(delay, fallback)(f)
+    retv.sideEffect(_activeExecutionCount.decrementAndGet()).background
+    retv
+  }
+
   override def schedule[A](delay: FiniteDuration)(f: => A) = {
     _activeExecutionCount.incrementAndGet()
     val retv = sec.schedule(delay)(f)

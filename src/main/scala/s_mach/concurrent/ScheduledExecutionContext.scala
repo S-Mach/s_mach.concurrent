@@ -33,12 +33,30 @@ trait ScheduledExecutionContext {
    *
    * @param delay the time from now to delay execution
    * @param f the function to execute
-   * @return a DelayedFuture that can be used to extract result or cancel (only
-   *         before it has been started)
+   * @return a DelayedFuture that can be used to extract result
    * @throws RejectedExecutionException if the task cannot be scheduled for
    *                                    execution
    */
   def schedule[A](delay: FiniteDuration)(f: => A) : DelayedFuture[A]
+
+  /**
+   * Create a DelayedFuture that executes the supplied function after the given
+   * delay
+   *
+   * @param delay the time from now to delay execution
+   * @param fallback the value to return if the future is cancelled
+   * @param f the function to execute
+   * @return a DelayedFuture that can be used to extract result or cancel (only
+   *         before it has been started)
+   * @throws RejectedExecutionException if the task cannot be scheduled for
+   *         execution
+   */
+  def scheduleCancellable[A](
+    delay: FiniteDuration,
+    fallback: => A
+  )(
+    f: => A
+  ): CancellableDelayedFuture[A]
 
   /**
    * Creates a PeriodicTask that executes first after the given initial delay,

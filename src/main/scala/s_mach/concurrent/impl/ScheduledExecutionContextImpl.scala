@@ -26,9 +26,9 @@ import s_mach.concurrent._
 import s_mach.concurrent.util.{Latch, DelegatedFuture}
 
 object ScheduledExecutionContextImpl {
-  case class ScheduledDelayedFutureImpl[A](
+  class ScheduledDelayedFutureImpl[A](
     task: () => A,
-    delay: FiniteDuration,
+    val delay: FiniteDuration,
     scheduledExecutorService: ScheduledExecutorService
   )(implicit
     ec:ExecutionContext
@@ -36,30 +36,67 @@ object ScheduledExecutionContextImpl {
 
     val delay_ns = delay.toNanos
     val startTime_ns = System.nanoTime + delay_ns
-    val futPromise = Promise[Future[A]]()
-    val promise = Promise[A]()
+    val deferredPromise = Promise[Future[A]]()
+    val delegatePromise = Promise[A]()
 
     val javaScheduledFuture =
       scheduledExecutorService.schedule(
         new Runnable {
           override def run() = {
-            futPromise.success(delegate)
-            promise.complete(Try(task()))
+            // Signal that the future has started
+            deferredPromise.success(delegate)
+            delegatePromise.complete(Try(task()))
           }
         },
         delay_ns,
         TimeUnit.NANOSECONDS
       )
 
-    val delegate = promise.future
+    val delegate = delegatePromise.future
 
-    val deferred = futPromise.future
+    val deferred = deferredPromise.future
+  }
+  class CancellableScheduledDelayedFutureImpl[A](
+    task: () => A,
+    fallback: => A,
+    delay: FiniteDuration,
+    scheduledExecutorService: ScheduledExecutorService
+  )(implicit
+    ec:ExecutionContext
+  ) extends ScheduledDelayedFutureImpl[A](task, delay, scheduledExecutorService)
+  with CancellableDelayedFuture[A] {
+    val wasCancelled = Latch()
+    
+    override def isCancelled = wasCancelled.isSet
+
+    override def canCancel = deferredPromise.isCompleted == false
+
+    override def cancel() = {
+      if(canCancel) {
+        // Attempt to cancel
+        if(javaScheduledFuture.cancel(false)) {
+          // If cancel was successful, still need to make this future complete
+          // with something in case there waiting listeners
+          // Signal that the future has started
+          deferredPromise.success(delegate)
+          delegatePromise.success(fallback)
+          wasCancelled.set()
+          true
+        } else {
+          false
+        }
+      } else {
+        // Future has already started
+        false
+      }
+    }
+
   }
 
-  case class PeriodicTaskImpl[U](
+  class PeriodicTaskImpl[U](
     task: () => U,
-    initialDelay: FiniteDuration,
-    period: FiniteDuration,
+    val initialDelay: FiniteDuration,
+    val period: FiniteDuration,
     scheduledExecutorService: ScheduledExecutorService,
     reportFailure: Throwable => Unit
   ) extends PeriodicTask {
@@ -111,8 +148,22 @@ case class ScheduledExecutionContextImpl(
   import ScheduledExecutionContextImpl._
 
   def schedule[A](delay: FiniteDuration)(task: => A) : DelayedFuture[A] = {
-    ScheduledDelayedFutureImpl(
+    new ScheduledDelayedFutureImpl(
       task = { () => task },
+      delay = delay,
+      scheduledExecutorService = delegate
+    )
+  }
+
+  override def scheduleCancellable[A](
+    delay: FiniteDuration,
+    fallback: => A
+  )(
+    task: => A
+  ): CancellableDelayedFuture[A] = {
+    new CancellableScheduledDelayedFutureImpl(
+      task = { () => task },
+      fallback = fallback,
       delay = delay,
       scheduledExecutorService = delegate
     )
@@ -122,7 +173,7 @@ case class ScheduledExecutionContextImpl(
     initialDelay: FiniteDuration,
     period: FiniteDuration
   )(task: () => U) : PeriodicTask = {
-    PeriodicTaskImpl(
+    new PeriodicTaskImpl(
       task = task,
       initialDelay = initialDelay,
       period = period,
