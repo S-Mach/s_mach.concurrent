@@ -19,6 +19,7 @@
 package s_mach.concurrent.impl
 
 
+import scala.annotation.tailrec
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.language.higherKinds
@@ -215,6 +216,19 @@ trait FutureOps {
         }
     }
     promise.future.flatMap(v => v)
+  }
+
+  def recurseCompareAndSet[A](self: java.util.concurrent.atomic.AtomicReference[A], f: A => A) : A = {
+    @tailrec def loop(): A = {
+      val expect = self.get
+      val newValue = f(expect)
+      if(self.compareAndSet(expect, newValue)) {
+        newValue
+      } else {
+        loop()
+      }
+    }
+    loop()
   }
 
 }

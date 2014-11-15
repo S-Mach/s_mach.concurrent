@@ -209,6 +209,25 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     }
   }
 
+  "AtomicReference.recurseCompareAndSet" must "immediately set the value when there is no contention" in {
+    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
+    a.recurseCompareAndSet(_ + "1") should equal("initial1")
+    a.get should equal("initial1")
+  }
+
+  "AtomicReference.recurseCompareAndSet" must "set the value when there is contention" in {
+    var latch = true
+    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
+    a.recurseCompareAndSet { s =>
+      if(latch) {
+        a.set("changed")
+        latch = false
+      }
+      s + "1"
+    }
+    a.get should equal("changed1")
+  }
+
 //  implicit class SMach_Concurrent_PimpMyTraversableFuture[A, M[+AA] <: Traversable[AA]](
 //    val self: M[Future[A]]
 //  ) extends AnyVal {
