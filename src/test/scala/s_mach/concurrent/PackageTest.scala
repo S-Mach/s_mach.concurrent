@@ -21,9 +21,9 @@ package s_mach.concurrent
 import org.scalatest.{Matchers, FlatSpec}
 import scala.concurrent._
 import scala.concurrent.duration._
-import s_mach.concurrent.util.{Latch, Barrier}
+import s_mach.concurrent.util.Latch
 import s_mach.concurrent.impl._
-
+import TestBuilder._
 import scala.util.{Failure, Success}
 
 class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
@@ -89,6 +89,50 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     sideEffects.result() should equal(List("1","1"))
   }
 
+  "Future.onTimeout" must "complete normally if timeout is not exceeded" in {
+    implicit val ctc = mkConcurrentTestContext()
+
+    val startTime_ns = System.nanoTime()
+    val future = Future { 1 }.onTimeout(10.seconds)(Future.failed(new TimeoutException))
+
+    ctc.waitForActiveExecutionCount(0)
+
+    val elapsed = (System.nanoTime() - startTime_ns).nanos
+
+    future.get should equal(1)
+    elapsed should be < 1.second
+  }
+
+  "Future.onTimeout" must "fallback if timeout is exceeded" in {
+    implicit val ctc = mkConcurrentTestContext()
+
+    val ex = new TimeoutException
+    val latch = Latch()
+    val future = latch.future.onTimeout(1.nano)(Future.failed(ex))
+
+    ctc.waitForActiveExecutionCount(0)
+
+    future.getTry should equal(Failure(ex))
+  }
+
+  "Future.onTimeout" must "fallback if timeout is exceeded even if fallback takes awhile" in {
+    implicit val ctc = mkConcurrentTestContext()
+
+    val ex = new TimeoutException
+    val latch = Latch()
+    val p = Promise[Unit]()
+    val future = latch.future.onTimeout(1.nano) {
+      latch.set()
+      p.future
+    }
+    Thread.sleep(1)
+    p.failure(ex)
+
+    ctc.waitForActiveExecutionCount(0)
+
+    future.getTry should equal(Failure(ex))
+  }
+
   "Future.background" must "ensure exceptions are reported to ExecutionContext" in {
     val ctc = mkConcurrentTestContext()
     val failures = List.newBuilder[Throwable]
@@ -127,6 +171,42 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     deferredFuture.deferred.get.isCompleted should equal(false)
     latch2.set()
     deferredFuture.get should equal(1)
+  }
+
+  "firstSuccess-t1" must "return the first future to successfully complete" in {
+    test repeat TEST_COUNT run {
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
+
+      val endLatch = Latch()
+
+      val f3 = Future { throw new RuntimeException }
+      val f2 = f3 happensBefore Future { 2 }
+      // Note: using endLatch here to prevent race condition between firstSuccess completing and f1 being triggered
+      val f1 = endLatch happensBefore Future { 1 }
+
+      val result = Vector(f1,f2,f3).firstSuccess
+
+      waitForActiveExecutionCount(0)
+      endLatch.set()
+
+      result.getTry should equal(Success(2))
+    }
+  }
+
+  "firstSuccess(fail)-t2" must "complete with a failure if all futures fail" in {
+    test repeat TEST_COUNT run {
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
+
+      val f1 = Future { throw new RuntimeException("1") }
+      val f2 = Future { throw new RuntimeException("2") }
+      val f3 = Future { throw new RuntimeException("3") }
+
+      val result = Vector(f1,f2,f3).firstSuccess
+
+      result.getTry shouldBe a [Failure[_]]
+    }
   }
 
 //  implicit class SMach_Concurrent_PimpMyTraversableFuture[A, M[+AA] <: Traversable[AA]](

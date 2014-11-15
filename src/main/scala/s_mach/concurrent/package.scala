@@ -121,6 +121,17 @@ package object concurrent {
       sideEffect: => Unit
     )(implicit ec: ExecutionContext) : Future[A]
       = FutureOps.sideEffect(self, sideEffect)
+    /** @return a future that completes with fallback if the specified timeout
+      *         is exceeded, otherwise the completed result of the future */
+    def onTimeout(
+      timeout: FiniteDuration
+    )(
+      fallback: => Future[A]
+    )(implicit
+      ec:ExecutionContext,
+      sec: ScheduledExecutionContext
+    ) : Future[A]
+      = FutureOps.onTimeout(self, timeout)(fallback)
   }
   implicit class SMach_Concurrent_PimpMyFutureFuture[A](
     val self: Future[Future[A]]

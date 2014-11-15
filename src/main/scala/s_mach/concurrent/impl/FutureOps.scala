@@ -22,9 +22,9 @@ package s_mach.concurrent.impl
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.language.higherKinds
-import scala.util.{Failure, Success, Try}
+import scala.util.{Try,Success,Failure}
 import MergeOps._
-import s_mach.concurrent.{DeferredFuture, AsyncParThrowable}
+import s_mach.concurrent.{ScheduledExecutionContext, DeferredFuture, AsyncParThrowable}
 
 object FutureOps extends FutureOps
 trait FutureOps {
@@ -181,12 +181,41 @@ trait FutureOps {
     lhs: Future[A],
     sideEffect: => Unit
   )(implicit ec:ExecutionContext) : Future[A] = {
-    val promise = Promise[A]()
-    lhs onComplete { case v =>
-      sideEffect
-      promise.complete(v)
-    }
-    promise.future
+    lhs onComplete { case v => sideEffect }
+    lhs
   }
+
+  /** @return a future that completes with fallback if the specified timeout is
+    *         exceeded, otherwise the completed result of the future */
+  def onTimeout[A](
+    self: Future[A],
+    timeout: FiniteDuration
+  )(
+    fallback: => Future[A]
+  )(implicit
+    ec:ExecutionContext,
+    sec:ScheduledExecutionContext
+  ) : Future[A] = {
+    // Using promise of future to ensure that once timeout is reached it is not
+    // possible for self to complete the returned future even if fallback takes
+    // awhile to complete itself
+    val promise = Promise[Future[A]]()
+    val futTimeout = sec.scheduleCancellable(timeout, ())(promise.trySuccess(fallback))
+    self onComplete {
+      case Success(_) =>
+        if(promise.trySuccess(self)) {
+          futTimeout.cancel()
+        }
+      case Failure(t) =>
+        // Ensure failures are always reported even after timeout
+        if(promise.trySuccess(self) == false) {
+          ec.reportFailure(t)
+        } else {
+          futTimeout.cancel()
+        }
+    }
+    promise.future.flatMap(v => v)
+  }
+
 }
 
