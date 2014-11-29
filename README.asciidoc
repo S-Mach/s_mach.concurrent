@@ -49,6 +49,13 @@ libraryDependencies += "net.s_mach" %% "concurrent" % "1.0.2"
 NOTE: +s_mach.concurrent+ is currently only compiled for Scala 2.11 (though 2.10.4
 support can be added if there is interest)
 
+== Versioning
++s_mach.concurrent+ uses semantic versioning (http://semver.org/). +s_mach.current+
+does not use the package private modifier. Instead, all code files outside of
+the "impl" folder form the public interface and are governed by the rules of
+semantic versioning. Code files inside the "impl" folder may be used by
+downstream applications and libraries. However, no guarantees are made as to the
+stability or interface of code in the "impl" folder.
 
 
 == Imports for Examples
