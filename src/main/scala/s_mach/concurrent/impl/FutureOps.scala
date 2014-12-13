@@ -176,14 +176,22 @@ trait FutureOps {
     DeferredFuture(promise.future)
   }
 
-  /** @return execute a side effect after a future completes (even if it fails)
+  /** @return a future that completes once the supplied Future and the supplied
+    *         side effect complete. The side effect runs after the supplied
+    *         future completes even if it fails.
     * */
   def sideEffect[A](
-    lhs: Future[A],
+    self: Future[A],
     sideEffect: => Unit
   )(implicit ec:ExecutionContext) : Future[A] = {
-    lhs onComplete { case v => sideEffect }
-    lhs
+    val promise = Promise[A]()
+    // Note: it is important here that the side effect execute before completing
+    // the promise
+    self onComplete { case _try =>
+      sideEffect
+      promise.complete(_try)
+    }
+    promise.future
   }
 
   /** @return a future that completes with fallback if the specified timeout is
