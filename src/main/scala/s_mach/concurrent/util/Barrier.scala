@@ -41,6 +41,9 @@ trait Barrier {
   def happensBefore[A](
     next: => Future[A]
   )(implicit ec:ExecutionContext) : Future[A]
+
+  /** Loop until set */
+  def spinUntilSet() : Unit
 }
 
 object Barrier {
@@ -54,5 +57,6 @@ object Barrier {
     override def happensBefore[A](
       next: => Future[A]
     )(implicit ec: ExecutionContext) = next
+    override def spinUntilSet() = { }
   }
 }
