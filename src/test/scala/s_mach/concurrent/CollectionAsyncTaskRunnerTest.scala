@@ -181,8 +181,8 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
             }
 
         result.get
-        // TODO: this doesn't work properly below 1 ms throttle?
-  //      waitForActiveExecutionCount(0)
+
+        waitForActiveExecutionCount(0)
 
         sched.orderedEvents.map(_.id) should equal(
           Vector("progress-0") ++
