@@ -54,7 +54,21 @@ object TestBuilder {
   }
 
   def repeatTest[R](repeat: Int, allowedFailureCount: Int)(f: => R) : IndexedSeq[R] = {
-    val results = (0 until repeat).map(_ => Try(f))
+    println(Thread.currentThread().getStackTrace.tail.find(_.getFileName != "TestBuilder.scala").get)
+    val startTime_ms = System.currentTimeMillis()
+    val bs = "\b" * 6
+    val results = (0 until repeat).map { i =>
+      val retv = Try(f)
+      if(i % 10 == 0) {
+        print(bs)
+        print("%5.1f%%" format (i * 100.0/repeat.toDouble))
+      }
+      retv
+    }
+    println(s"${bs}100.0%")
+    val elapsed_ms = System.currentTimeMillis() - startTime_ms
+    val testsPerSec = (repeat.toDouble/elapsed_ms*1000.0).toInt
+    println(s"Completed $repeat tests in $elapsed_ms ms ($testsPerSec tests/sec)")
     val failures = results.collect { case Failure(t) => t }
     if(failures.nonEmpty) {
       val failureSummary = summarizeFailures(repeat, allowedFailureCount, failures)
