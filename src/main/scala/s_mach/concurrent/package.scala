@@ -236,10 +236,5 @@ package object concurrent {
     val self:AsyncConfig
   ) extends AnyVal with SMach_Concurrent_AbstractPimpMyAsyncConfig
 
-  implicit class SMach_Concurrent_PimpMyAtomicReference[A](
-    val self:java.util.concurrent.atomic.AtomicReference[A]
-  ) extends AnyVal {
-    def recurseCompareAndSet(f: A => A) : A = FutureOps.recurseCompareAndSet(self, f)
-  }
 }
 

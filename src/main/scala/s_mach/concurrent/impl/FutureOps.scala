@@ -19,13 +19,12 @@
 package s_mach.concurrent.impl
 
 
-import scala.annotation.tailrec
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.language.higherKinds
 import scala.util.{Try,Success,Failure}
 import MergeOps._
-import s_mach.concurrent.{ScheduledExecutionContext, DeferredFuture, AsyncParThrowable}
+import s_mach.concurrent._
 
 object FutureOps extends FutureOps
 trait FutureOps {
@@ -226,18 +225,36 @@ trait FutureOps {
     promise.future.flatMap(v => v)
   }
 
-  def recurseCompareAndSet[A](self: java.util.concurrent.atomic.AtomicReference[A], f: A => A) : A = {
-    @tailrec def loop(): A = {
-      val expect = self.get
-      val newValue = f(expect)
-      if(self.compareAndSet(expect, newValue)) {
-        newValue
-      } else {
-        loop()
-      }
-    }
-    loop()
-  }
+//  def compareAndSet[A](self: AtomicReference[A], f: A => A) : A = {
+//    @tailrec def loop(): A = {
+//      val expect = self.get
+//      val newValue = f(expect)
+//      if(self.compareAndSet(expect, newValue)) {
+//        newValue
+//      } else {
+//        loop()
+//      }
+//    }
+//    loop()
+//  }
+//
+//  def tryCompareAndSet[A](self: AtomicReference[A], pf: PartialFunction[A,A]) : Option[A] = {
+//    val opf = pf.lift
+//    @tailrec def loop(): Option[A] = {
+//      val expect = self.get
+//      opf(expect) match {
+//        case Some(newValue) =>
+//          if(self.compareAndSet(expect, newValue)) {
+//            Some(newValue)
+//          } else {
+//            loop()
+//          }
+//        case None => None
+//      }
+//    }
+//    loop()
+//  }
+
 
 }
 
