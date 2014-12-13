@@ -21,19 +21,42 @@ package s_mach.concurrent
 import scala.concurrent.duration.Duration
 import s_mach.concurrent.util.Barrier
 
+object PeriodicTask {
+  /** A trait for the state of a periodic task */
+  sealed trait State
+  /** The state of a periodic task where events are being actively generated
+    * overtime */
+  trait Running extends State {
+    def pause() : Boolean
+  }
+  /** The state of a periodic task where events are being actively generated
+    * overtime */
+  trait Paused extends State {
+    def resume() : Boolean
+  }
+  /** The state where the task has been cancelled */
+  case object Cancelled extends State
+}
+
 /**
  * A trait for a task that after the initial delay expires, is repeatedly
  * started with a specified period in the background. This will continue until
  * the task is cancelled or a failure occurs.
  */
 trait PeriodicTask {
+  import PeriodicTask._
+
   /** @return the time stamp in nanoseconds when the next task will be started
     * */
-  def nextEvent_ns : Long
+  @deprecated("Do not use","1.1.0") def nextEvent_ns : Long
   /** @return the delay before initially starting the task */
   def initialDelay : Duration
   /** @return the recurring delay between the task executions */
   def period : Duration
+
+  /** @return the current state of the periodic task */
+  def state: State
+
   /** @return TRUE if the task was cancelled FALSE if the task was already
     *         cancelled */
   def cancel() : Boolean

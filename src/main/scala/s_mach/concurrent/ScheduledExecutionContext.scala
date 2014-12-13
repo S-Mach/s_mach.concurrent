@@ -69,6 +69,7 @@ trait ScheduledExecutionContext {
    * @param initialDelay the time to delay first execution
    * @param period the period between successive executions
    * @param task the task to execute
+   * @param paused TRUE to start the periodic task paused FALSE to start running
    * @return a PeriodicTask
    * @throws RejectedExecutionException if the task cannot be scheduled for
    *         execution
@@ -76,7 +77,8 @@ trait ScheduledExecutionContext {
    */
   def scheduleAtFixedRate[U](
     initialDelay: FiniteDuration,
-    period: FiniteDuration
+    period: FiniteDuration,
+    paused: Boolean = false
   )(
     task: () => U
   ) : PeriodicTask
