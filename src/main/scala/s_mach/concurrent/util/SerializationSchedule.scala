@@ -24,6 +24,8 @@ import scala.concurrent.duration._
 import scala.collection.JavaConverters._
 
 object SerializationSchedule {
+  def apply[ID]() : SerializationSchedule[ID] = new SerializationSchedule[ID]
+
   sealed trait Event[ID] {
     def id: ID
     def elapsed_ns: Long
@@ -44,7 +46,7 @@ object SerializationSchedule {
  * time-spanning real-time events
  * @tparam ID event identifier type
  */
-case class SerializationSchedule[ID]() {
+class SerializationSchedule[ID] {
   import SerializationSchedule._
 
   val startTime_ns = System.nanoTime()
@@ -62,39 +64,51 @@ case class SerializationSchedule[ID]() {
   /**
    * Register an instantaneous event
    * @param id id of event
+   * @param ignoreIfExist TRUE to ignore the request to add event if the event already exists
    * @return the elapsed duration since the schedule was created
    * */
-  def addEvent(id: ID) : FiniteDuration = addStartEvent(id)
+  def addEvent(id: ID, ignoreIfExist: Boolean = false) : FiniteDuration = addStartEvent(id, ignoreIfExist)
 
   /**
    * Register the start of a time-spanning event
    * @param id id of event
+   * @param ignoreIfExist TRUE to ignore the request to add event if the event already exists
    * @return the elapsed duration since the schedule was created
    */
-  def addStartEvent(id: ID) : FiniteDuration = {
+  def addStartEvent(id: ID, ignoreIfExist: Boolean = false) : FiniteDuration = {
     _debug.get.apply(id)
     val elapsed_ns = System.nanoTime() - startTime_ns
-    if(_startEvents.put(id, StartEvent(id, elapsed_ns)) != null)
-      throw new IllegalArgumentException(s"Start event $id already exists!")
-    cacheValid.getAndSet(false)
+    val result = _startEvents.putIfAbsent(id, StartEvent(id, elapsed_ns))
+    if(ignoreIfExist == false) {
+      if(result != null) {
+        throw new IllegalArgumentException(s"Start event $id already exists!")
+      }
+
+      cacheValid.getAndSet(false)
+    }
     elapsed_ns.nanos
   }
 
   /**
    * Register the end of a time-spanning event
    * @param id id of event
+   * @param ignoreIfExist TRUE to ignore the request to add event if the event already exists
    * @return the elapsed duration since the schedule was created
    */
-  def addEndEvent(id: ID) : FiniteDuration = {
+  def addEndEvent(id: ID, ignoreIfExist: Boolean = false) : FiniteDuration = {
     _debug.get.apply(id)
     val elapsed_ns = System.nanoTime() - startTime_ns
     val startEvent = Option(_startEvents.get(id)).getOrElse {
       throw new IllegalArgumentException(s"Event $id was never started!")
     }
-    if(_endEvents.put(id, EndEvent(id, elapsed_ns, startEvent)) != null) {
-      throw new IllegalArgumentException(s"End event $id already exists!")
+    val result = _endEvents.putIfAbsent(id, EndEvent(id, elapsed_ns, startEvent))
+    if(ignoreIfExist == false) {
+      if(result != null) {
+        throw new IllegalArgumentException(s"End event $id already exists!")
+      }
+
+      cacheValid.getAndSet(false)
     }
-    cacheValid.getAndSet(false)
     elapsed_ns.nanos
   }
 
@@ -118,7 +132,7 @@ case class SerializationSchedule[ID]() {
       case StartEvent(id, _) => s"Start('$id')"
       case EndEvent(id,_,_) => s"End('$id')"
     }
-    s"SerializationSchedule(${events.mkString(",")}})"
+    s"SerializationSchedule(${events.mkString(",")})"
   }
 
   /** @return an unordered Vector of start events */
@@ -135,14 +149,14 @@ case class SerializationSchedule[ID]() {
    * */
   def happensBefore(id1: ID, id2: ID) : Boolean = {
     val id2_start = Option(_startEvents.get(id2)).getOrElse {
-      throw new IllegalArgumentException(s"No such start event $id2!")
+      throw new IllegalArgumentException(s"No such start event id2=$id2!")
     }
     Option(_endEvents.get(id1)) match {
       case Some(id1_end) =>
         id1_end.elapsed_ns < id2_start.elapsed_ns
       case None =>
         val id1_start = Option(_startEvents.get(id1)).getOrElse {
-          throw new IllegalArgumentException(s"No such start event $id1!")
+          throw new IllegalArgumentException(s"No such start event id1=$id1!")
         }
         id1_start.elapsed_ns < id2_start.elapsed_ns
     }
@@ -155,7 +169,7 @@ case class SerializationSchedule[ID]() {
    * */
   def happensDuring(id1: ID, id2: ID) : Boolean = {
     val id2_end = Option(_endEvents.get(id2)).getOrElse {
-      throw new IllegalArgumentException(s"No such end event $id2!")
+      throw new IllegalArgumentException(s"No such end event id2=$id2!")
     }
 
     val id2_range = id2_end.start.elapsed_ns to id2_end.elapsed_ns
@@ -168,7 +182,7 @@ case class SerializationSchedule[ID]() {
         id1_range.contains(id2_end.start.elapsed_ns)
       case None =>
         val id1_start = Option(_startEvents.get(id1)).getOrElse {
-          throw new IllegalArgumentException(s"No such start event $id1!")
+          throw new IllegalArgumentException(s"No such start event id1=$id1!")
         }
         id2_range.contains(id1_start.elapsed_ns)
     }
