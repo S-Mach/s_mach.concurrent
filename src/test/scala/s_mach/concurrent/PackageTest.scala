@@ -118,19 +118,18 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "Future.onTimeout" must "fallback if timeout is exceeded even if fallback takes awhile" in {
     implicit val ctc = mkConcurrentTestContext()
 
-    val ex = new TimeoutException
     val latch = Latch()
-    val p = Promise[Unit]()
-    val future = latch.future.onTimeout(1.nano) {
-      latch.set()
-      p.future
-    }
-    Thread.sleep(1)
-    p.failure(ex)
+    val p = Promise[Int]()
 
+    val future = p.future.onTimeout(1.nano)(Future {
+      latch.spinUntilSet()
+      1
+    })
+    Thread.sleep(1)
+    latch.set()
     ctc.waitForActiveExecutionCount(0)
 
-    future.getTry should equal(Failure(ex))
+    future.getTry should equal(Success(1))
   }
 
   "Future.background" must "ensure exceptions are reported to ExecutionContext" in {
