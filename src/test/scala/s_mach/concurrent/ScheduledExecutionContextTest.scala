@@ -181,6 +181,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
     val latch1 = Latch()
     val latch2 = Latch()
     val latch3 = Latch()
+    val latch4 = Latch()
     val periodicTask = scheduledExecutionContext.scheduleAtFixedRate(0.nanos,DELAY) { () =>
       counter.incrementAndGet() match {
         case 1 =>
@@ -188,6 +189,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
           latch2.spinUntilSet()
         case 2 =>
           latch3.set()
+          latch4.spinUntilSet()
         case _ =>
       }
 
@@ -214,10 +216,13 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
     periodicTask.state shouldBe a [Running]
     counter.get should equal(2)
 
+    latch4.set()
+
     // Paused => Cancelled
     periodicTask.state.asInstanceOf[Running].pause() should equal(true)
     periodicTask.cancel() should equal(true)
 
+    periodicTask.state should equal(PeriodicTask.Cancelled)
     waitForActiveExecutionCount(0)
   }
 //
