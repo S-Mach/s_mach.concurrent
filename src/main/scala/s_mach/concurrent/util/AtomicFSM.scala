@@ -23,20 +23,23 @@ import scala.annotation.tailrec
 
 /**
  * A class for a finite state machine whose state may be transitioned
- * atomically. During the time it takes to compute a new state for the FSM,
- * another thread may change the FSMs state. AtomicFSM is based on
- * AtomicReference. After computing a new state, AtomicReference CAS is used to
- * compares the current state to the one originally used to compute the new
+ * atomically by any number of concurrent threads.
+ *
+ * During the time it takes to compute a new state for the FSM, another thread
+ * may change the FSMs state, invalidating the newly computed state. To deal
+ * with this issue, AtomicFSM stores the state of the FSM using AtomicReference
+ * and after computing a new state, uses AtomicReference CAS to atomically
+ * compare the current state to the one originally used to compute the new
  * state. If the current state does not match the original state used to compute
- * the new state, then the new state is discarded and the new state computation
- * is started again using the updated current state. This continues infinitely
- * until a new state successfully changes the current state. Because states may
- * be discarded and transition functions invoked multiple times during this
- * process, states and transition functions should never create side effects
- * themselves. Instead all transition side effects should be placed in the
- * onTransition method. When a state is successfully transitioned, onTransition
- * is called with both the original and new state. This method can be used to
- * safely create state transition side effects.
+ * the new state, then CAS update fails and the new state is discarded. The
+ * whole process is repeated using the updated current state. This will repeat
+ * until a new computed state successfully changes the current state. Because
+ * states may be discarded and transition functions invoked multiple times
+ * during this process, states and transition functions should never create
+ * side effects themselves. Instead all transition side effects should be placed
+ * in the onTransition method. When a state is successfully transitioned,
+ * onTransition is called with both the original and new state. This method can
+ * be used to safely create state transition side effects.
  *
  * @param s0 the initial state
  * @tparam S the type of state
@@ -51,30 +54,27 @@ class AtomicFSM[S](s0: S) extends AtomicReference[S](s0) {
    * onTransition method
    * @param transition partial function that accepts the current state and
    *                   returns the next state
+   * @param onTransition partial function that invokes side effects after a
+   *                     successful state transition
    * @throws IllegalArgumentException if the transition function is undefined
    *                                  for some state
    * @return the new state
    */
-  def apply(transition: PartialFunction[S,S]) : S = {
+  def apply(
+    transition: PartialFunction[S,S],
+    onTransition: PartialFunction[(S,S),Unit] = PartialFunction.empty
+  ) : S = {
     @tailrec def loop() : S = {
       val oldState = get
-      if(transition.isDefinedAt(oldState)) {
-        val newState = transition(oldState)
-        if(compareAndSet(oldState, newState)) {
-          onTransition.orElse[(S,S),Unit] {
-            case (before,after) =>
-              throw new IllegalStateException(
-                s"Illegal state transition from $before to $after"
-              )
-          }.apply((oldState, newState))
-          newState
-        } else {
-          loop()
+      val newState = transition(oldState)
+      if(compareAndSet(oldState, newState)) {
+        val tuple = (oldState, newState)
+        if(onTransition.isDefinedAt(tuple)) {
+          onTransition(tuple)
         }
+        newState
       } else {
-        throw new IllegalStateException(
-          s"No transition for $oldState is defined"
-        )
+        loop()
       }
     }
     loop()
@@ -89,39 +89,30 @@ class AtomicFSM[S](s0: S) extends AtomicReference[S](s0) {
    * onTransition method
    * @param transition partial function that accepts the current state and
    *                   returns the next state and the return value
+   * @param onTransition partial function that invokes side effects after a
+   *                     successful state transition
    * @throws IllegalArgumentException if the transition function is undefined
    *                                  for some state
    * @return the value associated with the new state
    */
-  def fold[X](transition: PartialFunction[S,(S,X)]) : X = {
+  def fold[X](
+    transition: PartialFunction[S,(S,X)],
+    onTransition: PartialFunction[(S,S),Unit] = PartialFunction.empty
+  ) : X = {
     @tailrec def loop() : X = {
       val oldState = get
-      if(transition.isDefinedAt(oldState)) {
-        val (newState,x) = transition(oldState)
-        if(compareAndSet(oldState, newState)) {
-          onTransition.orElse[(S,S),Unit] {
-            case (before,after) =>
-              throw new IllegalStateException(
-                s"Illegal state transition from $before to $after"
-              )
-          }.apply((oldState, newState))
-          x
-        } else {
-          loop()
+      val (newState,x) = transition(oldState)
+      if(compareAndSet(oldState, newState)) {
+        val tuple = (oldState, newState)
+        if(onTransition.isDefinedAt(tuple)) {
+          onTransition(tuple)
         }
+        x
       } else {
-        throw new IllegalStateException(
-          s"No transition for $oldState is defined"
-        )
+        loop()
       }
     }
     loop()
   }
 
-  /**
-   * Called exactly once with the old state and the new state when a transition
-   * between states is successful. Override this method to safely create side
-   * effects when state transitions occur.
-   */
-  def onTransition : PartialFunction[(S,S),Unit] = { case _ => }
 }

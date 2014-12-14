@@ -29,8 +29,7 @@ object PeriodicTask {
   trait Running extends State {
     def pause() : Boolean
   }
-  /** The state of a periodic task where events are being actively generated
-    * overtime */
+  /** The state of a periodic task where no events are being generated */
   trait Paused extends State {
     def resume() : Boolean
   }

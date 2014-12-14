@@ -35,9 +35,11 @@ heterogeneous asynchronous task (of up to 22 futures) in parallel
 +java.util.concurrent.ScheduledExecutorService+ that provides for scheduling
 delayed and periodic tasks
 * Adds non-blocking concurrent control primitives such as +Barrier+, +Latch+,
-+Lock+ and +Semaphore+
++Lock+, +Semaphore+ and +AtomicFSM+
+* Adds future utility methods such as +Future.onTimeout+, +Future.sideEffect+
+and +Future.happensBefore+
 * Provides convenience methods for writing more readable, concise and DRY
-concurrent code such as +Future.get+, +Future.toTry+ and +Future.fold+
+code such as +Future.get+, +Future.toTry+ and +Future.fold+
 
 == Include in SBT
 1. Add to +build.sbt+

@@ -43,24 +43,21 @@ class PeriodicProgressReporterImpl(
 ) extends PeriodicProgressReporter {
   import PeriodicProgressReporterImpl._
 
-  val state = new AtomicFSM[State](NotStarted) {
-    override def onTransition = {
-      case (r1:Running,r2:Running) =>
+  val state = new AtomicFSM[State](NotStarted)
+
+  override def onStartTask() = state(
+    transition = {
+      case NotStarted => Running()
+    },
+    onTransition = {
       case (NotStarted,Running(startTime_ns,_)) =>
         report(Progress(0, optTotal, startTime_ns))
         task.state match {
           case p:PeriodicTask.Paused => p.resume()
           case s => throw new IllegalStateException(s"Unexpected state $s")
         }
-      case (Running(_,_),Done(startTime_ns, finalTotal)) =>
-        task.cancel()
-        report(Progress(finalTotal, optTotal, startTime_ns))
     }
-  }
-
-  override def onStartTask() = state {
-    case NotStarted => Running()
-  }
+  )
 
   override def onStartStep(sequenceNumber: Int) = { }
   override def onCompleteStep(sequenceNumber: Int) = state {
@@ -69,11 +66,18 @@ class PeriodicProgressReporterImpl(
       copy(totalSoFar = totalSoFar + 1)
   }
 
-  override def onCompleteTask() = state {
-    case current:Running =>
-      import current._
-      Done(startTime_ns, totalSoFar)
-  }
+  override def onCompleteTask() = state(
+    transition = {
+      case current:Running =>
+        import current._
+        Done(startTime_ns, totalSoFar)
+    },
+    onTransition = {
+      case (Running(_,_),Done(startTime_ns, finalTotal)) =>
+        task.cancel()
+        report(Progress(finalTotal, optTotal, startTime_ns))
+    }
+  )
 
   val task: PeriodicTask = {
     scheduledExecutionContext.scheduleAtFixedRate(
