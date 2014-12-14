@@ -1,6 +1,6 @@
 = s_mach.concurrent: Futures utility library
 Lance Gatlin <lance.gatlin@gmail.com>
-v2,18-Oct-2014
+v3,14-Dec-2014
 :blogpost-status: unpublished
 :blogpost-categories: s_mach, scala
 
