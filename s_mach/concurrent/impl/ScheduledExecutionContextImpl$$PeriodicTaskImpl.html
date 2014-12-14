@@ -40,16 +40,16 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">PeriodicTaskImpl</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="task">task: () ⇒ <span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl.U">U</span></span>, <span name="initialDelay">initialDelay: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>, <span name="period">period: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>, <span name="scheduledExecutorService">scheduledExecutorService: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span></span>, <span name="reportFailure">reportFailure: (<span class="extype" name="scala.Throwable">Throwable</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result"> extends <a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">PeriodicTaskImpl</span><span class="tparams">[<span name="U">U</span>]</span><span class="result"> extends <a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a></span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl">PeriodicTaskImpl</a>[<span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl.U">U</span>]</dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -67,7 +67,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl"><span>PeriodicTaskImpl</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="s_mach.concurrent.PeriodicTask"><span>PeriodicTask</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl"><span>PeriodicTaskImpl</span></li><li class="in" name="s_mach.concurrent.PeriodicTask"><span>PeriodicTask</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -88,7 +88,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(task:()=&gt;U,initialDelay:scala.concurrent.duration.Duration,period:scala.concurrent.duration.Duration,scheduledExecutorService:java.util.concurrent.ScheduledExecutorService,reportFailure:Throwable=&gt;Unit):s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl[U]"></a>
+      <a id="&lt;init&gt;(task:()=&gt;U,initialDelay:scala.concurrent.duration.FiniteDuration,period:scala.concurrent.duration.FiniteDuration,initiallyPaused:Boolean,scheduledExecutorService:java.util.concurrent.ScheduledExecutorService,reportFailure:Throwable=&gt;Unit):s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl[U]"></a>
       <a id="&lt;init&gt;:PeriodicTaskImpl[U]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -96,10 +96,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">PeriodicTaskImpl</span><span class="params">(<span name="task">task: () ⇒ <span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl.U">U</span></span>, <span name="initialDelay">initialDelay: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>, <span name="period">period: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>, <span name="scheduledExecutorService">scheduledExecutorService: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span></span>, <span name="reportFailure">reportFailure: (<span class="extype" name="scala.Throwable">Throwable</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span>
+        <span class="name">PeriodicTaskImpl</span><span class="params">(<span name="task">task: () ⇒ <span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl.U">U</span></span>, <span name="initialDelay">initialDelay: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="period">period: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="initiallyPaused">initiallyPaused: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="scheduledExecutorService">scheduledExecutorService: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span></span>, <span name="reportFailure">reportFailure: (<span class="extype" name="scala.Throwable">Throwable</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@&lt;init&gt;(task:()=&gt;U,initialDelay:scala.concurrent.duration.Duration,period:scala.concurrent.duration.Duration,scheduledExecutorService:java.util.concurrent.ScheduledExecutorService,reportFailure:Throwable=&gt;Unit):s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl[U]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@&lt;init&gt;(task:()=&gt;U,initialDelay:scala.concurrent.duration.FiniteDuration,period:scala.concurrent.duration.FiniteDuration,initiallyPaused:Boolean,scheduledExecutorService:java.util.concurrent.ScheduledExecutorService,reportFailure:Throwable=&gt;Unit):s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl[U]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -107,7 +107,44 @@
     </li></ol>
             </div>
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl.PausedImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PausedImplextendsPeriodicTask.PausedwithProductwithSerializable"></a>
+      <a id="PausedImpl:PausedImpl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ScheduledExecutionContextImpl$$PeriodicTaskImpl$PausedImpl.html"><span class="name">PausedImpl</span></a><span class="params">(<span name="nextEvent_ns">nextEvent_ns: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <a href="../PeriodicTask$$Paused.html" class="extype" name="s_mach.concurrent.PeriodicTask.Paused">Paused</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@PausedImplextendsPeriodicTask.PausedwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl.RunningImpl" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RunningImplextendsPeriodicTask.RunningwithProductwithSerializable"></a>
+      <a id="RunningImpl:RunningImpl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="ScheduledExecutionContextImpl$$PeriodicTaskImpl$RunningImpl.html"><span class="name">RunningImpl</span></a><span class="params">(<span name="initialDelay_ns">initialDelay_ns: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result"> extends <a href="../PeriodicTask$$Running.html" class="extype" name="s_mach.concurrent.PeriodicTask.Running">Running</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@RunningImplextendsPeriodicTask.RunningwithProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
 
         
 
@@ -164,19 +201,19 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#_nextEvent_ns" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="_nextEvent_ns:java.util.concurrent.atomic.AtomicLong"></a>
-      <a id="_nextEvent_ns:AtomicLong"></a>
+    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#_state" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="_state:s_mach.concurrent.util.AtomicFSM[s_mach.concurrent.PeriodicTask.State]"></a>
+      <a id="_state:AtomicFSM[State]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">_nextEvent_ns</span><span class="result">: <span class="extype" name="java.util.concurrent.atomic.AtomicLong">AtomicLong</span></span>
+        <span class="name">_state</span><span class="result">: <a href="../util/AtomicFSM.html" class="extype" name="s_mach.concurrent.util.AtomicFSM">AtomicFSM</a>[<a href="../PeriodicTask$$State.html" class="extype" name="s_mach.concurrent.PeriodicTask.State">State</a>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@_nextEvent_ns:java.util.concurrent.atomic.AtomicLong" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@_state:s_mach.concurrent.util.AtomicFSM[s_mach.concurrent.PeriodicTask.State]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -256,6 +293,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -296,19 +350,36 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#initialDelay" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="initialDelay:scala.concurrent.duration.Duration"></a>
-      <a id="initialDelay:Duration"></a>
+      <a id="initialDelay:scala.concurrent.duration.FiniteDuration"></a>
+      <a id="initialDelay:FiniteDuration"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">initialDelay</span><span class="result">: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>
+        <span class="name">initialDelay</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@initialDelay:scala.concurrent.duration.Duration" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@initialDelay:scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -347,23 +418,6 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#javaScheduledFuture" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="javaScheduledFuture:java.util.concurrent.ScheduledFuture[_]"></a>
-      <a id="javaScheduledFuture:ScheduledFuture[_]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">javaScheduledFuture</span><span class="result">: <span class="extype" name="java.util.concurrent.ScheduledFuture">ScheduledFuture</span>[_]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@javaScheduledFuture:java.util.concurrent.ScheduledFuture[_]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -451,18 +505,18 @@
     </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a barrier that is set once the task is cancelled</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl">PeriodicTaskImpl</a> → <a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#period" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="period:scala.concurrent.duration.Duration"></a>
-      <a id="period:Duration"></a>
+      <a id="period:scala.concurrent.duration.FiniteDuration"></a>
+      <a id="period:FiniteDuration"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">period</span><span class="result">: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>
+        <span class="name">period</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@period:scala.concurrent.duration.Duration" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@period:scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -484,57 +538,40 @@
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#reportFailure" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="reportFailure:Throwable=&gt;Unit"></a>
-      <a id="reportFailure:(Throwable)⇒Unit"></a>
+    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#s0" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="s0:ProductwithSerializablewiths_mach.concurrent.PeriodicTask.State"></a>
+      <a id="s0:ProductwithSerializablewithState"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">reportFailure</span><span class="result">: (<span class="extype" name="scala.Throwable">Throwable</span>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">s0</span><span class="result">: <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span> with <a href="../PeriodicTask$$State.html" class="extype" name="s_mach.concurrent.PeriodicTask.State">State</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@reportFailure:Throwable=&gt;Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@s0:ProductwithSerializablewiths_mach.concurrent.PeriodicTask.State" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       
-    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#runnable" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="runnable:Runnable"></a>
-      <a id="runnable:Runnable"></a>
+    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#state" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="state:s_mach.concurrent.PeriodicTask.State"></a>
+      <a id="state:State"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">runnable</span><span class="result">: <span class="extype" name="java.lang.Runnable">Runnable</span></span>
+        <span class="name">state</span><span class="result">: <a href="../PeriodicTask$$State.html" class="extype" name="s_mach.concurrent.PeriodicTask.State">State</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@runnable:Runnable" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@state:s_mach.concurrent.PeriodicTask.State" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
-    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#scheduledExecutorService" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="scheduledExecutorService:java.util.concurrent.ScheduledExecutorService"></a>
-      <a id="scheduledExecutorService:ScheduledExecutorService"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">scheduledExecutorService</span><span class="result">: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@scheduledExecutorService:java.util.concurrent.ScheduledExecutorService" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the current state of the periodic task</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl">PeriodicTaskImpl</a> → <a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -552,23 +589,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#task" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="task:()=&gt;U"></a>
-      <a id="task:()⇒U"></a>
+    </li><li name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
+      <a id="toString():String"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">task</span><span class="result">: () ⇒ <span class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl.U">U</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@task:()=&gt;U" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.ScheduledExecutionContextImpl$$PeriodicTaskImpl@toString():String" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.PeriodicTaskImpl">PeriodicTaskImpl</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -647,15 +684,7 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
-            </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="s_mach.concurrent.PeriodicTask">
+        <div class="parent" name="s_mach.concurrent.PeriodicTask">
               <h3>Inherited from <a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>

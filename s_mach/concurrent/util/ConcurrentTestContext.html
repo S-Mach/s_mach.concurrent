@@ -207,18 +207,18 @@ delayError_ns</p></div></div>
     </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the SerializationSchedule for the context</p></dd></dl></div>
     </li><li name="s_mach.concurrent.ScheduledExecutionContext#schedule" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="schedule[A](delay:scala.concurrent.duration.Duration)(f:=&gt;A):s_mach.concurrent.DelayedFuture[A]"></a>
-      <a id="schedule[A](Duration)(⇒A):DelayedFuture[A]"></a>
+      <a id="schedule[A](delay:scala.concurrent.duration.FiniteDuration)(f:=&gt;A):s_mach.concurrent.DelayedFuture[A]"></a>
+      <a id="schedule[A](FiniteDuration)(⇒A):DelayedFuture[A]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">schedule</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="delay">delay: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>)</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.schedule.A">A</span></span>)</span><span class="result">: <a href="../DelayedFuture.html" class="extype" name="s_mach.concurrent.DelayedFuture">DelayedFuture</a>[<span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.schedule.A">A</span>]</span>
+        <span class="name">schedule</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="delay">delay: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.schedule.A">A</span></span>)</span><span class="result">: <a href="../DelayedFuture.html" class="extype" name="s_mach.concurrent.DelayedFuture">DelayedFuture</a>[<span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.schedule.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.ConcurrentTestContext@schedule[A](delay:scala.concurrent.duration.Duration)(f:=&gt;A):s_mach.concurrent.DelayedFuture[A]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.ConcurrentTestContext@schedule[A](delay:scala.concurrent.duration.FiniteDuration)(f:=&gt;A):s_mach.concurrent.DelayedFuture[A]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -226,23 +226,22 @@ delayError_ns</p></div></div>
 delay
 </p><div class="fullcomment"><div class="comment cmt"><p>Create a DelayedFuture that executes the supplied function after the given
 delay
-</p></div><dl class="paramcmts block"><dt class="param">delay</dt><dd class="cmt"><p>the time from now to delay execution</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a DelayedFuture that can be used to extract result or cancel (only
-        before it has been started)</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
+</p></div><dl class="paramcmts block"><dt class="param">delay</dt><dd class="cmt"><p>the time from now to delay execution</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a DelayedFuture that can be used to extract result</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
                                    execution
 </p></span></dd></dl></div>
     </li><li name="s_mach.concurrent.ScheduledExecutionContext#scheduleAtFixedRate" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="scheduleAtFixedRate[U](initialDelay:scala.concurrent.duration.Duration,period:scala.concurrent.duration.Duration)(task:()=&gt;U):s_mach.concurrent.PeriodicTask"></a>
-      <a id="scheduleAtFixedRate[U](Duration,Duration)(()⇒U):PeriodicTask"></a>
+      <a id="scheduleAtFixedRate[U](initialDelay:scala.concurrent.duration.FiniteDuration,period:scala.concurrent.duration.FiniteDuration,paused:Boolean)(task:()=&gt;U):s_mach.concurrent.PeriodicTask"></a>
+      <a id="scheduleAtFixedRate[U](FiniteDuration,FiniteDuration,Boolean)(()⇒U):PeriodicTask"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">scheduleAtFixedRate</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="initialDelay">initialDelay: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>, <span name="period">period: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>)</span><span class="params">(<span name="task">task: () ⇒ <span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.scheduleAtFixedRate.U">U</span></span>)</span><span class="result">: <a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a></span>
+        <span class="name">scheduleAtFixedRate</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="initialDelay">initialDelay: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="period">period: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="paused">paused: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="params">(<span name="task">task: () ⇒ <span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.scheduleAtFixedRate.U">U</span></span>)</span><span class="result">: <a href="../PeriodicTask.html" class="extype" name="s_mach.concurrent.PeriodicTask">PeriodicTask</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.ConcurrentTestContext@scheduleAtFixedRate[U](initialDelay:scala.concurrent.duration.Duration,period:scala.concurrent.duration.Duration)(task:()=&gt;U):s_mach.concurrent.PeriodicTask" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.ConcurrentTestContext@scheduleAtFixedRate[U](initialDelay:scala.concurrent.duration.FiniteDuration,period:scala.concurrent.duration.FiniteDuration,paused:Boolean)(task:()=&gt;U):s_mach.concurrent.PeriodicTask" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -253,9 +252,33 @@ cancel method. If a failure occurs while processing the task, the task is
 automatically cancelled. If any execution of this task takes longer than
 its period, then subsequent executions may start late, but will not
 concurrently execute.
-</p></div><dl class="paramcmts block"><dt class="param">initialDelay</dt><dd class="cmt"><p>the time to delay first execution</p></dd><dt class="param">period</dt><dd class="cmt"><p>the period between successive executions</p></dd><dt class="param">task</dt><dd class="cmt"><p>the task to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a PeriodicTask</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if period less than or equal to zero
+</p></div><dl class="paramcmts block"><dt class="param">initialDelay</dt><dd class="cmt"><p>the time to delay first execution</p></dd><dt class="param">period</dt><dd class="cmt"><p>the period between successive executions</p></dd><dt class="param">paused</dt><dd class="cmt"><p>TRUE to start the periodic task paused FALSE to start running</p></dd><dt class="param">task</dt><dd class="cmt"><p>the task to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a PeriodicTask</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if period less than or equal to zero
 </p></span><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
         execution</p></span></dd></dl></div>
+    </li><li name="s_mach.concurrent.ScheduledExecutionContext#scheduleCancellable" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="scheduleCancellable[A](delay:scala.concurrent.duration.FiniteDuration,fallback:=&gt;A)(f:=&gt;A):s_mach.concurrent.CancellableDelayedFuture[A]"></a>
+      <a id="scheduleCancellable[A](FiniteDuration,⇒A)(⇒A):CancellableDelayedFuture[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">scheduleCancellable</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="delay">delay: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="fallback">fallback: ⇒ <span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.scheduleCancellable.A">A</span></span>)</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.scheduleCancellable.A">A</span></span>)</span><span class="result">: <a href="../CancellableDelayedFuture.html" class="extype" name="s_mach.concurrent.CancellableDelayedFuture">CancellableDelayedFuture</a>[<span class="extype" name="s_mach.concurrent.ScheduledExecutionContext.scheduleCancellable.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.ConcurrentTestContext@scheduleCancellable[A](delay:scala.concurrent.duration.FiniteDuration,fallback:=&gt;A)(f:=&gt;A):s_mach.concurrent.CancellableDelayedFuture[A]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Create a DelayedFuture that executes the supplied function after the given
+delay
+</p><div class="fullcomment"><div class="comment cmt"><p>Create a DelayedFuture that executes the supplied function after the given
+delay
+</p></div><dl class="paramcmts block"><dt class="param">delay</dt><dd class="cmt"><p>the time from now to delay execution</p></dd><dt class="param">fallback</dt><dd class="cmt"><p>the value to return if the future is cancelled</p></dd><dt class="param">f</dt><dd class="cmt"><p>the function to execute</p></dd><dt>returns</dt><dd class="cmt"><p>a DelayedFuture that can be used to extract result or cancel (only
+        before it has been started)</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">RejectedExecutionException<p>if the task cannot be scheduled for
+        execution
+</p></span></dd></dl></div>
     </li></ol>
             </div>
 

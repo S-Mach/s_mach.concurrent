@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>LatchImpl - s_mach.concurrent.impl.LatchImpl</title>
-          <meta name="description" content="LatchImpl - s mach.concurrent.impl.LatchImpl" />
-          <meta name="keywords" content="LatchImpl s mach.concurrent.impl.LatchImpl" />
+          <title>AtomicFSM - s_mach.concurrent.util.AtomicFSM</title>
+          <meta name="description" content="AtomicFSM - s mach.concurrent.util.AtomicFSM" />
+          <meta name="keywords" content="AtomicFSM s mach.concurrent.util.AtomicFSM" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../../index.html';
-            var hash = 's_mach.concurrent.impl.LatchImpl';
+            var hash = 's_mach.concurrent.util.AtomicFSM';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -29,9 +29,9 @@
         <body class="type">
       <div id="definition">
         <img src="../../../lib/class_big.png" />
-        <p id="owner"><a href="../../package.html" class="extype" name="s_mach">s_mach</a>.<a href="../package.html" class="extype" name="s_mach.concurrent">concurrent</a>.<a href="package.html" class="extype" name="s_mach.concurrent.impl">impl</a></p>
-        <h1>LatchImpl</h1> <span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl" title="Permalink" target="_top">
+        <p id="owner"><a href="../../package.html" class="extype" name="s_mach">s_mach</a>.<a href="../package.html" class="extype" name="s_mach.concurrent">concurrent</a>.<a href="package.html" class="extype" name="s_mach.concurrent.util">util</a></p>
+        <h1>AtomicFSM</h1> <span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -43,13 +43,30 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">LatchImpl</span><span class="result"> extends <a href="../util/Latch.html" class="extype" name="s_mach.concurrent.util.Latch">Latch</a></span>
+        <span class="name">AtomicFSM</span><span class="tparams">[<span name="S">S</span>]</span><span class="result"> extends <span class="extype" name="java.util.concurrent.atomic.AtomicReference">AtomicReference</span>[<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>]</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A class for a finite state machine whose state may be transitioned
+atomically by any number of concurrent threads.</p><p>During the time it takes to compute a new state for the FSM, another thread
+may change the FSMs state, invalidating the newly computed state. To deal
+with this issue, AtomicFSM stores the state of the FSM using AtomicReference
+and after computing a new state, uses AtomicReference CAS to atomically
+compare the current state to the one originally used to compute the new
+state. If the current state does not match the original state used to compute
+the new state, then CAS update fails and the new state is discarded. The
+whole process is repeated using the updated current state. This will repeat
+until a new computed state successfully changes the current state. Because
+states may be discarded and transition functions invoked multiple times
+during this process, states and transition functions should never create
+side effects themselves. Instead all transition side effects should be placed
+in the onTransition function. When a state is successfully transitioned,
+onTransition is called with both the original and new state. This method can
+be used to safely create state transition side effects.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>the type of state
+</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="../util/Latch.html" class="extype" name="s_mach.concurrent.util.Latch">Latch</a>, <a href="../util/Barrier.html" class="extype" name="s_mach.concurrent.util.Barrier">Barrier</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="java.util.concurrent.atomic.AtomicReference">AtomicReference</span>[<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>], <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -67,7 +84,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.impl.LatchImpl"><span>LatchImpl</span></li><li class="in" name="s_mach.concurrent.util.Latch"><span>Latch</span></li><li class="in" name="s_mach.concurrent.util.Barrier"><span>Barrier</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.util.AtomicFSM"><span>AtomicFSM</span></li><li class="in" name="java.util.concurrent.atomic.AtomicReference"><span>AtomicReference</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -87,23 +104,23 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="s_mach.concurrent.impl.LatchImpl#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(failMessage:String):s_mach.concurrent.impl.LatchImpl"></a>
-      <a id="&lt;init&gt;:LatchImpl"></a>
+              <ol><li name="s_mach.concurrent.util.AtomicFSM#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(s0:S):s_mach.concurrent.util.AtomicFSM[S]"></a>
+      <a id="&lt;init&gt;:AtomicFSM[S]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">LatchImpl</span><span class="params">(<span name="failMessage">failMessage: <span class="extype" name="scala.Predef.String">String</span></span>)</span>
+        <span class="name">AtomicFSM</span><span class="params">(<span name="s0">s0: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@&lt;init&gt;(failMessage:String):s_mach.concurrent.impl.LatchImpl" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@&lt;init&gt;(s0:S):s_mach.concurrent.util.AtomicFSM[S]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">s0</dt><dd class="cmt"><p>the initial state</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -125,7 +142,7 @@
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -142,7 +159,7 @@
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@##():Int" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@##():Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -159,11 +176,36 @@
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="s_mach.concurrent.util.AtomicFSM#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(transition:PartialFunction[S,S],onTransition:PartialFunction[(S,S),Unit]):S"></a>
+      <a id="apply(PartialFunction[S,S],PartialFunction[(S,S),Unit]):S"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="transition">transition: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>, <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>]</span>, <span name="onTransition">onTransition: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[(<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>, <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>), <span class="extype" name="scala.Unit">Unit</span>] = <span class="symbol">PartialFunction.empty</span></span>)</span><span class="result">: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@apply(transition:PartialFunction[S,S],onTransition:PartialFunction[(S,S),Unit]):S" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">Atomically transition the state of the FSM.</p><div class="fullcomment"><div class="comment cmt"><p>Atomically transition the state of the FSM. After successfully
+transitioning to a new state, calls the onTransition method with the
+previous state and the new state exactly once.
+Note: all state transition side effects should be placed in the
+onTransition method</p></div><dl class="paramcmts block"><dt class="param">transition</dt><dd class="cmt"><p>partial function that accepts the current state and
+                  returns the next state</p></dd><dt class="param">onTransition</dt><dd class="cmt"><p>partial function that invokes side effects after a
+                    successful state transition</p></dd><dt>returns</dt><dd class="cmt"><p>the new state
+</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the transition function is undefined
+                                 for some state</p></span></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -176,7 +218,7 @@
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -193,7 +235,7 @@
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@clone():Object" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@clone():Object" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -204,6 +246,23 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="java.util.concurrent.atomic.AtomicReference#compareAndSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="compareAndSet(x$1:V,x$2:V):Boolean"></a>
+      <a id="compareAndSet(S,S):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">compareAndSet</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>, <span name="arg1">arg1: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@compareAndSet(x$1:V,x$2:V):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AtomicReference</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -216,7 +275,7 @@
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -233,28 +292,11 @@
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@equals(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.LatchImpl#failMessage" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="failMessage:String"></a>
-      <a id="failMessage:String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">failMessage</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@failMessage:String" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -267,7 +309,7 @@
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@finalize():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -278,23 +320,67 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.LatchImpl#future" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="future:scala.concurrent.Future[Unit]"></a>
-      <a id="future:Future[Unit]"></a>
+    </li><li name="s_mach.concurrent.util.AtomicFSM#fold" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="fold[X](transition:PartialFunction[S,(S,X)],onTransition:PartialFunction[(S,S),Unit]):X"></a>
+      <a id="fold[X](PartialFunction[S,(S,X)],PartialFunction[(S,S),Unit]):X"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">future</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
+        <span class="name">fold</span><span class="tparams">[<span name="X">X</span>]</span><span class="params">(<span name="transition">transition: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>, (<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>, <span class="extype" name="s_mach.concurrent.util.AtomicFSM.fold.X">X</span>)]</span>, <span name="onTransition">onTransition: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[(<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>, <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>), <span class="extype" name="scala.Unit">Unit</span>] = <span class="symbol">PartialFunction.empty</span></span>)</span><span class="result">: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.fold.X">X</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@future:scala.concurrent.Future[Unit]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@fold[X](transition:PartialFunction[S,(S,X)],onTransition:PartialFunction[(S,S),Unit]):X" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future that completes once the barrier is set</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a> → <a href="../util/Barrier.html" class="extype" name="s_mach.concurrent.util.Barrier">Barrier</a></dd></dl></div>
+      <p class="shortcomment cmt">Atomically transition the state of the FSM and return the value associated
+with that new state.</p><div class="fullcomment"><div class="comment cmt"><p>Atomically transition the state of the FSM and return the value associated
+with that new state. After successfully transitioning to a new state, calls
+the onTransition method with the previous state and the new state exactly
+once.
+Note: all state transition side effects should be placed in the
+onTransition method</p></div><dl class="paramcmts block"><dt class="param">transition</dt><dd class="cmt"><p>partial function that accepts the current state and
+                  returns the next state and the return value</p></dd><dt class="param">onTransition</dt><dd class="cmt"><p>partial function that invokes side effects after a
+                    successful state transition</p></dd><dt>returns</dt><dd class="cmt"><p>the value associated with the new state
+</p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if the transition function is undefined
+                                 for some state</p></span></dd></dl></div>
+    </li><li name="java.util.concurrent.atomic.AtomicReference#get" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="get():V"></a>
+      <a id="get():S"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">get</span><span class="params">()</span><span class="result">: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@get():V" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AtomicReference</dd></dl></div>
+    </li><li name="java.util.concurrent.atomic.AtomicReference#getAndSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="getAndSet(x$1:V):V"></a>
+      <a id="getAndSet(S):S"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">getAndSet</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>)</span><span class="result">: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@getAndSet(x$1:V):V" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AtomicReference</dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -307,28 +393,11 @@
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.LatchImpl#happensBefore" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="happensBefore[A](next:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[A]"></a>
-      <a id="happensBefore[A](⇒Future[A])(ExecutionContext):DeferredFuture[A]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">happensBefore</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="next">next: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.LatchImpl.happensBefore.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="../DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.impl.LatchImpl.happensBefore.A">A</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@happensBefore[A](next:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext):s_mach.concurrent.DeferredFuture[A]" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a Future of next that only evaluates after the barrier is set</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a> → <a href="../util/Barrier.html" class="extype" name="s_mach.concurrent.util.Barrier">Barrier</a></dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <a id="hashCode():Int"></a>
@@ -341,7 +410,7 @@
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@hashCode():Int" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@hashCode():Int" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -358,28 +427,28 @@
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.LatchImpl#isSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="isSet:Boolean"></a>
-      <a id="isSet:Boolean"></a>
+    </li><li name="java.util.concurrent.atomic.AtomicReference#lazySet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="lazySet(x$1:V):Unit"></a>
+      <a id="lazySet(S):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isSet</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">lazySet</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@isSet:Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@lazySet(x$1:V):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the barrier is set</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a> → <a href="../util/Barrier.html" class="extype" name="s_mach.concurrent.util.Barrier">Barrier</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AtomicReference</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -392,7 +461,7 @@
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -409,7 +478,7 @@
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@notify():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@notify():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -426,64 +495,28 @@
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.LatchImpl#onSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onSet[A](f:=&gt;A)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
-      <a id="onSet[A](⇒A)(ExecutionContext):Future[A]"></a>
+    </li><li name="java.util.concurrent.atomic.AtomicReference#set" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="set(x$1:V):Unit"></a>
+      <a id="set(S):Unit"></a>
       <h4 class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
+        <span class="modifier">final </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onSet</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="f">f: ⇒ <span class="extype" name="s_mach.concurrent.impl.LatchImpl.onSet.A">A</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.LatchImpl.onSet.A">A</span>]</span>
+        <span class="name">set</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@onSet[A](f:=&gt;A)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@set(x$1:V):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>register a callback that is triggered after the barrier is set. If
-        the barrier is already set then f is executed immediately</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a> → <a href="../util/Barrier.html" class="extype" name="s_mach.concurrent.util.Barrier">Barrier</a></dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.LatchImpl#set" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="set():Unit"></a>
-      <a id="set():Unit"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">set</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@set():Unit" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Set the latch</p><div class="fullcomment"><div class="comment cmt"><p>Set the latch</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a> → <a href="../util/Latch.html" class="extype" name="s_mach.concurrent.util.Latch">Latch</a></dd><dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if latch has already been set
-</p></span></dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.LatchImpl#spinUntilSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="spinUntilSet():Unit"></a>
-      <a id="spinUntilSet():Unit"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">spinUntilSet</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@spinUntilSet():Unit" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Loop until set</p><div class="fullcomment"><div class="comment cmt"><p>Loop until set</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a> → <a href="../util/Barrier.html" class="extype" name="s_mach.concurrent.util.Barrier">Barrier</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AtomicReference</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -496,12 +529,12 @@
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="java.util.concurrent.atomic.AtomicReference#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <a id="toString():String"></a>
       <h4 class="signature">
@@ -513,30 +546,11 @@
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@toString():String" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@toString():String" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.impl.LatchImpl#trySet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="trySet():Boolean"></a>
-      <a id="trySet():Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">trySet</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@trySet():Boolean" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Try to set the latch</p><div class="fullcomment"><div class="comment cmt"><p>Try to set the latch</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the latch is now set FALSE if the latch has already been
-        set
-</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="s_mach.concurrent.impl.LatchImpl">LatchImpl</a> → <a href="../util/Latch.html" class="extype" name="s_mach.concurrent.util.Latch">Latch</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AtomicReference → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
@@ -549,7 +563,7 @@
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@wait():Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@wait():Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -572,7 +586,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -595,7 +609,7 @@
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.LatchImpl@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
@@ -606,6 +620,23 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="java.util.concurrent.atomic.AtomicReference#weakCompareAndSet" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="weakCompareAndSet(x$1:V,x$2:V):Boolean"></a>
+      <a id="weakCompareAndSet(S,S):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">weakCompareAndSet</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>, <span name="arg1">arg1: <span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.AtomicFSM@weakCompareAndSet(x$1:V,x$2:V):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AtomicReference</dd></dl></div>
     </li></ol>
             </div>
 
@@ -615,10 +646,10 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="s_mach.concurrent.util.Latch">
-              <h3>Inherited from <a href="../util/Latch.html" class="extype" name="s_mach.concurrent.util.Latch">Latch</a></h3>
-            </div><div class="parent" name="s_mach.concurrent.util.Barrier">
-              <h3>Inherited from <a href="../util/Barrier.html" class="extype" name="s_mach.concurrent.util.Barrier">Barrier</a></h3>
+        <div class="parent" name="java.util.concurrent.atomic.AtomicReference">
+              <h3>Inherited from <span class="extype" name="java.util.concurrent.atomic.AtomicReference">AtomicReference</span>[<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>]</h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

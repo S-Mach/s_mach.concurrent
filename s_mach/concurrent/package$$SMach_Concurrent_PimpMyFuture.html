@@ -365,6 +365,24 @@ indefinitely for the Future to complete)
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#onTimeout" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="onTimeout(timeout:scala.concurrent.duration.FiniteDuration)(fallback:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext,implicitsec:s_mach.concurrent.ScheduledExecutionContext):scala.concurrent.Future[A]"></a>
+      <a id="onTimeout(FiniteDuration)(⇒Future[A])(ExecutionContext,ScheduledExecutionContext):Future[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">onTimeout</span><span class="params">(<span name="timeout">timeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="params">(<span name="fallback">fallback: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="sec">sec: <a href="ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.concurrent.package$$SMach_Concurrent_PimpMyFuture@onTimeout(timeout:scala.concurrent.duration.FiniteDuration)(fallback:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext,implicitsec:s_mach.concurrent.ScheduledExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes with fallback if the specified timeout
+        is exceeded, otherwise the completed result of the future</p></dd></dl></div>
     </li><li name="s_mach.concurrent.SMach_Concurrent_PimpMyFuture#self" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="self:scala.concurrent.Future[A]"></a>
       <a id="self:Future[A]"></a>

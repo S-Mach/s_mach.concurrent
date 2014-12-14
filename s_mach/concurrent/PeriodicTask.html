@@ -28,9 +28,9 @@
         </head>
         <body class="type">
       <div id="definition">
-        <img src="../../lib/trait_big.png" />
+        <a href="PeriodicTask$.html" title="Go to companion"><img src="../../lib/trait_to_object_big.png" /></a>
         <p id="owner"><a href="../package.html" class="extype" name="s_mach">s_mach</a>.<a href="package.html" class="extype" name="s_mach.concurrent">concurrent</a></p>
-        <h1>PeriodicTask</h1> <span class="permalink">
+        <h1><a href="PeriodicTask$.html" title="Go to companion">PeriodicTask</a></h1> <span class="permalink">
       <a href="../../index.html#s_mach.concurrent.PeriodicTask" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
@@ -132,24 +132,6 @@ the task is cancelled or a failure occurs.
       </a>
     </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the delay before initially starting the task</p></dd></dl></div>
-    </li><li name="s_mach.concurrent.PeriodicTask#nextEvent_ns" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="nextEvent_ns:Long"></a>
-      <a id="nextEvent_ns:Long"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">nextEvent_ns</span><span class="result">: <span class="extype" name="scala.Long">Long</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.PeriodicTask@nextEvent_ns:Long" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the time stamp in nanoseconds when the next task will be started
-</p></dd></dl></div>
     </li><li name="s_mach.concurrent.PeriodicTask#onCancel" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="onCancel:s_mach.concurrent.util.Barrier"></a>
       <a id="onCancel:Barrier"></a>
@@ -184,6 +166,44 @@ the task is cancelled or a failure occurs.
       </a>
     </span>
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the recurring delay between the task executions</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.PeriodicTask#state" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="state:s_mach.concurrent.PeriodicTask.State"></a>
+      <a id="state:State"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">state</span><span class="result">: <a href="PeriodicTask$$State.html" class="extype" name="s_mach.concurrent.PeriodicTask.State">State</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.concurrent.PeriodicTask@state:s_mach.concurrent.PeriodicTask.State" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the current state of the periodic task</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.PeriodicTask#nextEvent_ns" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="nextEvent_ns:Long"></a>
+      <a id="nextEvent_ns:Long"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name deprecated" title="Deprecated: (Since version 1.1.0) Do not use">nextEvent_ns</span><span class="result">: <span class="extype" name="scala.Long">Long</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.concurrent.PeriodicTask@nextEvent_ns:Long" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the time stamp in nanoseconds when the next task will be started
+</p></dd></dl><dl class="attributes block"> <dt>Annotations</dt><dd>
+                <span class="name">@deprecated</span>
+              
+        </dd><dt>Deprecated</dt><dd class="cmt"><p><i>(Since version 1.1.0)</i> Do not use</p></dd></dl></div>
     </li></ol>
             </div>
 

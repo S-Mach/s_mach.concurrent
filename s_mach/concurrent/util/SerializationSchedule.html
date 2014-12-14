@@ -40,10 +40,10 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">SerializationSchedule</span><span class="tparams">[<span name="ID">ID</span>]</span><span class="params">()</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">SerializationSchedule</span><span class="tparams">[<span name="ID">ID</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
@@ -51,7 +51,7 @@
 time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="tparam">ID</dt><dd class="cmt"><p>event identifier type
 </p></dd></dl><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -69,7 +69,7 @@ time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="t
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.util.SerializationSchedule"><span>SerializationSchedule</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.util.SerializationSchedule"><span>SerializationSchedule</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -167,58 +167,58 @@ time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="t
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="s_mach.concurrent.util.SerializationSchedule#addEndEvent" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="addEndEvent(id:ID):scala.concurrent.duration.FiniteDuration"></a>
-      <a id="addEndEvent(ID):FiniteDuration"></a>
+      <a id="addEndEvent(id:ID,ignoreIfExist:Boolean):scala.concurrent.duration.FiniteDuration"></a>
+      <a id="addEndEvent(ID,Boolean):FiniteDuration"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">addEndEvent</span><span class="params">(<span name="id">id: <span class="extype" name="s_mach.concurrent.util.SerializationSchedule.ID">ID</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
+        <span class="name">addEndEvent</span><span class="params">(<span name="id">id: <span class="extype" name="s_mach.concurrent.util.SerializationSchedule.ID">ID</span></span>, <span name="ignoreIfExist">ignoreIfExist: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.SerializationSchedule@addEndEvent(id:ID):scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.SerializationSchedule@addEndEvent(id:ID,ignoreIfExist:Boolean):scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Register the end of a time-spanning event</p><div class="fullcomment"><div class="comment cmt"><p>Register the end of a time-spanning event</p></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>id of event</p></dd><dt>returns</dt><dd class="cmt"><p>the elapsed duration since the schedule was created
+      <p class="shortcomment cmt">Register the end of a time-spanning event</p><div class="fullcomment"><div class="comment cmt"><p>Register the end of a time-spanning event</p></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>id of event</p></dd><dt class="param">ignoreIfExist</dt><dd class="cmt"><p>TRUE to ignore the request to add event if the event already exists</p></dd><dt>returns</dt><dd class="cmt"><p>the elapsed duration since the schedule was created
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.util.SerializationSchedule#addEvent" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="addEvent(id:ID):scala.concurrent.duration.FiniteDuration"></a>
-      <a id="addEvent(ID):FiniteDuration"></a>
+      <a id="addEvent(id:ID,ignoreIfExist:Boolean):scala.concurrent.duration.FiniteDuration"></a>
+      <a id="addEvent(ID,Boolean):FiniteDuration"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">addEvent</span><span class="params">(<span name="id">id: <span class="extype" name="s_mach.concurrent.util.SerializationSchedule.ID">ID</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
+        <span class="name">addEvent</span><span class="params">(<span name="id">id: <span class="extype" name="s_mach.concurrent.util.SerializationSchedule.ID">ID</span></span>, <span name="ignoreIfExist">ignoreIfExist: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.SerializationSchedule@addEvent(id:ID):scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.SerializationSchedule@addEvent(id:ID,ignoreIfExist:Boolean):scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Register an instantaneous event</p><div class="fullcomment"><div class="comment cmt"><p>Register an instantaneous event</p></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>id of event</p></dd><dt>returns</dt><dd class="cmt"><p>the elapsed duration since the schedule was created
+      <p class="shortcomment cmt">Register an instantaneous event</p><div class="fullcomment"><div class="comment cmt"><p>Register an instantaneous event</p></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>id of event</p></dd><dt class="param">ignoreIfExist</dt><dd class="cmt"><p>TRUE to ignore the request to add event if the event already exists</p></dd><dt>returns</dt><dd class="cmt"><p>the elapsed duration since the schedule was created
 </p></dd></dl></div>
     </li><li name="s_mach.concurrent.util.SerializationSchedule#addStartEvent" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="addStartEvent(id:ID):scala.concurrent.duration.FiniteDuration"></a>
-      <a id="addStartEvent(ID):FiniteDuration"></a>
+      <a id="addStartEvent(id:ID,ignoreIfExist:Boolean):scala.concurrent.duration.FiniteDuration"></a>
+      <a id="addStartEvent(ID,Boolean):FiniteDuration"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">addStartEvent</span><span class="params">(<span name="id">id: <span class="extype" name="s_mach.concurrent.util.SerializationSchedule.ID">ID</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
+        <span class="name">addStartEvent</span><span class="params">(<span name="id">id: <span class="extype" name="s_mach.concurrent.util.SerializationSchedule.ID">ID</span></span>, <span name="ignoreIfExist">ignoreIfExist: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">false</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.util.SerializationSchedule@addStartEvent(id:ID):scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.util.SerializationSchedule@addStartEvent(id:ID,ignoreIfExist:Boolean):scala.concurrent.duration.FiniteDuration" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt">Register the start of a time-spanning event</p><div class="fullcomment"><div class="comment cmt"><p>Register the start of a time-spanning event</p></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>id of event</p></dd><dt>returns</dt><dd class="cmt"><p>the elapsed duration since the schedule was created
+      <p class="shortcomment cmt">Register the start of a time-spanning event</p><div class="fullcomment"><div class="comment cmt"><p>Register the start of a time-spanning event</p></div><dl class="paramcmts block"><dt class="param">id</dt><dd class="cmt"><p>id of event</p></dd><dt class="param">ignoreIfExist</dt><dd class="cmt"><p>TRUE to ignore the request to add event if the event already exists</p></dd><dt>returns</dt><dd class="cmt"><p>the elapsed duration since the schedule was created
 </p></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
@@ -311,6 +311,23 @@ time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="t
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a>
+      <a id="equals(Any):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.SerializationSchedule@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="s_mach.concurrent.util.SerializationSchedule#eventMap" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="eventMap:Map[ID,s_mach.concurrent.util.SerializationSchedule.Event[ID]]"></a>
       <a id="eventMap:Map[ID,Event[ID]]"></a>
@@ -406,6 +423,23 @@ time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="t
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the event id1 happened during time-spanning event id2
 </p></dd></dl><dl class="attributes block"> <dt>Exceptions thrown</dt><dd><span class="cmt">IllegalArgumentException<p>if id1 or id2 doesn't exist OR if id2 is
         not a time-spanning event</p></span></dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <a id="hashCode():Int"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.SerializationSchedule@hashCode():Int" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -637,15 +671,7 @@ time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="t
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
-            </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

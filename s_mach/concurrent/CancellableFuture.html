@@ -1,9 +1,9 @@
 <!DOCTYPE html >
 <html>
         <head>
-          <title>DelayedFuture - s_mach.concurrent.DelayedFuture</title>
-          <meta name="description" content="DelayedFuture - s mach.concurrent.DelayedFuture" />
-          <meta name="keywords" content="DelayedFuture s mach.concurrent.DelayedFuture" />
+          <title>CancellableFuture - s_mach.concurrent.CancellableFuture</title>
+          <meta name="description" content="CancellableFuture - s mach.concurrent.CancellableFuture" />
+          <meta name="keywords" content="CancellableFuture s mach.concurrent.CancellableFuture" />
           <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
           
       <link href="../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
@@ -16,7 +16,7 @@
       <script type="text/javascript">
          if(top === self) {
             var url = '../../index.html';
-            var hash = 's_mach.concurrent.DelayedFuture';
+            var hash = 's_mach.concurrent.CancellableFuture';
             var anchor = window.location.hash;
             var anchor_opt = '';
             if (anchor.length >= 1)
@@ -30,8 +30,8 @@
       <div id="definition">
         <img src="../../lib/trait_big.png" />
         <p id="owner"><a href="../package.html" class="extype" name="s_mach">s_mach</a>.<a href="package.html" class="extype" name="s_mach.concurrent">concurrent</a></p>
-        <h1>DelayedFuture</h1> <span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture" title="Permalink" target="_top">
+        <h1>CancellableFuture</h1> <span class="permalink">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -43,17 +43,17 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">DelayedFuture</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</span>
+        <span class="name">CancellableFuture</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>]</span>
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a future that will be started after a delay
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A trait for a future that can be cancelled if it has not been started
 </p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>], <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>], <span class="extype" name="scala.concurrent.Awaitable">Awaitable</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>], <span class="extype" name="scala.concurrent.Awaitable">Awaitable</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">Known Subclasses</span>
-            <div class="subClasses hiddenContent"><a href="CancellableDelayedFuture.html" class="extype" name="s_mach.concurrent.CancellableDelayedFuture">CancellableDelayedFuture</a>, <a href="impl/ScheduledExecutionContextImpl$$CancellableScheduledDelayedFutureImpl.html" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.CancellableScheduledDelayedFutureImpl">CancellableScheduledDelayedFutureImpl</a>, <a href="impl/ScheduledExecutionContextImpl$$ScheduledDelayedFutureImpl.html" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.ScheduledDelayedFutureImpl">ScheduledDelayedFutureImpl</a></div>
+            <div class="subClasses hiddenContent"><a href="CancellableDelayedFuture.html" class="extype" name="s_mach.concurrent.CancellableDelayedFuture">CancellableDelayedFuture</a>, <a href="impl/ScheduledExecutionContextImpl$$CancellableScheduledDelayedFutureImpl.html" class="extype" name="s_mach.concurrent.impl.ScheduledExecutionContextImpl.CancellableScheduledDelayedFutureImpl">CancellableScheduledDelayedFutureImpl</a></div>
           </div></div>
         
 
@@ -71,7 +71,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="s_mach.concurrent.DelayedFuture"><span>DelayedFuture</span></li><li class="in" name="s_mach.concurrent.DeferredFuture"><span>DeferredFuture</span></li><li class="in" name="scala.concurrent.Future"><span>Future</span></li><li class="in" name="scala.concurrent.Awaitable"><span>Awaitable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="s_mach.concurrent.CancellableFuture"><span>CancellableFuture</span></li><li class="in" name="scala.concurrent.Future"><span>Future</span></li><li class="in" name="scala.concurrent.Awaitable"><span>Awaitable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -95,41 +95,58 @@
 
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="s_mach.concurrent.DeferredFuture#deferred" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="deferred:scala.concurrent.Future[scala.concurrent.Future[A]]"></a>
-      <a id="deferred:Future[Future[A]]"></a>
+              <ol><li name="s_mach.concurrent.CancellableFuture#canCancel" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="canCancel:Boolean"></a>
+      <a id="canCancel:Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">deferred</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]]</span>
+        <span class="name">canCancel</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@deferred:scala.concurrent.Future[scala.concurrent.Future[A]]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@canCancel:Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes once the start condition occurs. The
-future contains the deferred future (which is now running)</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a></dd></dl></div>
-    </li><li name="s_mach.concurrent.DelayedFuture#delay" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="delay:scala.concurrent.duration.Duration"></a>
-      <a id="delay:Duration"></a>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the future can be cancelled</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.CancellableFuture#cancel" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="cancel():Boolean"></a>
+      <a id="cancel():Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">delay</span><span class="result">: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>
+        <span class="name">cancel</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@delay:scala.concurrent.duration.Duration" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@cancel():Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the delay before starting</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the future has not been started and was successfully
+        cancelled</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.CancellableFuture#isCancelled" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="isCancelled:Boolean"></a>
+      <a id="isCancelled:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isCancelled</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@isCancelled:Boolean" title="Permalink" target="_top">
+        <img src="../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the future was cancelled</p></dd></dl></div>
     </li><li name="scala.concurrent.Future#isCompleted" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="isCompleted:Boolean"></a>
       <a id="isCompleted:Boolean"></a>
@@ -142,7 +159,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">isCompleted</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@isCompleted:Boolean" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@isCompleted:Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -156,27 +173,27 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onComplete</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]) ⇒ <span class="extype" name="scala.concurrent.Future.onComplete.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onComplete</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>]) ⇒ <span class="extype" name="scala.concurrent.Future.onComplete.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@onComplete[U](f:scala.util.Try[T]=&gt;U)(implicitexecutor:scala.concurrent.ExecutionContext):Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@onComplete[U](f:scala.util.Try[T]=&gt;U)(implicitexecutor:scala.concurrent.ExecutionContext):Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Future</dd></dl></div>
     </li><li name="scala.concurrent.Awaitable#ready" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ready(atMost:scala.concurrent.duration.Duration)(implicitpermit:scala.concurrent.CanAwait):Awaitable.this.type"></a>
-      <a id="ready(Duration)(CanAwait):DelayedFuture.this.type"></a>
+      <a id="ready(Duration)(CanAwait):CancellableFuture.this.type"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ready</span><span class="params">(<span name="atMost">atMost: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="permit">permit: <span class="extype" name="scala.concurrent.CanAwait">CanAwait</span></span>)</span><span class="result">: <a href="" class="extype" name="s_mach.concurrent.DelayedFuture">DelayedFuture</a>.this.type</span>
+        <span class="name">ready</span><span class="params">(<span name="atMost">atMost: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="permit">permit: <span class="extype" name="scala.concurrent.CanAwait">CanAwait</span></span>)</span><span class="result">: <a href="" class="extype" name="s_mach.concurrent.CancellableFuture">CancellableFuture</a>.this.type</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@ready(atMost:scala.concurrent.duration.Duration)(implicitpermit:scala.concurrent.CanAwait):Awaitable.this.type" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@ready(atMost:scala.concurrent.duration.Duration)(implicitpermit:scala.concurrent.CanAwait):Awaitable.this.type" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -201,10 +218,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">result</span><span class="params">(<span name="atMost">atMost: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="permit">permit: <span class="extype" name="scala.concurrent.CanAwait">CanAwait</span></span>)</span><span class="result">: <span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span></span>
+        <span class="name">result</span><span class="params">(<span name="atMost">atMost: <span class="extype" name="scala.concurrent.duration.Duration">Duration</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="permit">permit: <span class="extype" name="scala.concurrent.CanAwait">CanAwait</span></span>)</span><span class="result">: <span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@result(atMost:scala.concurrent.duration.Duration)(implicitpermit:scala.concurrent.CanAwait):T" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@result(atMost:scala.concurrent.duration.Duration)(implicitpermit:scala.concurrent.CanAwait):T" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -215,23 +232,6 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="s_mach.concurrent.DelayedFuture#startTime_ns" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="startTime_ns:Long"></a>
-      <a id="startTime_ns:Long"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">startTime_ns</span><span class="result">: <span class="extype" name="scala.Long">Long</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@startTime_ns:Long" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the time stamp in nanoseconds when the future will be started</p></dd></dl></div>
     </li><li name="scala.concurrent.Future#value" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="value:Option[scala.util.Try[T]]"></a>
       <a id="value:Option[Try[A]]"></a>
@@ -241,10 +241,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">value</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]]</span>
+        <span class="name">value</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>]]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@value:Option[scala.util.Try[T]]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@value:Option[scala.util.Try[T]]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -266,7 +266,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@!=(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@!=(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -283,7 +283,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@##():Int" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@##():Int" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -300,7 +300,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@==(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@==(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -314,10 +314,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">andThen</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>], <span class="extype" name="scala.concurrent.Future.andThen.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</span>
+        <span class="name">andThen</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.util.Try">Try</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>], <span class="extype" name="scala.concurrent.Future.andThen.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@andThen[U](pf:PartialFunction[scala.util.Try[T],U])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[T]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@andThen[U](pf:PartialFunction[scala.util.Try[T],U])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[T]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -334,7 +334,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">asInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Any.asInstanceOf.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@asInstanceOf[T0]:T0" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@asInstanceOf[T0]:T0" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -351,7 +351,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@clone():Object" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@clone():Object" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -371,10 +371,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">collect</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>, <span class="extype" name="scala.concurrent.Future.collect.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.collect.S">S</span>]</span>
+        <span class="name">collect</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>, <span class="extype" name="scala.concurrent.Future.collect.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.collect.S">S</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@collect[S](pf:PartialFunction[T,S])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@collect[S](pf:PartialFunction[T,S])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -391,7 +391,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@eq(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -408,7 +408,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@equals(x$1:Any):Boolean" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@equals(x$1:Any):Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -425,7 +425,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">failed</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.Throwable">Throwable</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@failed:scala.concurrent.Future[Throwable]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@failed:scala.concurrent.Future[Throwable]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -439,10 +439,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">fallbackTo</span><span class="tparams">[<span name="U">U &gt;: <span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span></span>]</span><span class="params">(<span name="that">that: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.fallbackTo.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.fallbackTo.U">U</span>]</span>
+        <span class="name">fallbackTo</span><span class="tparams">[<span name="U">U &gt;: <span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span></span>]</span><span class="params">(<span name="that">that: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.fallbackTo.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.fallbackTo.U">U</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@fallbackTo[U&gt;:T](that:scala.concurrent.Future[U]):scala.concurrent.Future[U]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@fallbackTo[U&gt;:T](that:scala.concurrent.Future[U]):scala.concurrent.Future[U]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -456,10 +456,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">filter</span><span class="params">(<span name="p">p: (<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</span>
+        <span class="name">filter</span><span class="params">(<span name="p">p: (<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@filter(p:T=&gt;Boolean)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[T]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@filter(p:T=&gt;Boolean)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[T]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -476,7 +476,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@finalize():Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@finalize():Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -496,10 +496,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">flatMap</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.flatMap.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.flatMap.S">S</span>]</span>
+        <span class="name">flatMap</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.flatMap.S">S</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.flatMap.S">S</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@flatMap[S](f:T=&gt;scala.concurrent.Future[S])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@flatMap[S](f:T=&gt;scala.concurrent.Future[S])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -513,10 +513,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">foreach</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future.foreach.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">foreach</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future.foreach.U">U</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@foreach[U](f:T=&gt;U)(implicitexecutor:scala.concurrent.ExecutionContext):Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@foreach[U](f:T=&gt;U)(implicitexecutor:scala.concurrent.ExecutionContext):Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -533,7 +533,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">getClass</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Class">Class</span>[_]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@getClass():Class[_]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@getClass():Class[_]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -550,7 +550,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@hashCode():Int" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@hashCode():Int" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -567,28 +567,11 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@isInstanceOf[T0]:Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="s_mach.concurrent.DeferredFuture#isStarted" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="isStarted:Boolean"></a>
-      <a id="isStarted:Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">isStarted</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@isStarted:Boolean" title="Permalink" target="_top">
-        <img src="../../lib/permalink.png" />
-      </a>
-    </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>TRUE if the future has been started</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a></dd></dl></div>
     </li><li name="scala.concurrent.Future#map" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="map[S](f:T=&gt;S)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]"></a>
       <a id="map[S]((A)⇒S)(ExecutionContext):Future[S]"></a>
@@ -598,10 +581,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">map</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future.map.S">S</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.map.S">S</span>]</span>
+        <span class="name">map</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="f">f: (<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future.map.S">S</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.map.S">S</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@map[S](f:T=&gt;S)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@map[S](f:T=&gt;S)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -618,7 +601,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">mapTo</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span class="implicit">implicit </span><span name="tag">tag: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="scala.concurrent.Future.mapTo.S">S</span>]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.mapTo.S">S</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@mapTo[S](implicittag:scala.reflect.ClassTag[S]):scala.concurrent.Future[S]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@mapTo[S](implicittag:scala.reflect.ClassTag[S]):scala.concurrent.Future[S]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -635,7 +618,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@ne(x$1:AnyRef):Boolean" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -652,7 +635,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@notify():Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@notify():Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -669,7 +652,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@notifyAll():Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@notifyAll():Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -686,7 +669,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">onFailure</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Throwable">Throwable</span>, <span class="extype" name="scala.concurrent.Future.onFailure.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@onFailure[U](pf:PartialFunction[Throwable,U])(implicitexecutor:scala.concurrent.ExecutionContext):Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@onFailure[U](pf:PartialFunction[Throwable,U])(implicitexecutor:scala.concurrent.ExecutionContext):Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -700,10 +683,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onSuccess</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>, <span class="extype" name="scala.concurrent.Future.onSuccess.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onSuccess</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>, <span class="extype" name="scala.concurrent.Future.onSuccess.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@onSuccess[U](pf:PartialFunction[T,U])(implicitexecutor:scala.concurrent.ExecutionContext):Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@onSuccess[U](pf:PartialFunction[T,U])(implicitexecutor:scala.concurrent.ExecutionContext):Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -717,10 +700,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recover</span><span class="tparams">[<span name="U">U &gt;: <span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span></span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Throwable">Throwable</span>, <span class="extype" name="scala.concurrent.Future.recover.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.recover.U">U</span>]</span>
+        <span class="name">recover</span><span class="tparams">[<span name="U">U &gt;: <span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span></span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Throwable">Throwable</span>, <span class="extype" name="scala.concurrent.Future.recover.U">U</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.recover.U">U</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@recover[U&gt;:T](pf:PartialFunction[Throwable,U])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[U]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@recover[U&gt;:T](pf:PartialFunction[Throwable,U])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[U]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -734,10 +717,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">recoverWith</span><span class="tparams">[<span name="U">U &gt;: <span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span></span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Throwable">Throwable</span>, <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.recoverWith.U">U</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.recoverWith.U">U</span>]</span>
+        <span class="name">recoverWith</span><span class="tparams">[<span name="U">U &gt;: <span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span></span>]</span><span class="params">(<span name="pf">pf: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="scala.Throwable">Throwable</span>, <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.recoverWith.U">U</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.recoverWith.U">U</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@recoverWith[U&gt;:T](pf:PartialFunction[Throwable,scala.concurrent.Future[U]])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[U]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@recoverWith[U&gt;:T](pf:PartialFunction[Throwable,scala.concurrent.Future[U]])(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[U]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -754,7 +737,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">synchronized</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="params">(<span name="arg0">arg0: ⇒ <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>)</span><span class="result">: <span class="extype" name="java.lang.AnyRef.synchronized.T0">T0</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@synchronized[T0](x$1:=&gt;T0):T0" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -771,7 +754,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@toString():String" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@toString():String" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -785,10 +768,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">transform</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="s">s: (<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future.transform.S">S</span></span>, <span name="f">f: (<span class="extype" name="scala.Throwable">Throwable</span>) ⇒ <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.transform.S">S</span>]</span>
+        <span class="name">transform</span><span class="tparams">[<span name="S">S</span>]</span><span class="params">(<span name="s">s: (<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>) ⇒ <span class="extype" name="scala.concurrent.Future.transform.S">S</span></span>, <span name="f">f: (<span class="extype" name="scala.Throwable">Throwable</span>) ⇒ <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.transform.S">S</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@transform[S](s:T=&gt;S,f:Throwable=&gt;Throwable)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@transform[S](s:T=&gt;S,f:Throwable=&gt;Throwable)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[S]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -805,7 +788,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@wait():Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@wait():Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -828,7 +811,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@wait(x$1:Long,x$2:Int):Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -851,7 +834,7 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@wait(x$1:Long):Unit" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@wait(x$1:Long):Unit" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -871,10 +854,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">withFilter</span><span class="params">(<span name="p">p: (<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</span>
+        <span class="name">withFilter</span><span class="params">(<span name="p">p: (<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executor">executor: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@withFilter(p:T=&gt;Boolean)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[T]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@withFilter(p:T=&gt;Boolean)(implicitexecutor:scala.concurrent.ExecutionContext):scala.concurrent.Future[T]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -888,10 +871,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">zip</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.zip.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[(<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>, <span class="extype" name="scala.concurrent.Future.zip.U">U</span>)]</span>
+        <span class="name">zip</span><span class="tparams">[<span name="U">U</span>]</span><span class="params">(<span name="that">that: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="scala.concurrent.Future.zip.U">U</span>]</span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[(<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>, <span class="extype" name="scala.concurrent.Future.zip.U">U</span>)]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../index.html#s_mach.concurrent.DelayedFuture@zip[U](that:scala.concurrent.Future[U]):scala.concurrent.Future[(T,U)]" title="Permalink" target="_top">
+      <a href="../../index.html#s_mach.concurrent.CancellableFuture@zip[U](that:scala.concurrent.Future[U]):scala.concurrent.Future[(T,U)]" title="Permalink" target="_top">
         <img src="../../lib/permalink.png" />
       </a>
     </span>
@@ -905,12 +888,10 @@ future contains the deferred future (which is now running)</p></dd></dl><dl clas
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="s_mach.concurrent.DeferredFuture">
-              <h3>Inherited from <a href="DeferredFuture.html" class="extype" name="s_mach.concurrent.DeferredFuture">DeferredFuture</a>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</h3>
-            </div><div class="parent" name="scala.concurrent.Future">
-              <h3>Inherited from <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</h3>
+        <div class="parent" name="scala.concurrent.Future">
+              <h3>Inherited from <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>]</h3>
             </div><div class="parent" name="scala.concurrent.Awaitable">
-              <h3>Inherited from <span class="extype" name="scala.concurrent.Awaitable">Awaitable</span>[<span class="extype" name="s_mach.concurrent.DelayedFuture.A">A</span>]</h3>
+              <h3>Inherited from <span class="extype" name="scala.concurrent.Awaitable">Awaitable</span>[<span class="extype" name="s_mach.concurrent.CancellableFuture.A">A</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

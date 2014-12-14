@@ -567,8 +567,26 @@ only when a precise delay is more important than overall performance.
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="s_mach.concurrent.impl.FutureOps#onTimeout" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="onTimeout[A](self:scala.concurrent.Future[A],timeout:scala.concurrent.duration.FiniteDuration)(fallback:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext,implicitsec:s_mach.concurrent.ScheduledExecutionContext):scala.concurrent.Future[A]"></a>
+      <a id="onTimeout[A](Future[A],FiniteDuration)(⇒Future[A])(ExecutionContext,ScheduledExecutionContext):Future[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">onTimeout</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="self">self: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.onTimeout.A">A</span>]</span>, <span name="timeout">timeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="params">(<span name="fallback">fallback: ⇒ <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.onTimeout.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>, <span name="sec">sec: <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.onTimeout.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.impl.FutureOps@onTimeout[A](self:scala.concurrent.Future[A],timeout:scala.concurrent.duration.FiniteDuration)(fallback:=&gt;scala.concurrent.Future[A])(implicitec:scala.concurrent.ExecutionContext,implicitsec:s_mach.concurrent.ScheduledExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" />
+      </a>
+    </span>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes with fallback if the specified timeout is
+        exceeded, otherwise the completed result of the future</p></dd></dl></div>
     </li><li name="s_mach.concurrent.impl.FutureOps#sideEffect" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="sideEffect[A](lhs:scala.concurrent.Future[A],sideEffect:=&gt;Unit)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
+      <a id="sideEffect[A](self:scala.concurrent.Future[A],sideEffect:=&gt;Unit)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]"></a>
       <a id="sideEffect[A](Future[A],⇒Unit)(ExecutionContext):Future[A]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -576,14 +594,16 @@ only when a precise delay is more important than overall performance.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">sideEffect</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="lhs">lhs: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.sideEffect.A">A</span>]</span>, <span name="sideEffect">sideEffect: ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.sideEffect.A">A</span>]</span>
+        <span class="name">sideEffect</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="self">self: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.sideEffect.A">A</span>]</span>, <span name="sideEffect">sideEffect: ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="ec">ec: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.impl.FutureOps.sideEffect.A">A</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#s_mach.concurrent.impl.FutureOps@sideEffect[A](lhs:scala.concurrent.Future[A],sideEffect:=&gt;Unit)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
+      <a href="../../../index.html#s_mach.concurrent.impl.FutureOps@sideEffect[A](self:scala.concurrent.Future[A],sideEffect:=&gt;Unit)(implicitec:scala.concurrent.ExecutionContext):scala.concurrent.Future[A]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" />
       </a>
     </span>
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>execute a side effect after a future completes (even if it fails)
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a future that completes once the supplied Future and the supplied
+        side effect complete. The side effect runs after the supplied
+        future completes even if it fails.
 </p></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
