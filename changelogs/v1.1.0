@@ -1,0 +1,39 @@
+2014-12-13  Lance Gatlin  <lance.gatlin@gmail.com>
+
+	modified PeriodicTask and PeriodicProgressReporterImpl to use AtomicFSM and explicit states. added PeriodicTask.Paused state.
+
+	modified SerializationSchedule add event methods to optionally ignore events that already exist
+
+	fixed minor issue in CollectionAsyncTaskRunnerTest
+
+	added Barrier.spinUntilSet
+
+	removed AtomicReference helpers for now
+
+	fixed bug Future.sideEffect that caused a race condition between TaskEventListener.onCompleteTask and the last TaskEventListener.onCompleteStep
+
+	added stdout progress reporting to TestBuiler
+
+	added AtmoicFSM for atomically transitioning the state of a shared state machine
+
+2014-11-30  Lance Gatlin  <lance.gatlin@gmail.com>
+
+	Merge branch 'master' of github.com:S-Mach/s_mach.concurrent
+
+	updated readme [skip ci]
+
+	updated readme [skip ci]
+
+2014-11-29  Lance Gatlin  <lance.gatlin@gmail.com>
+
+	Update README.asciidoc
+
+2014-11-14  Lance Gatlin  <lance.gatlin@gmail.com>
+
+	added AtomicReference.recurseCompareAndSet
+
+	added Future.onTimeout to perform a fallback action after a timeout interval expires
+
+	added CancellableFuture/CancellableDelayedFuture. added ScheduledExecutionContext.scheduleCancellable that allows scheduling a delayed future that can be cancelled with a fallback value
+
+	changed all Duration to FiniteDuration in scheduling/progress reporting

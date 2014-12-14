@@ -19,7 +19,7 @@
 package s_mach.concurrent.config
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent.ScheduledExecutionContext
 import s_mach.concurrent.util._
 
@@ -61,7 +61,7 @@ trait OptProgressConfigBuilder[MDT <: OptProgressConfigBuilder[MDT]] {
    *               unknown)
    * @return a copy of the builder with the new setting
    */
-  def progress(reportInterval: Duration)(report: Progress => Unit)(implicit
+  def progress(reportInterval: FiniteDuration)(report: Progress => Unit)(implicit
     executionContext: ExecutionContext,
     scheduledExecutionContext: ScheduledExecutionContext
   ) : MDT = {

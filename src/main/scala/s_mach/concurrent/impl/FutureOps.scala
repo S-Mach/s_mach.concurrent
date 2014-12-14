@@ -22,9 +22,9 @@ package s_mach.concurrent.impl
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.language.higherKinds
-import scala.util.{Failure, Success, Try}
+import scala.util.{Try,Success,Failure}
 import MergeOps._
-import s_mach.concurrent.{DeferredFuture, AsyncParThrowable}
+import s_mach.concurrent._
 
 object FutureOps extends FutureOps
 trait FutureOps {
@@ -175,18 +175,86 @@ trait FutureOps {
     DeferredFuture(promise.future)
   }
 
-  /** @return execute a side effect after a future completes (even if it fails)
+  /** @return a future that completes once the supplied Future and the supplied
+    *         side effect complete. The side effect runs after the supplied
+    *         future completes even if it fails.
     * */
   def sideEffect[A](
-    lhs: Future[A],
+    self: Future[A],
     sideEffect: => Unit
   )(implicit ec:ExecutionContext) : Future[A] = {
     val promise = Promise[A]()
-    lhs onComplete { case v =>
+    // Note: it is important here that the side effect execute before completing
+    // the promise
+    self onComplete { case _try =>
       sideEffect
-      promise.complete(v)
+      promise.complete(_try)
     }
     promise.future
   }
+
+  /** @return a future that completes with fallback if the specified timeout is
+    *         exceeded, otherwise the completed result of the future */
+  def onTimeout[A](
+    self: Future[A],
+    timeout: FiniteDuration
+  )(
+    fallback: => Future[A]
+  )(implicit
+    ec:ExecutionContext,
+    sec:ScheduledExecutionContext
+  ) : Future[A] = {
+    // Using promise of future to ensure that once timeout is reached it is not
+    // possible for self to complete the returned future even if fallback takes
+    // awhile to complete itself
+    val promise = Promise[Future[A]]()
+    val futTimeout = sec.scheduleCancellable(timeout, ())(promise.trySuccess(fallback))
+    self onComplete {
+      case Success(_) =>
+        if(promise.trySuccess(self)) {
+          futTimeout.cancel()
+        }
+      case Failure(t) =>
+        // Ensure failures are always reported even after timeout
+        if(promise.trySuccess(self) == false) {
+          ec.reportFailure(t)
+        } else {
+          futTimeout.cancel()
+        }
+    }
+    promise.future.flatMap(v => v)
+  }
+
+//  def compareAndSet[A](self: AtomicReference[A], f: A => A) : A = {
+//    @tailrec def loop(): A = {
+//      val expect = self.get
+//      val newValue = f(expect)
+//      if(self.compareAndSet(expect, newValue)) {
+//        newValue
+//      } else {
+//        loop()
+//      }
+//    }
+//    loop()
+//  }
+//
+//  def tryCompareAndSet[A](self: AtomicReference[A], pf: PartialFunction[A,A]) : Option[A] = {
+//    val opf = pf.lift
+//    @tailrec def loop(): Option[A] = {
+//      val expect = self.get
+//      opf(expect) match {
+//        case Some(newValue) =>
+//          if(self.compareAndSet(expect, newValue)) {
+//            Some(newValue)
+//          } else {
+//            loop()
+//          }
+//        case None => None
+//      }
+//    }
+//    loop()
+//  }
+
+
 }
 

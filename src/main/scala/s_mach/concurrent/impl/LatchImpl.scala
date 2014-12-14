@@ -51,4 +51,5 @@ class LatchImpl(val failMessage: String) extends Latch {
     next: => Future[A]
   )(implicit ec:ExecutionContext) = future happensBefore next
 
+  override def spinUntilSet() = while(isSet == false) { }
 }

@@ -18,11 +18,11 @@
 */
 package s_mach.concurrent
 
-import scala.concurrent._
 import scala.concurrent.duration._
 import org.scalatest.{Matchers, FlatSpec}
 import util._
 import TestBuilder._
+import PeriodicTask._
 
 class ScheduledExecutionContextTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
@@ -32,8 +32,46 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       import ctc._
       sched.addEvent("start")
       val result = scheduledExecutionContext.schedule(DELAY) { sched.addEvent("trigger");1 }
+
+      ctc.waitForActiveExecutionCount(0)
+
       result.get should equal(1)
       sched.startEvents(0).elapsed_ns - sched.startEvents(1).elapsed_ns should be >= DELAY_NS
+    }
+  }
+
+  s"ScheduledExecutionContext.scheduleCancellable" must "return a DelayedFuture that executes the task after at least the specified delay" in {
+    test repeat TEST_COUNT run {
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
+      sched.addEvent("start")
+      val result = scheduledExecutionContext.scheduleCancellable(DELAY,2) { sched.addEvent("trigger");1 }
+
+      ctc.waitForActiveExecutionCount(0)
+
+      result.get should equal(1)
+      result.isCancelled should equal(false)
+      result.canCancel should equal(false)
+      result.cancel() should equal(false)
+      sched.startEvents(0).elapsed_ns - sched.startEvents(1).elapsed_ns should be >= DELAY_NS
+    }
+  }
+
+  s"ScheduledExecutionContext.schedule" must "return a DelayedFuture that when cancelled returns the fallback value" in {
+    test repeat TEST_COUNT run {
+      implicit val ctc = mkConcurrentTestContext()
+      import ctc._
+      sched.addEvent("start")
+      val result = scheduledExecutionContext.scheduleCancellable(10.seconds,2) { sched.addEvent("trigger");1 }
+      result.canCancel should equal(true)
+      result.cancel() should equal(true)
+
+      ctc.waitForActiveExecutionCount(0)
+
+      result.isCancelled should equal(true)
+      result.canCancel should equal(false)
+      result.cancel() should equal(false)
+      result.get should equal(2)
     }
   }
 
@@ -69,7 +107,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
 //    }
 //  }
 
-  s"ScheduledExecutionContext.scheduleAtFixedRate" must "return a PeriodicTask that continuously executes the task with at least the specified period separating executions of the task" in {
+  s"ScheduledExecutionContext.scheduleAtFixedRate" must "return a PeriodicTask that continuously executes the task with at least the specified period separating executions of the task and can be cancelled" in {
     implicit val ctc = mkConcurrentTestContext()
     import ctc._
     val counter = new java.util.concurrent.atomic.AtomicLong(0)
@@ -84,11 +122,16 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       }
     }
 
+    periodicTask.state shouldBe a [Running]
+
     latch.future.get
 
-    periodicTask.cancel()
+    // Running => Cancelled
+    periodicTask.cancel() should equal(true)
 
     waitForActiveExecutionCount(0)
+
+    periodicTask.state should equal(Cancelled)
 
     sched.startEvents.size should equal(TEST_COUNT)
 
@@ -102,6 +145,82 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
     }
   }
 
+  s"ScheduledExecutionContext.scheduleAtFixedRate" must "return a paused PeriodicTask when requested and resume" in {
+    implicit val ctc = mkConcurrentTestContext()
+    import ctc._
+    val counter = new java.util.concurrent.atomic.AtomicLong(0)
+    val latch = Latch()
+    val periodicTask = scheduledExecutionContext.scheduleAtFixedRate(0.nanos,DELAY, paused = true) { () =>
+      // Note: if task happens fast enough there may be several extra iterations after the latch is set
+      counter.incrementAndGet() match {
+        case i if i <= TEST_COUNT =>
+          sched.addEvent(s"trigger-$i")
+        case _ => latch.trySet()
+      }
+    }
+
+    val state = periodicTask.state
+    state shouldBe a [Paused]
+
+    // Paused => Running
+    state.asInstanceOf[Paused].resume() should equal(true)
+
+    periodicTask.state shouldBe a [Running]
+
+    latch.future.get
+
+    periodicTask.cancel()
+
+    waitForActiveExecutionCount(0)
+  }
+
+  s"ScheduledExecutionContext.scheduleAtFixedRate" must "return a PeriodicTask that can pause when requested" in {
+    implicit val ctc = mkConcurrentTestContext()
+    import ctc._
+    val counter = new java.util.concurrent.atomic.AtomicLong(0)
+    val latch1 = Latch()
+    val latch2 = Latch()
+    val latch3 = Latch()
+    val periodicTask = scheduledExecutionContext.scheduleAtFixedRate(0.nanos,DELAY) { () =>
+      counter.incrementAndGet() match {
+        case 1 =>
+          latch1.set()
+          latch2.spinUntilSet()
+        case 2 =>
+          latch3.set()
+        case _ =>
+      }
+
+    }
+
+    periodicTask.state shouldBe a [Running]
+
+    latch1.spinUntilSet()
+
+    counter.get should equal(1)
+
+    // Running => Paused
+    periodicTask.state.asInstanceOf[Running].pause() should equal(true)
+    latch2.set()
+
+    periodicTask.state shouldBe a [Paused]
+    counter.get should equal(1)
+
+    // Paused => Running
+    periodicTask.state.asInstanceOf[Paused].resume() should equal(true)
+
+    latch3.spinUntilSet()
+
+    periodicTask.state shouldBe a [Running]
+    counter.get should equal(2)
+
+    // Paused => Cancelled
+    periodicTask.state.asInstanceOf[Running].pause() should equal(true)
+    periodicTask.cancel() should equal(true)
+
+    waitForActiveExecutionCount(0)
+  }
+//
 //  Vector(
 //    (1.second, 10, .0002),
 //    (100.millis, 100, .001),

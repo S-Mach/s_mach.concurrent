@@ -18,17 +18,18 @@
 */
 package s_mach.concurrent.impl
 
-import java.util.concurrent.{TimeUnit, ScheduledExecutorService}
+import scala.language.existentials
+import java.util.concurrent.{ScheduledFuture, TimeUnit, ScheduledExecutorService}
 import scala.concurrent.{Future, Promise, ExecutionContext}
 import scala.concurrent.duration._
 import scala.util.Try
 import s_mach.concurrent._
-import s_mach.concurrent.util.{Latch, DelegatedFuture}
+import s_mach.concurrent.util.{AtomicFSM, Latch, DelegatedFuture}
 
 object ScheduledExecutionContextImpl {
-  case class ScheduledDelayedFutureImpl[A](
+  class ScheduledDelayedFutureImpl[A](
     task: () => A,
-    delay: Duration,
+    val delay: FiniteDuration,
     scheduledExecutorService: ScheduledExecutorService
   )(implicit
     ec:ExecutionContext
@@ -36,70 +37,179 @@ object ScheduledExecutionContextImpl {
 
     val delay_ns = delay.toNanos
     val startTime_ns = System.nanoTime + delay_ns
-    val futPromise = Promise[Future[A]]()
-    val promise = Promise[A]()
+    val deferredPromise = Promise[Future[A]]()
+    val delegatePromise = Promise[A]()
 
     val javaScheduledFuture =
       scheduledExecutorService.schedule(
         new Runnable {
           override def run() = {
-            futPromise.success(delegate)
-            promise.complete(Try(task()))
+            // Signal that the future has started
+            deferredPromise.success(delegate)
+            delegatePromise.complete(Try(task()))
           }
         },
         delay_ns,
         TimeUnit.NANOSECONDS
       )
 
-    val delegate = promise.future
+    val delegate = delegatePromise.future
 
-    val deferred = futPromise.future
+    val deferred = deferredPromise.future
   }
+  class CancellableScheduledDelayedFutureImpl[A](
+    task: () => A,
+    fallback: => A,
+    delay: FiniteDuration,
+    scheduledExecutorService: ScheduledExecutorService
+  )(implicit
+    ec:ExecutionContext
+  ) extends ScheduledDelayedFutureImpl[A](task, delay, scheduledExecutorService)
+  with CancellableDelayedFuture[A] {
+    val wasCancelled = Latch()
+    
+    override def isCancelled = wasCancelled.isSet
 
-  case class PeriodicTaskImpl[U](
-    task: () => U,
-    initialDelay: Duration,
-    period: Duration,
-    scheduledExecutorService: ScheduledExecutorService,
-    reportFailure: Throwable => Unit
-  ) extends PeriodicTask {
+    override def canCancel = deferredPromise.isCompleted == false
 
-    val initialDelay_ns = initialDelay.toNanos
-    val period_ns = period.toNanos
-
-    val _nextEvent_ns = new java.util.concurrent.atomic.AtomicLong(
-      System.nanoTime() + initialDelay_ns
-    )
-    def nextEvent_ns = _nextEvent_ns.get
-
-    val runnable = new Runnable {
-      override def run() = {
-        try {
-          task()
-          _nextEvent_ns.getAndSet(System.nanoTime() + period_ns)
-        } catch {
-          case t:Throwable =>
-            reportFailure(t)
-            throw t
+    override def cancel() = {
+      if(canCancel) {
+        // Attempt to cancel
+        if(javaScheduledFuture.cancel(false)) {
+          // If cancel was successful, still need to make this future complete
+          // with something in case there waiting listeners
+          // Signal that the future has started
+          deferredPromise.success(delegate)
+          delegatePromise.success(fallback)
+          wasCancelled.set()
+          true
+        } else {
+          false
         }
+      } else {
+        // Future has already started
+        false
       }
     }
 
-    val javaScheduledFuture =
-      scheduledExecutorService.scheduleAtFixedRate(
-        runnable,
-        initialDelay_ns,
-        period_ns,
-        TimeUnit.NANOSECONDS
-      )
+  }
 
+  class PeriodicTaskImpl[U](
+    task: () => U,
+    val initialDelay: FiniteDuration,
+    val period: FiniteDuration,
+    initiallyPaused: Boolean,
+    scheduledExecutorService: ScheduledExecutorService,
+    reportFailure: Throwable => Unit
+  ) extends PeriodicTask { self =>
+    import PeriodicTask._
+
+    val initialDelay_ns = initialDelay.toNanos
+    val period_ns = period.toNanos
     val onCancel = Latch()
 
-    override def cancel() = {
-      onCancel.set()
-      javaScheduledFuture.cancel(false)
+
+    def s0 = if(initiallyPaused == false) {
+      val r = RunningImpl(initialDelay_ns)
+      r.start()
+      r
+    } else {
+      PausedImpl(0)
     }
 
+    def state = _state.get
+
+    val _state = new AtomicFSM[State](s0)
+
+    case class RunningImpl(initialDelay_ns: Long) extends Running {
+      val _nextEvent_ns = new java.util.concurrent.atomic.AtomicLong(
+        System.nanoTime() + initialDelay_ns
+      )
+      def nextEvent_ns = _nextEvent_ns.get
+
+      val runnable = new Runnable {
+        override def run() = {
+          try {
+            task()
+            _nextEvent_ns.getAndSet(System.nanoTime() + period_ns)
+          } catch {
+            case t:Throwable =>
+              reportFailure(t)
+              throw t
+          }
+        }
+      }
+
+      val _javaScheduledFuture = Promise[ScheduledFuture[_]]()
+      def javaScheduledFuture = _javaScheduledFuture.future.get
+
+      def start() = {
+        _javaScheduledFuture.success {
+          scheduledExecutorService.scheduleAtFixedRate(
+            runnable,
+            initialDelay_ns,
+            period_ns,
+            TimeUnit.NANOSECONDS
+          )
+        }
+      }
+
+      override def pause(): Boolean = {
+        _state.fold(
+          transition = {
+            case current:RunningImpl =>
+              (PausedImpl(current.nextEvent_ns),true)
+            case s => (s,false)
+          },
+          onTransition = {
+            case (r:RunningImpl,p:Paused) =>
+              r.javaScheduledFuture.cancel(false)
+          }
+        )
+      }
+    }
+
+    case class PausedImpl(nextEvent_ns: Long) extends Paused {
+      override def resume(): Boolean = {
+        _state.fold(
+          transition = {
+            case current:PausedImpl =>
+              (
+                RunningImpl(Math.max(0,current.nextEvent_ns - System.nanoTime())),
+                true
+              )
+            case s => (s,false)
+          },
+          onTransition = {
+            case (p:Paused,r:RunningImpl) => r.start()
+          }
+        )
+      }
+    }
+
+    override def nextEvent_ns: Long = _state.get match {
+      case state:RunningImpl => state.nextEvent_ns
+      case _ => Long.MaxValue
+    }
+
+    override def cancel() = {
+      _state.fold(
+        transition = {
+          case _:Running | _:Paused =>
+            (Cancelled, true)
+          case _ => (Cancelled, false)
+        },
+        onTransition = {
+          case (r:RunningImpl,Cancelled) =>
+            r.javaScheduledFuture.cancel(false)
+            onCancel.set()
+          case (p:Paused,Cancelled) =>
+            onCancel.set()
+        }
+      )
+    }
+
+    override def toString = s"PeriodicTaskImpl(state=$state)"
   }
 }
 
@@ -110,22 +220,38 @@ case class ScheduledExecutionContextImpl(
 ) extends ScheduledExecutionContext {
   import ScheduledExecutionContextImpl._
 
-  def schedule[A](delay: Duration)(task: => A) : DelayedFuture[A] = {
-    ScheduledDelayedFutureImpl(
+  def schedule[A](delay: FiniteDuration)(task: => A) : DelayedFuture[A] = {
+    new ScheduledDelayedFutureImpl(
       task = { () => task },
       delay = delay,
       scheduledExecutorService = delegate
     )
   }
 
+  override def scheduleCancellable[A](
+    delay: FiniteDuration,
+    fallback: => A
+  )(
+    task: => A
+  ): CancellableDelayedFuture[A] = {
+    new CancellableScheduledDelayedFutureImpl(
+      task = { () => task },
+      fallback = fallback,
+      delay = delay,
+      scheduledExecutorService = delegate
+    )
+  }
+
   def scheduleAtFixedRate[U](
-    initialDelay: Duration,
-    period: Duration
+    initialDelay: FiniteDuration,
+    period: FiniteDuration,
+    paused: Boolean = false
   )(task: () => U) : PeriodicTask = {
-    PeriodicTaskImpl(
+    new PeriodicTaskImpl(
       task = task,
       initialDelay = initialDelay,
       period = period,
+      initiallyPaused = paused,
       scheduledExecutorService = delegate,
       reportFailure = { t => reportFailure(t) }
     )

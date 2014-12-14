@@ -18,7 +18,6 @@
 */
 package s_mach.concurrent
 
-import scala.concurrent.duration._
 import org.scalatest.{Matchers, FlatSpec}
 import util._
 import TestBuilder._
@@ -101,10 +100,8 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
         .progress(DELAY) { progress =>
           val eventId = s"report-${progress.completed}-${progress.optTotal.getOrElse(0)}"
           // Note: same progress may be reported twice
-          if(sched.startEvents.exists(_.id == eventId) == false) {
-            sched.addEvent(eventId)
-            latches(progress.completed.toInt).set()
-          }
+          sched.addEvent(eventId, ignoreIfExist = true)
+          latches(progress.completed.toInt).trySet()
         }
         .foreach { case (_,idx) =>
           latches(idx).future

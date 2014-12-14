@@ -20,7 +20,7 @@ package s_mach.concurrent
 
 import java.util.concurrent.{ScheduledExecutorService, ThreadFactory, Executors}
 import scala.concurrent._
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent.impl.ScheduledExecutionContextImpl
 
 /**
@@ -33,12 +33,30 @@ trait ScheduledExecutionContext {
    *
    * @param delay the time from now to delay execution
    * @param f the function to execute
-   * @return a DelayedFuture that can be used to extract result or cancel (only
-   *         before it has been started)
+   * @return a DelayedFuture that can be used to extract result
    * @throws RejectedExecutionException if the task cannot be scheduled for
    *                                    execution
    */
-  def schedule[A](delay: Duration)(f: => A) : DelayedFuture[A]
+  def schedule[A](delay: FiniteDuration)(f: => A) : DelayedFuture[A]
+
+  /**
+   * Create a DelayedFuture that executes the supplied function after the given
+   * delay
+   *
+   * @param delay the time from now to delay execution
+   * @param fallback the value to return if the future is cancelled
+   * @param f the function to execute
+   * @return a DelayedFuture that can be used to extract result or cancel (only
+   *         before it has been started)
+   * @throws RejectedExecutionException if the task cannot be scheduled for
+   *         execution
+   */
+  def scheduleCancellable[A](
+    delay: FiniteDuration,
+    fallback: => A
+  )(
+    f: => A
+  ): CancellableDelayedFuture[A]
 
   /**
    * Creates a PeriodicTask that executes first after the given initial delay,
@@ -51,15 +69,19 @@ trait ScheduledExecutionContext {
    * @param initialDelay the time to delay first execution
    * @param period the period between successive executions
    * @param task the task to execute
+   * @param paused TRUE to start the periodic task paused FALSE to start running
    * @return a PeriodicTask
    * @throws RejectedExecutionException if the task cannot be scheduled for
    *         execution
    * @throws IllegalArgumentException if period less than or equal to zero
    */
   def scheduleAtFixedRate[U](
-    initialDelay: Duration,
-    period: Duration
-  )(task: () => U) : PeriodicTask
+    initialDelay: FiniteDuration,
+    period: FiniteDuration,
+    paused: Boolean = false
+  )(
+    task: () => U
+  ) : PeriodicTask
 
   /**
    * Report a failure. Used to report failures during periodic tasks

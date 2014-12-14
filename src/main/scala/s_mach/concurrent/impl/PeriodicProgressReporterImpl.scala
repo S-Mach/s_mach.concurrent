@@ -19,66 +19,84 @@
 package s_mach.concurrent.impl
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent.{PeriodicTask, ScheduledExecutionContext}
-import s_mach.concurrent.util.{Progress, PeriodicProgressReporter}
+import s_mach.concurrent.util.{AtomicFSM, Progress, PeriodicProgressReporter}
+
+object PeriodicProgressReporterImpl {
+  sealed trait State
+  object NotStarted extends State
+  case class Running(
+    startTime_ns: Long = System.nanoTime(),
+    totalSoFar: Int = 0
+  ) extends State
+  case class Done(startTime_ns: Long, finalTotal: Int) extends State
+}
 
 class PeriodicProgressReporterImpl(
   optTotal: Option[Int],
-  val reportInterval: Duration,
+  val reportInterval: FiniteDuration,
   report: Progress => Unit
 )(implicit
   executionContext: ExecutionContext,
   scheduledExecutionContext: ScheduledExecutionContext
 ) extends PeriodicProgressReporter {
-  val totalSoFar = new java.util.concurrent.atomic.AtomicInteger(0)
+  import PeriodicProgressReporterImpl._
 
-  val lock = new Object
-  var startTime_ns = 0l
-  var lastReport_ns = 0l
-  var reporter : Option[PeriodicTask] = None
+  val state = new AtomicFSM[State](NotStarted)
 
-  override def onStartTask() = {
-    lock.synchronized {
-      reporter = Some(
-        scheduledExecutionContext.scheduleAtFixedRate(
-          reportInterval,
-          reportInterval
-        ) { () =>
-          doReport(totalSoFar.get)
+  override def onStartTask() = state(
+    transition = {
+      case NotStarted => Running()
+    },
+    onTransition = {
+      case (NotStarted,Running(startTime_ns,_)) =>
+        report(Progress(0, optTotal, startTime_ns))
+        task.state match {
+          case p:PeriodicTask.Paused => p.resume()
+          case s => throw new IllegalStateException(s"Unexpected state $s")
         }
-      )
-      val now = System.nanoTime()
-      startTime_ns = now
-      lastReport_ns = now
-      report(Progress(0, optTotal, startTime_ns))
     }
+  )
+
+  override def onStartStep(sequenceNumber: Int) = { }
+  override def onCompleteStep(sequenceNumber: Int) = state {
+    case current:Running =>
+      import current._
+      copy(totalSoFar = totalSoFar + 1)
   }
 
-  override def onCompleteTask() = {
-    lock.synchronized {
-      require(reporter != None)
-      require(optTotal.forall(_ == totalSoFar.get))
-
-      report(Progress(totalSoFar.get, optTotal, startTime_ns))
-      reporter.get.cancel()
-      reporter = None
+  override def onCompleteTask() = state(
+    transition = {
+      case current:Running =>
+        import current._
+        Done(startTime_ns, totalSoFar)
+    },
+    onTransition = {
+      case (Running(_,_),Done(startTime_ns, finalTotal)) =>
+        task.cancel()
+        report(Progress(finalTotal, optTotal, startTime_ns))
     }
-  }
+  )
 
-  override def onStartStep(stepId: Int) = { }
-
-  override def onCompleteStep(stepId: Int) = totalSoFar.addAndGet(1)
-
-  def doReport(localTotalSoFar: Int) {
-    lock.synchronized {
-      // Note: is possible for a report to be queued on the lock while onEnd is
-      // in progress
-      if(reporter != None) {
-        lastReport_ns = System.nanoTime()
-        report(Progress(localTotalSoFar, optTotal, startTime_ns))
+  val task: PeriodicTask = {
+    scheduledExecutionContext.scheduleAtFixedRate(
+      initialDelay = reportInterval,
+      period = reportInterval,
+      paused = true
+    ) { () =>
+      state.get match {
+        case r:Running =>
+          import r._
+          if(optTotal.forall(_ != totalSoFar)) {
+            report(Progress(totalSoFar, optTotal, startTime_ns))
+          }
+        case d:Done =>
+          // Note: there is a race condition between the periodic task hitting Done and the post-Done commit that
+          // cancels this periodic task that isn't impactful
+          task.cancel()
+        case notRunning => throw new IllegalStateException(s"$notRunning")
       }
-
     }
   }
 

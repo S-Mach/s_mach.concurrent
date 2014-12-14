@@ -19,7 +19,7 @@
 package s_mach.concurrent.impl
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent._
 import s_mach.concurrent.util.{SerializationSchedule, ConcurrentTestContext}
 
@@ -42,17 +42,32 @@ class ConcurrentTestContextImpl()(implicit
   }
 
   override def scheduleAtFixedRate[U](
-    initialDelay: Duration,
-    period: Duration
+    initialDelay: FiniteDuration,
+    period: FiniteDuration,
+    paused: Boolean = false
   )(task: () => U) = {
     _activeExecutionCount.incrementAndGet()
-    val retv = sec.scheduleAtFixedRate(initialDelay, period)(task)
+    val retv = sec.scheduleAtFixedRate(initialDelay, period, paused)(task)
     retv.onCancel.onSet {
       _activeExecutionCount.decrementAndGet()
     }
     retv
   }
-  override def schedule[A](delay: Duration)(f: => A) = {
+
+
+  override def scheduleCancellable[A](
+    delay: FiniteDuration,
+    fallback: => A
+  )(
+    f: => A
+  ): CancellableDelayedFuture[A] = {
+    _activeExecutionCount.incrementAndGet()
+    val retv = sec.scheduleCancellable(delay, fallback)(f)
+    retv.sideEffect(_activeExecutionCount.decrementAndGet()).background
+    retv
+  }
+
+  override def schedule[A](delay: FiniteDuration)(f: => A) = {
     _activeExecutionCount.incrementAndGet()
     val retv = sec.schedule(delay)(f)
     retv.sideEffect(_activeExecutionCount.decrementAndGet()).background
