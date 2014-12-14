@@ -37,7 +37,7 @@ import scala.annotation.tailrec
  * states may be discarded and transition functions invoked multiple times
  * during this process, states and transition functions should never create
  * side effects themselves. Instead all transition side effects should be placed
- * in the onTransition method. When a state is successfully transitioned,
+ * in the onTransition function. When a state is successfully transitioned,
  * onTransition is called with both the original and new state. This method can
  * be used to safely create state transition side effects.
  *
