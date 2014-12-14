@@ -7,10 +7,9 @@ notifications:
   email:
     recipients:
     - lance.gatlin@s-mach.net
-sbt_args: -J-Xss4G -J-Xmx4G
 script:
-- sbt scoverage:test
-- sbt coveralls
+- sbt scoverage:test -J-Xms4G -J-Xmx4G
+- sbt coveralls -J-Xms4G -J-Xmx4G
 env:
   global:
   - secure: C+EY+X0B5fFH25LWscULBniDcbcvXdTFBEsEzuWNhHXnref+At23tC71cO5TGFYfAKKudF8ah2QWmSw3SSvdggnOLKnAmHXdzJHgMUsGxeja2ivB4NtCSLc172LTGiHBLnYKWamWSfcuPoRJp1zfpy+S+vrLE4vGwXnUpqUF83M=
