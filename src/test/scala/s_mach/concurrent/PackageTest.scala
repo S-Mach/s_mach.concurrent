@@ -208,6 +208,16 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     }
   }
 
+  "Option[Future[A]].sequence" must "return an always successful for future of None if it is None" in {
+    implicit val ctc = mkConcurrentTestContext()
+    None.sequence.get should equal(None)
+  }
+
+  "Option[Future[A]].sequence" must "return the inner future if Some" in {
+    implicit val ctc = mkConcurrentTestContext()
+    Some(Future.successful(1)).sequence.get should equal(Some(1))
+  }
+
 //  "AtomicReference.recurseCompareAndSet" must "immediately set the value when there is no contention" in {
 //    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
 //    a.safeSet(_ + "1") should equal("initial1")

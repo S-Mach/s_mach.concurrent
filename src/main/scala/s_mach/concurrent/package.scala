@@ -218,6 +218,18 @@ package object concurrent {
     ) : Future[M[A]] = Future.sequence(self)
   }
 
+  implicit class SMach_Concurrent_PimpMyOptionFuture[A](
+    val self: Option[Future[A]]
+  ) extends AnyVal {
+    /** @return a future of an option where None is always successful and if
+      *         Some, the inner future is returned. */
+    def sequence(implicit ec:ExecutionContext) : Future[Option[A]] =
+      self match {
+        case Some(future) => future.map(Some.apply)
+        case None => None.future
+      }
+  }
+
   implicit class SMach_Concurrent_PimpMyTraversableOnce[
     A,
     M[+AA] <: TraversableOnce[AA]
