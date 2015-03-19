@@ -37,9 +37,9 @@ class ListQueueImpl[A](elems: A*) extends ListQueue[A] {
     new mutable.ListBuffer[Either[Promise[A], (Promise[Vector[A]], Int)]]()
   private[this] val lock = new Object
 
-  override def offerQueueSize = lock.synchronized { offering.size }
+  override def offerSize = lock.synchronized { offering.size }
 
-  override def pollQueueSize = lock.synchronized {
+  override def pollSize = lock.synchronized {
     polling.map {
       case Left(_) => 1
       case Right(tuple) => tuple._2
@@ -92,6 +92,8 @@ class ListQueueImpl[A](elems: A*) extends ListQueue[A] {
         p.success(a)
         polling.remove(0)
       } else {
+        // TODO: how is polling.head on empty polling not bug?
+        // TODO: how is there not a failing test here?
         val (p, size) = polling.head.right.get
         offering += a
         if(size <= offering.size) {

@@ -37,8 +37,8 @@ trait Queue[A] {
   def offer(xa: TraversableOnce[A]) : Unit
 
   /** @return size of offer queue */
-  def offerQueueSize: Int
+  def offerSize: Int
 
   /** @return size of polling queue */
-  def pollQueueSize: Int
+  def pollSize: Int
 }

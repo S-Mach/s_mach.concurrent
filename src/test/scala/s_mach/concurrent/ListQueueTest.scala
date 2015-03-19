@@ -43,8 +43,8 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       future.isCompleted should equal(false)
       q.offer(1)
       future.get(1.millis) should equal(1)
-      q.pollQueueSize should equal(0)
-      q.offerQueueSize should equal(0)
+      q.pollSize should equal(0)
+      q.offerSize should equal(0)
     }
   }
 
@@ -58,8 +58,8 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       future.isCompleted should equal(true)
       future.get(10.millis) should equal(1)
-      q.pollQueueSize should equal(0)
-      q.offerQueueSize should equal(9)
+      q.pollSize should equal(0)
+      q.offerSize should equal(9)
     }
   }
 
@@ -72,17 +72,17 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       val q = ListQueue[Int]()
       val future = q.poll(10)
 
-      q.pollQueueSize should equal(10)
+      q.pollSize should equal(10)
       future.isCompleted should equal(false)
 
       q.offer(Vector(1,2,3)) // partial
       future.isCompleted should equal(false)
-      q.offerQueueSize should equal(3)
+      q.offerSize should equal(3)
 
       q.offer(Vector(4,5,6,7,8,9,10))
       future.get(10.millis) should equal(Vector(1,2,3,4,5,6,7,8,9,10))
-      q.pollQueueSize should equal(0)
-      q.offerQueueSize should equal(0)
+      q.pollSize should equal(0)
+      q.offerSize should equal(0)
     }
   }
 
@@ -91,13 +91,13 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
       val q = ListQueue[Int](Vector(1,2,3,4,5,6,7,8,9,10): _*)
-      q.offerQueueSize should equal(10)
+      q.offerSize should equal(10)
 
       val future = q.poll(10)
       future.isCompleted should equal(true)
       future.get should equal(Vector(1,2,3,4,5,6,7,8,9,10))
-      q.pollQueueSize should equal(0)
-      q.offerQueueSize should equal(0)
+      q.pollSize should equal(0)
+      q.offerSize should equal(0)
     }
   }
 
@@ -127,14 +127,14 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       registerEvent(f3, "f3")
       val f4 = q.poll()
       registerEvent(f4, "f4")
-      q.pollQueueSize should equal(10)
-      q.offerQueueSize should equal(0)
+      q.pollSize should equal(10)
+      q.offerSize should equal(0)
 
       waitForActiveExecutionCount(0)
 
       q.offer(Vector(1,2,3,4,5,6,7,8,9,10,11))
-      q.pollQueueSize should equal(0)
-      q.offerQueueSize should equal(1)
+      q.pollSize should equal(0)
+      q.offerSize should equal(1)
 
       val result = async.par.run(f1,f2,f3,f4)
 

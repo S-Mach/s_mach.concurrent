@@ -120,7 +120,7 @@ object WorkersOps {
     def mkWorkerFailureException() = {
       workerFailures.poll().flatMap { head =>
         Future.failed {
-          val tail = workerFailures.poll(workerFailures.offerQueueSize)
+          val tail = workerFailures.poll(workerFailures.offerSize)
            AsyncParThrowable(head, tail)
         }
       }
@@ -129,7 +129,7 @@ object WorkersOps {
     for {
       i <- {
         xa.async.foldLeft(0) { (i,a) =>
-          if(workerFailures.offerQueueSize == 0) {
+          if(workerFailures.offerSize == 0) {
             s.acquire(1) {
               // Run worker in the background
               f(a).toTry
@@ -166,7 +166,7 @@ object WorkersOps {
       _ <- s.acquire(workerCount)(Future.unit)
       // If an exception occurs during the last worker it won't be detected
       // during the main loop
-      _ <- if(workerFailures.offerQueueSize == 0) {
+      _ <- if(workerFailures.offerSize == 0) {
         Future.unit
       } else {
         mkWorkerFailureException()

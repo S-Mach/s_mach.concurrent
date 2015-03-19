@@ -43,8 +43,9 @@ abstract class SemaphoreImpl(
   }
 
   protected def run[X](
-    task: => Future[X],
     permitCount: Long
+  )(
+    task: => Future[X]
   )(implicit ec: ExecutionContext) : Future[X] = {
     val retv = task
     retv onComplete { case _ => replenish(permitCount) }
@@ -88,7 +89,7 @@ abstract class SemaphoreImpl(
     lock.synchronized {
       if(offering >= permitCount) {
         offering -= permitCount
-        DeferredFuture.successful(run(task, permitCount))
+        DeferredFuture.successful(run(permitCount)(task))
       } else {
         // Take as many permits as possible now, wait for the rest
         val missingPermitCount = permitCount - offering
@@ -96,7 +97,7 @@ abstract class SemaphoreImpl(
         val p = Promise[Future[X]]()
         polling += (
           (
-            { () => p.success(run(task, permitCount)) },
+            { () => p.success(run(permitCount)(task)) },
             missingPermitCount
           )
         )

@@ -28,6 +28,7 @@ import s_mach.concurrent.util.{AtomicFSM, Latch, DelegatedFuture}
 
 object ScheduledExecutionContextImpl {
   class ScheduledDelayedFutureImpl[A](
+    // TODO: why isn't this call-by-name?
     task: () => A,
     val delay: FiniteDuration,
     scheduledExecutorService: ScheduledExecutorService
@@ -58,12 +59,12 @@ object ScheduledExecutionContextImpl {
     val deferred = deferredPromise.future
   }
   class CancellableScheduledDelayedFutureImpl[A](
-    task: () => A,
-    fallback: => A,
     delay: FiniteDuration,
-    scheduledExecutorService: ScheduledExecutorService
+    task: () => A,
+    fallback: => A
   )(implicit
-    ec:ExecutionContext
+    executionContext:ExecutionContext,
+    scheduledExecutorService: ScheduledExecutorService
   ) extends ScheduledDelayedFutureImpl[A](task, delay, scheduledExecutorService)
   with CancellableDelayedFuture[A] {
     val wasCancelled = Latch()
@@ -133,6 +134,7 @@ object ScheduledExecutionContextImpl {
             task()
             _nextEvent_ns.getAndSet(System.nanoTime() + period_ns)
           } catch {
+            // Note: ok to catch fatal exceptions here since they are rethrown
             case t:Throwable =>
               reportFailure(t)
               throw t
@@ -237,7 +239,9 @@ case class ScheduledExecutionContextImpl(
     new CancellableScheduledDelayedFutureImpl(
       task = { () => task },
       fallback = fallback,
-      delay = delay,
+      delay = delay
+    )(
+      executionContext = executionContext,
       scheduledExecutorService = delegate
     )
   }

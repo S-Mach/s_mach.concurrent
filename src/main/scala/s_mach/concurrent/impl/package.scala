@@ -20,4 +20,11 @@ package s_mach.concurrent
 
 package object impl {
   type TaskStepId = Int
+
+  implicit class PimpMyOption[A](val self: Option[A]) extends AnyVal {
+    def getOrDie(message: String) : A =
+      self.getOrElse(throw new RuntimeException(message))
+    def getOrDie(t: Throwable) : A =
+      self.getOrElse(throw t)
+  }
 }
