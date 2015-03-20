@@ -87,6 +87,26 @@ val future : Future[List[Int]] =
     // If the task fails, get the full list of exceptions (unlike Future.sequence)
 ----
 
+Save your async task config for later reuse:
+
+----
+val myAsyncConfig =
+  async
+    .par(2) // run 2 ops at a time
+    .progress(1.second)(progress => println(progress)) // print progress once a second
+    .retry { // retry some errors with a random delay
+      case _:TimeoutException =>
+        Future.delayed(Random.nextInt(100).millis)(true)
+      case _ => false.future
+    }
+
+// Reuse config on tuple-based async task
+async.using(myAsyncConfig).run("1","2","3")
+
+// Reuse config on collection-based async task
+List("1","2","3").async.using(myAsyncConfig).map(read)
+----
+
 Also, many, many convenience and utility methods:
 
 * +A.future+ - Stop typing Future.successful(A)
@@ -102,7 +122,7 @@ Also, many, many convenience and utility methods:
 * +Future.delayed+ - start a Future after a delay
 * +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay and optionally cancel the future if it
 hasn't started yet. If cancelled, the future returns a value you specify!
-* +ScheduledExecutionContext.scheduleAtFixedRate+ - create a repeating task that can paused or cancelled
+* +ScheduledExecutionContext.scheduleAtFixedRate+ - create a repeating task that can be paused or cancelled
 
 == Overview
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
