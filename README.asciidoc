@@ -13,13 +13,13 @@ http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 == Why do I need this?
 You love Scala Futures! But...
 
-* No methods for controlling how multiple Futures execute (no retry, no throttle, no parallel control)
-* Lots of boilerplate needed to create multiple futures that run in parallel
-* Future.sequence only returns the first exception (and throws away the rest! you didn't want those anyways right?)
-* Future.sequence doesn't fail immediately (a quick failure on an hour long Future.sequence might not return the failure for an hour!)
-* Missing many common operations such as fold, flatten, etc
-* No scheduling operations such as delayed futures or periodically repeating tasks
-* Waiting on Futures requires unnecessary cruft (Await.result ... very common in testing code!)
+* Wish there were methods for controlling how multiple Futures execute (no retry, no throttle, no parallel control)
+* Hate all of the boilerplate needed to create multiple futures that run in parallel
+* Didn't realize Future.sequence only returns the first exception (and throws away the rest! you didn't want those anyways right?)
+* Didn't realize Future.sequence doesn't fail immediately (a quick failure on an hour long Future.sequence might not return the failure for an hour!)
+* Wish Future had common idioms such as fold, flatten, etc
+* Annoyed that you have to use Java's ScheduledExecutorService for delayed or periodically repeating tasks (or an ActorSystem)
+* Tired of being punished for waiting on Futures with unnecessary ritual cruft (Await.result ... very common in testing code!)
 
 == Quick look
 Express parallel Future operations in far less lines of code:
