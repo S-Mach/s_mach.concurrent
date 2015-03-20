@@ -19,8 +19,8 @@ You love Scala Futures! But you...
 * Didn't realize Future.sequence doesn't fail immediately (a quick failure on an hour long Future.sequence might not return the failure for an hour!)
 * Wish Future had common idioms such as fold, flatten, etc
 * Are annoyed that you have to use Java's ScheduledExecutorService for delayed or periodically repeating tasks (or even worse - an ActorSystem)
-* Are a grown up async coder and tired (so tired) of being punished for waiting on Futures with unnecessary ritual cruft
-(Await.result ... very common in testing code!)
+* Are a grown up async coder now and tired (so tired) of being punished for waiting on Futures with unnecessary ritual
+cruft (Await.result ... very common in testing code!)
 
 == Quick look
 Express parallel Future operations in far less lines of code:
