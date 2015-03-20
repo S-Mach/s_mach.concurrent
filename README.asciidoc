@@ -11,7 +11,7 @@ https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
 == Why do I need this?
-You love Scala Futures! But you...
+You love Scala Futures and functional concurrent coding! But you...
 
 * Wish there were methods for controlling how multiple Futures execute (such as retrying failures, throttling or controlling parallelism)
 * Hate all the boilerplate needed to create multiple futures that run in parallel
