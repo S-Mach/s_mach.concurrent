@@ -56,7 +56,7 @@ async // start a new async task
   ) // sequence results and fail-immediately on exception (unlike Future.sequence)
 
 // Collection-based async task (homogeneous)
-val future : Future[List[String]] =
+val future : Future[List[Int]] =
   List("1","2","3")
     .async // start a new async task
     .throttle(3.second) // perform operations no faster than 1 every 3 seconds
