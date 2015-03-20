@@ -94,14 +94,14 @@ Also, many, many convenience and utility methods:
 * +Future.flatten+ - Convert Future[Future[A]] into Future[A]
 * +Future.toTry+ - Convert Future[A] to Future[Try[A]] that always succeeds
 * +Future.fold+ - fold Future[A] (which is either Success[A] or Failure[A]) to Future[B] that always succeeds
-* +Collection.sequence+ - Future.sequence(A) with less typing
+* +Collection[Future[A]].sequence+ - Future.sequence(A) with less typing
 * +Future.onTimeout+ - do something if a Future doesn't complete within a given amount of time
 * +Future.happensBefore+ - start a Future after another Future completes
 * +Future.sideEffect+ - do something after a Future completes. Doesn't change the return type but only completes once
  the side effect completes. Also, fails the Future if the side effect fails
 * +Future.delayed+ - start a Future after a delay
-* +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay and cancel the future if it hasn't
-started yet. If cancelled, the future returns a value you specify!
+* +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay and optionally cancel the future if it
+hasn't started yet. If cancelled, the future returns a value you specify!
 * +ScheduledExecutionContext.scheduleAtFixedRate+ - create a repeating task that can paused or cancelled
 
 == Overview
