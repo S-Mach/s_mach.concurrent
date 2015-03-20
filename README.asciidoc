@@ -36,10 +36,11 @@ val future : Future[(Int,Int,Int)] =
 Create configurable async tasks and retry errors, throttle and parallel operation controls:
 [source,scala,numbered]
 ----
-// Tuple-based async task (heterogeneous)
 val read : String => Future[Int] = ???
 val read2 : Int => Future[Double] = ???
 val read3 : Double => Future[String] = ???
+
+// Tuple-based async task (heterogeneous)
 val future : Future[(Int,Double,String)] =
   async // start a new async task
     .par(2) // run 2 ops at a time
@@ -68,7 +69,7 @@ val future : Future[List[Int]] =
     .map(read) // sequence results and fail-immediately on exception (unlike Future.sequence)
 ----
 
-Also, many convenience methods (e.g. Future.get, Future.toTry and Future.fold)
+Also, many, many convenience methods (e.g. Future.get, Future.toTry and Future.fold)
 
 == Overview
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
