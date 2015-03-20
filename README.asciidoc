@@ -33,7 +33,11 @@ val future : Future[(Int,Int,Int)] =
 
 ----
 
-Create configurable async tasks and retry errors, throttle and parallel operation controls:
+Create async tasks and configure them to:
+* Retry errors
+* Control the number of parallel operations
+* Limit the number of operations per second
+
 [source,scala,numbered]
 ----
 val read : String => Future[Int] = ???
