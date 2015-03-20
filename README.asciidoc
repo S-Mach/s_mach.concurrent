@@ -11,7 +11,8 @@ https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
 == Why?
-Scala Futures are awesome! But:
+Scala Futures are awesome! But...
+
 * Lots of boiler plate needed to create parallel futures
 * Future.sequence doesn't always fail immediately
 * Future.sequence only returns the first exception (and throws away the rest!)
