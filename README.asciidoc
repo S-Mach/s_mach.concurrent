@@ -14,14 +14,15 @@ http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 Scala Futures are awesome! But...
 
 * Lots of boiler plate needed to create parallel futures
-* Future.sequence doesn't always fail immediately
+* Future.sequence doesn't always fail immediately (a quick failure of a single Future might have to wait for all other Futures to complete before failing the output Future!)
 * Future.sequence only returns the first exception (and throws away the rest!)
-* Waiting on Futures requires unnecessary cruft (very common in testing code!)
+* Waiting on Futures requires unnecessary cruft (Await.result ... very common in testing code!)
 * Missing many common operations such as fold, flatten, etc
-* Missing common scheduling operations such as delayed futures and periodically repeating tasks
+* No scheduling operations such as delayed futures or periodically repeating tasks
+* No methods for controlling how multiple Futures execute
 
 == Quick look
-Express parallel Future operations in less lines of code:
+Express parallel Future operations in far less lines of code:
 [source,scala,numbered]
 ----
 val read: String => Future[Int] = ???
@@ -92,15 +93,15 @@ Also, many, many convenience and utility methods:
 * +Future.get+ - Await.result without all the typing
 * +Future.flatten+ - Convert Future[Future[A]] into Future[A]
 * +Future.toTry+ - Convert Future[A] to Future[Try[A]] that always succeeds
-* +Future.fold+ - fold Future[A] Success[A]/Failure[A] to Future[B]
-* +Collection.sequence+ - Future.sequence with less typing
+* +Future.fold+ - fold Future[A] (which is either Success[A] or Failure[A]) to Future[B] that always succeeds
+* +Collection.sequence+ - Future.sequence(A) with less typing
 * +Future.onTimeout+ - do something if a Future doesn't complete within a given amount of time
 * +Future.happensBefore+ - start a Future after another Future completes
-* +Future.sideEffect+ - do something after a Future completes. Don't change the return type but fail the Future if the
-side effect fails
+* +Future.sideEffect+ - do something after a Future completes. Doesn't change the return type but only completes once
+ the side effect completes. Also, fails the Future if the side effect fails
 * +Future.delayed+ - start a Future after a delay
 * +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay that can be cancelled
-* +ScheduledExecutionContext.scheduleAtFixed+ - create a repeating task
+* +ScheduledExecutionContext.scheduleAtFixed+ - create a repeating task that can paused or cancelled
 
 == Overview
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
