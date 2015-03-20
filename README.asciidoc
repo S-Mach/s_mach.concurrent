@@ -12,7 +12,7 @@ https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
 == Quick look
-Turn this:
+Express parallel Future operations in less lines of code:
 [source,scala,numbered]
 ----
 val read: String => Future[Int] = ???
@@ -20,7 +20,7 @@ val read: String => Future[Int] = ???
 val f1 = read("1")
 val f2 = read("2")
 val f3 = read("3")
-val future =
+val future : Future[(Int,Int,Int)] =
   for {
     i1 <- f1
     i2 <- f2
@@ -28,12 +28,13 @@ val future =
   } yield (i1,i2,i3)
 
 // Into this:
-for {
-  (i1,i2,i3) <- async.par.run(read("1"), read("2"), read("3"))
-} yield (i1,i2,i3)
+val future : Future[(Int,Int,Int)] =
+  async.par.run(read("1"), read("2"), read("3"))
+
 ----
 
 Create configurable async tasks with error retry, throttle and parallel operation controls:
+[source,scala,numbered]
 ----
 // Tuple-based async task (heterogeneous)
 val read : String => Future[Int] = ???
