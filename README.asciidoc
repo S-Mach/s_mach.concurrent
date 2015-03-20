@@ -68,6 +68,8 @@ val future : Future[List[Int]] =
     .map(read) // sequence results and fail-immediately on exception (unlike Future.sequence)
 ----
 
+Also, many convenience methods (e.g. Future.get, Future.toTry and Future.fold)
+
 == Overview
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
 serial and parallel execution flow control primitives for working with
