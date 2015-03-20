@@ -11,6 +11,64 @@ https://github.com/S-Mach/s_mach.string[Code]
 https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
+== Quick look
+Turn this:
+[source,scala,numbered]
+----
+val read: String => Future[Int] = ???
+// Turn this:
+val f1 = read("1")
+val f2 = read("2")
+val f3 = read("3")
+val future =
+  for {
+    i1 <- f1
+    i2 <- f2
+    i3 <- f3
+  } yield (i1,i2,i3)
+
+// Into this:
+for {
+  (i1,i2,i3) <- async.par.run(read("1"), read("2"), read("3"))
+} yield (i1,i2,i3)
+----
+
+Create configurable async tasks with error retry, throttle and parallel operation controls:
+----
+// Tuple-based async task (heterogeneous)
+val read : String => Future[Int] = ???
+val read2 : Int => Future[Double] = ???
+val read3 : Double => Future[String] = ???
+val future : Future[(Int,Double,String)] =
+async // start a new async task
+  .par(2) // run 2 ops at a time
+  .progress(1.second)(progress => println(progress)) // print progress
+  .retry { // retry some errors
+    case (_: TimeoutException) :: tail if tail.size < 3 =>
+      Future.delayed(100.millis)(true)
+    case (_: SocketTimeoutException) :: tail if tail.size < 3 =>
+      Future.delayed(100.millis)(true)
+    case _ => false.future
+  }
+  .run(
+    read("1"),
+    read2(2),
+    read3(3.0)
+  ) // sequence results and fail-immediately on exception (unlike Future.sequence)
+
+// Collection-based async task (homogeneous)
+val future : Future[List[String]] =
+  List("1","2","3")
+    .async // start a new async task
+    .par // run one op for each cpu
+    .progress(1.second)(progress => println(progress)) // print progress
+    .retry { // retry some errors
+      // ...
+    }
+    .map(read) // sequence results and fail-immediately on exception (unlike Future.sequence)
+----
+
+== Overview
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
 serial and parallel execution flow control primitives for working with
 asynchronous tasks. An asynchronous task consists of two or more calls to
