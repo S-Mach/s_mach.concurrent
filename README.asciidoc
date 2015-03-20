@@ -4,7 +4,12 @@ v3,14-Dec-2014
 :blogpost-status: unpublished
 :blogpost-categories: s_mach, scala
 
-image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]  image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"] https://github.com/S-Mach/s_mach.concurrent[Code] http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
+image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]
+image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"]
+image:https://www.codacy.com/project/badge/55521e6da2f045b89ad6f435acc56cb7[Codacy Badge,link="https://www.codacy.com/public/lancegatlin/s_mach.concurrent"]
+https://github.com/S-Mach/s_mach.string[Code]
+https://github.com/S-Mach/s_mach.concurrent[Code]
+http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
 serial and parallel execution flow control primitives for working with
