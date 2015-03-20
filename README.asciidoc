@@ -113,7 +113,7 @@ val myAsyncConfig =
     }
 
 // Reuse config on tuple-based async task
-async.using(myAsyncConfig).run("1","2","3")
+myAsyncConfig.run("1","2","3")
 
 // Reuse config on collection-based async task
 List("1","2","3").async.using(myAsyncConfig).map(read)
@@ -121,17 +121,17 @@ List("1","2","3").async.using(myAsyncConfig).map(read)
 
 Also, many, many convenience and utility methods:
 
-* +A.future+ - Stop typing Future.successful(A)
-* +Future.get+ - Await.result without all the typing
-* +Future.flatten+ - Convert Future[Future[A]] into Future[A]
-* +Future.toTry+ - Convert Future[A] to Future[Try[A]] that always succeeds
+* +A.future+ - stop typing Future.successful(A)
+* +Future.get+ - Await.result without the flagellation
+* +Future.flatten+ - flatten Future[Future[A]] into Future[A]
+* +Future.toTry+ - expand Future[A] to Future[Try[A]] that always succeeds
 * +Future.fold+ - fold Future[A] (which is either Success[A] or Failure[A]) to Future[B] that always succeeds
-* +Collection[Future[A]].sequence+ - Future.sequence(A) with less typing
+* +Collection[Future[A]].sequence+ - idiomatic version of Future.sequence(A) and less typing
 * +Future.onTimeout+ - do something if a Future doesn't complete within a given amount of time
 * +Future.happensBefore+ - start a Future after another Future completes
-* +Future.sideEffect+ - do something after a Future completes. Doesn't change the return type but only completes once
- the side effect completes. Also, fails the Future if the side effect fails
-* +Future.delayed+ - start a Future after a delay
+* +Future.sideEffect+ - do something after a Future completes. Completes successfully after both original Future and
+side effect finish. Fails if either original Future or sideEffect fail.
+* +Future.delayed+ or +ScheduledExecutionContext.schedule+ - start a Future after a delay
 * +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay and optionally cancel the future if it
 hasn't started yet. If cancelled, the future returns a value you specify!
 * +ScheduledExecutionContext.scheduleAtFixedRate+ - create a repeating task that can be paused or cancelled
