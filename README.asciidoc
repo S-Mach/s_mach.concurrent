@@ -60,6 +60,7 @@ val future : Future[(Int,Double,String)] =
       read2(2),
       read3(3.0)
     ) // sequence results and fail-immediately on exception (unlike Future.sequence)
+    // If the task fails, get the full list of exceptions (unlike Future.sequence)
 
 // Collection-based async task (homogeneous)
 val future : Future[List[Int]] =
@@ -72,6 +73,7 @@ val future : Future[List[Int]] =
       case _ => false.future
     }
     .map(read) // sequence results and fail-immediately on exception (unlike Future.sequence)
+    // If the task fails, get the full list of exceptions (unlike Future.sequence)
 ----
 
 Also, many, many convenience methods (e.g. Future.get, Future.toTry and Future.fold)
