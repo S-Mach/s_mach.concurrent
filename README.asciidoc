@@ -10,13 +10,22 @@ image:https://www.codacy.com/project/badge/55521e6da2f045b89ad6f435acc56cb7[Coda
 https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
+== Why?
+Scala Futures are awesome! But:
+* Lots of boiler plate needed to create parallel futures
+* Future.sequence doesn't always fail immediately
+* Future.sequence only returns the first exception (and throws away the rest!)
+* Waiting on Futures requires unnecessary cruft (very common in testing code!)
+* Missing many common operations such as fold, flatten, etc
+* Missing common scheduling operations such as delayed futures and periodically repeating tasks
+
 == Quick look
 Express parallel Future operations in less lines of code:
 [source,scala,numbered]
 ----
 val read: String => Future[Int] = ???
 
-// Turn this:
+// Turn this parallel future boilerplate:
 val f1 = read("1")
 val f2 = read("2")
 val f3 = read("3")
@@ -36,7 +45,7 @@ val future : Future[(Int,Int,Int)] =
 Create async tasks and configure them to:
 
 * Retry errors
-* Control the number of parallel operations
+* Control the number of simultaneous operations
 * Limit the number of operations per second
 
 [source,scala,numbered]
@@ -49,7 +58,7 @@ val read3 : Double => Future[String] = ???
 val future : Future[(Int,Double,String)] =
   async // start a new async task
     .par(2) // run 2 ops at a time
-    .progress(1.second)(progress => println(progress)) // print progress
+    .progress(1.second)(progress => println(progress)) // print progress once a second
     .retry { // retry some errors with a random delay
       case _:TimeoutException =>
         Future.delayed(Random.nextInt(100).millis)(true)
@@ -76,7 +85,21 @@ val future : Future[List[Int]] =
     // If the task fails, get the full list of exceptions (unlike Future.sequence)
 ----
 
-Also, many, many convenience methods (e.g. Future.get, Future.toTry and Future.fold)
+Also, many, many convenience and utility methods:
+
+* +A.future+ - Stop typing Future.successful(A)
+* +Future.get+ - Await.result without all the typing
+* +Future.flatten+ - Convert Future[Future[A]] into Future[A]
+* +Future.toTry+ - Convert Future[A] to Future[Try[A]] that always succeeds
+* +Future.fold+ - fold Future[A] Success[A]/Failure[A] to Future[B]
+* +Collection.sequence+ - Future.sequence with less typing
+* +Future.onTimeout+ - do something if a Future doesn't complete within a given amount of time
+* +Future.happensBefore+ - start a Future after another Future completes
+* +Future.sideEffect+ - do something after a Future completes. Don't change the return type but fail the Future if the
+side effect fails
+* +Future.delayed+ - start a Future after a delay
+* +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay that can be cancelled
+* +ScheduledExecutionContext.scheduleAtFixed+ - create a repeating task
 
 == Overview
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
