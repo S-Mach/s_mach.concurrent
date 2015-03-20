@@ -10,6 +10,16 @@ image:https://www.codacy.com/project/badge/55521e6da2f045b89ad6f435acc56cb7[Coda
 https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
+== Include in SBT
+1. Add to +build.sbt+
++
+[source,sbt,numbered]
+----
+libraryDependencies += "net.s_mach" %% "concurrent" % "1.1.0"
+----
+NOTE: +s_mach.concurrent+ is currently only compiled for Scala 2.11 (though 2.10.4
+support can be added if there is interest)
+
 == Why do I need this?
 You love Scala Futures and functional concurrent coding! But you...
 
@@ -161,16 +171,6 @@ delayed and periodic tasks
 and +Future.happensBefore+
 * Provides convenience methods for writing more readable, concise and DRY
 code such as +Future.get+, +Future.toTry+ and +Future.fold+
-
-== Include in SBT
-1. Add to +build.sbt+
-+
-[source,sbt,numbered]
-----
-libraryDependencies += "net.s_mach" %% "concurrent" % "1.1.0"
-----
-NOTE: +s_mach.concurrent+ is currently only compiled for Scala 2.11 (though 2.10.4
-support can be added if there is interest)
 
 == Versioning
 +s_mach.concurrent+ uses semantic versioning (http://semver.org/).
