@@ -41,19 +41,19 @@ val read : String => Future[Int] = ???
 val read2 : Int => Future[Double] = ???
 val read3 : Double => Future[String] = ???
 val future : Future[(Int,Double,String)] =
-async // start a new async task
-  .par(2) // run 2 ops at a time
-  .progress(1.second)(progress => println(progress)) // print progress
-  .retry { // retry some errors with a random delay
-    case _:TimeoutException =>
-      Future.delayed(Random.nextInt(100).millis)(true)
-    case _ => false.future
-  }
-  .run(
-    read("1"),
-    read2(2),
-    read3(3.0)
-  ) // sequence results and fail-immediately on exception (unlike Future.sequence)
+  async // start a new async task
+    .par(2) // run 2 ops at a time
+    .progress(1.second)(progress => println(progress)) // print progress
+    .retry { // retry some errors with a random delay
+      case _:TimeoutException =>
+        Future.delayed(Random.nextInt(100).millis)(true)
+      case _ => false.future
+    }
+    .run(
+      read("1"),
+      read2(2),
+      read3(3.0)
+    ) // sequence results and fail-immediately on exception (unlike Future.sequence)
 
 // Collection-based async task (homogeneous)
 val future : Future[List[Int]] =
