@@ -90,6 +90,7 @@ val future : Future[List[Int]] =
 
 Save your async task config for later reuse:
 
+[source,scala,numbered]
 ----
 val myAsyncConfig =
   async
