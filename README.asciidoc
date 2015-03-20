@@ -10,16 +10,16 @@ image:https://www.codacy.com/project/badge/55521e6da2f045b89ad6f435acc56cb7[Coda
 https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
-== Why?
-Scala Futures are awesome! But...
+== Why do I need this?
+You love Scala Futures! But...
 
-* Lots of boiler plate needed to create parallel futures
-* Future.sequence doesn't always fail immediately (a quick failure of a single Future might have to wait for all other Futures to complete before failing the output Future!)
-* Future.sequence only returns the first exception (and throws away the rest!)
-* Waiting on Futures requires unnecessary cruft (Await.result ... very common in testing code!)
+* No methods for controlling how multiple Futures execute (no retry, no throttle, no parallel control)
+* Lots of boilerplate needed to create multiple futures that run in parallel
+* Future.sequence only returns the first exception (and throws away the rest! you didn't want those anyways right?)
+* Future.sequence doesn't fail immediately (a quick failure on an hour long Future.sequence might not return the failure for an hour!)
 * Missing many common operations such as fold, flatten, etc
 * No scheduling operations such as delayed futures or periodically repeating tasks
-* No methods for controlling how multiple Futures execute
+* Waiting on Futures requires unnecessary cruft (Await.result ... very common in testing code!)
 
 == Quick look
 Express parallel Future operations in far less lines of code:
@@ -100,8 +100,9 @@ Also, many, many convenience and utility methods:
 * +Future.sideEffect+ - do something after a Future completes. Doesn't change the return type but only completes once
  the side effect completes. Also, fails the Future if the side effect fails
 * +Future.delayed+ - start a Future after a delay
-* +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay that can be cancelled
-* +ScheduledExecutionContext.scheduleAtFixed+ - create a repeating task that can paused or cancelled
+* +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay and cancel the future if it hasn't
+started yet. If cancelled, the future returns a value you specify!
+* +ScheduledExecutionContext.scheduleAtFixedRate+ - create a repeating task that can paused or cancelled
 
 == Overview
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
