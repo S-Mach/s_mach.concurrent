@@ -11,10 +11,10 @@ https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
 == Why do I need this?
-You love Scala Futures! But...
+You love Scala Futures! But you...
 
-* Wish there were methods for controlling how multiple Futures execute (no retry, no throttle, no parallel control)
-* Hate all of the boilerplate needed to create multiple futures that run in parallel
+* Wish there were methods for controlling how multiple Futures execute (such as retrying failures, throttling or controlling parallelism)
+* Hate all the boilerplate needed to create multiple futures that run in parallel
 * Didn't realize Future.sequence only returns the first exception (and throws away the rest! you didn't want those anyways right?)
 * Didn't realize Future.sequence doesn't fail immediately (a quick failure on an hour long Future.sequence might not return the failure for an hour!)
 * Wish Future had common idioms such as fold, flatten, etc
