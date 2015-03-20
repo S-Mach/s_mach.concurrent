@@ -33,7 +33,7 @@ val future : Future[(Int,Int,Int)] =
 
 ----
 
-Create configurable async tasks with error retry, throttle and parallel operation controls:
+Create configurable async tasks and retry errors, throttle and parallel operation controls:
 [source,scala,numbered]
 ----
 // Tuple-based async task (heterogeneous)
@@ -44,11 +44,9 @@ val future : Future[(Int,Double,String)] =
 async // start a new async task
   .par(2) // run 2 ops at a time
   .progress(1.second)(progress => println(progress)) // print progress
-  .retry { // retry some errors
-    case (_: TimeoutException) :: tail if tail.size < 3 =>
-      Future.delayed(100.millis)(true)
-    case (_: SocketTimeoutException) :: tail if tail.size < 3 =>
-      Future.delayed(100.millis)(true)
+  .retry { // retry some errors with a random delay
+    case _:TimeoutException =>
+      Future.delayed(Random.nextInt(100).millis)(true)
     case _ => false.future
   }
   .run(
@@ -61,10 +59,11 @@ async // start a new async task
 val future : Future[List[String]] =
   List("1","2","3")
     .async // start a new async task
-    .par // run one op for each cpu
-    .progress(1.second)(progress => println(progress)) // print progress
-    .retry { // retry some errors
-      // ...
+    .throttle(3.second) // perform operations no faster than 1 every 3 seconds
+    .retry { // retry some errors with a random delay
+      case _:TimeoutException =>
+        Future.delayed(Random.nextInt(100).millis)(true)
+      case _ => false.future
     }
     .map(read) // sequence results and fail-immediately on exception (unlike Future.sequence)
 ----
