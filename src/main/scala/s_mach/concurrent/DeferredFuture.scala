@@ -26,7 +26,7 @@ import s_mach.concurrent.impl.DeferredFutureImpl
  * occurs. DeferredFuture completes once the start condition occurs and the
  * deferred future completes.
  */
-trait DeferredFuture[A] extends Future[A] {
+trait DeferredFuture[+A] extends Future[A] {
   /** @return a future that completes once the start condition occurs. The
    * future contains the deferred future (which is now running) */
   def deferred : Future[Future[A]]
