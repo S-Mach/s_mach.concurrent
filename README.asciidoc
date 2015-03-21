@@ -7,10 +7,138 @@ v3,14-Dec-2014
 image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]
 image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"]
 image:https://www.codacy.com/project/badge/55521e6da2f045b89ad6f435acc56cb7[Codacy Badge,link="https://www.codacy.com/public/lancegatlin/s_mach.concurrent"]
-https://github.com/S-Mach/s_mach.string[Code]
 https://github.com/S-Mach/s_mach.concurrent[Code]
 http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 
+== Include in SBT
+1. Add to +build.sbt+
++
+[source,sbt,numbered]
+----
+libraryDependencies += "net.s_mach" %% "concurrent" % "1.1.0"
+----
+NOTE: +s_mach.concurrent+ is currently only compiled for Scala 2.11 (though 2.10.4
+support can be added if there is interest)
+
+== Why do I need this?
+You love Scala Futures and functional concurrent coding! But you...
+
+* Wish there were methods for controlling how multiple Futures execute (such as retrying failures, throttling or controlling parallelism)
+* Hate all the boilerplate needed to create multiple futures that run in parallel
+* Didn't realize Future.sequence only returns the first exception (and throws away the rest! you didn't want those anyways right?)
+* Didn't realize Future.sequence doesn't fail immediately (a quick failure on an hour long Future.sequence might not return the failure for an hour!)
+* Wish Future had common idioms such as fold, flatten, etc
+* Are annoyed that you have to use Java's ScheduledExecutorService for delayed or periodically repeating tasks (or even worse - an ActorSystem)
+* Are a grown up async coder now and tired (so tired) of being punished for waiting on Futures with unnecessary ritual
+cruft (Await.result ... very common in testing code!)
+
+== Quick look
+Express parallel Future operations in far less lines of code:
+[source,scala,numbered]
+----
+val read: String => Future[Int] = ???
+
+// Turn this parallel future boilerplate:
+val f1 = read("1")
+val f2 = read("2")
+val f3 = read("3")
+val future : Future[(Int,Int,Int)] =
+  for {
+    i1 <- f1
+    i2 <- f2
+    i3 <- f3
+  } yield (i1,i2,i3)
+
+// Into this:
+val future : Future[(Int,Int,Int)] =
+  async.par.run(read("1"), read("2"), read("3"))
+
+----
+
+Create async tasks and configure them to:
+
+* Retry errors
+* Control the number of simultaneous operations
+* Limit the number of operations per second
+
+[source,scala,numbered]
+----
+val read : String => Future[Int] = ???
+val read2 : Int => Future[Double] = ???
+val read3 : Double => Future[String] = ???
+
+// Tuple-based async task (heterogeneous)
+val future : Future[(Int,Double,String)] =
+  async // start a new async task
+    .par(2) // run 2 ops at a time
+    .progress(1.second)(progress => println(progress)) // print progress once a second
+    .retry { // retry some errors with a random delay
+      case _:TimeoutException =>
+        Future.delayed(Random.nextInt(100).millis)(true)
+      case _ => false.future
+    }
+    .run(
+      read("1"),
+      read2(2),
+      read3(3.0)
+    ) // sequence results and fail-immediately on exception (unlike Future.sequence)
+    // If the task fails, get the full list of exceptions (unlike Future.sequence)
+
+// Collection-based async task (homogeneous)
+val future : Future[List[Int]] =
+  List("1","2","3")
+    .async // start a new async task
+    .throttle(3.second) // perform operations no faster than 1 every 3 seconds
+    .retry { // retry some errors with a random delay
+      case _:TimeoutException =>
+        Future.delayed(Random.nextInt(100).millis)(true)
+      case _ => false.future
+    }
+    .map(read) // sequence results and fail-immediately on exception (unlike Future.sequence)
+    // If the task fails, get the full list of exceptions (unlike Future.sequence)
+----
+
+Save your async task config for later reuse:
+
+[source,scala,numbered]
+----
+val myAsyncConfig =
+  async
+    .par(2) // run 2 ops at a time
+    .progress(1.second)(progress => println(progress)) // print progress once a second
+    .retry { // retry some errors with a random delay
+      case _:TimeoutException =>
+        Future.delayed(Random.nextInt(100).millis)(true)
+      case _ => false.future
+    }
+
+// Reuse config on tuple-based async task
+myAsyncConfig.run("1","2","3")
+
+// Reuse config on collection-based async task
+List("1","2","3").async.using(myAsyncConfig).map(read)
+----
+
+Also, many, many convenience and utility methods:
+
+* +A.future+ - stop typing Future.successful(A)
+* +Future.get+ - Await.result without the flagellation
+* +Future.flatten+ - flatten Future[Future[A]] into Future[A]
+* +Future.toTry+ - expand Future[A] to Future[Try[A]] that always succeeds
+* +Future.fold+ - fold Future[A] (which is either Success[A] or Failure[A]) to Future[B] that always succeeds
+* +Collection[Future[A]].sequence+ - idiomatic version of Future.sequence(A) and less typing
+* +Future.onTimeout+ - do something if a Future doesn't complete within a given amount of time
+* +Future.happensBefore+ - start a Future after another Future completes
+* +Future.sideEffect+ - compose a Future and a side effect (that starts after the Future completes) into a new Future.
+The new Future completes successfully only after both the original Future and the side effect successfully complete. If
+either the original Future or the side effect fail, the composed Future fails.
+* +Future.delayed+ or +ScheduledExecutionContext.schedule+ - start a Future after a delay
+* +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay and optionally cancel the future if it
+hasn't started yet. If cancelled, instead of throwing an exception the future completes successfully with a value you
+specify!
+* +ScheduledExecutionContext.scheduleAtFixedRate+ - create a repeating task that can be paused or cancelled
+
+== Overview
 +s_mach.concurrent+ is an open-source Scala library that provides asynchronous
 serial and parallel execution flow control primitives for working with
 asynchronous tasks. An asynchronous task consists of two or more calls to
@@ -45,16 +173,6 @@ delayed and periodic tasks
 and +Future.happensBefore+
 * Provides convenience methods for writing more readable, concise and DRY
 code such as +Future.get+, +Future.toTry+ and +Future.fold+
-
-== Include in SBT
-1. Add to +build.sbt+
-+
-[source,sbt,numbered]
-----
-libraryDependencies += "net.s_mach" %% "concurrent" % "1.1.0"
-----
-NOTE: +s_mach.concurrent+ is currently only compiled for Scala 2.11 (though 2.10.4
-support can be added if there is interest)
 
 == Versioning
 +s_mach.concurrent+ uses semantic versioning (http://semver.org/).
