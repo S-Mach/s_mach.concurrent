@@ -129,11 +129,12 @@ Also, many, many convenience and utility methods:
 * +Collection[Future[A]].sequence+ - idiomatic version of Future.sequence(A) and less typing
 * +Future.onTimeout+ - do something if a Future doesn't complete within a given amount of time
 * +Future.happensBefore+ - start a Future after another Future completes
-* +Future.sideEffect+ - do something after a Future completes. Completes successfully after both original Future and
-side effect finish. Fails if either original Future or sideEffect fail.
+* +Future.sideEffect+ - compose a Future and a side effect into a new Future that completes successfully after both
+the original Future and the side effect finish. Fails if either the original Future or the side effect fail.
 * +Future.delayed+ or +ScheduledExecutionContext.schedule+ - start a Future after a delay
 * +ScheduledExecutionContext.scheduleCancellable+ - start a Future after a delay and optionally cancel the future if it
-hasn't started yet. If cancelled, the future returns a value you specify!
+hasn't started yet. If cancelled, instead of throwing an exception the future completes successfully with a value you
+specify!
 * +ScheduledExecutionContext.scheduleAtFixedRate+ - create a repeating task that can be paused or cancelled
 
 == Overview
