@@ -248,5 +248,11 @@ package object concurrent {
     val self:AsyncConfig
   ) extends AnyVal with SMach_Concurrent_AbstractPimpMyAsyncConfig
 
+  implicit class SMach_Concurrent_ExecutionContext(
+    val self:ExecutionContext
+  ) {
+    def wrap(cfg: AsyncConfig) : ExecutionContext =
+
+  }
 }
 
