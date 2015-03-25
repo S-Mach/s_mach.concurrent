@@ -1,4 +1,6 @@
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.6"
+
+crossScalaVersions := Seq("2.10.5", "2.11.6")
 
 organization := "net.s_mach"
 

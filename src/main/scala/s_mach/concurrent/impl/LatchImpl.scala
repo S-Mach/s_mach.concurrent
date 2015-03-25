@@ -21,7 +21,7 @@ package s_mach.concurrent.impl
 import s_mach.concurrent.util.Latch
 
 import scala.concurrent.{ExecutionContext, Future, Promise}
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 import s_mach.concurrent._
 
 class LatchImpl(val failMessage: String) extends Latch {
@@ -40,7 +40,12 @@ class LatchImpl(val failMessage: String) extends Latch {
 
   override def onSet[A](f:  => A)(implicit ec: ExecutionContext) = {
     if(isSet) {
-      Future.fromTry(Try(f))
+      Try(f) match {
+        case Success(a) => Future.successful(a)
+        case Failure(t) => Future.failed(t)
+      }
+      // Can't use this for 2.10 - it wasn't added until 2.11
+      //Future.fromTry(Try(f))
     } else {
       val promiseA = Promise[A]()
       future onSuccess { case _ => promiseA.complete(Try(f)) }

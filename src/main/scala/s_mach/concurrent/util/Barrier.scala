@@ -19,7 +19,7 @@
 package s_mach.concurrent.util
 
 import scala.concurrent._
-import scala.util.Try
+import scala.util.{Success, Failure, Try}
 import s_mach.concurrent._
 
 /**
@@ -52,7 +52,14 @@ object Barrier {
     override def isSet = true
     override def onSet[A](
       f: => A
-    )(implicit ec: ExecutionContext) = Future.fromTry(Try(f))
+    )(implicit ec: ExecutionContext) = {
+      Try(f) match {
+        case Success(a) => Future.successful(a)
+        case Failure(t) => Future.failed(t)
+      }
+      // Can't use this for 2.10 - it wasn't added until 2.11
+//      Future.fromTry(Try(f))
+    }
     override def future = Future.unit
     override def happensBefore[A](
       next: => Future[A]
