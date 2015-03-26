@@ -9,7 +9,7 @@ notifications:
     recipients:
     - lance.gatlin@s-mach.net
 script:
-- sbt coverage test coverageReport -sbt-version 0.13.5 -J-Xms4G -J-Xmx4G
+- sbt ++$TRAVIS_SCALA_VERSION coverage test coverageReport -sbt-version 0.13.5 -J-Xms4G -J-Xmx4G
 after_success:
 - sbt coveralls codacyCoverage -sbt-version 0.13.5
 - >
