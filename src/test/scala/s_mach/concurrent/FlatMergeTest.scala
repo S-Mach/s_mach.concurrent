@@ -133,7 +133,6 @@ class FlatMergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "flatMerge-t3" must "throw AsyncParThrowable which can wait for all failures" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
 
       val result = MergeOps.flatMerge(Vector(fail(1),successN(2),successN(3),fail(4),successN(5),fail(6)))
 

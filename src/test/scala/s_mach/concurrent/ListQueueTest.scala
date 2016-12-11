@@ -28,14 +28,13 @@ import scala.concurrent.duration._
 import util._
 import TestBuilder._
 
-import scala.util.{Success, Try}
+import scala.util.Success
 
 class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
   "ListQueue.poll-t0" must "return a Future that completes once input is available" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
 
       val q = ListQueue[Int]()
       val future = q.poll()
@@ -51,7 +50,6 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "ListQueue.poll-t1" must "return a Future immediately if input is available" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
 
       val q = ListQueue[Int](Vector(1,2,3,4,5,6,7,8,9,10):_*)
       val future = q.poll()
@@ -67,7 +65,6 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "ListQueue.poll(many)-t2" must "return a Future that completes once input is available" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
 
       val q = ListQueue[Int]()
       val future = q.poll(10)
@@ -89,7 +86,7 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "ListQueue.poll(many)-t3" must "return a Future immediately if input is available" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
+
       val q = ListQueue[Int](Vector(1,2,3,4,5,6,7,8,9,10): _*)
       q.offerQueueSize should equal(10)
 

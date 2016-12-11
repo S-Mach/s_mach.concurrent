@@ -39,7 +39,7 @@ trait Sequencer {
   def next : Int
 
   /**
-   * @throws IllegalArgumentException if sequenceNumber is less than next
+   * @throws java.lang.IllegalArgumentException if sequenceNumber is less than next
    * @return a Future that completes once the sequence number has been reached
    *         and the task has completed
    * */

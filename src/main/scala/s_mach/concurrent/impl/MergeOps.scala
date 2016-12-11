@@ -18,11 +18,10 @@
 */
 package s_mach.concurrent.impl
 
-import java.util.concurrent.{ScheduledExecutorService, LinkedBlockingQueue, TimeUnit, ThreadPoolExecutor}
+import java.util.concurrent.{LinkedBlockingQueue, TimeUnit, ThreadPoolExecutor}
 import scala.language.higherKinds
 import scala.collection.generic.CanBuildFrom
 import scala.concurrent._
-import scala.concurrent.duration.Duration
 import scala.util.{Failure, Success}
 import s_mach.concurrent._
 
@@ -88,11 +87,15 @@ trait MergeOps {
         mergeAllFailures(zomFuture.toVector)
       }
       p.tryFailure(AsyncParThrowable(t,futAllFailure))
+      ()
     }
     // Note: using failureExecutionContext here to allow immediately failing the
     // Promise. If ec was used then p.tryFailure wouldn't be executed until
     // after ALL zomFuture had completed since they entered ec's queue first.
-    zomFuture.foreach(_.onFailure(doFail)(MergeOps.failureExecutionContext))
+    zomFuture.foreach(_.onComplete {
+      case Failure(t) => doFail(t)
+      case _ =>
+    }(MergeOps.failureExecutionContext))
   }
 
   /**
@@ -116,7 +119,7 @@ trait MergeOps {
     // first Future - only path for failure is mergeFailImmediately otherwise
     // non-AsyncParThrowable can leak
     Future.sequence(zomFuture)(scala.collection.breakOut(cbf1), ec)
-      .onSuccess { case v => promise.success(v) }
+      .foreach { v => promise.success(v) }
     promise.future
   }
 
@@ -144,7 +147,7 @@ trait MergeOps {
         builder <- fbuilder
         zomA <- fZomA
       } yield builder ++= zomA
-    } onSuccess { case builder => promise.success(builder.result()) }
+    } foreach { builder => promise.success(builder.result()) }
 
     promise.future
   }

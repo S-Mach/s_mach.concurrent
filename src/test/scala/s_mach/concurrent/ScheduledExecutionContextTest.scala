@@ -36,7 +36,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       ctc.waitForActiveExecutionCount(0)
 
       result.get should equal(1)
-      sched.startEvents(0).elapsed_ns - sched.startEvents(1).elapsed_ns should be >= DELAY_NS
+      sched.startEvents(1).elapsed_ns - sched.startEvents(0).elapsed_ns should be >= DELAY_NS
     }
   }
 
@@ -53,7 +53,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       result.isCancelled should equal(false)
       result.canCancel should equal(false)
       result.cancel() should equal(false)
-      sched.startEvents(0).elapsed_ns - sched.startEvents(1).elapsed_ns should be >= DELAY_NS
+      sched.startEvents(1).elapsed_ns - sched.startEvents(0).elapsed_ns should be >= DELAY_NS
     }
   }
 
@@ -135,14 +135,15 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
 
     sched.startEvents.size should equal(TEST_COUNT)
 
-    val events = sched.orderedEvents
-    (0 until TEST_COUNT - 1) map { i =>
-      val e1 = events(i)
-      val e2 = events(i+1)
-      val actualPeriod_ns = e2.elapsed_ns - e1.elapsed_ns
-      // TODO: this test fails miserably
-//      actualPeriod_ns should be >= DELAY_NS
-    }
+    // TODO: this test fails miserably
+//    val events = sched.orderedEvents
+//    (0 until TEST_COUNT - 1) map { i =>
+//      val e1 = events(i)
+//      val e2 = events(i+1)
+//      val actualPeriod_ns = e2.elapsed_ns - e1.elapsed_ns
+//
+////      actualPeriod_ns should be >= DELAY_NS
+//    }
   }
 
   s"ScheduledExecutionContext.scheduleAtFixedRate" must "return a paused PeriodicTask when requested and resume" in {

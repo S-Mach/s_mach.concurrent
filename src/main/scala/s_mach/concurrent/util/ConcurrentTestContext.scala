@@ -49,7 +49,7 @@ trait ConcurrentTestContext extends
 
   /** Sleep until the active execution count is equal to or less than the
     * specified value */
-  def waitForActiveExecutionCount(_activeRunnableCount: Int) {
+  def waitForActiveExecutionCount(_activeRunnableCount: Int) : Unit = {
     while(this.activeExecutionCount > _activeRunnableCount) {
       Thread.sleep(1)
     }

@@ -28,7 +28,7 @@ class LatchImpl(val failMessage: String) extends Latch {
   private[this] val promise = Promise[Unit]()
   val future = promise.future
 
-  override def set() {
+  override def set() : Unit = {
     if(promise.trySuccess(()) == false) {
       throw new IllegalStateException(failMessage)
     }
@@ -48,7 +48,7 @@ class LatchImpl(val failMessage: String) extends Latch {
       //Future.fromTry(Try(f))
     } else {
       val promiseA = Promise[A]()
-      future onSuccess { case _ => promiseA.complete(Try(f)) }
+      future.foreach { _ => promiseA.complete(Try(f)) }
       promiseA.future
     }
   }

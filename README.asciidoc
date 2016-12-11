@@ -15,10 +15,9 @@ http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
 +
 [source,sbt,numbered]
 ----
-libraryDependencies += "net.s_mach" %% "concurrent" % "1.1.0"
+libraryDependencies += "net.s_mach" %% "concurrent" % "2.0.0"
 ----
-NOTE: +s_mach.concurrent+ is currently only compiled for Scala 2.11 (though 2.10.4
-support can be added if there is interest)
+NOTE: +s_mach.concurrent+ is cross compiled for Scala 2.11/JDK6 and 2.12/JDK8
 
 == Why do I need this?
 You love Scala Futures and functional concurrent coding! But you...

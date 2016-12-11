@@ -18,10 +18,7 @@
 */
 package s_mach.concurrent
 
-import java.util.concurrent.Executors
-
 import org.scalatest.exceptions.TestFailedException
-import s_mach.concurrent.util.ConcurrentTestContext
 
 import scala.util.{Try, Failure}
 

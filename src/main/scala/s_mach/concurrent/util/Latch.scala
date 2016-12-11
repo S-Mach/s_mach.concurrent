@@ -27,7 +27,7 @@ import s_mach.concurrent.impl.LatchImpl
 trait Latch extends Barrier {
   /**
     * Set the latch
-    * @throws IllegalArgumentException if latch has already been set
+    * @throws java.lang.IllegalArgumentException if latch has already been set
     * */
   def set() : Unit
 

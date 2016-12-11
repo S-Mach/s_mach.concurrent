@@ -18,7 +18,6 @@
 */
 package s_mach.concurrent.impl
 
-import scala.language.existentials
 import java.util.concurrent.{ScheduledFuture, TimeUnit, ScheduledExecutorService}
 import scala.concurrent.{Future, Promise, ExecutionContext}
 import scala.concurrent.duration._
@@ -47,6 +46,7 @@ object ScheduledExecutionContextImpl {
             // Signal that the future has started
             deferredPromise.success(delegate)
             delegatePromise.complete(Try(task()))
+            ()
           }
         },
         delay_ns,
@@ -132,6 +132,7 @@ object ScheduledExecutionContextImpl {
           try {
             task()
             _nextEvent_ns.getAndSet(System.nanoTime() + period_ns)
+            ()
           } catch {
             case t:Throwable =>
               reportFailure(t)
@@ -164,6 +165,7 @@ object ScheduledExecutionContextImpl {
           onTransition = {
             case (r:RunningImpl,p:Paused) =>
               r.javaScheduledFuture.cancel(false)
+              ()
           }
         )
       }
@@ -181,7 +183,9 @@ object ScheduledExecutionContextImpl {
             case s => (s,false)
           },
           onTransition = {
-            case (p:Paused,r:RunningImpl) => r.start()
+            case (p:Paused,r:RunningImpl) =>
+              r.start()
+              ()
           }
         )
       }

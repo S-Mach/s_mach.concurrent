@@ -133,7 +133,6 @@ class MergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "merge-t3" must "throw AsyncParThrowable which can wait for all failures" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
 
       val result = MergeOps.merge(Vector(fail(1),success(2),success(3),fail(4),success(5),fail(6)))
       val thrown = result.getTry.failed.get.asInstanceOf[AsyncParThrowable]

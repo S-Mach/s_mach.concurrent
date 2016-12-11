@@ -1,18 +1,25 @@
 language: scala
-scala:
-- 2.11.6
-- 2.10.5
-jdk:
-- openjdk6
+# This is a workaround for this issue: https://goo.gl/FexVa7
+addons:
+  hostname: short-hostname
+matrix:
+  include:
+   - scala: 2.12.1
+     env: JDK=oraclejdk8
+   - scala: 2.11.8
+     env: JDK=openjdk6
 notifications:
   email:
     recipients:
     - lance.gatlin@s-mach.net
 script:
-- sbt ++$TRAVIS_SCALA_VERSION coverage test coverageReport -sbt-version 0.13.5 -J-Xms4G -J-Xmx4G
+ # Fix issue where JDK env from matrix above not picked up by travis
+ - jdk_switcher use $JDK
+ - sbt ++$TRAVIS_SCALA_VERSION coverage test coverageReport -J-Xmx4g
 after_success:
-- sbt coveralls codacyCoverage -sbt-version 0.13.5
-- >
+ - sbt coveralls
+ - sbt codacyCoverage
+ - >
       test "${TRAVIS_PULL_REQUEST}" = 'false' &&
       test "${TRAVIS_BRANCH}" == 'master' &&
       test "${TRAVIS_JDK_VERSION}" = 'openjdk6' &&

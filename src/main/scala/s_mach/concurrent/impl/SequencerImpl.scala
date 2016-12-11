@@ -23,6 +23,7 @@ import s_mach.concurrent.DeferredFuture
 import scala.collection.mutable
 import scala.concurrent.{Promise, Future, ExecutionContext}
 import s_mach.concurrent.util.Sequencer
+import s_mach.codetools._
 
 class SequencerImpl(__next: Int) extends Sequencer {
   type Task = () => Unit
@@ -39,7 +40,7 @@ class SequencerImpl(__next: Int) extends Sequencer {
   }
   val polling = mutable.PriorityQueue[(Int, Task)]()(queOrdering)
 
-  def doNext()(implicit ec:ExecutionContext) {
+  def doNext()(implicit ec:ExecutionContext) : Unit = {
     lock.synchronized {
       _next = _next + 1
       if(polling.nonEmpty && _next == polling.head._1) {
@@ -64,7 +65,7 @@ class SequencerImpl(__next: Int) extends Sequencer {
         DeferredFuture.successful(run(task))
       } else {
         val promise = Promise[Future[X]]()
-        polling.enqueue((i, { () => promise.success(run(task)) }))
+        polling.enqueue((i, { () => promise.success(run(task)).discard }))
         DeferredFuture(promise.future)
       }
     }

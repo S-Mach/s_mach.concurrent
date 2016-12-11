@@ -18,15 +18,9 @@
 */
 package s_mach.concurrent
 
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.FlatSpec
 import s_mach.concurrent.util._
-import scala.concurrent.duration._
-
 import org.scalatest.Matchers
-import scala.concurrent.{Promise, Future, ExecutionContext}
-import scala.util.{Failure, Try, Success}
-import s_mach.concurrent._
-import TestBuilder._
 
 class ThrottlerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 

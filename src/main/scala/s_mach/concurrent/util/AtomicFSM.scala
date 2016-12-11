@@ -56,8 +56,8 @@ class AtomicFSM[S](s0: S) extends AtomicReference[S](s0) {
    *                   returns the next state
    * @param onTransition partial function that invokes side effects after a
    *                     successful state transition
-   * @throws IllegalArgumentException if the transition function is undefined
-   *                                  for some state
+   * @throws java.lang.IllegalArgumentException if the transition function is
+   *         undefined for some state
    * @return the new state
    */
   def apply(
@@ -91,8 +91,8 @@ class AtomicFSM[S](s0: S) extends AtomicReference[S](s0) {
    *                   returns the next state and the return value
    * @param onTransition partial function that invokes side effects after a
    *                     successful state transition
-   * @throws IllegalArgumentException if the transition function is undefined
-   *                                  for some state
+   * @throws java.lang.IllegalArgumentException if the transition function is
+   *         undefined for some state
    * @return the value associated with the new state
    */
   def fold[X](

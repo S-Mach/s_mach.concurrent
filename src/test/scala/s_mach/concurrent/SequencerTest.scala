@@ -18,13 +18,9 @@
 */
 package s_mach.concurrent
 
-import scala.concurrent._
-import scala.concurrent.duration._
-
 import org.scalatest.{Matchers, FlatSpec}
 import util._
-import TestBuilder._
-import scala.util.{Random, Failure, Success, Try}
+import scala.util.Random
 
 class SequencerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   import TestBuilder._
@@ -40,7 +36,7 @@ class SequencerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       val items = mkItems
       val builder = Vector.newBuilder[Int]
       // Feed futures to Sequencer in a random order
-      val result = Random.shuffle(items.zipWithIndex).map { case (item,idx) =>
+      Random.shuffle(items.zipWithIndex).map { case (item,idx) =>
         s.when(idx) {
           builder += item
           success(item)

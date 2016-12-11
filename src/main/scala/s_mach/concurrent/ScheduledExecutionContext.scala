@@ -18,7 +18,8 @@
 */
 package s_mach.concurrent
 
-import java.util.concurrent.{ScheduledExecutorService, ThreadFactory, Executors}
+import java.util.concurrent._
+
 import scala.concurrent._
 import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent.impl.ScheduledExecutionContextImpl
@@ -34,8 +35,8 @@ trait ScheduledExecutionContext {
    * @param delay the time from now to delay execution
    * @param f the function to execute
    * @return a DelayedFuture that can be used to extract result
-   * @throws RejectedExecutionException if the task cannot be scheduled for
-   *                                    execution
+   * @throws java.util.concurrent.RejectedExecutionException if the task cannot be
+   *         scheduled for execution
    */
   def schedule[A](delay: FiniteDuration)(f: => A) : DelayedFuture[A]
 
@@ -48,8 +49,8 @@ trait ScheduledExecutionContext {
    * @param f the function to execute
    * @return a DelayedFuture that can be used to extract result or cancel (only
    *         before it has been started)
-   * @throws RejectedExecutionException if the task cannot be scheduled for
-   *         execution
+   * @throws java.util.concurrent.RejectedExecutionException if the task cannot be
+   *         scheduled for execution
    */
   def scheduleCancellable[A](
     delay: FiniteDuration,
@@ -71,9 +72,9 @@ trait ScheduledExecutionContext {
    * @param task the task to execute
    * @param paused TRUE to start the periodic task paused FALSE to start running
    * @return a PeriodicTask
-   * @throws RejectedExecutionException if the task cannot be scheduled for
-   *         execution
-   * @throws IllegalArgumentException if period less than or equal to zero
+   * @throws java.util.concurrent.RejectedExecutionException if the task cannot be
+   *         scheduled for execution
+   * @throws java.lang.IllegalArgumentException if period less than or equal to zero
    */
   def scheduleAtFixedRate[U](
     initialDelay: FiniteDuration,

@@ -19,9 +19,7 @@
 package s_mach.concurrent
 
 import scala.concurrent.Future
-import scala.concurrent.duration._
 import org.scalatest.{Matchers, FlatSpec}
-import util._
 import TestBuilder._
 
 import scala.util.Failure

@@ -24,9 +24,9 @@ import s_mach.concurrent.util.RetryDecider
 case class SimpleRetryDecider(
   f: List[Throwable] => Future[Boolean]
 )(implicit ec:ExecutionContext) extends RetryDecider {
-  val failures = new java.util.concurrent.ConcurrentHashMap[Long, List[Throwable]]
+  val failures = new java.util.concurrent.ConcurrentHashMap[Int, List[Throwable]]
   override def shouldRetry(
-    taskStepId: Long,
+    taskStepId: Int,
     failure: Throwable
   ): Future[Boolean] = {
     // Note: this test/execute is not atomic but this is ok since access to a

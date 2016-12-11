@@ -18,12 +18,9 @@
 */
 package s_mach.concurrent
 
-import java.util.concurrent.Executors
 
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.FlatSpec
 import s_mach.concurrent.util._
-
-import scala.concurrent.duration._
 import org.scalatest.Matchers
 import TestBuilder._
 
@@ -31,9 +28,6 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
   "Lock-lock-t0" must "initially be unlocked" in {
     test repeat TEST_COUNT run {
-      implicit val ctc = mkConcurrentTestContext()
-      import ctc._
-
       val l = Lock()
 
       l.isUnlocked should equal(true)
@@ -60,11 +54,10 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "Lock-lock-t2" must "wait if locked" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
 
       val l = Lock()
       val latch = Latch()
-      val f1 = l.lock { latch happensBefore 1.future }
+      l.lock { latch happensBefore 1.future }
       val f2 = l.lock { 2.future }
       l.isUnlocked should equal(false)
       l.waitQueueLength should equal(1)

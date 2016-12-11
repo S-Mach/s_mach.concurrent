@@ -22,6 +22,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent.{PeriodicTask, ScheduledExecutionContext}
 import s_mach.concurrent.util.{AtomicFSM, Progress, PeriodicProgressReporter}
+import s_mach.codetools._
 
 object PeriodicProgressReporterImpl {
   sealed trait State
@@ -45,7 +46,7 @@ class PeriodicProgressReporterImpl(
 
   val state = new AtomicFSM[State](NotStarted)
 
-  override def onStartTask() = state(
+  override def onStartTask() : Unit = state(
     transition = {
       case NotStarted => Running()
     },
@@ -56,17 +57,18 @@ class PeriodicProgressReporterImpl(
           case p:PeriodicTask.Paused => p.resume()
           case s => throw new IllegalStateException(s"Unexpected state $s")
         }
+        ()
     }
-  )
+  ).discard
 
-  override def onStartStep(sequenceNumber: Int) = { }
-  override def onCompleteStep(sequenceNumber: Int) = state {
+  override def onStartStep(sequenceNumber: Int) : Unit = { }
+  override def onCompleteStep(sequenceNumber: Int) : Unit = state {
     case current:Running =>
       import current._
       copy(totalSoFar = totalSoFar + 1)
-  }
+  }.discard
 
-  override def onCompleteTask() = state(
+  override def onCompleteTask() : Unit = state(
     transition = {
       case current:Running =>
         import current._
@@ -77,7 +79,7 @@ class PeriodicProgressReporterImpl(
         task.cancel()
         report(Progress(finalTotal, optTotal, startTime_ns))
     }
-  )
+  ).discard
 
   val task: PeriodicTask = {
     scheduledExecutionContext.scheduleAtFixedRate(

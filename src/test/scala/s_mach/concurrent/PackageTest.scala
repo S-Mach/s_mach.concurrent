@@ -30,10 +30,10 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "package concurrent" must "provide convenience methods to various implementations" in {
     implicit val ctc = mkConcurrentTestContext()
 
-    1.future shouldBe a[Future[Int]]
+    1.future shouldBe a[Future[_]]
     1.future.get should equal(1)
 
-    Future.unit shouldBe a [Future[Unit]]
+    Future.unit shouldBe a [Future[_]]
     Future.unit.get should equal(())
 
     val latch = Latch()
@@ -82,8 +82,8 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     val ex = new RuntimeException
     val sideEffects = List.newBuilder[String]
 
-    Future.successful(1).sideEffect { sideEffects += "1" }
-    Future.failed(ex).sideEffect { sideEffects += "1" }
+    Future.successful(1).sideEffect { sideEffects += "1"; () }
+    Future.failed(ex).sideEffect { sideEffects += "1"; () }
 
     ctc.waitForActiveExecutionCount(0)
     sideEffects.result() should equal(List("1","1"))
@@ -136,7 +136,7 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     val ctc = mkConcurrentTestContext()
     val failures = List.newBuilder[Throwable]
     implicit val ec = new ExecutionContext {
-      override def reportFailure(cause: Throwable) = failures += cause
+      override def reportFailure(cause: Throwable) = { failures += cause; () }
       override def execute(runnable: Runnable): Unit = ctc.execute(runnable)
     }
     val ex = new RuntimeException
@@ -196,7 +196,6 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
   "firstSuccess(fail)-t2" must "complete with a failure if all futures fail" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
 
       val f1 = Future { throw new RuntimeException("1") }
       val f2 = Future { throw new RuntimeException("2") }

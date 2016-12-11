@@ -33,16 +33,19 @@ import s_mach.concurrent.config.{AsyncConfigBuilder, AsyncConfig}
  * asynchronous tasks. An asynchronous task consists of two or more calls to
  * function(s) that return a future result *<code>A ⇒ Future[B]</code> instead
  * of the result <code>A ⇒ B</code>.</p>
+ *
+ * Note: only difference between 2.11 and 2.12 version is Future.unit is removed
+ * since its now part of std lib
  */
 package object concurrent {
-  
+
   implicit class SMach_Concurrent_PimpEverything[A](
     val self: A
   ) extends AnyVal {
     /** @return a successful Future of self */
     def future = Future.successful(self)
   }
-  
+
   // Note: can't put value class in trait so this code has to be repeated in
   // object Implicits and in package future
   implicit class SMach_Concurrent_PimpMyFutureType(
@@ -52,22 +55,20 @@ package object concurrent {
     def delayed[A](delay: FiniteDuration)(f: => A)(implicit
       scheduledExecutionContext:ScheduledExecutionContext
     ) : DelayedFuture[A] = scheduledExecutionContext.schedule(delay)(f)
-    /** @return a successful future of Unit */
-    def unit : Future[Unit] = FutureOps.unit
   }
-  
+
   implicit class SMach_Concurrent_PimpMyFuture[A](
     val self: Future[A]
   ) extends AnyVal {
     /**
      * @return the result of the Future after it completes (Note: this waits
      * indefinitely for the Future to complete)
-     * @throws if Future completed with a failure, throws the exception
+     * @throws java.lang.Exception Future completed with a failure, throws the exception
      * */
     def get: A = FutureOps.get(self)
     /**
      * @return the result of the Future after it completes
-     * @throws TimeoutException if Future does not complete within max duration
+     * @throws java.util.concurrent.TimeoutException if Future does not complete within max duration
      * */
     def get(max: Duration): A = FutureOps.get(self,max)
     /**
@@ -77,7 +78,8 @@ package object concurrent {
     def getTry: Try[A] = FutureOps.getTry(self)
     /**
      * @return the Try result of the Future after it completes
-     * @throws TimeoutException if Future does not complete within max duration
+     * @throws java.util.concurrent.TimeoutException if Future does not complete
+     *         within max duration
      * */
     def getTry(max: Duration): Try[A] = FutureOps.getTry(self, max)
     /** Run future in the background. Discard the result of this Future but
@@ -138,11 +140,11 @@ package object concurrent {
   ) extends AnyVal {
     /** @return a future that completes once both the outer and inner future
       *         completes */
-    def flatten(implicit ec:ExecutionContext) : Future[A] = 
+    def flatten(implicit ec:ExecutionContext) : Future[A] =
       self.flatMap(v => v)
   }
   implicit class SMach_Concurrent_PimpMyTraversableFuture[
-    A, 
+    A,
     M[+AA] <: Traversable[AA]
   ](
     val self: M[Future[A]]

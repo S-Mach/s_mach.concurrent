@@ -21,10 +21,10 @@ package s_mach.concurrent.impl
 
 import scala.concurrent._
 import scala.concurrent.duration._
-import scala.language.higherKinds
 import scala.util.{Try,Success,Failure}
 import MergeOps._
 import s_mach.concurrent._
+import s_mach.codetools._
 
 object FutureOps extends FutureOps
 trait FutureOps {
@@ -35,7 +35,7 @@ trait FutureOps {
   /**
    * @return the result of the Future after it completes (Note: this waits
    * indefinitely for the Future to complete)
-   * @throws if Future completed with a failure, throws the exception
+   * @throws java.lang.Exception Future completed with a failure, throws the exception
    * */
   @inline def get[A](self: Future[A]): A = {
     Await.result(self, Duration.Inf)
@@ -43,7 +43,7 @@ trait FutureOps {
 
   /**
    * @return the result of the Future after it completes
-   * @throws TimeoutException if Future does not complete within max duration
+   * @throws java.util.concurrent.TimeoutException if Future does not complete within max duration
    * */
   @inline def get[A](self: Future[A], max: Duration): A =
     Await.result(self, max)
@@ -58,7 +58,7 @@ trait FutureOps {
 
   /**
    * @return the Try result of the Future after it completes
-   * @throws TimeoutException if Future does not complete within max duration
+   * @throws java.util.concurrent.TimeoutException if Future does not complete within max duration
    * */
   @inline def getTry[A](self: Future[A], max: Duration): Try[A] = {
     Await.ready(self, max).value.get
@@ -70,7 +70,10 @@ trait FutureOps {
   @inline def background[A](
     self: Future[A]
   )(implicit ec: ExecutionContext) : Unit = {
-    self onFailure { case throwable => ec.reportFailure(throwable) }
+    self onComplete {
+      case Failure(throwable) => ec.reportFailure(throwable)
+      case _ =>
+    }
   }
 
   /** @return a Future of a Try of the result that always completes
@@ -132,10 +135,10 @@ trait FutureOps {
     val promise = Promise[A]()
     // First success completes the promise
     xa.foreach { fa =>
-      fa onSuccess { case a => promise.trySuccess(a) }
+      fa foreach { a => promise.trySuccess(a) }
     }
     // If all futures fail, then complete with AsyncParThrowable
-    mergeAllFailures(xa) onSuccess { case allFailure =>
+    mergeAllFailures(xa) foreach { allFailure =>
       if(allFailure.nonEmpty) {
         promise.tryFailure(
           AsyncParThrowable(
@@ -208,7 +211,7 @@ trait FutureOps {
     // possible for self to complete the returned future even if fallback takes
     // awhile to complete itself
     val promise = Promise[Future[A]]()
-    val futTimeout = sec.scheduleCancellable(timeout, ())(promise.trySuccess(fallback))
+    val futTimeout = sec.scheduleCancellable(timeout, ())(promise.trySuccess(fallback).discard)
     self onComplete {
       case Success(_) =>
         if(promise.trySuccess(self)) {

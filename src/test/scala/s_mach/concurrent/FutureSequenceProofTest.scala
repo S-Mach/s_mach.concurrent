@@ -20,9 +20,11 @@ package s_mach.concurrent
 
 import s_mach.concurrent.TestBuilder._
 
-import scala.util.{Random, Success, Failure}
+import scala.util.Failure
 import org.scalatest.{FlatSpec, Matchers}
 import util._
+
+import scala.concurrent.Future
 
 class FutureSequenceProofTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
@@ -34,7 +36,7 @@ class FutureSequenceProofTest extends FlatSpec with Matchers with ConcurrentTest
       sched.addEvent("start")
       val endLatch = Latch()
 
-      val f2 = fail(2)
+      val f2 : Future[Int] = fail(2)
       // Note1: because the for-comprehension will not proceed from waiting on f1 until it completes, a deadlock
       // will result if the end latch is used here like in the concurrently test above.
       // Note2: because the for-comprehension won't detect the failure until after f1 completes, the success-1 and

@@ -27,7 +27,6 @@ import scala.collection.generic.CanBuildFrom
 import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.util.Random
-import TestBuilder._
 
 object ConcurrentTestCommon {
   // Not going to worry about shutdown since only one is ever created here

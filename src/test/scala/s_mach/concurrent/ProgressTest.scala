@@ -101,7 +101,8 @@ class ProgressTest extends FlatSpec with Matchers with ConcurrentTestCommon {
           val eventId = s"report-${progress.completed}-${progress.optTotal.getOrElse(0)}"
           // Note: same progress may be reported twice
           sched.addEvent(eventId, ignoreIfExist = true)
-          latches(progress.completed.toInt).trySet()
+          latches(progress.completed).trySet()
+          ()
         }
         .foreach { case (_,idx) =>
           latches(idx).future

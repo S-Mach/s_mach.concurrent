@@ -20,10 +20,7 @@ package s_mach.concurrent
 
 import org.scalatest.{Matchers, FlatSpec}
 import s_mach.concurrent.util._
-import scala.concurrent.{Future, ExecutionContext}
 import scala.util.Try
-import scala.concurrent.duration._
-
 
 class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
   import TestBuilder._
@@ -57,11 +54,10 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
   "semaphore-acquire-t2" must "wait if no permits are available" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
 
       val s = Semaphore(10)
       val latch = Latch()
-      val f1 = s.acquire(1) { latch happensBefore 1.future }
+      s.acquire(1) { latch happensBefore 1.future }
       val f2 = s.acquire(10) { 2.future }
       s.availablePermits should equal(0)
       s.waitQueueLength should equal(1)
@@ -99,7 +95,7 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
   "semaphore-acquire-t4" must "throw IllegalArgumentException if more permits are requested than max permits" in {
     test repeat TEST_COUNT run {
       implicit val ctc = mkConcurrentTestContext()
-      import ctc._
+
       val s = Semaphore(10)
       Try(s.acquire(20) { ().future }).failed.get shouldBe a[IllegalArgumentException]
     }
@@ -110,7 +106,7 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
       implicit val ctc = mkConcurrentTestContext()
       import ctc._
       val s = Semaphore(10)
-      var temp = 0l
+      var temp = 0
       s.acquire(5) {
         temp = s.availablePermits
         ().future
@@ -140,10 +136,10 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
       val s = Semaphore(10)
       val latch = Latch()
 
-      val f1 = s.acquire(10) { sched.addStartEvent("1");latch.future }
-      val f2 = s.acquire(8) { sched.addStartEvent("2"); 2.future }
-      val f3 = s.acquire(2) { sched.addStartEvent("3"); 3.future }
-      val f4 = s.acquire(1) { sched.addStartEvent("4");4.future }
+      s.acquire(10) { sched.addStartEvent("1");latch.future }
+      s.acquire(8) { sched.addStartEvent("2"); 2.future }
+      s.acquire(2) { sched.addStartEvent("3"); 3.future }
+      s.acquire(1) { sched.addStartEvent("4");4.future }
 
       latch.set()
 

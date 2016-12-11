@@ -48,8 +48,8 @@ import s_mach.concurrent.impl.SemaphoreImpl
 trait Semaphore {
   /**
    * @param task the task to run once permits are available
-   * @throws IllegalArgumentException if the number of requested permits exceeds
-   *                                  maxAvailablePermits
+   * @throws java.lang.IllegalArgumentException if the number of requested permits
+             exceeds maxAvailablePermits
    * @return a future that completes once permitCount permits are available AND
    *         task completes. task is started once permitCount permits are
    *         available. The permits are removed from the pool while task is
@@ -57,25 +57,25 @@ trait Semaphore {
    *         pool.
    * */
   def acquire[X](
-    permitCount: Long
+    permitCount: Int
   )(
     task: => Future[X]
   )(implicit ec:ExecutionContext) : DeferredFuture[X]
 
   /** @return the maximum number of permits in the pool */
-  def maxAvailablePermits : Long
+  def maxAvailablePermits : Int
   /** @return the current number of permits available  */
-  def availablePermits : Long
+  def availablePermits : Int
   /** @return the count of callers currently waiting on permits to become
     *         available */
-  def waitQueueLength: Long
+  def waitQueueLength: Int
 }
 
 object Semaphore {
   /**
-   * @throws IllegalArgumentException if permitCount is less than 1
+   * @throws java.lang.IllegalArgumentException if permitCount is less than 1
    * @return a semaphore with a fixed size permit pool */
-  def apply(permitCount: Long) : Semaphore = {
+  def apply(permitCount: Int) : Semaphore = {
     require(permitCount >= 1)
 
     new SemaphoreImpl(permitCount) {

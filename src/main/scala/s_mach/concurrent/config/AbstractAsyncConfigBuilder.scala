@@ -18,7 +18,6 @@
 */
 package s_mach.concurrent.config
 
-import scala.language.higherKinds
 import scala.concurrent.ExecutionContext
 import s_mach.concurrent.ScheduledExecutionContext
 import s_mach.concurrent.util._

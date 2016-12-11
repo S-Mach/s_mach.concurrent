@@ -50,7 +50,7 @@ case class Tuple${n}AsyncTaskRunner(asyncConfig: AsyncConfig) extends AbstractAs
             s"$lc <- f$lc"
           }.mkString("\n          ")}
         } yield ($allLcs)
-      future onSuccess { case t => promise.success(t) }
+      future foreach { t => promise.success(t) }
       promise.future
     }.apply()
   }
@@ -65,8 +65,9 @@ s"""package s_mach.concurrent.impl
 /* WARNING: Generated code. To modify see s_mach.concurrent.codegen.TupleAsyncTaskRunnerCodeGen */
 
 import s_mach.concurrent.util.Semaphore
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.{ExecutionContext, Future, Promise}
 import s_mach.concurrent.impl.MergeOps.mergeFailImmediately
+import s_mach.concurrent.config.AsyncConfig
 
 trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
   def self: AsyncConfig
@@ -75,7 +76,7 @@ trait SMach_Concurrent_AbstractPimpMyAsyncConfig extends Any {
     val lcs = ('a' to 'z').map(_.toString).take(n)
     val ucs = ('A' to 'Z').map(_.toString).take(n)
     val allUcs = ucs.mkString(",")
-    val allLcs = lcs.mkString(",")
+//    val allLcs = lcs.mkString(",")
 
 s"""
   def run[$allUcs](

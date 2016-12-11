@@ -18,7 +18,6 @@
 */
 package s_mach.concurrent.impl
 
-import scala.language.higherKinds
 import scala.concurrent.{ExecutionContext, Future}
 
 trait TaskHook {

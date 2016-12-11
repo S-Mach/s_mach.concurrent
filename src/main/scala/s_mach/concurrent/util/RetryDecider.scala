@@ -18,6 +18,8 @@
 */
 package s_mach.concurrent.util
 
+import s_mach.concurrent.impl._
+
 import scala.concurrent.Future
 
 /**
@@ -27,5 +29,5 @@ import scala.concurrent.Future
  * Note: implementations must be thread safe.
  */
 trait RetryDecider {
-  def shouldRetry(sequenceNumber: Long, failure: Throwable) : Future[Boolean]
+  def shouldRetry(sequenceNumber: TaskStepId, failure: Throwable) : Future[Boolean]
 }

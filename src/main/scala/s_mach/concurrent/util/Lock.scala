@@ -50,7 +50,7 @@ trait Lock {
   /** @return TRUE if the lock is available */
   def isUnlocked : Boolean
   /** @return the count of callers waiting on the lock to become available */
-  def waitQueueLength: Long
+  def waitQueueLength: Int
 }
 
 object Lock {

@@ -143,8 +143,8 @@ class SerializationSchedule[ID] {
   def endEvents : Vector[EndEvent[ID]] = _endEvents.values().asScala.toVector
 
   /**
-   * @throws IllegalArgumentException if id1 or id2 doesn't exist OR if id2 is
-   *         not a time-spanning event
+   * @throws java.lang.IllegalArgumentException if id1 or id2 doesn't exist OR
+   *         if id2 is not a time-spanning event
    * @return TRUE if the event id1 happened before event id2
    * */
   def happensBefore(id1: ID, id2: ID) : Boolean = {
@@ -163,8 +163,8 @@ class SerializationSchedule[ID] {
   }
 
   /**
-   * @throws IllegalArgumentException if id1 or id2 doesn't exist OR if id2 is
-   *         not a time-spanning event
+   * @throws java.lang.IllegalArgumentException if id1 or id2 doesn't exist OR
+   *         if id2 is not a time-spanning event
    * @return TRUE if the event id1 happened during time-spanning event id2
    * */
   def happensDuring(id1: ID, id2: ID) : Boolean = {

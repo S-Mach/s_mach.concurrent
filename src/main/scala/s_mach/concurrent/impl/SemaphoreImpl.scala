@@ -23,6 +23,7 @@ import s_mach.concurrent.util.Semaphore
 import scala.collection.mutable
 import scala.concurrent.{Promise, ExecutionContext, Future}
 import s_mach.concurrent._
+import s_mach.codetools._
 
 /**
  * The default implementation of Semaphore using a ListBuffer backend.
@@ -30,21 +31,22 @@ import s_mach.concurrent._
  * available is provided.
  */
 abstract class SemaphoreImpl(
-  initialOffering: Long
+  initialOffering: Int
 ) extends Semaphore {
   @volatile private[this] var offering = initialOffering
   private[this] val lock = new Object
-  private[this] val polling = new mutable.ListBuffer[(() => Unit, Long)]()
+  private[this] val polling = new mutable.ListBuffer[(() => Unit, Int)]()
 
+  // todo: semaphore should be Int not Long
   override def waitQueueLength = lock.synchronized { polling.size }
   override def availablePermits = lock.synchronized { offering }
-  protected def availablePermits(_availablePermits: Long) = lock.synchronized {
+  protected def availablePermits(_availablePermits: Int) = lock.synchronized {
     offering = _availablePermits
   }
 
   protected def run[X](
     task: => Future[X],
-    permitCount: Long
+    permitCount: Int
   )(implicit ec: ExecutionContext) : Future[X] = {
     val retv = task
     retv onComplete { case _ => replenish(permitCount) }
@@ -52,7 +54,7 @@ abstract class SemaphoreImpl(
   }
 
   protected def replenish(
-    permitCount: Long
+    permitCount: Int
   )(implicit ec:ExecutionContext) : Unit = {
     // Note: locking here isn't the fastest however not much is done here - tho
     // I'm sure a better concurrent impl exists
@@ -77,7 +79,7 @@ abstract class SemaphoreImpl(
   }
 
   override def acquire[X](
-    permitCount: Long
+    permitCount: Int
   )(
     task: => Future[X]
   )(implicit ec:ExecutionContext): DeferredFuture[X] = {
@@ -96,7 +98,7 @@ abstract class SemaphoreImpl(
         val p = Promise[Future[X]]()
         polling += (
           (
-            { () => p.success(run(task, permitCount)) },
+            { () => p.success(run(task, permitCount)).discard },
             missingPermitCount
           )
         )

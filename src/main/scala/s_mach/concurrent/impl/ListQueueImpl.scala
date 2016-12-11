@@ -91,6 +91,7 @@ class ListQueueImpl[A](elems: A*) extends ListQueue[A] {
         val p = polling.head.left.get
         p.success(a)
         polling.remove(0)
+        ()
       } else {
         val (p, size) = polling.head.right.get
         offering += a
@@ -98,10 +99,12 @@ class ListQueueImpl[A](elems: A*) extends ListQueue[A] {
           p.success(offering.iterator.take(size).toVector)
           offering.remove(0,size)
           polling.remove(0)
+          ()
         }
       }
     } else {
       offering += a
+      ()
     }
   }
 

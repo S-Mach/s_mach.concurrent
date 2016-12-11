@@ -22,6 +22,7 @@ import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent._
 import s_mach.concurrent.util.{SerializationSchedule, ConcurrentTestContext}
+import s_mach.codetools._
 
 class ConcurrentTestContextImpl()(implicit
     ec: ExecutionContext,
@@ -37,6 +38,7 @@ class ConcurrentTestContextImpl()(implicit
       override def run() = {
         runnable.run()
         _activeExecutionCount.decrementAndGet()
+        ()
       }
     })
   }
@@ -63,14 +65,14 @@ class ConcurrentTestContextImpl()(implicit
   ): CancellableDelayedFuture[A] = {
     _activeExecutionCount.incrementAndGet()
     val retv = sec.scheduleCancellable(delay, fallback)(f)
-    retv.sideEffect(_activeExecutionCount.decrementAndGet()).background
+    retv.sideEffect(_activeExecutionCount.decrementAndGet().discard).background
     retv
   }
 
   override def schedule[A](delay: FiniteDuration)(f: => A) = {
     _activeExecutionCount.incrementAndGet()
     val retv = sec.schedule(delay)(f)
-    retv.sideEffect(_activeExecutionCount.decrementAndGet()).background
+    retv.sideEffect(_activeExecutionCount.decrementAndGet().discard).background
     retv
   }
 
@@ -84,6 +86,6 @@ class ConcurrentTestContextImpl()(implicit
 
   override def delay(delay_ns: Long) = {
     val err_ns = FutureOps.nanoSpinDelay(delay_ns)
-    _delayError_ns.addAndGet(err_ns)
+    _delayError_ns.addAndGet(err_ns).discard
   }
 }

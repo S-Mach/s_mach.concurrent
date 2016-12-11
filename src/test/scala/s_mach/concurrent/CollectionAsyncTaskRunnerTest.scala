@@ -19,8 +19,7 @@
 package s_mach.concurrent
 
 import scala.concurrent._
-import scala.concurrent.duration._
-import scala.util.{Failure, Success, Try}
+import scala.util.Success
 import org.scalatest.{Matchers, FlatSpec}
 import util._
 import TestBuilder._
@@ -41,7 +40,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
     }
 
     val retryer = new RetryDecider {
-      override def shouldRetry(stepId: Long, failure: Throwable): Future[Boolean] = ???
+      override def shouldRetry(stepId: Int, failure: Throwable): Future[Boolean] = ???
     }
 
     val config1Builder =
@@ -146,7 +145,6 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
   }
 
   "TraversableOnceAsyncConfigBuilder.modifiers-t4" must "execute each future one at a time and apply throttle, retry and progress correctly" in {
-    val allPeriod_ns =
       test repeat TEST_COUNT run {
         implicit val ctc = mkConcurrentTestContext()
         import ctc._
@@ -166,6 +164,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
             }
             .progress { progress =>
               sched.addEvent(s"progress-${progress.completed}")
+              ()
             }
             .map { i =>
               sched.addEvent(s"map-$i-$even")

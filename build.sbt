@@ -1,17 +1,9 @@
-scalaVersion := "2.11.6"
-
-crossScalaVersions := Seq("2.10.5", "2.11.6")
-
-organization := "net.s_mach"
-
 name := "concurrent"
-
-version := "1.1.0"
-
-scalacOptions ++= Seq("-feature","-unchecked", "-deprecation")
-
-libraryDependencies += "org.scalatest" % "scalatest_2.11" % "2.2.0" % "test"
 
 //testOptions in Test += Tests.Argument("-l s_mach.concurrent.DelayAccuracyTest")
 
 parallelExecution in Test := false
+
+libraryDependencies ++= Seq(
+  "net.s_mach" %% "codetools" % "2.1.0"
+)
