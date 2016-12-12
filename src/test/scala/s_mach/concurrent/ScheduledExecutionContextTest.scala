@@ -36,7 +36,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       ctc.waitForActiveExecutionCount(0)
 
       result.get should equal(1)
-      sched.startEvents(1).elapsed_ns - sched.startEvents(0).elapsed_ns should be >= DELAY_NS
+      Math.abs(sched.startEvents(1).elapsed_ns - sched.startEvents(0).elapsed_ns) should be >= DELAY_NS
     }
   }
 
@@ -53,7 +53,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       result.isCancelled should equal(false)
       result.canCancel should equal(false)
       result.cancel() should equal(false)
-      sched.startEvents(1).elapsed_ns - sched.startEvents(0).elapsed_ns should be >= DELAY_NS
+      Math.abs(sched.startEvents(1).elapsed_ns - sched.startEvents(0).elapsed_ns) should be >= DELAY_NS
     }
   }
 
