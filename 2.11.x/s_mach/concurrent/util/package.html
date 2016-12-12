@@ -1,0 +1,637 @@
+<!DOCTYPE html >
+<html>
+        <head>
+          <title>util - s_mach.concurrent.util</title>
+          <meta name="description" content="util - s mach.concurrent.util" />
+          <meta name="keywords" content="util s mach.concurrent.util" />
+          <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+          
+      <link href="../../../lib/template.css" media="screen" type="text/css" rel="stylesheet" />
+      <link href="../../../lib/diagrams.css" media="screen" type="text/css" rel="stylesheet" id="diagrams-css" />
+      <script type="text/javascript" src="../../../lib/jquery.js" id="jquery-js"></script>
+      <script type="text/javascript" src="../../../lib/jquery-ui.js"></script>
+      <script type="text/javascript" src="../../../lib/template.js"></script>
+      <script type="text/javascript" src="../../../lib/tools.tooltip.js"></script>
+      
+      <script type="text/javascript">
+         if(top === self) {
+            var url = '../../../index.html';
+            var hash = 's_mach.concurrent.util.package';
+            var anchor = window.location.hash;
+            var anchor_opt = '';
+            if (anchor.length >= 1)
+              anchor_opt = '@' + anchor.substring(1);
+            window.location.href = url + '#' + hash + anchor_opt;
+         }
+   	  </script>
+    
+        </head>
+        <body class="value">
+      <div id="definition">
+        <img alt="Package" src="../../../lib/package_big.png" />
+        <p id="owner"><a href="../../package.html" class="extype" name="s_mach">s_mach</a>.<a href="../package.html" class="extype" name="s_mach.concurrent">concurrent</a></p>
+        <h1>util</h1><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      </div>
+
+      <h4 id="signature" class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <span class="name">util</span>
+      </span>
+      </h4>
+      
+          <div id="comment" class="fullcommenttop"></div>
+        
+
+      <div id="mbrsel">
+        <div id="textfilter"><span class="pre"></span><span class="input"><input id="mbrsel-input" type="text" accesskey="/" /></span><span class="post"></span></div>
+        
+        
+        <div id="visbl">
+            <span class="filtertype">Visibility</span>
+            <ol><li class="public in"><span>Public</span></li><li class="all out"><span>All</span></li></ol>
+          </div>
+      </div>
+
+      <div id="template">
+        <div id="allMembers">
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="s_mach.concurrent.util.AtomicFSM" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AtomicFSM[S]extendsAtomicReference[S]"></a>
+      <a id="AtomicFSM[S]:AtomicFSM[S]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="AtomicFSM.html"><span class="name">AtomicFSM</span></a><span class="tparams">[<span name="S">S</span>]</span><span class="result"> extends <a href="http://docs.oracle.com/javase/8/docs/api/index.html#java.util.concurrent.atomic.AtomicReference" class="extype" target="_top">AtomicReference</a>[<span class="extype" name="s_mach.concurrent.util.AtomicFSM.S">S</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@AtomicFSM[S]extendsAtomicReference[S]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A class for a finite state machine whose state may be transitioned
+atomically by any number of concurrent threads.</p><div class="fullcomment"><div class="comment cmt"><p>A class for a finite state machine whose state may be transitioned
+atomically by any number of concurrent threads.</p><p>During the time it takes to compute a new state for the FSM, another thread
+may change the FSMs state, invalidating the newly computed state. To deal
+with this issue, AtomicFSM stores the state of the FSM using AtomicReference
+and after computing a new state, uses AtomicReference CAS to atomically
+compare the current state to the one originally used to compute the new
+state. If the current state does not match the original state used to compute
+the new state, then CAS update fails and the new state is discarded. The
+whole process is repeated using the updated current state. This will repeat
+until a new computed state successfully changes the current state. Because
+states may be discarded and transition functions invoked multiple times
+during this process, states and transition functions should never create
+side effects themselves. Instead all transition side effects should be placed
+in the onTransition function. When a state is successfully transitioned,
+onTransition is called with both the original and new state. This method can
+be used to safely create state transition side effects.
+</p></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>the type of state</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.util.Barrier" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="BarrierextendsAnyRef"></a>
+      <a id="Barrier:Barrier"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Barrier.html"><span class="name">Barrier</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@BarrierextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for a barrier that can be used by callers to synchronize on an event
+by waiting for the barrier to be set.</p>
+    </li><li name="s_mach.concurrent.util.ConcurrentTestContext" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ConcurrentTestContextextendsExecutionContextwithScheduledExecutionContext"></a>
+      <a id="ConcurrentTestContext:ConcurrentTestContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ConcurrentTestContext.html"><span class="name">ConcurrentTestContext</span></a><span class="result"> extends <a href="http://scala-lang.org/files/archive/api/2.11.8/index.html#scala.concurrent.ExecutionContext" class="extype" target="_top">ExecutionContext</a> with <a href="../ScheduledExecutionContext.html" class="extype" name="s_mach.concurrent.ScheduledExecutionContext">ScheduledExecutionContext</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@ConcurrentTestContextextendsExecutionContextwithScheduledExecutionContext" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A context for testing concurrent code that provides:
+1) an ExecutionContext that keeps track of the number of active and completed
+Runnables
+2) a Timer for tracking elapsed duration since start of test
+3) a SerializationSchedule for detecting order of execution of events
+4) a precision delay function that accumulates any delay error
+</p>
+    </li><li name="s_mach.concurrent.util.DelegatedFuture" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="DelegatedFuture[A]extendsFuture[A]"></a>
+      <a id="DelegatedFuture[A]:DelegatedFuture[A]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="DelegatedFuture.html"><span class="name">DelegatedFuture</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.concurrent.Future">Future</span>[<span class="extype" name="s_mach.concurrent.util.DelegatedFuture.A">A</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@DelegatedFuture[A]extendsFuture[A]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A base trait for a future that delegates its implementation to another
+delegate future
+</p>
+    </li><li name="s_mach.concurrent.util.Latch" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="LatchextendsBarrier"></a>
+      <a id="Latch:Latch"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Latch.html"><span class="name">Latch</span></a><span class="result"> extends <a href="Barrier.html" class="extype" name="s_mach.concurrent.util.Barrier">Barrier</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@LatchextendsBarrier" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for a latch that can be set once to synchronize events that are
+waiting on the barrier.</p>
+    </li><li name="s_mach.concurrent.util.Lock" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="LockextendsAnyRef"></a>
+      <a id="Lock:Lock"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Lock.html"><span class="name">Lock</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@LockextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for a non-blocking lock that ensures a synchronous execution
+schedule for all callers.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a non-blocking lock that ensures a synchronous execution
+schedule for all callers. A caller calls the lock method to execute a task
+synchronously once the lock is available. Simultaneous tasks are placed in a
+FIFO queue  while awaiting execution.</p><p>Note1: Because Lock accepts a function to the task to run, it is not
+possible for callers to double lock, double  release or forget to release the
+lock.
+Note2: Lock is NOT reentrant
+Note3: Lock should never be used when other locking options make more
+sense. Lock is designed for synchronizing many tasks (100+) and/or long
+running tasks (10ms+). Unlike other locking options, Lock does not block and
+consume a thread while waiting for the lock to become available. However,
+Lock is not the most performant option.
+</p></div></div>
+    </li><li name="s_mach.concurrent.util.PeriodicProgressReporter" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="PeriodicProgressReporterextendsTaskEventListener"></a>
+      <a id="PeriodicProgressReporter:PeriodicProgressReporter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="PeriodicProgressReporter.html"><span class="name">PeriodicProgressReporter</span></a><span class="result"> extends <a href="TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@PeriodicProgressReporterextendsTaskEventListener" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for a progress reporter that reports progress only at the specified
+report interval
+</p>
+    </li><li name="s_mach.concurrent.util.Progress" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="ProgressextendsProductwithSerializable"></a>
+      <a id="Progress:Progress"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a href="Progress.html"><span class="name">Progress</span></a><span class="params">(<span name="completed">completed: <a href="http://scala-lang.org/files/archive/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a></span>, <span name="optTotal">optTotal: <a href="http://scala-lang.org/files/archive/api/2.11.8/index.html#scala.Option" class="extype" target="_top">Option</a>[<a href="http://scala-lang.org/files/archive/api/2.11.8/index.html#scala.Int" class="extype" target="_top">Int</a>]</span>, <span name="startTime_ns">startTime_ns: <a href="http://scala-lang.org/files/archive/api/2.11.8/index.html#scala.Long" class="extype" target="_top">Long</a></span>)</span><span class="result"> extends <a href="http://scala-lang.org/files/archive/api/2.11.8/index.html#scala.Product" class="extype" target="_top">Product</a> with <a href="http://scala-lang.org/files/archive/api/2.11.8/index.html#scala.Serializable" class="extype" target="_top">Serializable</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@ProgressextendsProductwithSerializable" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A case class to report progress in a computation</p><div class="fullcomment"><div class="comment cmt"><p>A case class to report progress in a computation</p></div><dl class="paramcmts block"><dt class="param">completed</dt><dd class="cmt"><p>the count of iterations completed so far</p></dd><dt class="param">optTotal</dt><dd class="cmt"><p>Some(total iterations in computation) or None if the
+                computation has an unknown size</p></dd><dt class="param">startTime_ns</dt><dd class="cmt"><p>the time in nanoseconds returned by System.nanoTime when
+                    the computation was started</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.util.RetryDecider" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="RetryDeciderextendsAnyRef"></a>
+      <a id="RetryDecider:RetryDecider"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="RetryDecider.html"><span class="name">RetryDecider</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@RetryDeciderextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait to decide whether to retry a failure in a task.</p><div class="fullcomment"><div class="comment cmt"><p>A trait to decide whether to retry a failure in a task. Tasks are identified
+by their sequence number.</p><p>Note: implementations must be thread safe.
+</p></div></div>
+    </li><li name="s_mach.concurrent.util.Semaphore" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="SemaphoreextendsAnyRef"></a>
+      <a id="Semaphore:Semaphore"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Semaphore.html"><span class="name">Semaphore</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@SemaphoreextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for a non-blocking semaphore that ensures limiting concurrent
+execution to tasks that have been granted the requested number of permits
+from a limited pool of permits.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for a non-blocking semaphore that ensures limiting concurrent
+execution to tasks that have been granted the requested number of permits
+from a limited pool of permits. The acquire method is used to request the
+execution of a task once the requested number of permits become available. If
+the permits are not immediately available, the request is placed into a FIFO
+queue while waiting for permits to become available. The permit pool size is
+typically static with permits released back to the pool upon completion of
+tasks. However, some implementations may have dynamic sized pools that expend
+permits instead of releasing them, replenishing permits through some other
+mechanism.</p><p>Note1: Because Semaphore accepts a function to the task to run, it is not
+possible for callers to double lock, double  release or forget to release
+permits.
+Note2: Semaphore is NOT reentrant
+Note3: Semaphore should never be used when other options make more sense.
+Semaphore is designed for synchronizing many tasks (100+) and/or long running
+tasks (10ms+). Unlike other options, Semaphore does not block and consume a
+thread while waiting for permits to become available. However, Semaphore is
+not the most performant option.
+</p></div></div>
+    </li><li name="s_mach.concurrent.util.Sequencer" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="SequencerextendsAnyRef"></a>
+      <a id="Sequencer:Sequencer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Sequencer.html"><span class="name">Sequencer</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@SequencerextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait used to guarantee a series of unordered tasks occur sequentially.</p><div class="fullcomment"><div class="comment cmt"><p>A trait used to guarantee a series of unordered tasks occur sequentially.
+By associating a sequence number with each task, the sequencer can determine
+whether to immediately run a task or queue the task for later. When a task
+has been queued and the sequence number for that task has been reached, the
+task is removed from the queue and executed. The sequence number is only
+advanced after the task completes.</p><p>Note: it is assumed each task has a unique sequence number. A request to
+execute a task with a sequence number that is less than the current sequence
+number causes an IllegalArgumentException to be thrown.
+</p></div></div>
+    </li><li name="s_mach.concurrent.util.SerializationSchedule" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="SerializationSchedule[ID]extendsAnyRef"></a>
+      <a id="SerializationSchedule[ID]:SerializationSchedule[ID]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="SerializationSchedule.html"><span class="name">SerializationSchedule</span></a><span class="tparams">[<span name="ID">ID</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@SerializationSchedule[ID]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A case class for determining the ordering of instantaneous and
+time-spanning real-time events</p><div class="fullcomment"><div class="comment cmt"><p>A case class for determining the ordering of instantaneous and
+time-spanning real-time events</p></div><dl class="paramcmts block"><dt class="tparam">ID</dt><dd class="cmt"><p>event identifier type</p></dd></dl></div>
+    </li><li name="s_mach.concurrent.util.SimpleProgressReporter" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SimpleProgressReporterextendsTaskEventListener"></a>
+      <a id="SimpleProgressReporter:SimpleProgressReporter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="SimpleProgressReporter.html"><span class="name">SimpleProgressReporter</span></a><span class="result"> extends <a href="TaskEventListener.html" class="extype" name="s_mach.concurrent.util.TaskEventListener">TaskEventListener</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@SimpleProgressReporterextendsTaskEventListener" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for a simple progress reporter that accumulates total progress from
+completed reports and makes a report each time there is progress during a
+task.</p>
+    </li><li name="s_mach.concurrent.util.TaskEventListener" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="TaskEventListenerextendsAnyRef"></a>
+      <a id="TaskEventListener:TaskEventListener"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="TaskEventListener.html"><span class="name">TaskEventListener</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@TaskEventListenerextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for listening to the progress of a task that consists of one or more
+discrete steps.</p><div class="fullcomment"><div class="comment cmt"><p>A trait for listening to the progress of a task that consists of one or more
+discrete steps. Each step is identified by a sequence number.</p><p>Note: implementations must be thread safe
+</p></div></div>
+    </li><li name="s_mach.concurrent.util.ThrottleControl" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ThrottleControlextendsAnyRef"></a>
+      <a id="ThrottleControl:ThrottleControl"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="ThrottleControl.html"><span class="name">ThrottleControl</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@ThrottleControlextendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait for controlling the throttle value of some operation
+</p>
+    </li><li name="s_mach.concurrent.util.Throttler" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="ThrottlerextendsThrottleControl"></a>
+      <a id="Throttler:Throttler"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="Throttler.html"><span class="name">Throttler</span></a><span class="result"> extends <a href="ThrottleControl.html" class="extype" name="s_mach.concurrent.util.ThrottleControl">ThrottleControl</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@ThrottlerextendsThrottleControl" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <p class="shortcomment cmt">A trait that ensures a series of tasks run no faster than the throttle
+setting.</p><div class="fullcomment"><div class="comment cmt"><p>A trait that ensures a series of tasks run no faster than the throttle
+setting. Callers schedule tasks by calling the run method. If at least
+throttle setting nanoseconds have passed since the last task completed, the
+supplied function is immediately executed, otherwise it is scheduled for
+execution once throttle nanoseconds have expired. Tasks scheduled at the same
+time for later execution will be executed in a FIFO manner. Throttler
+guarantees that all tasks will have at least throttle nanoseconds separating
+their completion. However, it can not guarantee that the elapsed time between
+tasks will not be greater than the throttle setting.</p></div></div>
+    </li></ol>
+            </div>
+
+        
+
+        <div id="values" class="values members">
+              <h3>Value Members</h3>
+              <ol><li name="s_mach.concurrent.util.Barrier" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Barrier"></a>
+      <a id="Barrier:Barrier"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Barrier$.html"><span class="name">Barrier</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@Barrier" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.ConcurrentTestContext" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ConcurrentTestContext"></a>
+      <a id="ConcurrentTestContext:ConcurrentTestContext"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ConcurrentTestContext$.html"><span class="name">ConcurrentTestContext</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@ConcurrentTestContext" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.Latch" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Latch"></a>
+      <a id="Latch:Latch"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Latch$.html"><span class="name">Latch</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@Latch" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.Lock" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Lock"></a>
+      <a id="Lock:Lock"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Lock$.html"><span class="name">Lock</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@Lock" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.PeriodicProgressReporter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="PeriodicProgressReporter"></a>
+      <a id="PeriodicProgressReporter:PeriodicProgressReporter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="PeriodicProgressReporter$.html"><span class="name">PeriodicProgressReporter</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@PeriodicProgressReporter" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.Semaphore" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Semaphore"></a>
+      <a id="Semaphore:Semaphore"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Semaphore$.html"><span class="name">Semaphore</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@Semaphore" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.Sequencer" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Sequencer"></a>
+      <a id="Sequencer:Sequencer"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Sequencer$.html"><span class="name">Sequencer</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@Sequencer" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.SerializationSchedule" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SerializationSchedule"></a>
+      <a id="SerializationSchedule:SerializationSchedule"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SerializationSchedule$.html"><span class="name">SerializationSchedule</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@SerializationSchedule" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.SimpleProgressReporter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SimpleProgressReporter"></a>
+      <a id="SimpleProgressReporter:SimpleProgressReporter"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SimpleProgressReporter$.html"><span class="name">SimpleProgressReporter</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@SimpleProgressReporter" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="s_mach.concurrent.util.Throttler" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Throttler"></a>
+      <a id="Throttler:Throttler"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Throttler$.html"><span class="name">Throttler</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#s_mach.concurrent.util.package@Throttler" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li></ol>
+            </div>
+
+        
+
+        
+        </div>
+
+        <div id="inheritedMembers">
+        
+        
+        </div>
+
+        <div id="groupedMembers">
+        <div class="group" name="Ungrouped">
+              <h3>Ungrouped</h3>
+              
+            </div>
+        </div>
+
+      </div>
+
+      <div id="tooltip"></div>
+
+      <div id="footer">  </div>
+
+
+    </body>
+      </html>
