@@ -7,8 +7,7 @@ v3,14-Dec-2014
 image:https://travis-ci.org/S-Mach/s_mach.concurrent.svg[Build Status, link="https://travis-ci.org/S-Mach/s_mach.concurrent"]
 image:https://coveralls.io/repos/S-Mach/s_mach.concurrent/badge.png[Test Coverage,link="https://coveralls.io/r/S-Mach/s_mach.concurrent"]
 image:https://www.codacy.com/project/badge/55521e6da2f045b89ad6f435acc56cb7[Codacy Badge,link="https://www.codacy.com/public/lancegatlin/s_mach.concurrent"]
-https://github.com/S-Mach/s_mach.concurrent[Code]
-http://s-mach.github.io/s_mach.concurrent/#s_mach.concurrent.package[Scaladoc]
+Scaladocs: http://s-mach.github.io/s_mach.concurrent/2.11.x/#s_mach.concurrent.package[2.11] https://s-mach.github.io/s_mach.concurrent/2.12.x/s_mach/concurrent/index.html[2.12]
 
 == Include in SBT
 1. Add to +build.sbt+
