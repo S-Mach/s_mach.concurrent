@@ -42,7 +42,7 @@ class MergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
         waitForActiveExecutionCount(0)
         sched.addEvent("end")
 
-        result.getTry should be(Success(Vector(1,2,3,4,5,6)))
+        result.awaitTry should be(Success(Vector(1,2,3,4,5,6)))
         isConcurrentSchedule(Vector(1,2,3,4,5,6), sched)
       }
 
@@ -76,8 +76,8 @@ class MergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       endLatch.set()
       waitForActiveExecutionCount(0)
 
-      result.getTry shouldBe a [Failure[_]]
-      result.getTry.failed.get shouldBe a [AsyncParThrowable]
+      result.awaitTry shouldBe a [Failure[_]]
+      result.awaitTry.failed.get shouldBe a [AsyncParThrowable]
       sched.happensBefore("start","fail-2") should equal(true)
       sched.happensBefore("fail-2","end") should equal(true)
 
@@ -114,8 +114,8 @@ class MergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       endLatch.set()
       waitForActiveExecutionCount(0)
 
-      result.getTry shouldBe a [Failure[_]]
-      result.getTry.failed.get.toString should equal(new RuntimeException("fail-2").toString)
+      result.awaitTry shouldBe a [Failure[_]]
+      result.awaitTry.failed.get.toString should equal(new RuntimeException("fail-2").toString)
 
       sched.happensBefore("start","fail-2") should equal(true)
       sched.happensBefore("fail-2","end") should equal(true)
@@ -135,10 +135,10 @@ class MergeTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       implicit val ctc = mkConcurrentTestContext()
 
       val result = MergeOps.merge(Vector(fail(1),success(2),success(3),fail(4),success(5),fail(6)))
-      val thrown = result.getTry.failed.get.asInstanceOf[AsyncParThrowable]
+      val thrown = result.awaitTry.failed.get.asInstanceOf[AsyncParThrowable]
 
       thrown.firstFailure.toString.startsWith("java.lang.RuntimeException: fail-") should equal(true)
-      thrown.allFailure.get.map(_.toString) should contain allOf(
+      thrown.allFailure.await.map(_.toString) should contain allOf(
         new RuntimeException("fail-1").toString,
         new RuntimeException("fail-4").toString,
         new RuntimeException("fail-6").toString

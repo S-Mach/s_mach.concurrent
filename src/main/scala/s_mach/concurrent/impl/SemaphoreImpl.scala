@@ -69,7 +69,7 @@ abstract class SemaphoreImpl(
           if(permitsRemaining > 0) {
             Future {
               replenish(permitsRemaining)
-            }.background
+            }.runInBackground
           }
           0
         } else {

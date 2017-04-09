@@ -37,7 +37,7 @@ trait FutureOps {
    * indefinitely for the Future to complete)
    * @throws java.lang.Exception Future completed with a failure, throws the exception
    * */
-  @inline def get[A](self: Future[A]): A = {
+  @inline def await[A](self: Future[A]): A = {
     Await.result(self, Duration.Inf)
   }
 
@@ -45,14 +45,14 @@ trait FutureOps {
    * @return the result of the Future after it completes
    * @throws java.util.concurrent.TimeoutException if Future does not complete within max duration
    * */
-  @inline def get[A](self: Future[A], max: Duration): A =
+  @inline def await[A](self: Future[A], max: Duration): A =
     Await.result(self, max)
 
   /**
    * @return the Try result of the Future after it completes (Note: this waits
    * indefinitely for the Future to complete)
    * */
-  @inline def getTry[A](self: Future[A]): Try[A] = {
+  @inline def awaitTry[A](self: Future[A]): Try[A] = {
     Await.ready(self, Duration.Inf).value.get
   }
 
@@ -60,14 +60,14 @@ trait FutureOps {
    * @return the Try result of the Future after it completes
    * @throws java.util.concurrent.TimeoutException if Future does not complete within max duration
    * */
-  @inline def getTry[A](self: Future[A], max: Duration): Try[A] = {
+  @inline def awaitTry[A](self: Future[A], max: Duration): Try[A] = {
     Await.ready(self, max).value.get
   }
 
   /** Run future in the background. Discard the result of this Future but
     * ensure if there is an exception it gets reported to the ExecutionContext
     * */
-  @inline def background[A](
+  @inline def runInBackground[A](
     self: Future[A]
   )(implicit ec: ExecutionContext) : Unit = {
     self onComplete {

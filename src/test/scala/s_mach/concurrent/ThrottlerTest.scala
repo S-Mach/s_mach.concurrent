@@ -38,7 +38,7 @@ class ThrottlerTest extends FlatSpec with Matchers with ConcurrentTestCommon {
         }
       }
       .merge
-      .get
+      .await
 
 
     waitForActiveExecutionCount(0)

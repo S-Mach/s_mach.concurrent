@@ -28,8 +28,8 @@ class BarrierTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     implicit val ctc = mkConcurrentTestContext()
 
     Barrier.set.isSet should equal(true)
-    Barrier.set.future.get should equal(())
-    Barrier.set.onSet(1).get should equal(1)
-    Barrier.set.happensBefore(Future(1)).get should equal(1)
+    Barrier.set.future.await should equal(())
+    Barrier.set.onSet(1).await should equal(1)
+    Barrier.set.happensBefore(Future(1)).await should equal(1)
   }
 }

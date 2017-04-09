@@ -42,7 +42,7 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       val l = Lock()
       val f1 = l.lock { ().future }
-      f1.get should equal(())
+      f1.await should equal(())
 
       waitForActiveExecutionCount(0)
 
@@ -85,7 +85,7 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       f3.isCompleted should equal(false)
 
       latch.set()
-      async.par.run(f1,f2,f3).get
+      async.par.run(f1,f2,f3).await
 
       sched.happensBefore("1", "2") should equal(true)
       sched.happensBefore("2", "3") should equal(true)
@@ -102,7 +102,7 @@ class LockTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       l.lock {
         temp = l.isUnlocked
         ().future
-      }.get
+      }.await
 
       // Release happens as reaction Future to above need to wait for it to finish
       waitForActiveExecutionCount(0)

@@ -98,7 +98,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
 
-      result.getTry should equal (Success(items))
+      result.awaitTry should equal (Success(items))
       isSerialSchedule(items, sched) should equal(true)
     }
   }
@@ -116,7 +116,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
 
-      result.getTry should equal(Success(items.flatMap(i => Vector(i,i,i))))
+      result.awaitTry should equal(Success(items.flatMap(i => Vector(i,i,i))))
       isSerialSchedule(items, sched) should equal(true)
     }
   }
@@ -135,7 +135,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
       waitForActiveExecutionCount(0)
       sched.addEvent("end")
 
-      result.getTry should equal(Success(()))
+      result.awaitTry should equal(Success(()))
       val eventMap = sched.eventMap
       items foreach { i =>
         eventMap.contains(s"success-$i") should equal(true)
@@ -179,7 +179,7 @@ class CollectionAsyncTaskRunnerTest extends FlatSpec with Matchers with Concurre
               }
             }
 
-        result.get
+        result.await
 
         waitForActiveExecutionCount(0)
 

@@ -62,8 +62,8 @@ class FutureSequenceProofTest extends FlatSpec with Matchers with ConcurrentTest
       endLatch.set()
       waitForActiveExecutionCount(0)
 
-      result.getTry shouldBe a[Failure[_]]
-      result.getTry.failed.get.toString should equal(new RuntimeException("fail-2").toString)
+      result.awaitTry shouldBe a[Failure[_]]
+      result.awaitTry.failed.get.toString should equal(new RuntimeException("fail-2").toString)
 
       sched.happensBefore("start","fail-2") should equal(true)
       sched.happensBefore("fail-2","end") should equal(true)

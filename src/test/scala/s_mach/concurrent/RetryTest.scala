@@ -58,8 +58,8 @@ class RetryTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       waitForActiveExecutionCount(0)
 
-      result.getTry shouldBe a [Failure[_]]
-      result.getTry.failed.get shouldBe a [RuntimeException]
+      result.awaitTry shouldBe a [Failure[_]]
+      result.awaitTry.failed.get shouldBe a [RuntimeException]
 
       sched.orderedEvents.map(_.id) should equal(Vector(
         "attempt-1",
@@ -103,8 +103,8 @@ class RetryTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       waitForActiveExecutionCount(0)
 
-      result.getTry shouldBe a [Failure[_]]
-      result.getTry.failed.get shouldBe a [RuntimeException]
+      result.awaitTry shouldBe a [Failure[_]]
+      result.awaitTry.failed.get shouldBe a [RuntimeException]
 
       sched.orderedEvents.map(_.id) should equal(Vector(
         "attempt-1"

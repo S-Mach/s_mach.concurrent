@@ -41,7 +41,7 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       future.isCompleted should equal(false)
       q.offer(1)
-      future.get(1.millis) should equal(1)
+      future.await(1.millis) should equal(1)
       q.pollQueueSize should equal(0)
       q.offerQueueSize should equal(0)
     }
@@ -55,7 +55,7 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       val future = q.poll()
 
       future.isCompleted should equal(true)
-      future.get(10.millis) should equal(1)
+      future.await(10.millis) should equal(1)
       q.pollQueueSize should equal(0)
       q.offerQueueSize should equal(9)
     }
@@ -77,7 +77,7 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       q.offerQueueSize should equal(3)
 
       q.offer(Vector(4,5,6,7,8,9,10))
-      future.get(10.millis) should equal(Vector(1,2,3,4,5,6,7,8,9,10))
+      future.await(10.millis) should equal(Vector(1,2,3,4,5,6,7,8,9,10))
       q.pollQueueSize should equal(0)
       q.offerQueueSize should equal(0)
     }
@@ -92,7 +92,7 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       val future = q.poll(10)
       future.isCompleted should equal(true)
-      future.get should equal(Vector(1,2,3,4,5,6,7,8,9,10))
+      future.await should equal(Vector(1,2,3,4,5,6,7,8,9,10))
       q.pollQueueSize should equal(0)
       q.offerQueueSize should equal(0)
     }
@@ -138,7 +138,7 @@ class ListQueueTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       waitForActiveExecutionCount(0)
       serialTestContext.waitForActiveExecutionCount(0)
 
-      result.getTry should equal(Success((1,Vector(2,3),Vector(4,5,6,7,8,9),10)))
+      result.awaitTry should equal(Success((1,Vector(2,3),Vector(4,5,6,7,8,9),10)))
 
       sched.happensBefore("f1", "f2") should equal(true)
       sched.happensBefore("f2", "f3") should equal(true)

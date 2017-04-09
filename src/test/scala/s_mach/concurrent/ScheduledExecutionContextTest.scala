@@ -35,7 +35,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
 
       ctc.waitForActiveExecutionCount(0)
 
-      result.get should equal(1)
+      result.await should equal(1)
       Math.abs(sched.startEvents(1).elapsed_ns - sched.startEvents(0).elapsed_ns) should be >= DELAY_NS
     }
   }
@@ -49,7 +49,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
 
       ctc.waitForActiveExecutionCount(0)
 
-      result.get should equal(1)
+      result.await should equal(1)
       result.isCancelled should equal(false)
       result.canCancel should equal(false)
       result.cancel() should equal(false)
@@ -71,7 +71,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
       result.isCancelled should equal(true)
       result.canCancel should equal(false)
       result.cancel() should equal(false)
-      result.get should equal(2)
+      result.await should equal(2)
     }
   }
 
@@ -124,7 +124,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
 
     periodicTask.state shouldBe a [Running]
 
-    latch.future.get
+    latch.future.await
 
     // Running => Cancelled
     periodicTask.cancel() should equal(true)
@@ -168,7 +168,7 @@ class ScheduledExecutionContextTest extends FlatSpec with Matchers with Concurre
 
     periodicTask.state shouldBe a [Running]
 
-    latch.future.get
+    latch.future.await
 
     periodicTask.cancel()
 

@@ -142,7 +142,7 @@ object ScheduledExecutionContextImpl {
       }
 
       val _javaScheduledFuture = Promise[ScheduledFuture[_]]()
-      def javaScheduledFuture = _javaScheduledFuture.future.get
+      def javaScheduledFuture = _javaScheduledFuture.future.await
 
       def start() = {
         _javaScheduledFuture.success {

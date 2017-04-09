@@ -41,7 +41,7 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
 
       val s = Semaphore(10)
       val f1 = s.acquire(10) { ().future }
-      f1.get should equal(())
+      f1.await should equal(())
 
       waitForActiveExecutionCount(0)
 
@@ -85,7 +85,7 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
       f3.isCompleted should equal(false)
 
       latch.set()
-      async.par.run(f1,f2,f3).get
+      async.par.run(f1,f2,f3).await
 
       sched.happensBefore("1", "2") should be(true)
       sched.happensBefore("2", "3") should be(true)
@@ -110,7 +110,7 @@ class SemaphoreTest extends FlatSpec with Matchers with ConcurrentTestCommon{
       s.acquire(5) {
         temp = s.availablePermits
         ().future
-      }.get
+      }.await
 
       // Release happens as reaction Future to above need to wait for it to finish
       waitForActiveExecutionCount(0)

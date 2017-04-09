@@ -152,7 +152,7 @@ object WorkersOps {
             }.deferred.map { inner =>
               // Throwaway result of worker but make sure to at least report
               // exceptions to ExecutionContext
-              inner.background
+              inner.runInBackground
               i + 1
             }
           } else {

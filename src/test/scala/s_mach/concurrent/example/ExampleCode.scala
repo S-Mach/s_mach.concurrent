@@ -224,11 +224,11 @@ object ExampleCode {
     } yield (i1,i2,i3)
   }
   def example9: Try[Vector[Item]] = {
-    Future.sequence(Vector(longRead("1"),readFail("2"),readFail("3"),read("4"))).getTry
+    Future.sequence(Vector(longRead("1"),readFail("2"),readFail("3"),read("4"))).awaitTry
   }
 
   def example10: Try[Vector[Item]] = {
-    Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.getTry
+    Vector(longRead("1"),readFail("2"),readFail("3"),read("4")).merge.awaitTry
   }
 }
 

@@ -59,7 +59,7 @@ class Tuple16AsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentT
         waitForActiveExecutionCount(0)
         sched.addEvent("end")
 
-        result.getTry should be(Success((items(0),items(1),items(2),items(3),items(4),items(5),items(6),items(7),items(8),items(9),items(10),items(11),items(12),items(13),items(14),items(15))))
+        result.awaitTry should be(Success((items(0),items(1),items(2),items(3),items(4),items(5),items(6),items(7),items(8),items(9),items(10),items(11),items(12),items(13),items(14),items(15))))
         isConcurrentSchedule(Vector(items(0),items(1),items(2),items(3),items(4),items(5),items(6),items(7),items(8),items(9),items(10),items(11),items(12),items(13),items(14),items(15)), sched)
       }
 
@@ -105,8 +105,8 @@ class Tuple16AsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentT
       endLatch.set()
       waitForActiveExecutionCount(0)
 
-      result.getTry shouldBe a [Failure[_]]
-      result.getTry.failed.get shouldBe a [AsyncParThrowable]
+      result.awaitTry shouldBe a [Failure[_]]
+      result.awaitTry.failed.get shouldBe a [AsyncParThrowable]
 
       sched.happensBefore("start","fail-2") should equal(true)
       sched.happensBefore("fail-2","end") should equal(true)
@@ -133,13 +133,13 @@ class Tuple16AsyncTaskRunnerTest extends FlatSpec with Matchers with ConcurrentT
 
       waitForActiveExecutionCount(0)
 
-      val thrown = result.failed.get.asInstanceOf[AsyncParThrowable]
+      val thrown = result.failed.await.asInstanceOf[AsyncParThrowable]
 
       // Even though there are two worker threads, it technically is a race condition to see which failure happens
       // first. This actually happens in about 1/1000 runs where it appears worker one while processing fail-1 stalls
       // and worker 2 is able to complete success-2, success-3 and fail-4 before fail-1 finishes
       thrown.firstFailure.toString.startsWith("java.lang.RuntimeException: fail-") should equal(true)
-      thrown.allFailure.get.map(_.toString) should contain theSameElementsAs(
+      thrown.allFailure.await.map(_.toString) should contain theSameElementsAs(
         failures.map(failIdx => new RuntimeException(s"fail-$failIdx").toString)
       )
     }

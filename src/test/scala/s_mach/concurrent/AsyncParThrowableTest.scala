@@ -31,7 +31,7 @@ class AsyncParThrowableTest extends FlatSpec with Matchers with ConcurrentTestCo
     )
 
     t.firstFailure should equal(ex1)
-    t.allFailure.get should equal(Vector(ex2,ex3))
+    t.allFailure.await should equal(Vector(ex2,ex3))
 
 
     t.getMessage should equal(ex1.getMessage)

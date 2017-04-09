@@ -31,45 +31,45 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     implicit val ctc = mkConcurrentTestContext()
 
     1.future shouldBe a[Future[_]]
-    1.future.get should equal(1)
+    1.future.await should equal(1)
 
     Future.unit shouldBe a [Future[_]]
-    Future.unit.get should equal(())
+    Future.unit.await should equal(())
 
     val latch = Latch()
-    an [TimeoutException] should be thrownBy latch.future.get(1.nanos)
-    an [TimeoutException] should be thrownBy latch.future.getTry(1.nanos)
+    an [TimeoutException] should be thrownBy latch.future.await(1.nanos)
+    an [TimeoutException] should be thrownBy latch.future.awaitTry(1.nanos)
 
     val ex = new RuntimeException
-    Future.successful(1).getTry should equal(Success(1))
-    Future.failed(ex).getTry should equal(Failure(ex))
+    Future.successful(1).awaitTry should equal(Success(1))
+    Future.failed(ex).awaitTry should equal(Failure(ex))
 
-    Future.successful(1).toTry.get should equal(Success(1))
-    Future.failed(ex).toTry.get should equal(Failure(ex))
+    Future.successful(1).toTry.await should equal(Success(1))
+    Future.failed(ex).toTry.await should equal(Failure(ex))
 
     Future.successful(1).fold(
       onSuccess = { i:Int => i.toString },
       onFailure = { t:Throwable => t.toString }
-    ).get should equal("1")
+    ).await should equal("1")
 
     Future.failed(ex).fold(
       onSuccess = { i:Int => i.toString },
       onFailure = { t:Throwable => t.toString }
-    ).get should equal("java.lang.RuntimeException")
+    ).await should equal("java.lang.RuntimeException")
 
     Future.successful(1).flatFold(
       onSuccess = { i:Int => i.toString.future },
       onFailure = { t:Throwable => t.toString.future }
-    ).get should equal("1")
+    ).await should equal("1")
 
     Future.failed(ex).flatFold(
       onSuccess = { i:Int => i.toString.future },
       onFailure = { t:Throwable => t.toString.future }
-    ).get should equal("java.lang.RuntimeException")
+    ).await should equal("java.lang.RuntimeException")
 
-    Future.successful(Future.successful(1)).flatten.get should equal(1)
-    Future.successful(Future.failed(ex)).flatten.getTry should equal(Failure(ex))
-    Future.failed(ex).flatten.getTry should equal(Failure(ex))
+    Future.successful(Future.successful(1)).flatten.await should equal(1)
+    Future.successful(Future.failed(ex)).flatten.awaitTry should equal(Failure(ex))
+    Future.failed(ex).flatten.awaitTry should equal(Failure(ex))
 
     val items = Vector(1,2,3)
     items.async should equal(CollectionAsyncTaskRunner(items))
@@ -99,7 +99,7 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
     val elapsed = (System.nanoTime() - startTime_ns).nanos
 
-    future.get should equal(1)
+    future.await should equal(1)
     elapsed should be < 1.second
   }
 
@@ -112,7 +112,7 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
     ctc.waitForActiveExecutionCount(0)
 
-    future.getTry should equal(Failure(ex))
+    future.awaitTry should equal(Failure(ex))
   }
 
   "Future.onTimeout" must "fallback if timeout is exceeded even if fallback takes awhile" in {
@@ -129,7 +129,7 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     latch.set()
     ctc.waitForActiveExecutionCount(0)
 
-    future.getTry should equal(Success(1))
+    future.awaitTry should equal(Success(1))
   }
 
   "Future.background" must "ensure exceptions are reported to ExecutionContext" in {
@@ -140,7 +140,7 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       override def execute(runnable: Runnable): Unit = ctc.execute(runnable)
     }
     val ex = new RuntimeException
-    Future { throw ex }.background
+    Future { throw ex }.runInBackground
     ctc.waitForActiveExecutionCount(0)
     failures.result() should equal(List(ex))
   }
@@ -154,7 +154,7 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     }
     delayedFuture.startTime_ns.toDouble should equal(startTime_ns.toDouble +- startTime_ns * 0.1)
     delayedFuture.delay should equal(1.millis)
-    delayedFuture.get should equal(1)
+    delayedFuture.await should equal(1)
   }
 
   "Future.happensBefore" must "start a future after another completes" in {
@@ -167,9 +167,9 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     }
     deferredFuture.isCompleted should equal(false)
     latch1.set()
-    deferredFuture.deferred.get.isCompleted should equal(false)
+    deferredFuture.deferred.await.isCompleted should equal(false)
     latch2.set()
-    deferredFuture.get should equal(1)
+    deferredFuture.await should equal(1)
   }
 
   "firstSuccess-t1" must "return the first future to successfully complete" in {
@@ -189,7 +189,7 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
       waitForActiveExecutionCount(0)
       endLatch.set()
 
-      result.getTry should equal(Success(2))
+      result.awaitTry should equal(Success(2))
     }
   }
 
@@ -203,7 +203,7 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
 
       val result = Vector(f1,f2,f3).firstSuccess
 
-      result.getTry shouldBe a [Failure[_]]
+      result.awaitTry shouldBe a [Failure[_]]
     }
   }
 

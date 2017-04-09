@@ -67,27 +67,27 @@ package object concurrent {
      * indefinitely for the Future to complete)
      * @throws java.lang.Exception Future completed with a failure, throws the exception
      * */
-    def get: A = FutureOps.get(self)
+    def await: A = FutureOps.await(self)
     /**
      * @return the result of the Future after it completes
      * @throws java.util.concurrent.TimeoutException if Future does not complete within max duration
      * */
-    def get(max: Duration): A = FutureOps.get(self,max)
+    def await(max: Duration): A = FutureOps.await(self,max)
     /**
      * @return the Try result of the Future after it completes (Note: this waits
      * indefinitely for the Future to complete)
      * */
-    def getTry: Try[A] = FutureOps.getTry(self)
+    def awaitTry: Try[A] = FutureOps.awaitTry(self)
     /**
      * @return the Try result of the Future after it completes
      * @throws java.util.concurrent.TimeoutException if Future does not complete within max duration
      * */
-    def getTry(max: Duration): Try[A] = FutureOps.getTry(self, max)
+    def awaitTry(max: Duration): Try[A] = FutureOps.awaitTry(self, max)
     /** Run future in the background. Discard the result of this Future but
       * ensure if there is an exception it gets reported to the ExecutionContext
       * */
-    def background(implicit ec: ExecutionContext) : Unit =
-      FutureOps.background(self)
+    def runInBackground(implicit ec: ExecutionContext) : Unit =
+      FutureOps.runInBackground(self)
     /** @return a Future of a Try of the result that always completes
       * successfully even if the Future eventually throws an exception
       * */
