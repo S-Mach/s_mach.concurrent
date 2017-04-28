@@ -11,7 +11,7 @@
        CLt1i    :,:    .1tfL.   /____/     /_/  /_/ \__,_/ \___//_/ /_/
        Lft1,:;:       , 1tfL:
        ;it1i ,,,:::;;;::1tti      s_mach.concurrent
-         .t1i .,::;;; ;1tt        Copyright (c) 2014 S-Mach, Inc.
+         .t1i .,::;;; ;1tt        Copyright (c) 2017 S-Mach, Inc.
          Lft11ii;::;ii1tfL:       Author: lance.gatlin@gmail.com
           .L1 1tt1ttt,,Li
             ...1LLLL...
@@ -21,7 +21,7 @@ package s_mach.concurrent.impl
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.FiniteDuration
 import s_mach.concurrent.{PeriodicTask, ScheduledExecutionContext}
-import s_mach.concurrent.util.{AtomicFSM, Progress, PeriodicProgressReporter}
+import s_mach.concurrent.util.{AtomicState, PeriodicProgressReporter, Progress}
 import s_mach.codetools._
 
 object PeriodicProgressReporterImpl {
@@ -44,42 +44,38 @@ class PeriodicProgressReporterImpl(
 ) extends PeriodicProgressReporter {
   import PeriodicProgressReporterImpl._
 
-  val state = new AtomicFSM[State](NotStarted)
+  val state = AtomicState[State](NotStarted)
 
-  override def onStartTask() : Unit = state(
-    transition = {
-      case NotStarted => Running()
-    },
-    onTransition = {
-      case (NotStarted,Running(startTime_ns,_)) =>
-        report(Progress(0, optTotal, startTime_ns))
-        task.state match {
-          case p:PeriodicTask.Paused => p.resume()
-          case s => throw new IllegalStateException(s"Unexpected state $s")
-        }
-        ()
-    }
-  ).discard
+  override def onStartTask() : Unit = state.maybeSetAndThen {
+    case NotStarted => Running()
+  } {
+    case (NotStarted,Running(startTime_ns,_)) =>
+      report(Progress(0, optTotal, startTime_ns))
+      task.state match {
+        case p:PeriodicTask.Paused => p.resume()
+        case s => throw new IllegalStateException(s"Unexpected state $s")
+      }
+      ()
+    case _ => ()
+  }
 
   override def onStartStep(sequenceNumber: Int) : Unit = { }
-  override def onCompleteStep(sequenceNumber: Int) : Unit = state {
+  override def onCompleteStep(sequenceNumber: Int) : Unit = state.maybeSet {
     case current:Running =>
       import current._
       copy(totalSoFar = totalSoFar + 1)
   }.discard
 
-  override def onCompleteTask() : Unit = state(
-    transition = {
+  override def onCompleteTask() : Unit = state.maybeSetAndThen {
       case current:Running =>
         import current._
         Done(startTime_ns, totalSoFar)
-    },
-    onTransition = {
+    } {
       case (Running(_,_),Done(startTime_ns, finalTotal)) =>
         task.cancel()
         report(Progress(finalTotal, optTotal, startTime_ns))
+      case _ =>
     }
-  ).discard
 
   val task: PeriodicTask = {
     scheduledExecutionContext.scheduleAtFixedRate(
@@ -87,7 +83,7 @@ class PeriodicProgressReporterImpl(
       period = reportInterval,
       paused = true
     ) { () =>
-      state.get match {
+      state.current match {
         case r:Running =>
           import r._
           if(optTotal.forall(_ != totalSoFar)) {

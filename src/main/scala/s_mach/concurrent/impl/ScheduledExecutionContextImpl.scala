@@ -11,7 +11,7 @@
        CLt1i    :,:    .1tfL.   /____/     /_/  /_/ \__,_/ \___//_/ /_/
        Lft1,:;:       , 1tfL:
        ;it1i ,,,:::;;;::1tti      s_mach.concurrent
-         .t1i .,::;;; ;1tt        Copyright (c) 2014 S-Mach, Inc.
+         .t1i .,::;;; ;1tt        Copyright (c) 2017 S-Mach, Inc.
          Lft11ii;::;ii1tfL:       Author: lance.gatlin@gmail.com
           .L1 1tt1ttt,,Li
             ...1LLLL...
@@ -23,7 +23,7 @@ import scala.concurrent.{Future, Promise, ExecutionContext}
 import scala.concurrent.duration._
 import scala.util.Try
 import s_mach.concurrent._
-import s_mach.concurrent.util.{AtomicFSM, Latch, DelegatedFuture}
+import s_mach.concurrent.util.{AtomicState, Latch, DelegatedFuture}
 
 object ScheduledExecutionContextImpl {
   class ScheduledDelayedFutureImpl[A](
@@ -117,9 +117,9 @@ object ScheduledExecutionContextImpl {
       PausedImpl(0)
     }
 
-    def state = _state.get
+    def state = _state.current
 
-    val _state = new AtomicFSM[State](s0)
+    val _state = AtomicState[State](s0)
 
     case class RunningImpl(initialDelay_ns: Long) extends Running {
       val _nextEvent_ns = new java.util.concurrent.atomic.AtomicLong(
@@ -156,61 +156,51 @@ object ScheduledExecutionContextImpl {
       }
 
       override def pause(): Boolean = {
-        _state.fold(
-          transition = {
+        _state.maybeSetAndThen {
             case current:RunningImpl =>
-              (PausedImpl(current.nextEvent_ns),true)
-            case s => (s,false)
-          },
-          onTransition = {
+              PausedImpl(current.nextEvent_ns)
+          } {
             case (r:RunningImpl,p:Paused) =>
               r.javaScheduledFuture.cancel(false)
-              ()
+              true
+            case _ => false
           }
-        )
       }
     }
 
     case class PausedImpl(nextEvent_ns: Long) extends Paused {
       override def resume(): Boolean = {
-        _state.fold(
-          transition = {
+        _state.maybeSetAndThen {
             case current:PausedImpl =>
-              (
-                RunningImpl(Math.max(0,current.nextEvent_ns - System.nanoTime())),
-                true
-              )
-            case s => (s,false)
-          },
-          onTransition = {
+                RunningImpl(Math.max(0,current.nextEvent_ns - System.nanoTime()))
+          } {
             case (p:Paused,r:RunningImpl) =>
               r.start()
-              ()
+              true
+            case _ => false
           }
-        )
       }
     }
 
-    override def nextEvent_ns: Long = _state.get match {
+    override def nextEvent_ns: Long = _state.current match {
       case state:RunningImpl => state.nextEvent_ns
       case _ => Long.MaxValue
     }
 
     override def cancel() = {
-      _state.fold(
-        transition = {
+      _state.maybeSetAndThen {
           case _:Running | _:Paused =>
-            (Cancelled, true)
-          case _ => (Cancelled, false)
-        },
-        onTransition = {
+            Cancelled
+        } {
           case (r:RunningImpl,Cancelled) =>
             r.javaScheduledFuture.cancel(false)
             onCancel.set()
+            true
           case (p:Paused,Cancelled) =>
             onCancel.set()
+            true
+          case _ => false
         }
-      )
     }
 
     override def toString = s"PeriodicTaskImpl(state=$state)"

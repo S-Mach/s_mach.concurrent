@@ -12,7 +12,7 @@
        CLt1i    :,:    .1tfL.   /____/     /_/  /_/ \__,_/ \___//_/ /_/
        Lft1,:;:       , 1tfL:
        ;it1i ,,,:::;;;::1tti      s_mach.concurrent
-         .t1i .,::;;; ;1tt        Copyright (c) 2014 S-Mach, Inc.
+         .t1i .,::;;; ;1tt        Copyright (c) 2017 S-Mach, Inc.
          Lft11ii;::;ii1tfL:       Author: lance.gatlin@gmail.com
           .L1 1tt1ttt,,Li
             ...1LLLL...
