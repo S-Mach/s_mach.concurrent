@@ -207,70 +207,50 @@ class PackageTest extends FlatSpec with Matchers with ConcurrentTestCommon {
     }
   }
 
-//  "AtomicReference.recurseCompareAndSet" must "immediately set the value when there is no contention" in {
-//    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
-//    a.safeSet(_ + "1") should equal("initial1")
-//    a.get should equal("initial1")
-//  }
-//
-//  "AtomicReference.recurseCompareAndSet" must "set the value when there is contention" in {
-//    var latch = true
-//    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
-//    a.safeSet { s =>
-//      if(latch) {
-//        a.set("changed")
-//        latch = false
-//      }
-//      s + "1"
-//    }
-//    a.get should equal("changed1")
-//  }
+  "AtomicReference.casLoopSet" must "set the value atomically and call after transition exactly once" in {
+    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
+    var count = 0
+    a.casLoopSet(_ + "1") {
+      case ("initial","initial1") =>
+        count = count + 1
+        true
+      case _ => false
+    } shouldBe true
+    count shouldBe 1
+    a.get should equal("initial1")
+  }
 
-//  implicit class SMach_Concurrent_PimpMyTraversableFuture[A, M[+AA] <: Traversable[AA]](
-//    val self: M[Future[A]]
-//  ) extends AnyVal {
-//    @inline def merge(implicit
-//      ec: ExecutionContext,
-//      cbf: CanBuildFrom[Nothing, A, M[A]]
-//    ) : Future[M[A]] = MergeOps.merge(self)
-//
-//    @inline def merge(atMost: Duration)(implicit
-//      ec: ExecutionContext,
-//      ses: ScheduledExecutorService,
-//      cbf: CanBuildFrom[Nothing, A, M[A]]
-//    ) : Future[M[A]] = MergeOps.mergeTimeout(atMost, self)
-//
-//    @inline def firstSuccess(implicit
-//      ec: ExecutionContext
-//    ) : Future[A] = FutureOps.firstSuccess(self)
-//  }
-//
-//  implicit class SMach_Concurrent_PimpMyTraversableFutureTraversable[
-//    A,
-//    M[+AA] <: Traversable[AA],
-//    N[+AA] <: TraversableOnce[AA]
-//  ](
-//    val self: M[Future[N[A]]]
-//  ) extends AnyVal {
-//    @inline def flatMerge(implicit
-//      ec: ExecutionContext,
-//      cbf: CanBuildFrom[Nothing, A, M[A]]
-//    ) : Future[M[A]] = MergeOps.flatMerge(self)
-//  }
-//
-//  implicit class SMach_Concurrent_PimpMyTraversableOnceFuture[A,M[AA] <: TraversableOnce[AA]](
-//    val self: M[Future[A]]
-//  ) extends AnyVal {
-//    @inline def mergeAllFailures(implicit
-//      ec: ExecutionContext,
-//      cbf: CanBuildFrom[M[Future[A]], Throwable, M[Throwable]]
-//    ) : Future[M[Throwable]] = MergeOps.mergeAllFailures(self)
-//
-//    @inline def sequence(implicit
-//      cbf: CanBuildFrom[M[Future[A]], A, M[A]],
-//      ec: ExecutionContext
-//    ) : Future[M[A]] = Future.sequence(self)
-//  }
-//
+  "AtomicReference.casLoopMaybeSet" must "set the value atomically and call after transition exactly once" in {
+    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
+    a.casLoopMaybeSet {
+      case "initial" => "initial1"
+    } {
+      case ("initial","initial1") => true
+      case _ => false
+    } shouldBe true
+    a.get should equal("initial1")
+  }
 
+  "AtomicReference.casLoopMaybeSet" must "not set the value if undefined but still call after transition exactly once" in {
+    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
+    a.casLoopMaybeSet {
+      case "nomatch" => "initial1"
+    } {
+      case ("initial","initial1") => true
+      case _ => false
+    } shouldBe false
+    a.get should equal("initial")
+  }
+
+  "AtomicReference.casLoopFold" must "set the value atomically and call after transition exactly once" in {
+    val a = new java.util.concurrent.atomic.AtomicReference[String]("initial")
+    a.casLoopFold[String,Boolean] {
+      case ("initial","1") => "initial1"
+      case (s,_) => s
+    } {
+      case ("initial","initial1") => true
+      case _ => false
+    } ("1") shouldBe true
+    a.get should equal("initial1")
+  }
 }
