@@ -49,18 +49,22 @@ trait AtomicFSM[I,S,O] {
 
 object AtomicFSM {
   def apply[I,S,O](
-    state: AtomicReference[S],
-    transition: (S,I) => S,
+    state: AtomicReference[S]
+  )(
+    transition: (S,I) => S
+  )(
     afterTransition: (S,S) => O
   ) : AtomicFSM[I,S,O] = {
     new AtomicFSMImpl[I,S,O](state,transition,afterTransition)
   }
   def apply[I,S,O](
-    initialState: S,
-    transition: (S,I) => S,
+    initialState: S
+  )(
+    transition: (S,I) => S
+  )(
     afterTransition: (S,S) => O
   ) : AtomicFSM[I,S,O] = {
-    apply(new AtomicReference[S](initialState),transition,afterTransition)
+    apply(new AtomicReference[S](initialState))(transition)(afterTransition)
   }
 }
 

@@ -19,13 +19,14 @@
 package s_mach
 
 
+import java.util.concurrent.atomic.AtomicReference
 import scala.language.higherKinds
 import scala.concurrent._
 import scala.concurrent.duration._
 import scala.util.Try
 import scala.collection.generic.CanBuildFrom
 import s_mach.concurrent.impl._
-import s_mach.concurrent.config.{AsyncConfigBuilder, AsyncConfig}
+import s_mach.concurrent.config.{AsyncConfig, AsyncConfigBuilder}
 
 /**
  * s_mach.concurrent is an open-source Scala library that provides asynchronous
@@ -239,5 +240,74 @@ package object concurrent {
     val self:AsyncConfig
   ) extends AnyVal with SMach_Concurrent_AbstractPimpMyAsyncConfig
 
+  implicit class SMach_Concurrent_AtomicReferencePML[S](val self: AtomicReference[S]) extends AnyVal {
+   /**
+    * Atomically transition an AtomicReference using a compare-and-set loop
+    * that retries until set is successful using the current thread
+    *
+    * Note: all state transition side effects should be placed in the
+    * afterTransition method
+    *
+    * @param transition function that accepts the current state and returns
+    *                   the next state. This method may be called more than
+    *                   once and should not have side effects.
+    * @param afterTransition function called exactly once after successful CAS
+    *                        that takes the old state as first arg and new state
+    *                        as second.
+    * @return the value returned by afterTransition
+    **/
+    def casLoopSet[X](
+     transition: S => S
+    )(
+     afterTransition: (S,S) => X
+    ) : X = AtomicReferenceOps.casLoopSet(self,transition,afterTransition)
+
+   /**
+    * Maybe atomically transition an AtomicReference using a compare-and-set loop
+     * that retries until set is successful using the current thread
+    *
+    * Note: all state transition side effects should be placed in the
+    * afterTransition method
+    *
+    * @param transition partial function that accepts the current state and
+    *                   returns the next state. This method may be called more than
+    *                  once and should not have side effects.
+    * @param afterTransition function called exactly once after successful transition OR
+    *                        after transition partial function fails to match. After
+    *                        successful transition, passes old state as first arg and new
+    *                        state as second. If no transition occurred then called with
+    *                        current state for both first and second argument
+    * @return the value returned by afterTransition
+    **/
+    def casLoopMaybeSet[X](
+      transition: PartialFunction[S,S]
+    )(
+      afterTransition: (S,S) => X
+    ) : X = AtomicReferenceOps.casLoopMaybeSet(self,transition,afterTransition)
+
+    /**
+      * Atomically transition the state of the FSM using a compare-and-set loop
+      * that retries until set is successful using the current thread
+      *
+      * Note: all state transition side effects should be placed in the
+      * onTransition method
+      *
+      * @param input input to fold with state
+      * @param transition function that accepts the current state and
+      *                   input and returns the next state. This method may be
+      *                  called more than once and should not have side effects.
+      * @param afterTransition function called exactly once that takes the old state
+      *                     as first arg and new state as second.
+      * @return the value returned by afterTransition
+     **/
+    def casLoopFold[I,X](
+      transition: (S,I) => S
+    )(
+      afterTransition: (S,S) => X
+    )(
+      input: I
+    ) : X =
+      AtomicReferenceOps.casLoopFold(self,input,transition,afterTransition)
+  }
 }
 
