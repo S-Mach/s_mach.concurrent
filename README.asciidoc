@@ -27,8 +27,6 @@ You love Scala Futures and functional concurrent coding! But you...
 * Didn't realize Future.sequence doesn't fail immediately (a quick failure on an hour long Future.sequence might not return the failure for an hour!)
 * Wish Future had common idioms such as fold, flatten, etc
 * Are annoyed that you have to use Java's ScheduledExecutorService for delayed or periodically repeating tasks (or even worse - an ActorSystem)
-* Are a grown up async coder now and tired (so tired) of being punished for waiting on Futures with unnecessary ritual
-cruft (Await.result ... very common in testing code!)
 
 == Quick look
 Express parallel Future operations in far less lines of code:
@@ -117,7 +115,7 @@ myAsyncConfig.run("1","2","3")
 List("1","2","3").async.using(myAsyncConfig).map(read)
 ----
 
-Also, many, many convenience and utility methods:
+Convenience and utility methods:
 
 * +A.future+ - stop typing Future.successful(A)
 * +Future.get+ - Await.result without the flagellation
